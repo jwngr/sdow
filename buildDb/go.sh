@@ -31,7 +31,7 @@ create_sqlite_databases=true
 echo "*** STEP 0: Download Wikipedia dump from $DOWNLOAD_DATE into $PWD/$OUT_DIR ***"
 
 if [ "$download_wikipedia_dump" = true ] ; then
-  # Download the pages file from Wikipeida
+  # Download the pages file from Wikipedia
   if [ ! -f $OUT_DIR/pages.sql.gz ]; then
     echo "*** Downloading pages file from Wikipedia ***"
     wget http://download.wikipedia.org/enwiki/$DOWNLOAD_DATE/enwiki-$DOWNLOAD_DATE-page.sql.gz
@@ -40,7 +40,7 @@ if [ "$download_wikipedia_dump" = true ] ; then
     echo "*** Already downloaded pages file from Wikipedia ***"
   fi
 
-  # Download the links file from Wikipeida
+  # Download the links file from Wikipedia
   if [ ! -f $OUT_DIR/links.sql.gz ]; then
     echo "*** Downloading links file from Wikipedia ***"
     wget http://download.wikipedia.org/enwiki/$DOWNLOAD_DATE/enwiki-$DOWNLOAD_DATE-pagelinks.sql.gz
@@ -49,7 +49,7 @@ if [ "$download_wikipedia_dump" = true ] ; then
     echo "*** Already downloaded links file from Wikipedia ***"
   fi
 
-  # Download the redirects file from Wikipeida
+  # Download the redirects file from Wikipedia
   if [ ! -f $OUT_DIR/redirects.sql.gz ]; then
     echo "*** Downloading redirects file from Wikipedia ***"
 
@@ -59,9 +59,10 @@ if [ "$download_wikipedia_dump" = true ] ; then
     echo "*** Already downloaded redirects file from Wikipedia ***"
   fi
 else
-  echo "*** Skipping step 0 ***"
+  echo "*** Skipping STEP 0 ***"
 fi
 
+echo "*** Done with STEP 0 ***"
 echo
 
 
@@ -95,9 +96,10 @@ if [ "$create_lookup_files" = true ] ; then
     echo "*** Already created the redirects lookup file ***"
   fi
 else
-  echo "*** Skipping step 1 ***"
+  echo "*** Skipping STEP 1 ***"
 fi
 
+echo "*** Done with STEP 1 ***"
 echo
 
 
@@ -131,9 +133,10 @@ if [ "$replace_names_with_ids" = true ] ; then
     echo "*** Already replaced redirects in links file ***"
   fi
 else
-  echo "*** Skipping step 2 ***"
+  echo "*** Skipping STEP 2 ***"
 fi
 
+echo "*** Done with STEP 2 ***"
 echo
 
 
@@ -183,9 +186,10 @@ if [ "$sort_files" = true ] ; then
     echo "***  Already sorted redirects file on from_id ***"
   fi
 else
-  echo "*** Skipping step 3 ***"
+  echo "*** Skipping STEP 3 ***"
 fi
 
+echo "*** Done with STEP 3 ***"
 echo
 
 
@@ -235,8 +239,9 @@ if [ "$create_sqlite_databases" = true ] ; then
     echo "***  Already created redirects from_id SQLite database ***"
   fi
 else
-  echo "*** Skipping step 4 ***"
+  echo "*** Skipping STEP 4 ***"
 fi
 
+echo "*** Done with STEP 4 ***"
 echo
 echo "*** Woot! All done! ***"
