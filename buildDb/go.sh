@@ -71,11 +71,41 @@ echo
 #########################
 echo "*** STEP 1: Create lookup files in $PWD/$OUT_DIR ***"
 
-if [ "$create_lookup_files" = true ] ; then
+# gzcat file
+#   dumps a gzipped file
+
+# sed -e 's/),(/\'$'\n/g'
+#   Splits each table row into their own line
+
+# sed -n '/INSERT INTO/,$p'
+#   Removes all lines before the line containing "INSERT INTO"
+
+# sed -e 's/INSERT INTO `<foo>` VALUES (//'
+#   Replaces provided string with an empty string
+
+# sed -n '/ALTER TABLE/q;p'
+#   Removes all line after the line containing "ALTER TABLE"
+
+# awk -F, '{printf "%s\t%s\t", $1, $2; for(i=3; i < NF; i++) printf "%s,", $i; print $NF;}'
+#   Pretty-prints the desired data
+
+# sed -e "s/','.*/'/g"
+#   TODO
+
+# awk -F'\t' '{if ($2 == 0) print $1 "\t" $3}'
+#   TODO
+
+# sed -e "s/\t'/\t/" -e "s/'"'$'"//"
+#   TODO
+
+# gzip
+#  gzips the output
+
+if [ "$create_lookup_files" = true ]; then
   # Create the pages lookup file
   if [ ! -f $OUT_DIR/pages.txt.gz ]; then
     echo "*** Creating the pages lookup file ***"
-    gzcat $OUT_DIR/pages.sql.gz | LC_ALL=C sed -e 's/),(/\'$'\n/g' | LC_ALL=C sed -n '/INSERT INTO `page` VALUES (/,$p' | LC_ALL=C sed -e 's/INSERT INTO `page` VALUES (//' | awk -F, '{printf "%s\t%s\t", $1, $2; for(i=3; i < NF; i++) printf "%s,", $i; print $NF;}' | LC_ALL=C sed -e "s/','.*/'/g" | awk -F'\t' '{if ($2 == 0) print $1 "\t" $3}' | LC_ALL=C sed -e "s/\t'/\t/" -e "s/'"'$'"//" | gzip > $OUT_DIR/pages.txt.gz
+    gzcat $OUT_DIR/pages.sql.gz | LC_ALL=C sed -e 's/),(/\'$'\n/g' | LC_ALL=C sed -n '/INSERT INTO/,$p' | LC_ALL=C sed -e 's/INSERT INTO `page` VALUES (//' | LC_ALL=C sed -n '/ALTER TABLE/q;p' | awk -F, '{printf "%s\t%s\t", $1, $2; for(i=3; i < NF; i++) printf "%s,", $i; print $NF;}' | LC_ALL=C sed -e "s/','.*/'/g" | awk -F'\t' '{if ($2 == 0) print $1 "\t" $3}' | LC_ALL=C sed -e "s/\t'/\t/" -e "s/'"'$'"//" | gzip > $OUT_DIR/pages.txt.gz
   else
     echo "*** Already created the pages lookup file ***"
   fi
@@ -83,7 +113,7 @@ if [ "$create_lookup_files" = true ] ; then
   # Create the links lookup file
   if [ ! -f $OUT_DIR/links.txt.gz ]; then
     echo "*** Creating the links lookup file ***"
-    gzcat $OUT_DIR/links.sql.gz | LC_ALL=C sed -e 's/),(/\'$'\n/g' | LC_ALL=C sed -n '/INSERT INTO `pagelinks` VALUES (/,$p' | LC_ALL=C sed -e 's/INSERT INTO `pagelinks` VALUES (//' | awk -F, '{printf "%s\t%s\t", $1, $2; for(i=3; i < NF; i++) printf "%s,", $i; print $NF;}' | awk -F'\t' '{if ($2 == 0) print $1 "\t" $3}' | LC_ALL=C sed -e "s/\t'/\t/" -e "s/'"'$'"//" | gzip > $OUT_DIR/links.txt.gz
+    gzcat $OUT_DIR/links.sql.gz | LC_ALL=C sed -e 's/),(/\'$'\n/g' | LC_ALL=C sed -n '/INSERT INTO/,$p' | LC_ALL=C sed -e 's/INSERT INTO `pagelinks` VALUES (//' | LC_ALL=C sed -n '/ALTER TABLE/q;p' | awk -F, '{printf "%s\t%s\t", $1, $2; for(i=3; i < NF; i++) printf "%s,", $i; print $NF;}' | awk -F'\t' '{if ($2 == 0) print $1 "\t" $3}' | LC_ALL=C sed -e "s/\t'/\t/" -e "s/'"'$'"//" | gzip > $OUT_DIR/links.txt.gz
   else
     echo "*** Already created the links lookup file ***"
   fi
@@ -91,7 +121,7 @@ if [ "$create_lookup_files" = true ] ; then
   # Create the redirects lookup file
   if [ ! -f $OUT_DIR/redirects.txt.gz ]; then
     echo "*** Creating the redirects lookup file ***"
-    gzcat $OUT_DIR/redirects.sql.gz | LC_ALL=C sed -e 's/),(/\'$'\n/g' | LC_ALL=C sed -n '/INSERT INTO `redirect` VALUES (/,$p' | LC_ALL=C sed -e 's/INSERT INTO `redirect` VALUES (//' | awk -F, '{printf "%s\t%s\t", $1, $2; for(i=3; i < NF; i++) printf "%s,", $i; print $NF;}' | LC_ALL=C sed -e "s/','.*/'/g" | awk -F'\t' '{if ($2 == 0) print $1 "\t" $3}' | LC_ALL=C sed -e "s/'//g" | gzip > $OUT_DIR/redirects.txt.gz
+    gzcat $OUT_DIR/redirects.sql.gz | LC_ALL=C sed -e 's/),(/\'$'\n/g' | LC_ALL=C sed -n '/INSERT INTO/,$p' | LC_ALL=C sed -e 's/INSERT INTO `redirect` VALUES (//' | LC_ALL=C sed -n '/ALTER TABLE/q;p' | awk -F, '{printf "%s\t%s\t", $1, $2; for(i=3; i < NF; i++) printf "%s,", $i; print $NF;}' | LC_ALL=C sed -e "s/','.*/'/g" | awk -F'\t' '{if ($2 == 0) print $1 "\t" $3}' | LC_ALL=C sed -e "s/'//g" | gzip > $OUT_DIR/redirects.txt.gz
   else
     echo "*** Already created the redirects lookup file ***"
   fi
@@ -108,7 +138,7 @@ echo
 ############################
 echo "*** STEP 2: Replace names with IDs ***"
 
-if [ "$replace_names_with_ids" = true ] ; then
+if [ "$replace_names_with_ids" = true ]; then
   # Replace names in the links file with their corresponding ids
   if [ ! -f $OUT_DIR/links.with_ids.txt.gz ]; then
     echo "***  Replacing names in links file ***"
@@ -145,7 +175,7 @@ echo
 # ################
 echo "*** STEP 3: Sort files ***"
 
-if [ "$sort_files" = true ] ; then
+if [ "$sort_files" = true ]; then
   # Sort the pages file on ID
   if [ ! -f $OUT_DIR/pages.id.sort.gz ]; then
     echo "***  Sorting pages file on ID ***"
