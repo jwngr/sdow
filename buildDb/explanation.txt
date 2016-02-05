@@ -3,3 +3,15 @@ links.sql.gz
   `pl_namespace` int(11) NOT NULL DEFAULT '0',
   `pl_title` varbinary(255) NOT NULL DEFAULT '',
   `pl_from_namespace` int(11) NOT NULL DEFAULT '0',
+
+
+Wikipedia Namespaces: http://en.wikipedia.org/wiki/Wikipedia:Namespace
+  - 0 is an actual article
+
+
+links:
+awk -F, '{printf "%s\t%s\t", $1, $2; for(i=3; i < NF; i++) printf "%s,", $i; printf "\t%s\n", $NF}'
+  - Split on comma
+  - Print the first two columns
+  - Loop through the remaining columns and print each one (to handle cases where the article title has a comma)
+  - Print the last column (which is the from namespace)

@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # NOTE: Dumps of the English Wikipedia can be found at http://dumps.wikimedia.org/enwiki/
+# NOTE: Latest dump of the English Wikipedia can be found at http://dumps.wikimedia.org/enwiki/latest/
 
 # Usage instructions
 if [ ${#1} -ne 8 ]; then
