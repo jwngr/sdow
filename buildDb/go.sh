@@ -11,28 +11,30 @@ fi
 
 # Set global variables
 DOWNLOAD_DATE=$1
-OUT_DIR="dumps/dump.$DOWNLOAD_DATE"
+OUT_DIR="/Users/jwngr/Desktop/dumps/dump.$DOWNLOAD_DATE"
 PWD=`pwd`
 
 # Make the output directory if it doesn't already exist
 mkdir -p $OUT_DIR
 
 # Toggle which steps to run
-download_wikipedia_dump=true
+download_wikipedia_dumps=true
+trim_wikipedia_dumps=true
 create_lookup_files=true
-replace_names_with_ids=true
-sort_files=true
-create_sqlite_databases=true
+replace_names_with_ids=false
+sort_files=false
+create_sqlite_databases=false
 
 
 ##############################
 #  DOWNLOAD WIKIPEDIA DUMPS  #
 ##############################
-echo "*** STEP 0: Download Wikipedia dump from $DOWNLOAD_DATE into $PWD/$OUT_DIR ***"
+echo "*** STEP 0: Download Wikipedia dumps from $DOWNLOAD_DATE into $PWD/$OUT_DIR ***"
 
-if [ "$download_wikipedia_dump" = true ] ; then
+if [ "$download_wikipedia_dumps" = true ] ; then
+  echo "$OUT_DIR/pages.sql.gz"
   # Download the pages file from Wikipedia
-  if [ ! -f $OUT_DIR/pages.sql.gz ]; then
+  if [ ! -f "$OUT_DIR/pages.sql.gz" ]; then
     echo "*** Downloading pages file from Wikipedia ***"
     wget http://download.wikipedia.org/enwiki/$DOWNLOAD_DATE/enwiki-$DOWNLOAD_DATE-page.sql.gz
     mv enwiki-$DOWNLOAD_DATE-page.sql.gz $OUT_DIR/pages.sql.gz
@@ -58,18 +60,19 @@ if [ "$download_wikipedia_dump" = true ] ; then
   else
     echo "*** Already downloaded redirects file from Wikipedia ***"
   fi
+
+  echo "*** Done with STEP 0 ***"
 else
   echo "*** Skipping STEP 0 ***"
 fi
 
-echo "*** Done with STEP 0 ***"
 echo
 
 
-#########################
-#  CREATE LOOKUP FILES  #
-#########################
-echo "*** STEP 1: Create lookup files in $PWD/$OUT_DIR ***"
+##########################
+#  TRIM WIKIPEDIA DUMPS  #
+##########################
+echo "*** STEP 1: Trim Wikipedia dumps ***"
 
 # gzcat file
 #   dumps a gzipped file
@@ -85,6 +88,50 @@ echo "*** STEP 1: Create lookup files in $PWD/$OUT_DIR ***"
 
 # sed -n '/ALTER TABLE/q;p'
 #   Removes all line after the line containing "ALTER TABLE"
+
+# gzip
+#  gzips the output
+
+if [ "$trim_wikipedia_dumps" = true ]; then
+  # Create the pages lookup file
+  if [ ! -f $OUT_DIR/pages_trimmed.txt.gz ]; then
+    echo "*** Creating the pages lookup file ***"
+    gzcat $OUT_DIR/pages.sql.gz | LC_ALL=C sed -e 's/),(/\'$'\n/g' | LC_ALL=C sed -n '/INSERT INTO/,$p' | LC_ALL=C sed -e 's/INSERT INTO `page` VALUES (//' | LC_ALL=C sed -n '/ALTER TABLE/q;p' | gzip > $OUT_DIR/pages_trimmed.txt.gz
+  else
+    echo "*** Already created the trimmed Wikipedia pages dump ***"
+  fi
+
+  # Create the links lookup file
+  if [ ! -f $OUT_DIR/links_trimmed.txt.gz ]; then
+    echo "*** Creating the links lookup file ***"
+    gzcat $OUT_DIR/links.sql.gz | LC_ALL=C sed -e 's/),(/\'$'\n/g' | LC_ALL=C sed -n '/INSERT INTO/,$p' | LC_ALL=C sed -e 's/INSERT INTO `pagelinks` VALUES (//' | LC_ALL=C sed -n '/ALTER TABLE/q;p' | gzip > $OUT_DIR/links_trimmed.txt.gz
+  else
+    echo "*** Already created the trimmed Wikipedia links dump ***"
+  fi
+
+  # Create the redirects lookup file
+  if [ ! -f $OUT_DIR/redirects_trimmed.txt.gz ]; then
+    echo "*** Creating the redirects lookup file ***"
+    gzcat $OUT_DIR/redirects.sql.gz | LC_ALL=C sed -e 's/),(/\'$'\n/g' | LC_ALL=C sed -n '/INSERT INTO/,$p' | LC_ALL=C sed -e 's/INSERT INTO `redirect` VALUES (//' | LC_ALL=C sed -n '/ALTER TABLE/q;p' | awk -F, '{printf "%s\t%s\t", $1, $2; for(i=3; i < NF; i++) printf "%s,", $i; print $NF;}' | LC_ALL=C sed -e "s/','.*/'/g" | gzip > $OUT_DIR/redirects_trimmed.txt.gz
+  else
+    echo "*** Already created the trimmed Wikipedia redirects dump ***"
+  fi
+
+  echo "*** Done with STEP 1 ***"
+else
+  echo "*** Skipping STEP 1 ***"
+fi
+
+echo
+
+
+#########################
+#  CREATE LOOKUP FILES  #
+#########################
+echo "*** STEP 2: Create lookup files ***"
+
+# gzcat file
+#   dumps a gzipped file
 
 # awk -F, '{printf "%s\t%s\t", $1, $2; for(i=3; i < NF; i++) printf "%s,", $i; print $NF;}'
 #   Pretty-prints the desired data
@@ -105,7 +152,7 @@ if [ "$create_lookup_files" = true ]; then
   # Create the pages lookup file
   if [ ! -f $OUT_DIR/pages.txt.gz ]; then
     echo "*** Creating the pages lookup file ***"
-    gzcat $OUT_DIR/pages.sql.gz | LC_ALL=C sed -e 's/),(/\'$'\n/g' | LC_ALL=C sed -n '/INSERT INTO/,$p' | LC_ALL=C sed -e 's/INSERT INTO `page` VALUES (//' | LC_ALL=C sed -n '/ALTER TABLE/q;p' | awk -F, '{printf "%s\t%s\t", $1, $2; for(i=3; i < NF; i++) printf "%s,", $i; print $NF;}' | LC_ALL=C sed -e "s/','.*/'/g" | awk -F'\t' '{if ($2 == 0) print $1 "\t" $3}' | LC_ALL=C sed -e "s/\t'/\t/" -e "s/'"'$'"//" | gzip > $OUT_DIR/pages.txt.gz
+    gzcat $OUT_DIR/pages_trimmed.txt.gz | awk -F, '{printf "%s\t%s\t", $1, $2; for(i=3; i < NF; i++) printf "%s,", $i; print $NF;}' | LC_ALL=C sed -e "s/','.*/'/g" | awk -F'\t' '{if ($2 == 0) print $1 "\t" $3}' | LC_ALL=C sed -e "s/\t'/\t/" -e "s/'"'$'"//" | gzip > $OUT_DIR/pages.txt.gz
   else
     echo "*** Already created the pages lookup file ***"
   fi
@@ -113,7 +160,7 @@ if [ "$create_lookup_files" = true ]; then
   # Create the links lookup file
   if [ ! -f $OUT_DIR/links.txt.gz ]; then
     echo "*** Creating the links lookup file ***"
-    gzcat $OUT_DIR/links.sql.gz | LC_ALL=C sed -e 's/),(/\'$'\n/g' | LC_ALL=C sed -n '/INSERT INTO/,$p' | LC_ALL=C sed -e 's/INSERT INTO `pagelinks` VALUES (//' | LC_ALL=C sed -n '/ALTER TABLE/q;p' | awk -F, '{printf "%s\t%s\t", $1, $2; for(i=3; i < NF; i++) printf "%s,", $i; print $NF;}' | awk -F'\t' '{if ($2 == 0) print $1 "\t" $3}' | LC_ALL=C sed -e "s/\t'/\t/" -e "s/'"'$'"//" | gzip > $OUT_DIR/links.txt.gz
+    gzcat $OUT_DIR/links_trimmed.txt.gz | awk -F, '{printf "%s\t%s\t", $1, $2; for(i=3; i < NF; i++) printf "%s,", $i; printf "\t%s\n", $NF}' | awk -F'\t' '{if ($2 == 0) print $1 "\t" $3}' | LC_ALL=C sed -e "s/\t'/\t/" -e "s/'"'$'"//" | gzip > $OUT_DIR/links.txt.gz
   else
     echo "*** Already created the links lookup file ***"
   fi
@@ -121,22 +168,23 @@ if [ "$create_lookup_files" = true ]; then
   # Create the redirects lookup file
   if [ ! -f $OUT_DIR/redirects.txt.gz ]; then
     echo "*** Creating the redirects lookup file ***"
-    gzcat $OUT_DIR/redirects.sql.gz | LC_ALL=C sed -e 's/),(/\'$'\n/g' | LC_ALL=C sed -n '/INSERT INTO/,$p' | LC_ALL=C sed -e 's/INSERT INTO `redirect` VALUES (//' | LC_ALL=C sed -n '/ALTER TABLE/q;p' | awk -F, '{printf "%s\t%s\t", $1, $2; for(i=3; i < NF; i++) printf "%s,", $i; print $NF;}' | LC_ALL=C sed -e "s/','.*/'/g" | awk -F'\t' '{if ($2 == 0) print $1 "\t" $3}' | LC_ALL=C sed -e "s/'//g" | gzip > $OUT_DIR/redirects.txt.gz
+    gzcat $OUT_DIR/redirects_trimmed.txt.gz | awk -F, '{printf "%s\t%s\t", $1, $2; for(i=3; i < NF; i++) printf "%s,", $i; print $NF;}' | LC_ALL=C sed -e "s/','.*/'/g" | awk -F'\t' '{if ($2 == 0) print $1 "\t" $3}' | LC_ALL=C sed -e "s/'//g" | gzip > $OUT_DIR/redirects.txt.gz
   else
     echo "*** Already created the redirects lookup file ***"
   fi
+
+  echo "*** Done with STEP 2 ***"
 else
-  echo "*** Skipping STEP 1 ***"
+  echo "*** Skipping STEP 2 ***"
 fi
 
-echo "*** Done with STEP 1 ***"
 echo
 
 
 ############################
 #  REPLACE NAMES WITH IDS  #
 ############################
-echo "*** STEP 2: Replace names with IDs ***"
+echo "*** STEP 3: Replace names with IDs ***"
 
 if [ "$replace_names_with_ids" = true ]; then
   # Replace names in the links file with their corresponding ids
@@ -162,18 +210,19 @@ if [ "$replace_names_with_ids" = true ]; then
   else
     echo "*** Already replaced redirects in links file ***"
   fi
+
+  echo "*** Done with STEP 3 ***"
 else
-  echo "*** Skipping STEP 2 ***"
+  echo "*** Skipping STEP 3 ***"
 fi
 
-echo "*** Done with STEP 2 ***"
 echo
 
 
 # ################
 # #  SORT FILES  #
 # ################
-echo "*** STEP 3: Sort files ***"
+echo "*** STEP 4: Sort files ***"
 
 if [ "$sort_files" = true ]; then
   # Sort the pages file on ID
@@ -215,18 +264,19 @@ if [ "$sort_files" = true ]; then
   else
     echo "***  Already sorted redirects file on from_id ***"
   fi
+
+  echo "*** Done with STEP 4 ***"
 else
-  echo "*** Skipping STEP 3 ***"
+  echo "*** Skipping STEP 4 ***"
 fi
 
-echo "*** Done with STEP 3 ***"
 echo
 
 
 # #############################
 # #  CREATE SQLITE DATABASES  #
 # #############################
-echo "*** STEP 4: Create SQLite databases ***"
+echo "*** STEP 5: Create SQLite databases ***"
 
 if [ "$create_sqlite_databases" = true ] ; then
   # Create the pages ID SQLite database
@@ -268,10 +318,11 @@ if [ "$create_sqlite_databases" = true ] ; then
   else
     echo "***  Already created redirects from_id SQLite database ***"
   fi
+
+  echo "*** Done with STEP 5 ***"
 else
-  echo "*** Skipping STEP 4 ***"
+  echo "*** Skipping STEP 5 ***"
 fi
 
-echo "*** Done with STEP 4 ***"
 echo
 echo "*** Woot! All done! ***"
