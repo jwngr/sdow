@@ -1,28 +1,93 @@
-# Six Degrees of Wikipedia
+# Six Degrees of Wikipedia (SDOW)
 
 ## Data Source
 
-Dumps of the English Wikipedia can be found at http://dumps.wikimedia.org/enwiki/
+Wikipedia dumps raw database tables in a gzipped SQL format for the English language Wikipedia
+(`enwiki`) approximately once a month (e.g.
+[dump from July 20, 2017](https://dumps.wikimedia.your.org/enwiki/20170620/)). The
+[entire database layout](https://www.mediawiki.org/wiki/Manual:Database_layout) is not required, and
+the database creation script only downloads, trims, and parses three tables:
+  1. [`page`](https://www.mediawiki.org/wiki/Manual:Page_table) - Contains the ID and name (among
+     other things) for all pages.
+  2. [`pagelinks`](https://www.mediawiki.org/wiki/Manual:Pagelinks_table) - Contains the source and
+     target pages all links.
+  3. [`redirect`](https://www.mediawiki.org/wiki/Manual:Redirect_table) - Contains the source and
+     target pages for all redirects.
+
+For performance reasons, the files are downloaded from the
+[`dumps.wikimedia.your.org` mirror](https://dumps.wikimedia.your.org/backup-index.html). By default,
+the script grabs the latest dump (available at
+[https://dumps.wikimedia.your.org/enwiki/latest/](https://dumps.wikimedia.your.org/enwiki/latest/)),
+but you can also call the database creation script with a download date in the format `YYYYMMDD` as
+the first argument.
+
+SDOW only concerns itself with actual Wikipedia articles, which belong to
+[namespace](https://en.wikipedia.org/wiki/Wikipedia:Namespace) 0 in the Wikipedia data.
+
+## Database Creation Process
+
+The result of running the database creation script is a single `sdow.sqlite` file which contains
+three tables:
+  1. `pages` - Contains the page ID and name for all pages, including redirects.
+    1. `id` - Page ID
+    2. `name` - Page name
+  2. `links` - Contains the source and target page IDs for all links.
+    1. `from_id` - The page ID of the source page, the page that contains the link.
+    2. `to_id` - The page ID of the target page, to which the link links.
+  3. `redirects` - Contains the source and target page IDs for all redirects.
+    1. `from_id` - The page ID of the source page, the page that redirects to another page.
+    2. `to_id` - The page ID of the target page, to which the redirect page redirects.
+
+Generating the SDOW database from a dump of Wikipedia takes approximately two hours given the
+instructions below:
+
+1. Create a new [Google Compute Engine instance](https://console.cloud.google.com/compute/instances?project=sdow-prod):
+   (TODO: look into creating this on the fly via `gcloud compute instances create my-vm --custom-cpu
+   # --custom-memory #).
+   1. **Name:** `sdow-build-db`
+   1. **Zone:** `us-central1-c`
+   1. **Machine Type:** `n1-standard-2` (2 vCPUS, 7.5 GB RAM)
+   1. **Boot disk**: Debian GNU/Linux 8 (jessie), 128 GB SSD
+1. SSH into the machine:
+   ```bash
+   $ gcloud compute ssh sdow-build-db
+   ```
+1. Install required dependencies:
+   ```bash
+   $ sudo apt-get install pv sqlite3
+   ```
+1. Copy all scripts into the current directory.
+1. Make `buildDatabase.sh` executable:
+   ```bash
+   $ chmod u+x buildDatabase.sh
+   ```
+1. Create a new screen in case you lose connection to the VM:
+   ```bash
+   $ screen
+   ```
+1. Run the database creation script:
+   ```bash
+   $ ./buildDatabase.sh
+   ```
+1. Detach from the current screen session by pressing `<CMD> + <D>`. To reconnect to the screen, run
+   `screen -r`. Make sure to always detach from the screen cleanly so it can be resumed!
+1. To avoid charges for running VMS and SSD persistent disk, delete the VM as soon as the job is
+   complete and the database is saved.
+
+
+## Interesting Edge Case Pages
+
+* 1514: 'Albert,_Duke_of_Prussia'
+* 8695: 'Dr._Strangelove'
+* 11760: 'F-110_Spectre'
+* 49940: 'Aaron\'s_rod'
+* 161512: 'DivX_;-)' ()
+* 24781871: 'Jack_in_the_Green:_Live_in_Germany_1970–1993'
+* 24781873: 'Lindström_(company)'
+* 54201834: 'Disinformation_(book)' (TODO: this appears to be missing in `pages.txt.gz`)
+* 54201536: '.nds' (TODO: this appears to be missing in `pages.txt.gz`)
 
 ## Contributing
 
-If you'd like to contribute to Six Degrees of Wikipedia, you'll need to run the following commands
-to get your environment set up:
-
-```bash
-$ git clone https://github.com/jwngr/sdow.git
-$ cd sdow                # go to the sdow directory
-$ npm install -g gulp    # globally install gulp task runner
-$ npm install -g bower   # globally install Bower package manager
-$ npm install            # install local npm build / test dependencies
-$ bower install          # install local JavaScript dependencies
-$ gulp watch             # watch for source file changes
-```
-
-In order to get the files from Wikipedia which are used to generate the database files, we use `wget`.
-You can install `wget` via [Homebrew](http://brew.sh/):
-
-```
-$ brew install wget
-```
+TODO
 
