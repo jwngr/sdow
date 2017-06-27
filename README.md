@@ -41,9 +41,7 @@ three tables:
 Generating the SDOW database from a dump of Wikipedia takes approximately two hours given the
 instructions below:
 
-1. Create a new [Google Compute Engine instance](https://console.cloud.google.com/compute/instances?project=sdow-prod):
-   (TODO: look into creating this on the fly via `gcloud compute instances create my-vm --custom-cpu
-   # --custom-memory #).
+1. Create a new [Google Compute Engine instance](https://console.cloud.google.com/compute/instances?project=sdow-prod) (TODO: look into doing this via `gcloud` CLI):
    1. **Name:** `sdow-build-db`
    1. **Zone:** `us-central1-c`
    1. **Machine Type:** `n1-standard-2` (2 vCPUS, 7.5 GB RAM)
