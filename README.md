@@ -73,17 +73,19 @@ instructions below:
    complete and the database is saved.
 
 
-## Interesting Edge Case Pages
+## Edge Case Pages
 
-* 1514: 'Albert,_Duke_of_Prussia'
-* 8695: 'Dr._Strangelove'
-* 11760: 'F-110_Spectre'
-* 49940: 'Aaron\'s_rod'
-* 161512: 'DivX_;-)' ()
-* 24781871: 'Jack_in_the_Green:_Live_in_Germany_1970–1993'
-* 24781873: 'Lindström_(company)'
-* 54201834: 'Disinformation_(book)' (TODO: this appears to be missing in `pages.txt.gz`)
-* 54201536: '.nds' (TODO: this appears to be missing in `pages.txt.gz`)
+| Page ID | Page Name | Notes |
+|---------|-----------|-------|
+| 1514 | Albert,_Duke_of_Prussia | |
+| 8695 | Dr._Strangelove | |
+| 11760 | F-110_Spectre | |
+| 49940 | Aaron\'s_rod | |
+| 161512 | DivX_;-) | |
+| 24781871 | Jack_in_the_Green:_Live_in_Germany_1970–1993 | |
+| 24781873 | Lindström_(company) | |
+| 54201834 | Disinformation_(book) | Missing in `pages.txt.gz` |
+| 54201536 | .nds | Missing in `pages.txt.gz` |
 
 ## Contributing
 
