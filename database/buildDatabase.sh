@@ -3,12 +3,12 @@
 # By default, the latest Wikipedia dump will be downloaded. If a download date in the format
 # YYYYMMDD is provided as the first argument, it will be used instead.
 if [ ${#1} -ne 8 ]; then
-  DOWNLOAD_DATE='latest'
+  DOWNLOAD_DATE="latest"
 else
   DOWNLOAD_DATE=$1
 fi
 
-PWD=`pwd`
+ROOT_DIR=`pwd`
 OUT_DIR="dump"
 
 DOWNLOAD_URL="https://dumps.wikimedia.your.org/enwiki/$DOWNLOAD_DATE"
@@ -43,10 +43,10 @@ fi
 
 if [ ! -f $REDIRECTS_FILENAME ]; then
   echo "[INFO] Downloading redirects file"
-  wget "h$DOWNLOAD_URL/$REDIRECTS_FILENAME"
+  wget "$DOWNLOAD_URL/$REDIRECTS_FILENAME"
 
   echo "[INFO] Verifying md5sum for redirects file"
-  time md5sum $REDIRECTS_FILENAME | grep -q -f - $MD5SUM_FILENAME
+  time md5sum $REDIRECTS_FILENAME | sed "s/\s.*$//" | grep --quiet --file - $MD5SUM_FILENAME
   if [ $? -ne 0 ]; then
     echo "[ERROR] Downloaded redirects file has incorrect md5sum"
     exit 1
@@ -60,7 +60,7 @@ if [ ! -f $PAGES_FILENAME ]; then
   wget "$DOWNLOAD_URL/$PAGES_FILENAME"
 
   echo "[INFO] Verifying md5sum for pages file"
-  time md5sum $PAGES_FILENAME | grep -q -f - $MD5SUM_FILENAME
+  time md5sum $PAGES_FILENAME | sed "s/\s.*$//" | grep --quiet --file - $MD5SUM_FILENAME
   if [ $? -ne 0 ]; then
     echo "[ERROR] Downloaded pages file has incorrect md5sum"
     exit 1
@@ -74,7 +74,7 @@ if [ ! -f $LINKS_FILENAME ]; then
   wget "$DOWNLOAD_URL/$LINKS_FILENAME"
 
   echo "[INFO] Verifying md5sum for links file"
-  time md5sum $LINKS_FILENAME | grep -q -f - $MD5SUM_FILENAME
+  time md5sum $LINKS_FILENAME | sed "s/\s.*$//" | grep --quiet --file - $MD5SUM_FILENAME
   if [ $? -ne 0 ]; then
     echo "[ERROR] Downloaded links file has incorrect md5sum"
     exit 1
@@ -168,18 +168,18 @@ echo "[INFO] Replacing page names with IDs and removing redirects"
 
 if [ ! -f redirects.with_ids.txt.gz ]; then
   echo "[INFO] Replacing page names with IDs in redirects file"
-  time python "$PWD/replacePageNamesWithIdsInRedirectsFile.py" pages.txt.gz redirects.txt.gz \
+  time python "$ROOT_DIR/replacePageNamesWithIdsInRedirectsFile.py" pages.txt.gz redirects.txt.gz \
     | gzip > redirects.with_ids.txt.gz
 else
-    echo "[WARN] Already replaced page names with IDs in redirects file"
+  echo "[WARN] Already replaced page names with IDs in redirects file"
 fi
 
 if [ ! -f links.with_ids.txt.gz ]; then
   echo "[INFO] Replacing page names with IDs and removing redirects in links file"
-  time python "$PWD/replacePageNamesWithIdsAndRemoveRedirectsInLinksFile.py" pages.txt.gz redirects.with_ids.txt.gz links.txt.gz \
+  time python "$ROOT_DIR/replacePageNamesWithIdsAndRemoveRedirectsInLinksFile.py" pages.txt.gz redirects.with_ids.txt.gz links.txt.gz \
     | gzip > links.with_ids.txt.gz
 else
-    echo "[WARN] Already replaced page names with IDs and removed redirects in links file"
+  echo "[WARN] Already replaced page names with IDs and removed redirects in links file"
 fi
 
 
@@ -191,13 +191,13 @@ echo "[INFO] Creating SQLite databases"
 
 if [ ! -f sdow.sqlite ]; then
   echo "[INFO] Creating redirects table"
-  time zcat redirects.with_ids.txt.gz | sqlite3 sdow.sqlite ".read $PWD/createRedirectsTable.sql"
+  time zcat redirects.with_ids.txt.gz | sqlite3 sdow.sqlite ".read $ROOT_DIR/createRedirectsTable.sql"
 
   echo "[INFO] Creating pages table"
-  time zcat pages.txt.gz | sqlite3 sdow.sqlite ".read $PWD/createPagesTable.sql"
+  time zcat pages.txt.gz | sqlite3 sdow.sqlite ".read $ROOT_DIR/createPagesTable.sql"
 
   echo "[INFO] Creating links table"
-  time zcat links.with_ids.txt.gz | sqlite3 sdow.sqlite ".read $PWD/createLinksTable.sql"
+  time zcat links.with_ids.txt.gz | sqlite3 sdow.sqlite ".read $ROOT_DIR/createLinksTable.sql"
 else
   echo "[WARN] Already created SQLite database"
 fi
