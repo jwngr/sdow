@@ -46,6 +46,9 @@ for line in io.BufferedReader(gzip.open(redirects_file, 'r')):
   [from_page_id, to_page_id] = line.rstrip('\n').split('\t')
   redirects[from_page_id] = to_page_id
 
+# Create a dictionary to hold each link which has already been written to stdout
+written_links = {}
+
 # Loop through each link, making sure both of its pages exist and replace any redirects it contains.
 # writing the result to stdout
 for line in io.BufferedReader(gzip.open(links_file, 'r')):
@@ -58,10 +61,18 @@ for line in io.BufferedReader(gzip.open(links_file, 'r')):
   if (from_page_exists and to_page_exists and from_page_is_not_redirect):
     to_page_id = page_names_to_ids[to_page_name]
 
-    # If the to page is a redirect, make the link go from the from page to the page to which the to
-    # page points. Otherwise print the link without modification.
+    # If the to page is a redirect, update it to the non-redirect page.
     if (to_page_id in redirects):
-      print '{0}\t{1}'.format(from_page_id, redirects[to_page_id])
-    else:
-      print from_page_id + '\t' + to_page_id
+      to_page_id = redirects[to_page_id]
+
+    # Since we are replacing redirects, it's possible we could have a duplicate link which was
+    # already written.
+    link_already_written = from_page_id in written_links and to_page_id in written_links[from_page_id]
+
+    if not link_already_written:
       print '{0}\t{1}'.format(from_page_id, to_page_id)
+
+      if from_page_id not in written_links:
+        written_links[from_page_id] = Set()
+
+      written_links[from_page_id].add(to_page_id)
