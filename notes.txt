@@ -1,0 +1,24 @@
+neo4j
+
+SQLite:
+- add uniqueness constraints when building database tables
+- look into prepared statements
+- links table could just be to_id and from_ids where from_ids is a comma-separated string of all from_ids
+
+Random pages:
+Santa_Barbara,_California 108139
+Andrew_Lee_Jones 4315996
+Horseshoe 13480
+International_House_Of_Pancakes 20729265
+Emperor_penguin 223204
+Higgs_boson 20556903
+Tin_Cup 226562
+Ptah 97125
+
+Longest current path:
+0: Sandy_Spring_Bank => Washington,_D.C. => Contiguous_United_States => Conus => Conidae => Gymnobela => Gymnobela_rotundata
+1: Sandy_Spring_Bank => List_of_business_entities => Montenegro => List_of_marine_molluscs_of_Montenegro => Conidae => Gymnobela => Gymnobela_rotundata
+2: Sandy_Spring_Bank => List_of_business_entities => Montenegro => List_of_marine_molluscs_of_Montenegro => Raphitomidae => Gymnobela => Gymnobela_rotundata
+3: Sandy_Spring_Bank => Washington,_D.C. => Timeline_of_United_States_inventions_(before_1890) => Tooth => Conidae => Gymnobela => Gymnobela_rotundata
+4: Sandy_Spring_Bank => United_States_dollar => Timeline_of_United_States_inventions_(before_1890) => Tooth => Conidae => Gymnobela => Gymnobela_rotundata
+5: Sandy_Spring_Bank => Bank => Suez_Canal => List_of_Lessepsian_migrant_species => Conidae => Gymnobela => Gymnobela_rotundata

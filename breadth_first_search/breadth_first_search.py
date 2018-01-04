@@ -25,9 +25,40 @@ def get_paths(page_ids, visited_dict):
   return paths
 
 
+def run_forwards_links_query(keys_tuple, cursor):
+  query = 'SELECT from_id, to_id FROM links WHERE from_id IN {0}'.format(keys_tuple)
+  # TODO: clean up
+  print query
+  #results = []
+  #for row in cursor.execute(query):
+  #  results.append(row)
+  cursor.arraysize = 1000
+  cursor.execute(query)
+  results = cursor.fetchall()
+  print 'Length: {}'.format(len(results))
+  return results
+
+def run_backwards_links_query(keys_tuple, cursor):
+  query = 'SELECT from_id, to_id FROM links WHERE to_id IN {0}'.format(keys_tuple)
+  # TODO: clean up
+  print query
+  #results = []
+  #for row in cursor.execute(query):
+  #  results.append(row)
+  cursor.arraysize = 1000
+  cursor.execute(query)
+  results = cursor.fetchall()
+  print 'Length: {}'.format(len(results))
+  return results
+
+
 def breadth_first_search(start, end, conn, verbose=False):
   """Runs a bi-directional breadth-first search from start to end and returns a list of the shortest
   paths between them."""
+
+  # TODO: Make sure command line args are ints
+  start = int(start)
+  end = int(end)
 
   # If start and end are identical, return the trivial path
   if start == end:
@@ -46,6 +77,7 @@ def breadth_first_search(start, end, conn, verbose=False):
   visited_forward = {}
   visited_backward = {}
 
+  # TODO: don't use cursors, just use the connection itself
   # Create two database cursors, one to move forwards from the start and the other to move backwards
   # from the end
   cursor_forwards = conn.cursor()
@@ -87,14 +119,13 @@ def breadth_first_search(start, end, conn, verbose=False):
       else:
         unvisited_forward_keys_tuple = str(tuple(unvisited_forward.keys()))
 
-      query = 'SELECT from_id, to_id FROM links WHERE from_id IN {0}'.format(unvisited_forward_keys_tuple)
-      cursor_forwards.execute(query)
+      forwards_results = run_forwards_links_query(unvisited_forward_keys_tuple, cursor_forwards)
 
       # Clear the unvisited forward dictionary
       unvisited_forward.clear()
 
       # Loop through each link retrieved by the query
-      for from_id, to_id in cursor_forwards:
+      for from_id, to_id in forwards_results:
         # If the to id is in neither visited forward nor unvisited forward, add it to unvisited
         # forward
         if (to_id not in visited_forward) and (to_id not in unvisited_forward):
@@ -126,14 +157,13 @@ def breadth_first_search(start, end, conn, verbose=False):
       else:
         unvisited_backward_keys_tuple = str(tuple(unvisited_backward.keys()))
 
-      query = 'SELECT from_id, to_id FROM links WHERE to_id IN {0}'.format(unvisited_backward_keys_tuple)
-      cursor_backwards.execute(query)
+      backwards_results = run_backwards_links_query(unvisited_backward_keys_tuple, cursor_backwards)
 
       # Clear the unvisited backward dictionary
       unvisited_backward.clear()
 
       # Loop through each link retrieved by the query
-      for from_id, to_id in cursor_backwards:
+      for from_id, to_id in backwards_results:
         # If the from id is in neither visited backward nor unvisited backward, add it to unvisited
         # backward
         if (from_id not in visited_backward) and (from_id not in unvisited_backward):

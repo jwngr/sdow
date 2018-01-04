@@ -7,12 +7,13 @@ Wikipedia dumps raw database tables in a gzipped SQL format for the English lang
 [dump from July 20, 2017](https://dumps.wikimedia.your.org/enwiki/20170620/)). The
 [entire database layout](https://www.mediawiki.org/wiki/Manual:Database_layout) is not required, and
 the database creation script only downloads, trims, and parses three tables:
-  1. [`page`](https://www.mediawiki.org/wiki/Manual:Page_table) - Contains the ID and name (among
-     other things) for all pages.
-  2. [`pagelinks`](https://www.mediawiki.org/wiki/Manual:Pagelinks_table) - Contains the source and
-     target pages all links.
-  3. [`redirect`](https://www.mediawiki.org/wiki/Manual:Redirect_table) - Contains the source and
-     target pages for all redirects.
+
+1. [`page`](https://www.mediawiki.org/wiki/Manual:Page_table) - Contains the ID and name (among
+   other things) for all pages.
+2. [`pagelinks`](https://www.mediawiki.org/wiki/Manual:Pagelinks_table) - Contains the source and
+   target pages all links.
+3. [`redirect`](https://www.mediawiki.org/wiki/Manual:Redirect_table) - Contains the source and
+   target pages for all redirects.
 
 For performance reasons, the files are downloaded from the
 [`dumps.wikimedia.your.org` mirror](https://dumps.wikimedia.your.org/backup-index.html). By default,
@@ -45,31 +46,32 @@ instructions below:
 1. Create a new [Google Compute Engine instance](https://console.cloud.google.com/compute/instances?project=sdow-prod):
    1. **Name:** `sdow-build-db`
    1. **Zone:** `us-central1-c`
-   1. **Machine Type:** `n1-standard-8` (8 vCPUS, 30 GB RAM)
-   1. **Boot disk**: Debian GNU/Linux 8 (jessie), 128 GB SSD
-   1. **Notes**: Use a service account with full access to GCP APIs.
+   1. **Machine Type:** 8 vCPUS, 52 GB RAM
+   1. **Boot disk**: 256 GB SSD, Debian GNU/Linux 8 (jessie)
+   1. **Notes**: Allow full access to all Cloud APIs.
 1. SSH into the machine:
    ```bash
    $ gcloud compute ssh sdow-build-db
    ```
 1. Install required dependencies:
    ```bash
-   $ sudo apt-get install pv sqlite3
+   $ sudo apt-get update
+   $ sudo apt-get install pv git sqlite3
    ```
-1. Copy all scripts from the [`database/`](./database) directory into the current directory.
-1. Make `buildDatabase.sh` executable:
+1. Clone this directory via HTTPS:
    ```bash
-   $ chmod u+x buildDatabase.sh
+   $ git clone https://github.com/jwngr/sdow.git
    ```
 1. Create a new screen in case you lose connection to the VM:
    ```bash
    $ screen
    ```
-1. Run the database creation script:
+1. Run the database creation script, providing [an optional date](https://dumps.wikimedia.your.org/enwiki/)
+   for the backup:
    ```bash
-   $ time ./buildDatabase.sh [<YYYYMMDD>]
+   $ time ./sdow/database/buildDatabase.sh [<YYYYMMDD>]
    ```
-1. Detach from the current screen session by pressing `<CTRL> + <a>` and then `<d>`. To reconnect to
+1. Detach from the current screen session by pressing `<CTRL> + <a>` and then `<d>`. To reattach to
    the screen, run `screen -r`. Make sure to always detach from the screen cleanly so it can be
    resumed!
 1. Copy the resulting SQLite file to the `sdow-prod` GCS bucket:
@@ -78,7 +80,6 @@ instructions below:
    ```
 1. To avoid charges for running VMS and SSD persistent disk, delete the VM as soon as the job is
    complete and the database is saved.
-
 
 ## Web Server Setup Process
 
@@ -96,7 +97,7 @@ instructions below:
    ```
 1. Install required dependencies:
    ```bash
-   $ sudo apt-get install libopenmpi-dev python-pip
+   $ sudo apt-get install sqlite libopenmpi-dev python-pip
    $ sudo pip install mpi4py
    ```
 1. Copy all scripts from the [`breadth_first_search/`](./breadth_first_search) directory into the
@@ -108,17 +109,17 @@ instructions below:
 
 ## Edge Case Pages
 
-| Page ID | Page Name | Notes |
-|---------|-----------|-------|
-| 1514 | Albert,_Duke_of_Prussia | |
-| 8695 | Dr._Strangelove | |
-| 11760 | F-110_Spectre | |
-| 49940 | Aaron\'s_rod | |
-| 161512 | DivX_;-) | |
-| 24781871 | Jack_in_the_Green:_Live_in_Germany_1970–1993 | |
-| 24781873 | Lindström_(company) | |
-| 54201834 | Disinformation_(book) | Missing in `pages.txt.gz` |
-| 54201536 | .nds | Missing in `pages.txt.gz` |
+| Page ID  | Page Name                                     | Notes                     |
+| -------- | --------------------------------------------- | ------------------------- |
+| 1514     | Albert,\_Duke_of_Prussia                      |                           |
+| 8695     | Dr.\_Strangelove                              |                           |
+| 11760    | F-110_Spectre                                 |                           |
+| 49940    | Aaron\'s_rod                                  |                           |
+| 161512   | DivX\_;-)                                     |                           |
+| 24781871 | Jack_in_the_Green:\_Live_in_Germany_1970–1993 |                           |
+| 24781873 | Lindström\_(company)                          |                           |
+| 54201834 | Disinformation\_(book)                        | Missing in `pages.txt.gz` |
+| 54201536 | .nds                                          | Missing in `pages.txt.gz` |
 
 ## Contributing
 
