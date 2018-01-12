@@ -97,8 +97,7 @@ instructions below:
    ```
 1. Install required dependencies:
    ```bash
-   $ sudo apt-get install sqlite libopenmpi-dev python-pip
-   $ sudo pip install mpi4py
+   $ sudo apt-get install sqlite
    ```
 1. Copy all scripts from the [`breadth_first_search/`](./breadth_first_search) directory into the
    current directory.

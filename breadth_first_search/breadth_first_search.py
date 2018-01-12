@@ -2,6 +2,7 @@
 shortest paths between them."""
 
 import sqlite3
+import helpers
 
 
 def get_paths(page_ids, visited_dict):
@@ -25,40 +26,11 @@ def get_paths(page_ids, visited_dict):
   return paths
 
 
-def run_forwards_links_query(keys_tuple, cursor):
-  query = 'SELECT from_id, to_id FROM links WHERE from_id IN {0}'.format(keys_tuple)
-  # TODO: clean up
-  print query
-  #results = []
-  #for row in cursor.execute(query):
-  #  results.append(row)
-  cursor.arraysize = 1000
-  cursor.execute(query)
-  results = cursor.fetchall()
-  print 'Length: {}'.format(len(results))
-  return results
-
-def run_backwards_links_query(keys_tuple, cursor):
-  query = 'SELECT from_id, to_id FROM links WHERE to_id IN {0}'.format(keys_tuple)
-  # TODO: clean up
-  print query
-  #results = []
-  #for row in cursor.execute(query):
-  #  results.append(row)
-  cursor.arraysize = 1000
-  cursor.execute(query)
-  results = cursor.fetchall()
-  print 'Length: {}'.format(len(results))
-  return results
-
-
-def breadth_first_search(start, end, conn, verbose=False):
+def breadth_first_search(start, end, cursor, verbose=False):
   """Runs a bi-directional breadth-first search from start to end and returns a list of the shortest
   paths between them."""
 
   # TODO: Make sure command line args are ints
-  start = int(start)
-  end = int(end)
 
   # If start and end are identical, return the trivial path
   if start == end:
@@ -76,12 +48,6 @@ def breadth_first_search(start, end, conn, verbose=False):
   # (initialize them as empty)
   visited_forward = {}
   visited_backward = {}
-
-  # TODO: don't use cursors, just use the connection itself
-  # Create two database cursors, one to move forwards from the start and the other to move backwards
-  # from the end
-  cursor_forwards = conn.cursor()
-  cursor_backwards = conn.cursor()
 
   # Set the initial forward and backward depths to 0
   forward_depth = 0
@@ -119,7 +85,7 @@ def breadth_first_search(start, end, conn, verbose=False):
       else:
         unvisited_forward_keys_tuple = str(tuple(unvisited_forward.keys()))
 
-      forwards_results = run_forwards_links_query(unvisited_forward_keys_tuple, cursor_forwards)
+      forwards_results = helpers.run_forwards_links_query(unvisited_forward_keys_tuple, cursor)
 
       # Clear the unvisited forward dictionary
       unvisited_forward.clear()
@@ -157,7 +123,7 @@ def breadth_first_search(start, end, conn, verbose=False):
       else:
         unvisited_backward_keys_tuple = str(tuple(unvisited_backward.keys()))
 
-      backwards_results = run_backwards_links_query(unvisited_backward_keys_tuple, cursor_backwards)
+      backwards_results = helpers.run_backwards_links_query(unvisited_backward_keys_tuple, cursor)
 
       # Clear the unvisited backward dictionary
       unvisited_backward.clear()
