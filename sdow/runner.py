@@ -1,4 +1,5 @@
 import sys
+import os.path
 import sqlite3
 import helpers
 from breadth_first_search import breadth_first_search
@@ -12,7 +13,10 @@ if len(sys.argv) < 3 or len(sys.argv) > 5:
 
 sqlite_file = sys.argv[1]
 
-# TODO: ensure the SQLite file exists and has the proper extension
+if not os.path.isfile(sqlite_file):
+  print '[ERROR] Specified SQLite file "{0}" does not exist.'.format(sqlite_file)
+  sys.exit(1)
+
 conn = sqlite3.connect(sqlite_file)
 cursor = conn.cursor()
 

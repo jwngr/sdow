@@ -1,4 +1,7 @@
-neo4j
+TODO: replace 'name' everywhere in the project with 'title' since that is what Wikipedia uses
+(https://www.mediawiki.org/wiki/Manual:Page_table)
+
+Look into neo4j
 
 SQLite:
 - add uniqueness constraints when building database tables
