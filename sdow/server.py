@@ -67,7 +67,7 @@ def get_shortest_path_between_pages(from_page_name, to_page_name):
     raise InvalidRequest('To page name "{0}" does not exist.'.format(to_page_name))
 
   # Compute the shortest paths
-  paths_with_ids = db.get_shortest_paths(from_page_id, to_page_id)
+  paths_with_ids = db.compute_shortest_paths(from_page_id, to_page_id)
 
   # Convert IDs to names for each path
   paths_with_names = []

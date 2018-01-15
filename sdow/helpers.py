@@ -69,33 +69,6 @@ def validate_page_name(page_name):
       'Invalid page name "{0}" provided. Page name must be a non-empty string.'.format(page_name)
     ))
 
-def run_forwards_links_query(keys_tuple, cursor):
-  query = 'SELECT from_id, to_id FROM links WHERE from_id IN {0}'.format(keys_tuple)
-  # TODO: clean up
-  print query
-  #results = []
-  #for row in cursor.execute(query):
-  #  results.append(row)
-  cursor.arraysize = 1000
-  cursor.execute(query)
-  results = cursor.fetchall()
-  print 'Length: {}'.format(len(results))
-  return results
-
-
-def run_backwards_links_query(keys_tuple, cursor):
-  query = 'SELECT from_id, to_id FROM links WHERE to_id IN {0}'.format(keys_tuple)
-  # TODO: clean up
-  print query
-  #results = []
-  #for row in cursor.execute(query):
-  #  results.append(row)
-  cursor.arraysize = 1000
-  cursor.execute(query)
-  results = cursor.fetchall()
-  print 'Length: {}'.format(len(results))
-  return results
-
 
 class InvalidRequest(Exception):
   '''

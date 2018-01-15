@@ -16,8 +16,14 @@ class Database():
     if not os.path.isfile(sqlite_filename):
       raise IOError('Specified SQLite file "{0}" does not exist.'.format(sqlite_filename))
 
-    conn = sqlite3.connect(sqlite_filename)
-    self.cursor = conn.cursor()
+    self.conn = sqlite3.connect(sqlite_filename)
+    self.cursor = self.conn.cursor()
+
+    # TODO: measure the performance impact of this
+    self.cursor.arraysize = 1000
+
+  def __del__(self):
+    self.conn.close()
 
   def fetch_page_id(self, page_name):
     '''
@@ -100,7 +106,7 @@ class Database():
 
     return to_page_id and to_page_id[0]
 
-  def get_shortest_paths(self, from_page_id, to_page_id):
+  def compute_shortest_paths(self, from_page_id, to_page_id):
     '''
     Returns a list of page IDs indicating the shortest path between the from and to page IDs.
 
@@ -109,42 +115,68 @@ class Database():
       to_page_id: The ID corresponding to the page at which to end the search.
 
     Returns:
-      [[int]]: An lists of integer lists corresponding to the page IDs indicating the shortest path
-      between the from and to page IDs.
+      [[int]]: A list of integer lists corresponding to the page IDs indicating the shortest path
+               between the from and to page IDs.
 
     Raises:
       ValueError: If either of the provided page IDs are invalid.
-      TODO: are there more errors this can raise?
     '''
     helpers.validate_page_id(from_page_id)
     helpers.validate_page_id(to_page_id)
 
-    return breadth_first_search(from_page_id, to_page_id, self.cursor)
+    return breadth_first_search(from_page_id, to_page_id, self)
 
+  def fetch_forwards_links(self, page_ids):
+    '''
+    Returns a list of tuples of page IDs representing forwards links from the list of provided page
+    IDs to other pages.
 
-def run_forwards_links_query(keys_tuple, cursor):
-  query = 'SELECT from_id, to_id FROM links WHERE from_id IN {0}'.format(keys_tuple)
-  # TODO: clean up
-  print query
-  #results = []
-  #for row in cursor.execute(query):
-  #  results.append(row)
-  cursor.arraysize = 1000
-  cursor.execute(query)
-  results = cursor.fetchall()
-  print 'Length: {}'.format(len(results))
-  return results
+    Args:
+      page_ids: The page IDs whose forwards links to fetch.
 
+    Returns:
+      [(int, int)]: A lists of integer tuples representing forwards links from the list of provided
+                    page IDs to other pages.
+    '''
+    return self.fetch_links_helper(page_ids, 'from_id')
 
-def run_backwards_links_query(keys_tuple, cursor):
-  query = 'SELECT from_id, to_id FROM links WHERE to_id IN {0}'.format(keys_tuple)
-  # TODO: clean up
-  print query
-  #results = []
-  #for row in cursor.execute(query):
-  #  results.append(row)
-  cursor.arraysize = 1000
-  cursor.execute(query)
-  results = cursor.fetchall()
-  print 'Length: {}'.format(len(results))
-  return results
+  def fetch_backwards_links(self, page_ids):
+    '''
+    Returns a list of tuples of page IDs representing backwards links from the list of provided page
+    IDs to other pages.
+
+    Args:
+      page_ids: The page IDs whose backwards links to fetch.
+
+    Returns:
+      [(int, int)]: A lists of integer tuples representing backwards links from the list of provided
+                    page IDs to other pages.
+    '''
+    return self.fetch_links_helper(page_ids, 'to_id')
+
+  def fetch_links_helper(self, page_ids, to_id_or_from_id):
+    '''
+    Helper function which handles duplicate logic for fetch_forwards_links() and
+    fetch_backwards_links().
+
+    Args:
+      page_ids: The page IDs whose links to fetch.
+      to_id_or_from_id: String which indicates whether to fetch forwards ("from_id") or backwards
+                        ("to_id") links.
+
+    Returns:
+      [(int, int)]: A lists of integer tuples representing links from the list of provided page IDs
+                    to other pages.
+    '''
+
+    query = 'SELECT from_id, to_id FROM links WHERE {0} IN {1}'.format(to_id_or_from_id, page_ids)
+
+    #results = []
+    #for row in self.cursor.execute(query):
+    #  results.append(row)
+
+    # TODO: measure the performance impact of this versus just appending to an array (above) or
+    # just returning the cursor (not yet implemented)
+    self.cursor.execute(query)
+
+    return self.cursor.fetchall()

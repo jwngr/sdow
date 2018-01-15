@@ -1,10 +1,6 @@
 '''Runs a bi-directional breadth-first search between two Wikipedia articles and returns a list of
 the shortest paths between them.'''
 
-import sqlite3
-import helpers
-
-
 def get_paths(page_ids, visited_dict):
   """Returns a list of paths which go from page_ids to either the start or end page."""
 
@@ -26,12 +22,12 @@ def get_paths(page_ids, visited_dict):
   return paths
 
 
-def breadth_first_search(start, end, cursor, verbose=False):
+def breadth_first_search(start, end, db, verbose=False):
   """Runs a bi-directional breadth-first search from start to end and returns a list of the shortest
-  paths between them."""
+  paths between them.
 
-  # TODO: Make sure command line args are ints
-
+  TODO: finish this doc string
+  """
   # If start and end are identical, return the trivial path
   if start == end:
     return [[start]]
@@ -85,7 +81,7 @@ def breadth_first_search(start, end, cursor, verbose=False):
       else:
         unvisited_forward_keys_tuple = str(tuple(unvisited_forward.keys()))
 
-      forwards_results = helpers.run_forwards_links_query(unvisited_forward_keys_tuple, cursor)
+      forwards_results = db.fetch_forwards_links(unvisited_forward_keys_tuple)
 
       # Clear the unvisited forward dictionary
       unvisited_forward.clear()
@@ -123,7 +119,7 @@ def breadth_first_search(start, end, cursor, verbose=False):
       else:
         unvisited_backward_keys_tuple = str(tuple(unvisited_backward.keys()))
 
-      backwards_results = helpers.run_backwards_links_query(unvisited_backward_keys_tuple, cursor)
+      backwards_results = db.fetch_backwards_links(unvisited_backward_keys_tuple)
 
       # Clear the unvisited backward dictionary
       unvisited_backward.clear()
