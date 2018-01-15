@@ -176,7 +176,29 @@ class Database():
     # TODO: measure the performance impact of this versus just appending to an array (above) or
     # just returning the cursor (not yet implemented)
     # There is no need to escape the query parameters here since they are never user-defined
-    query = 'SELECT * FROM links WHERE {0} IN {1}'.format(to_id_or_from_id, page_ids)
+    query = 'SELECT * FROM links WHERE {0} IN {1};'.format(to_id_or_from_id, page_ids)
     self.cursor.execute(query)
 
     return self.cursor.fetchall()
+
+  def fetch_autocomplete_suggestions(self, search_query):
+    '''
+    Returns a list of the most relevant page names which contain the provided search query.
+
+    Args:
+      search_query: The search query whose autocomplete suggestions to fetch.
+
+    Returns:
+      [str]: A list of relevant page names.
+    '''
+    modified_search_query = '%{0}%'.format(search_query.replace(' ', '_'))
+
+    query = 'SELECT name FROM pages WHERE name LIKE ? LIMIT 2000;'
+    # TODO: implement page popularity by counting incoming links
+    # query = 'SELECT name FROM pages WHERE name LIKE ? ORDER BY popularity DESC LIMIT 10;'
+    query_bindings = (modified_search_query,)
+    self.cursor.execute(query, query_bindings)
+
+    results = [result[0].replace('_', ' ') for result in self.cursor.fetchall()]
+
+    return results

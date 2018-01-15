@@ -30,7 +30,7 @@ def handle_invalid_usage(error):
 
 
 @app.route('/pages/<page_name>')
-def get_page_type(page_name):
+def page_type_route(page_name):
   response = {}
 
   # Look up the page ID
@@ -52,9 +52,16 @@ def get_page_type(page_name):
 
   return jsonify(response)
 
+@app.route('/suggestions/<query>')
+def suggestions_route(query):
+  return jsonify({
+    'suggestions': db.fetch_autocomplete_suggestions(query)
+  })
+
+
 
 @app.route('/paths/<from_page_name>/<to_page_name>')
-def get_shortest_path_between_pages(from_page_name, to_page_name):
+def shortest_paths_route(from_page_name, to_page_name):
   # Look up the IDs for each page
   try:
     from_page_id = db.fetch_page_id(from_page_name)
