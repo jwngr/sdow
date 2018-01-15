@@ -42,10 +42,9 @@ class Database():
 
     sanitized_page_name = page_name.replace(' ', '_')
 
-    print 'sanitized_page_name: {0}'.format(sanitized_page_name)
-
-    query = 'SELECT id FROM pages WHERE name="{0}"'.format(sanitized_page_name)
-    self.cursor.execute(query)
+    query = 'SELECT id FROM pages WHERE name = ?;'
+    query_bindings = (sanitized_page_name,)
+    self.cursor.execute(query, query_bindings)
 
     page_id = self.cursor.fetchone()
 
@@ -70,8 +69,9 @@ class Database():
     '''
     helpers.validate_page_id(page_id)
 
-    query = 'SELECT name FROM pages WHERE id="{0}"'.format(page_id)
-    self.cursor.execute(query)
+    query = 'SELECT name FROM pages WHERE id = ?;'
+    query_bindings = (page_id,)
+    self.cursor.execute(query, query_bindings)
 
     page_name = self.cursor.fetchone()
 
@@ -99,8 +99,9 @@ class Database():
     '''
     helpers.validate_page_id(from_page_id)
 
-    query = 'SELECT to_id FROM redirects WHERE from_id="{0}"'.format(from_page_id)
-    self.cursor.execute(query)
+    query = 'SELECT to_id FROM redirects WHERE from_id = ?'
+    query_bindings = (from_page_id,)
+    self.cursor.execute(query, query_bindings)
 
     to_page_id = self.cursor.fetchone()
 
@@ -168,15 +169,14 @@ class Database():
       [(int, int)]: A lists of integer tuples representing links from the list of provided page IDs
                     to other pages.
     '''
-
-    query = 'SELECT from_id, to_id FROM links WHERE {0} IN {1}'.format(to_id_or_from_id, page_ids)
-
     #results = []
     #for row in self.cursor.execute(query):
     #  results.append(row)
 
     # TODO: measure the performance impact of this versus just appending to an array (above) or
     # just returning the cursor (not yet implemented)
+    # There is no need to escape the query parameters here since they are never user-defined
+    query = 'SELECT * FROM links WHERE {0} IN {1}'.format(to_id_or_from_id, page_ids)
     self.cursor.execute(query)
 
     return self.cursor.fetchall()
