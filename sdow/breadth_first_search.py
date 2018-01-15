@@ -1,5 +1,5 @@
-"""Runs a bi-directional breadth-first search between two Wikipedia articles and returns a list of the
-shortest paths between them."""
+'''Runs a bi-directional breadth-first search between two Wikipedia articles and returns a list of
+the shortest paths between them.'''
 
 import sqlite3
 import helpers
