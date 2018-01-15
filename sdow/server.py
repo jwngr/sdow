@@ -79,15 +79,20 @@ def get_shortest_path_between_pages(from_page_name, to_page_name):
   except ValueError as error:
     raise InvalidRequest('To page name "{0}" does not exist.'.format(to_page_name))
 
-  paths = breadth_first_search(from_page_id, to_page_id, cursor)
+  paths_with_ids = breadth_first_search(from_page_id, to_page_id, cursor)
+
+  paths_with_names = []
+  for current_path_with_ids in paths_with_ids:
+    current_path_with_names = [helpers.fetch_page_name(page_id, cursor) for page_id in current_path_with_ids]
+    paths_with_names.append(current_path_with_names)
 
   response = {
-    'paths': paths,
-    'count': len(paths)
+    'paths': paths_with_names,
+    'count': len(paths_with_names)
   }
 
   if response['count'] != 0:
-    response['length'] = len(paths[0])
+    response['length'] = len(paths_with_names[0])
 
   return jsonify(response)
 
