@@ -1,0 +1,42 @@
+{
+  "name": "sdow",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.17.1",
+    "classnames": "^2.2.5",
+    "date-fns": "^1.29.0",
+    "history": "^4.7.2",
+    "lodash": "^4.17.4",
+    "prop-types": "^15.6.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-redux": "^5.0.6",
+    "react-router-dom": "^4.2.2",
+    "react-router-redux": "^5.0.0-alpha.6",
+    "react-scripts": "1.1.0",
+    "redux": "^3.7.2"
+  },
+  "dev-dependencies": {
+    "husky": "^0.14.3",
+    "lint-staged": "^6.0.0",
+    "prettier": "^1.10.2",
+    "puppeteer": "^0.13.0",
+    "redux-logger": "^3.0.6",
+    "source-map-explorer": "^1.5.0"
+  },
+  "lint-staged": {
+    "{src}/**/*.{js,css}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "scripts": {
+    "analyze": "source-map-explorer build/static/js/main.*",
+    "precommit": "lint-staged",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
