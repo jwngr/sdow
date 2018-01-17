@@ -10,6 +10,7 @@ from sdow.helpers import InvalidRequest
 sqlite_filename = '../sdow.sqlite'
 
 # TODO: figure out how to pass CLI arguments to Flask
+# See http://flask.pocoo.org/snippets/133/
 # if len(sys.argv) != 2:
 #   print '[ERROR] Invalid program usage.'
 #   print '[INFO] Usage: server.py <sqlite_file>'

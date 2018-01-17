@@ -42,9 +42,16 @@ class Database():
 
     sanitized_page_name = page_name.replace(' ', '_')
 
-    query = 'SELECT id FROM pages WHERE name = ?;'
+    # TODO: handle page names which differ only in capitalization
+    # See https://en.wikipedia.org/wiki/Wikipedia:Naming_conventions_(capitalization)#Page_names_that_differ_only_by_capitalization
+
+    # TODO: consider adding COLLATE NOCASE to database definition
+    # See https://stackoverflow.com/a/973785/2955366
+
+    query = 'SELECT id FROM pages WHERE name = ? COLLATE NOCASE;'
     query_bindings = (sanitized_page_name,)
     self.cursor.execute(query, query_bindings)
+
 
     page_id = self.cursor.fetchone()
 
@@ -124,6 +131,8 @@ class Database():
     '''
     helpers.validate_page_id(from_page_id)
     helpers.validate_page_id(to_page_id)
+
+    # TODO: handle pages which are redirects
 
     return breadth_first_search(from_page_id, to_page_id, self)
 

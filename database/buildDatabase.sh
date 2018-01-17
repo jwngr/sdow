@@ -182,6 +182,14 @@ else
   echo "[WARN] Already replaced page names with IDs and removed redirects in links file"
 fi
 
+if [ ! -f pages.with_popularity.txt.gz ]; then
+  echo "[INFO] Adding popularity to pages file"
+  time python "$ROOT_DIR/addPopularityToPagesFile.py" pages.txt.gz links.with_ids.txt.gz \
+    | gzip > pages.with_popularity.txt.gz
+else
+  echo "[WARN] Already added popularity to pages file"
+fi
+
 
 ############################
 #  CREATE SQLITE DATABASE  #
@@ -194,7 +202,7 @@ if [ ! -f sdow.sqlite ]; then
   time zcat redirects.with_ids.txt.gz | sqlite3 sdow.sqlite ".read $ROOT_DIR/createRedirectsTable.sql"
 
   echo "[INFO] Creating pages table"
-  time zcat pages.txt.gz | sqlite3 sdow.sqlite ".read $ROOT_DIR/createPagesTable.sql"
+  time zcat pages.with_popularity.txt.gz | sqlite3 sdow.sqlite ".read $ROOT_DIR/createPagesTable.sql"
 
   echo "[INFO] Creating links table"
   time zcat links.with_ids.txt.gz | sqlite3 sdow.sqlite ".read $ROOT_DIR/createLinksTable.sql"
