@@ -1,3 +1,98 @@
+January 17th, 2018 timings:
+[INFO] Replacing page names with IDs and removing redirects
+[INFO] Replacing page names with IDs in redirects file
+
+real    1m4.317s
+user    1m12.244s
+sys     0m3.664s
+[INFO] Replacing page names with IDs and removing redirects in links file
+^[[A
+real    40m2.596s
+user    45m29.808s
+sys     1m10.940s
+[INFO] Adding popularity to pages file
+
+real    6m17.603s
+user    6m39.272s
+sys     0m3.400s
+
+[INFO] Creating SQLite databases
+[INFO] Creating redirects table
+
+real    0m13.987s
+user    0m14.184s
+sys     0m0.796s
+[INFO] Creating pages table
+
+real    1m4.973s
+user    1m4.904s
+sys     0m4.604s
+
+[INFO] Creating links table
+real    84m51.055s
+user    43m5.800s
+sys     42m0.116s
+
+[INFO] All done!
+
+real    133m34.537s
+user    97m46.216s
+sys     43m23.520s
+
+--------------------------------------------
+
+ * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+103.208.85.181 - - [17/Jan/2018 09:35:51] "GET /suggestions/Biblioth HTTP/1.1" 200 -
+103.208.85.181 - - [17/Jan/2018 09:36:00] "GET /suggestions/Personal HTTP/1.1" 200 -
+103.208.85.181 - - [17/Jan/2018 09:37:43] "GET /paths/Personal%20finance/Colt HTTP/1.1" 200 -
+103.208.85.181 - - [17/Jan/2018 09:38:36] "GET /paths/Fringe_(TV_series)/Asmussen HTTP/1.1" 200 -
+[2018-01-17 09:40:05,107] ERROR in app: Exception on /paths/Fringe_(TV_series)/Tom_Asmussen [GET]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/jwngr/sdow/sdow/server.py", line 83, in shortest_paths_route
+    current_path_with_names = [db.fetch_page_name(page_id) for page_id in current_path_with_ids]
+  File "/home/jwngr/sdow/sdow/database.py", line 81, in fetch_page_name
+    return page_name[0].decode('utf-8').replace('_', ' ')
+  File "/usr/lib/python2.7/encodings/utf_8.py", line 16, in decode
+    return codecs.utf_8_decode(input, errors, True)
+UnicodeEncodeError: 'ascii' codec can't encode character u'\u2013' in position 7: ordinal not in range(128)
+103.208.85.181 - - [17/Jan/2018 09:40:05] "GET /paths/Fringe_(TV_series)/Tom_Asmussen HTTP/1.1" 500 -
+[2018-01-17 09:40:07,666] ERROR in app: Exception on /paths/Fringe_(TV_series)/Tom_Asmussen [GET]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/jwngr/sdow/sdow/server.py", line 83, in shortest_paths_route
+    current_path_with_names = [db.fetch_page_name(page_id) for page_id in current_path_with_ids]
+  File "/home/jwngr/sdow/sdow/database.py", line 81, in fetch_page_name
+    return page_name[0].decode('utf-8').replace('_', ' ')
+  File "/usr/lib/python2.7/encodings/utf_8.py", line 16, in decode
+    return codecs.utf_8_decode(input, errors, True)
+UnicodeEncodeError: 'ascii' codec can't encode character u'\u2013' in position 7: ordinal not in range(128)
+103.208.85.181 - - [17/Jan/2018 09:40:07] "GET /paths/Fringe_(TV_series)/Tom_Asmussen HTTP/1.1" 500 -
+103.208.85.181 - - [17/Jan/2018 09:40:24] "GET /paths/Fringe_(TV_series)/Freedom HTTP/1.1" 200 -
+103.208.85.181 - - [17/Jan/2018 09:40:54] "GET /paths/Persona_5/Freedom HTTP/1.1" 200 -
+103.208.85.181 - - [17/Jan/2018 09:41:09] "GET /paths/Persona_5/Deep_Silver HTTP/1.1" 200 -
+
+
+--------------------------------------------
+
 TODO: replace 'name' everywhere in the project with 'title' since that is what Wikipedia uses
 (https://www.mediawiki.org/wiki/Manual:Page_table)
 
