@@ -32,7 +32,13 @@ class SearchButton extends React.Component {
       url: `${SDOW_API_URL}/paths/${fromArticleTitle}/${toArticleTitle}`,
     })
       .then((response) => {
+        // TODO: get thumbnails for each page
+        // See https://stackoverflow.com/a/20311613/2955366
+        // Example URL: https://en.wikipedia.org/w/api.php?action=query&titles=Fortification|Albert%20Einstein&prop=pageimages&format=json&pilimit=2
         setShortestPaths(response.data.paths);
+
+        // TODO: measure the response time
+        // See https://www.html5rocks.com/en/tutorials/webperformance/usertiming/
 
         this.setState({
           isFetching: false,

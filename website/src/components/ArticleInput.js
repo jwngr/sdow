@@ -2,7 +2,7 @@ import axios from 'axios';
 import React from 'react';
 import Autosuggest from 'react-autosuggest';
 
-import {ArticleSuggestion} from './ArticleInput.styles';
+import {ArticleSuggestion, AutosuggestWrapper} from './ArticleInput.styles';
 
 // TODO: add stable production URL
 const SDOW_API_URL = process.env.NODE_ENV === 'production' ? 'TODO' : 'http://127.0.0.1:5000';
@@ -85,14 +85,16 @@ class ArticleInput extends React.Component {
 
     // Finally, render it!
     return (
-      <Autosuggest
-        suggestions={suggestions}
-        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-        getSuggestionValue={getSuggestionValue}
-        renderSuggestion={renderSuggestion}
-        inputProps={inputProps}
-      />
+      <AutosuggestWrapper>
+        <Autosuggest
+          suggestions={suggestions}
+          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+          getSuggestionValue={getSuggestionValue}
+          renderSuggestion={renderSuggestion}
+          inputProps={inputProps}
+        />
+      </AutosuggestWrapper>
     );
   }
 }

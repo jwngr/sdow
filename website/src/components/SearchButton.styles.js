@@ -1,7 +1,10 @@
 import styled from 'styled-components';
 
 export const GoButton = styled.button`
+  margin: auto;
+  display: block;
   height: 50px;
-  widht: 200px;
+  width: 200px;
   font-size: 32px;
+  margin-top: 20px;
 `;

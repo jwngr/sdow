@@ -18,7 +18,8 @@
     "react-scripts": "1.1.0",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
-    "styled-components": "^2.4.0"
+    "styled-components": "^2.4.0",
+    "typeface-quicksand": "0.0.44"
   },
   "dev-dependencies": {
     "husky": "^0.14.3",
@@ -29,7 +30,10 @@
     "source-map-explorer": "^1.5.0"
   },
   "lint-staged": {
-    "{src}/**/*.{js,css}": ["prettier --write", "git add"]
+    "{src}/**/*.{js,css}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "scripts": {
     "analyze": "source-map-explorer build/static/js/main.*",

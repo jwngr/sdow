@@ -12,6 +12,9 @@ import './index.css';
 // Reducers
 import rootReducer from './reducers/index.js';
 
+// Load fonts
+require('typeface-quicksand');
+
 // Middleware
 const middleware = [];
 if (process.env.NODE_ENV !== 'production') {
