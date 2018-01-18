@@ -8,4 +8,4 @@ CREATE TABLE IF NOT EXISTS pages(
 .separator "\t"
 .import /dev/stdin pages
 
-CREATE INDEX pages_name_popularity_index ON pages(name, popularity DESC);
+CREATE INDEX pages_name_popularity_index ON pages(name COLLATE NOCASE, popularity DESC);
