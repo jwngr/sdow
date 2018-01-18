@@ -43,6 +43,10 @@ three tables:
 Generating the SDOW database from a dump of Wikipedia takes approximately two hours given the
 instructions below:
 
+# TODO: update to indicate I should now just use the `sdow-db-builder` template.
+
+# TODO: move some of these setup instructions into a single template startup script.
+
 1. Create a new [Google Compute Engine instance](https://console.cloud.google.com/compute/instances?project=sdow-prod):
    1. **Name:** `sdow-build-db`
    1. **Zone:** `us-central1-c`
@@ -69,17 +73,22 @@ instructions below:
 1. Run the database creation script, providing [an optional date](https://dumps.wikimedia.your.org/enwiki/)
    for the backup:
    ```bash
-   $ time ./sdow/database/buildDatabase.sh [<YYYYMMDD>]
+   $ cd sdow/database/
+   $ time ./buildDatabase.sh [<YYYYMMDD>]
    ```
 1. Detach from the current screen session by pressing `<CTRL> + <a>` and then `<d>`. To reattach to
    the screen, run `screen -r`. Make sure to always detach from the screen cleanly so it can be
    resumed!
+   # TODO: move this command into a script which is easier to run
 1. Copy the resulting SQLite file to the `sdow-prod` GCS bucket:
    ```
    $ gsutil cp dump/sdow.sqlite gs://sdow-prod/dumps/sdow-<YYYYMMDD>.sqlite
    ```
 1. To avoid charges for running VMS and SSD persistent disk, delete the VM as soon as the job is
    complete and the database is saved.
+
+TODO: make sure the external IP is permanent (maybe use a load balancer with a permanent IP?)
+Endpoint: http://<external*ip>:5000/paths/Usain%20Bolt/40*(number)
 
 ## Web Server Setup Process
 
@@ -95,30 +104,49 @@ instructions below:
    ```bash
    $ gcloud compute ssh sdow-web-server
    ```
+1. Expose the Flask HTTP port (5000) from the VM’s firewall by running the following command from
+   your local development environment:
+   ```bash
+   gcloud compute firewall-rules create open-flask-rule --allow tcp:5000 --source-tags=sdow-web-server --source-ranges=0.0.0.0/0
+   ```
 1. Install required dependencies:
    ```bash
-   $ sudo apt-get install sqlite
+   $ sudo apt-get install git sqlite
+   $ sudo apt-get install python-pip python-dev build-essential
+   $ sudo pip install --upgrade pip
+   $ sudo pip install --upgrade virtualenv
+   $ sudo pip install flask
    ```
 1. Copy all scripts from the [`breadth_first_search/`](./breadth_first_search) directory into the
    current directory.
 1. Copy the latest SQLite file from the `sdow-prod` GCS bucket:
-   ```
+   ```bash
    $ gsutil cp gs://sdow-prod/dumps/sdow-<YYYYMMDD>.sqlite .
+   ```
+1. Start the Flask app, making sure to bind the Flask web service to the public facing network
+   interface of the VM:
+   ```bash
+   $ cd sdow/sdow/
+   $ export FLASK_APP=server.py
+   $ flask run --host=0.0.0.0
    ```
 
 ## Edge Case Pages
 
-| Page ID  | Page Name                                     | Notes                     |
 | -------- | --------------------------------------------- | ------------------------- |
-| 1514     | Albert,\_Duke_of_Prussia                      |                           |
-| 8695     | Dr.\_Strangelove                              |                           |
-| 11760    | F-110_Spectre                                 |                           |
-| 49940    | Aaron\'s_rod                                  |                           |
-| 161512   | DivX\_;-)                                     |                           |
-| 24781871 | Jack_in_the_Green:\_Live_in_Germany_1970–1993 |                           |
-| 24781873 | Lindström\_(company)                          |                           |
-| 54201834 | Disinformation\_(book)                        | Missing in `pages.txt.gz` |
-| 54201536 | .nds                                          | Missing in `pages.txt.gz` |
+| Page ID | Page Name | Notes |
+| -------- | --------------------------------------------- | ------------------------- |
+| 1514 | Albert,\_Duke_of_Prussia | |
+| 8695 | Dr.\_Strangelove | |
+| 11760 | F-110_Spectre | |
+| 49940 | Aaron\'s_rod | |
+| 161512 | DivX\_;-) | |
+| 24781871 | Jack_in_the_Green:\_Live_in_Germany_1970–1993 | |
+| 24781873 | Lindström\_(company) | |
+| 54201834 | Disinformation\_(book) | Missing in `pages.txt.gz` |
+| 54201536 | .nds | Missing in `pages.txt.gz` |
+| | Antonio_L%C3%B3pez_Fajardo | Missing in `pages.txt.gz` |
+| -------- | --------------------------------------------- | ------------------------- |
 
 ## Contributing
 
