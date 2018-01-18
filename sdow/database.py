@@ -85,6 +85,7 @@ class Database():
     if not page_name:
       raise ValueError('Invalid page ID "{0}" provided. Page ID does not exist.'.format(page_id))
 
+    # TODO: test this with special pages like https://en.wikipedia.org/wiki/Jos%C3%A9_Clavijo_y_Fajardo
     return page_name[0].encode('utf-8').replace('_', ' ')
 
 
@@ -200,6 +201,8 @@ class Database():
     Returns:
       [str]: A list of relevant page names.
     '''
+    # TODO: to get the LIKE query below to use the index, I need to remove the leading %
+    # See https://stackoverflow.com/questions/8584499/sqlite-should-like-searchstr-use-an-index
     modified_search_query = '%{0}%'.format(search_query.replace(' ', '_'))
 
     query = 'SELECT name FROM pages WHERE name LIKE ? LIMIT 2000;'

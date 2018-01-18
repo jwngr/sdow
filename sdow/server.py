@@ -6,6 +6,7 @@ Server web framework.
 from flask import Flask, jsonify
 from sdow.database import Database
 from sdow.helpers import InvalidRequest
+from flask_cors import CORS, cross_origin
 
 sqlite_filename = '../sdow.sqlite'
 
@@ -21,6 +22,9 @@ sqlite_filename = '../sdow.sqlite'
 db = Database(sqlite_filename)
 
 app = Flask(__name__)
+
+# TODO: do I want this setup in production
+CORS(app)
 
 
 @app.errorhandler(InvalidRequest)

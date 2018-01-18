@@ -1,8 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import {Provider} from 'react-redux';
+import {createStore, applyMiddleware} from 'redux';
+
 import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import HomeContainer from './containers/HomeContainer';
+
+import './index.css';
+
+// Reducers
+import rootReducer from './reducers/index.js';
+
+// Middleware
+const middleware = [];
+if (process.env.NODE_ENV !== 'production') {
+  const {logger} = require('redux-logger');
+  middleware.push(logger);
+}
+
+// Create the Redux store
+const store = createStore(rootReducer, applyMiddleware(...middleware));
+
+ReactDOM.render(
+  <Provider store={store}>
+    <HomeContainer />
+  </Provider>,
+  document.getElementById('root')
+);
+
 registerServiceWorker();
