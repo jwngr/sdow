@@ -35,10 +35,15 @@ class PathResults extends Component {
         });
         return <PathResult>{pathArticles}</PathResult>;
       });
+
+      const pathOrPaths = pathsCount === 1 ? 'path' : 'paths';
+      const degreeOrDegrees = degreesOfSeparationCount === 1 ? 'degree' : 'degrees';
+
       pathsContent = (
         <div>
           <PathResultsMessage>
-            {pathsCount} paths found with {degreesOfSeparationCount} of separation!
+            {pathsCount} {pathOrPaths} found with {degreesOfSeparationCount} {degreeOrDegrees} of
+            separation!
           </PathResultsMessage>
           {pathResults}
         </div>

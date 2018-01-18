@@ -7,6 +7,7 @@ export const PathResultsWrapper = styled.div`
 
 export const PathResultsMessage = styled.div`
   font-size: 24px;
+  font-weight: bold;
 `;
 
 export const PathResult = styled.div`

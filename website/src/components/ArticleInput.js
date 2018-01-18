@@ -1,11 +1,11 @@
+import _ from 'lodash';
 import axios from 'axios';
 import React from 'react';
 import Autosuggest from 'react-autosuggest';
 
 import {ArticleSuggestion, AutosuggestWrapper} from './ArticleInput.styles';
 
-// TODO: add stable production URL
-const SDOW_API_URL = process.env.NODE_ENV === 'production' ? 'TODO' : 'http://127.0.0.1:5000';
+import {SDOW_API_URL} from '../resources/constants';
 
 // When suggestion is clicked, Autosuggest needs to populate the input
 // based on the clicked suggestion. Teach Autosuggest how to calculate the
@@ -28,10 +28,12 @@ class ArticleInput extends React.Component {
       suggestions: [],
       isFetching: false,
     };
+
+    this.debouncedLoadSuggestions = _.debounce(this.loadSuggestions, 500);
   }
 
   loadSuggestions(value) {
-    // TODO: debounce this
+    console.log(`loadSuggestions(${value})`);
 
     // Cancel the previous request
     this.setState({
@@ -58,7 +60,7 @@ class ArticleInput extends React.Component {
   // Autosuggest will call this function every time you need to update suggestions.
   // You already implemented this logic above, so just use it.
   onSuggestionsFetchRequested = ({value}) => {
-    this.loadSuggestions(value);
+    this.debouncedLoadSuggestions(value);
   };
 
   // Autosuggest will call this function every time you need to clear suggestions.

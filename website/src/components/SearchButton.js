@@ -3,9 +3,7 @@ import React from 'react';
 
 import {GoButton} from './SearchButton.styles';
 
-// TODO: add stable production URL
-// TODO: move into a shared file (maybe constants.js?)
-const SDOW_API_URL = process.env.NODE_ENV === 'production' ? 'TODO' : 'http://127.0.0.1:5000';
+import {SDOW_API_URL} from '../resources/constants';
 
 class SearchButton extends React.Component {
   constructor() {
