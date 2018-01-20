@@ -1,21 +1,17 @@
 import styled from 'styled-components';
 
 export const Header = styled.div`
-  padding: 20px;
-  font-size: 32px;
-  color: white;
   text-align: center;
-  background-color: #222;
+  font-size: 32px;
+
+  & h1 {
+    color: #f7fff7;
+    font-family: 'Crimson Text';
+    text-shadow: 4px 4px 8px #1a535c;
+  }
 `;
 
 export const MainContent = styled.div``;
-
-export const PathResult = styled.div`
-  display: flex;
-  border: solid green 3px;
-`;
-
-export const PathArticle = styled.p``;
 
 export const ErrorMessage = styled.p`
   color: red;
@@ -25,6 +21,7 @@ export const ErrorMessage = styled.p`
 export const P = styled.p`
   font-size: 32px;
   text-align: center;
+  color: #1a535c;
 `;
 
 export const InputFlexContainer = styled.div`

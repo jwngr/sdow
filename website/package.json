@@ -8,10 +8,12 @@
     "date-fns": "^1.29.0",
     "history": "^4.7.2",
     "lodash": "^4.17.4",
+    "particles.js": "^2.0.0",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-autosuggest": "^9.3.2",
     "react-dom": "^16.2.0",
+    "react-particles-js": "^2.1.0",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^5.0.0-alpha.6",
@@ -19,6 +21,7 @@
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "styled-components": "^2.4.0",
+    "typeface-crimson-text": "0.0.44",
     "typeface-quicksand": "0.0.44"
   },
   "dev-dependencies": {

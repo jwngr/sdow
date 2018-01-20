@@ -31,7 +31,7 @@ class Home extends Component {
           <h1>Six Degrees of Wikipedia</h1>
         </Header>
         <MainContent>
-          <P>Find the shortest path from</P>
+          <P>Find the shortest paths from</P>
           <InputFlexContainer>
             <ArticleInputContainer toOrFrom="from" placeholder="T. S. Eliot" />
             <P style={{margin: '20px 24px'}}>to</P>
