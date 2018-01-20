@@ -10,7 +10,10 @@ conn.execute('DROP TABLE IF EXISTS pages')
 conn.execute('CREATE TABLE pages(id INTEGER PRIMARY KEY, name TEXT)')
 
 for page_id in range(1, 101):
-  page_name = '*{0}_{1}*'.format(page_id, page_id)
+  if page_id <= 10:
+    page_name = '{0}'.format(page_id)
+  else:
+    page_name = '{0}_(number)'.format(page_id)
   conn.execute('INSERT INTO pages VALUES ({0}, "{1}")'.format(page_id, page_name))
 
 conn.execute('DROP TABLE IF EXISTS redirects')

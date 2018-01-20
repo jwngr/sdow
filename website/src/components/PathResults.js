@@ -1,11 +1,8 @@
 import React, {Component} from 'react';
 
-import {
-  PathArticle,
-  PathResult,
-  PathResultsMessage,
-  PathResultsWrapper,
-} from './PathResults.styles';
+import PathArticle from './PathArticle';
+
+import {PathResult, PathResultsMessage, PathResultsWrapper} from './PathResults.styles';
 
 class PathResults extends Component {
   render() {
@@ -22,16 +19,8 @@ class PathResults extends Component {
       const degreesOfSeparationCount = paths[0].length - 1;
       const pathResults = paths.map((path) => {
         const pathArticles = path.map((articleTitle, index) => {
-          let suffix;
-          if (index !== path.length - 1) {
-            suffix = <span style={{margin: '20px'}}>==></span>;
-          }
-          return (
-            <PathArticle>
-              {articleTitle}
-              {suffix}
-            </PathArticle>
-          );
+          const isEndArticle = index === path.length - 1;
+          return <PathArticle title={articleTitle} isEndArticle={isEndArticle} />;
         });
         return <PathResult>{pathArticles}</PathResult>;
       });

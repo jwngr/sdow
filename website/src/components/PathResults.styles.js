@@ -15,5 +15,3 @@ export const PathResult = styled.div`
   justify-content: center;
   font-size: 24px;
 `;
-
-export const PathArticle = styled.p``;

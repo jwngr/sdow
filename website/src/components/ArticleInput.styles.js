@@ -20,6 +20,16 @@ export const AutosuggestWrapper = styled.div.attrs(classNames)`
 
   .${classNames.suggestion} {
     cursor: pointer;
+    border-bottom: solid 1px #dcdcdc;
+
+    &:last-of-type {
+      border-bottom: none;
+
+      &.${classNames.suggestion_highlighted} {
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+      }
+    }
   }
 
   .${classNames.suggestion_highlighted} {
@@ -33,15 +43,11 @@ export const AutosuggestWrapper = styled.div.attrs(classNames)`
   .${classNames.suggestions_container_open} {
     display: block;
     position: absolute;
-    top: 41px;
-    width: 500px;
-    border: 1px solid #aaa;
-    background-color: #fff;
-    font-family: Helvetica, sans-serif;
-    font-weight: 300;
-    font-size: 16px;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
+    top: 44px;
+    width: 506px;
+    background-color: #F7FFF7;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
     z-index: 2;
   }
 
@@ -57,6 +63,7 @@ export const AutosuggestWrapper = styled.div.attrs(classNames)`
     border: solid 3px black;
     text-align: center;
     font-size: 40px;
+    outline: none;
 
     &::-webkit-input-placeholder {
       color: #000;
@@ -83,10 +90,4 @@ export const AutosuggestWrapper = styled.div.attrs(classNames)`
     border-bottom-right-radius: 0;
   }
 }
-`;
-
-export const ArticleSuggestion = styled.div`
-  padding: 10px;
-  height: 40px;
-  font-size: 32px;
 `;

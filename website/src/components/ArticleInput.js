@@ -3,21 +3,25 @@ import axios from 'axios';
 import React from 'react';
 import Autosuggest from 'react-autosuggest';
 
-import articleTitles from '../resources/articleTitles.json';
+import {getRandomArticleTitle, constructUrlWithQueryString} from '../utils';
 
-import {ArticleSuggestion, AutosuggestWrapper} from './ArticleInput.styles';
+import ArticleInputSuggestion from './ArticleInputSuggestion';
 
-import {SDOW_API_URL} from '../resources/constants';
+import {AutosuggestWrapper} from './ArticleInput.styles';
+
+import {WIKIPEDIA_API_URL} from '../resources/constants';
 
 // When suggestion is clicked, Autosuggest needs to populate the input
 // based on the clicked suggestion. Teach Autosuggest how to calculate the
 // input value for every given suggestion.
 const getSuggestionValue = (suggestion) => {
-  return suggestion.name;
+  return suggestion.title;
 };
 
 // Use your imagination to render suggestions.
-const renderSuggestion = (suggestion) => <ArticleSuggestion>{suggestion.name}</ArticleSuggestion>;
+const renderSuggestion = ({title, description, thumbnailUrl}) => (
+  <ArticleInputSuggestion title={title} description={description} thumbnailUrl={thumbnailUrl} />
+);
 
 class ArticleInput extends React.Component {
   constructor() {
@@ -31,31 +35,60 @@ class ArticleInput extends React.Component {
     this.state = {
       suggestions: [],
       isFetching: false,
-      placeholderText: articleTitles[Math.floor(Math.random() * articleTitles.length)],
+      placeholderText: getRandomArticleTitle(),
     };
 
-    this.debouncedLoadSuggestions = _.debounce(this.loadSuggestions, 500);
+    this.debouncedLoadSuggestions = _.debounce(this.loadSuggestions, 250);
 
     setInterval(() => {
-      this.setState({
-        placeholderText: articleTitles[Math.floor(Math.random() * articleTitles.length)],
+      this.setState((prevState) => {
+        return {
+          placeholderText: getRandomArticleTitle(prevState.placeholderText),
+        };
       });
-    }, 3000);
+    }, 5000);
   }
 
   loadSuggestions(value) {
     // Cancel the previous request
+    // TODO: do some work here to ensure a delayed prior request can't overwrite a later request
     this.setState({
       isFetching: true,
     });
 
+    const queryParams = {
+      action: 'query',
+      format: 'json',
+      gpssearch: value,
+      generator: 'prefixsearch',
+      prop: 'pageprops|pageimages|pageterms',
+      redirects: '',
+      ppprop: 'displaytitle',
+      piprop: 'thumbnail',
+      pithumbsize: '160',
+      pilimit: '30',
+      wbptterms: 'description',
+      gpsnamespace: '0',
+      gpslimit: 5,
+      origin: '*',
+    };
+
     axios({
       method: 'get',
-      url: `${SDOW_API_URL}/suggestions/${value}`,
+      url: constructUrlWithQueryString(WIKIPEDIA_API_URL, queryParams),
     }).then((response) => {
-      const suggestions = response.data.suggestions.map((suggestion) => {
-        return {
-          name: suggestion,
+      const suggestions = [];
+
+      const pageResults = _.get(response, 'data.query.pages', {});
+      _.forEach(pageResults, ({index, title, terms, thumbnail}) => {
+        let description = _.get(terms, 'description.0');
+        if (description) {
+          description = description.charAt(0).toUpperCase() + description.slice(1);
+        }
+        suggestions[index - 1] = {
+          title,
+          description,
+          thumbnailUrl: _.get(thumbnail, 'source'),
         };
       });
 
@@ -64,6 +97,7 @@ class ArticleInput extends React.Component {
         suggestions: suggestions,
       });
     });
+    // TODO: catch and handle errors.
   }
 
   // Autosuggest will call this function every time you need to update suggestions.
