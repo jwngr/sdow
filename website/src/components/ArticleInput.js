@@ -3,7 +3,7 @@ import axios from 'axios';
 import React from 'react';
 import Autosuggest from 'react-autosuggest';
 
-import {getRandomArticleTitle, constructUrlWithQueryString} from '../utils';
+import {getRandomArticleTitle} from '../utils';
 
 import ArticleInputSuggestion from './ArticleInputSuggestion';
 
@@ -14,14 +14,10 @@ import {WIKIPEDIA_API_URL} from '../resources/constants';
 // When suggestion is clicked, Autosuggest needs to populate the input
 // based on the clicked suggestion. Teach Autosuggest how to calculate the
 // input value for every given suggestion.
-const getSuggestionValue = (suggestion) => {
-  return suggestion.title;
-};
+const getSuggestionValue = (suggestion) => suggestion.title;
 
 // Use your imagination to render suggestions.
-const renderSuggestion = ({title, description, thumbnailUrl}) => (
-  <ArticleInputSuggestion title={title} description={description} thumbnailUrl={thumbnailUrl} />
-);
+const renderSuggestion = (suggestion) => <ArticleInputSuggestion {...suggestion} />;
 
 class ArticleInput extends React.Component {
   constructor() {
@@ -41,11 +37,9 @@ class ArticleInput extends React.Component {
     this.debouncedLoadSuggestions = _.debounce(this.loadSuggestions, 250);
 
     setInterval(() => {
-      this.setState((prevState) => {
-        return {
-          placeholderText: getRandomArticleTitle(prevState.placeholderText),
-        };
-      });
+      this.setState((prevState) => ({
+        placeholderText: getRandomArticleTitle(prevState.placeholderText),
+      }));
     }, 5000);
   }
 
@@ -56,13 +50,14 @@ class ArticleInput extends React.Component {
       isFetching: true,
     });
 
+    // TODO: add link to WikiMedia API docs to README: https://www.mediawiki.org/w/api.php?action=help&modules=query
     const queryParams = {
       action: 'query',
       format: 'json',
       gpssearch: value,
       generator: 'prefixsearch',
       prop: 'pageprops|pageimages|pageterms',
-      redirects: '',
+      redirects: '', // Automatically resolve redirects
       ppprop: 'displaytitle',
       piprop: 'thumbnail',
       pithumbsize: '160',
@@ -73,9 +68,16 @@ class ArticleInput extends React.Component {
       origin: '*',
     };
 
+    // TODO: add helper for making API requests to WikiMedia API
     axios({
       method: 'get',
-      url: constructUrlWithQueryString(WIKIPEDIA_API_URL, queryParams),
+      url: WIKIPEDIA_API_URL,
+      params: queryParams,
+      headers: {
+        // TODO: make sure I send this with all requests to Wikimedia (and update / make email)
+        // See https://www.mediawiki.org/wiki/API:Main_page#Identifying_your_client
+        'Api-User-Agent': 'Six Degrees of Wikipedia/1.0 (https://sdow.xyz/; hello@sdow.xyz)',
+      },
     }).then((response) => {
       const suggestions = [];
 

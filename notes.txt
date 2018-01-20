@@ -41,6 +41,10 @@ sys     43m23.520s
 
 --------------------------------------------
 
+MediaWiki API: https://www.mediawiki.org/wiki/API:Main_page
+
+--------------------------------------------
+
  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
 103.208.85.181 - - [17/Jan/2018 09:35:51] "GET /suggestions/Biblioth HTTP/1.1" 200 -
 103.208.85.181 - - [17/Jan/2018 09:36:00] "GET /suggestions/Personal HTTP/1.1" 200 -

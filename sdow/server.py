@@ -3,10 +3,15 @@ Server web framework.
 '''
 
 # import sys
+import requests
+from sets import Set as set
 from flask import Flask, jsonify
 from sdow.database import Database
 from sdow.helpers import InvalidRequest
 from flask_cors import CORS, cross_origin
+
+WIKIPEDIA_API_URL = 'https://en.wikipedia.org/w/api.php'
+
 
 sqlite_filename = '../sdow.sqlite'
 
@@ -34,37 +39,6 @@ def handle_invalid_usage(error):
   return response
 
 
-@app.route('/pages/<page_name>')
-def page_type_route(page_name):
-  response = {}
-
-  # Look up the page ID
-  try:
-    page_id = db.fetch_page_id(page_name)
-  except ValueError as error:
-    page_id = None
-    response['type'] = 'not_found'
-
-  if page_id:
-    # Determine if the page is a redirect
-    redirected_page_id = db.fetch_redirected_page_id(page_id)
-
-    if redirected_page_id == None:
-      response['type'] = 'page'
-    else:
-      response['type'] = 'redirect'
-      response['redirected_page_id'] = redirected_page_id
-
-  return jsonify(response)
-
-@app.route('/suggestions/<query>')
-def suggestions_route(query):
-  return jsonify({
-    'suggestions': db.fetch_autocomplete_suggestions(query)
-  })
-
-
-
 @app.route('/paths/<from_page_name>/<to_page_name>')
 def shortest_paths_route(from_page_name, to_page_name):
   # Look up the IDs for each page
@@ -79,22 +53,83 @@ def shortest_paths_route(from_page_name, to_page_name):
     raise InvalidRequest('To page name "{0}" does not exist.'.format(to_page_name))
 
   # Compute the shortest paths
-  paths_with_ids = db.compute_shortest_paths(from_page_id, to_page_id)
+  paths = db.compute_shortest_paths(from_page_id, to_page_id)
 
-  # Convert IDs to names for each path
-  paths_with_names = []
-  for current_path_with_ids in paths_with_ids:
-    current_path_with_names = [db.fetch_page_name(page_id) for page_id in current_path_with_ids]
-    paths_with_names.append(current_path_with_names)
+  if len(paths) == 0:
+    # No paths found
+    response = {
+      'paths': [],
+      'pages': [],
+    }
+  else:
+    # Paths found
 
-  # Build the response object
-  response = {
-    'paths': paths_with_names,
-    'count': len(paths_with_names)
-  }
+    # TODO: make things work locally without this crazy hack
+    dev_ids_to_prod_ids = {
+      15: 208252,
+      16: 208254,
+      17: 208288,
+      18: 208294,
+      19: 208292,
+      20: 208259
+    }
+    prod_ids_to_dev_ids = {
+      208252: 15,
+      208254: 16,
+      208288: 17,
+      208294: 18,
+      208292: 19,
+      208259: 20
+    }
 
-  if response['count'] != 0:
-    response['length'] = len(paths_with_names[0])
+    # Get a list of all IDs
+    page_ids = set()
+    for path in paths:
+      for page_id in path:
+        # TODO: remove this mapping hack
+        page_ids.add(str(dev_ids_to_prod_ids[page_id]))
+
+    query_params = {
+      'action': 'query',
+      'format': 'json',
+      'pageids': '|'.join(page_ids),
+      'prop': 'info|pageimages|pageterms',
+      'inprop': 'url|displaytitle',
+      'piprop': 'thumbnail',
+      'pithumbsize': 160,
+      'pilimit': '2',
+      'wbptterms': 'description',
+      # 'origin': '*'
+    }
+
+    r = requests.get(WIKIPEDIA_API_URL, params=query_params)
+
+    pages_result = r.json().get('query', {}).get('pages')
+
+    # TODO: handle 'continue' and picontinue' keys
+
+    pages_info = {}
+    for page_id, page in pages_result.iteritems():
+      # TODO: remove this hack
+      dev_page_id = prod_ids_to_dev_ids[int(page_id)]
+
+      pages_info[dev_page_id] = {
+        'title': page['title'],
+        'url': page['fullurl']
+      }
+
+      thumbnail_url = page.get('thumbnail', {}).get('source')
+      if thumbnail_url:
+        pages_info[dev_page_id]['thumbnailUrl'] = thumbnail_url
+
+      description = page.get('terms', {}).get('description', [])
+      if description:
+        pages_info[dev_page_id]['description'] = description[0][0].upper() + description[0][1:]
+
+    response = {
+      'paths': paths,
+      'pages': pages_info
+    }
 
   return jsonify(response)
 

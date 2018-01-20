@@ -12,10 +12,11 @@ export function setError(errorMessage) {
   };
 }
 
-export function setShortestPaths(paths) {
+export function setShortestPaths(paths, pages) {
   return {
     type: SET_SHORTEST_PATHS,
     paths,
+    pages,
   };
 }
 

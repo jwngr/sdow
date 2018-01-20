@@ -13,8 +13,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setShortestPaths: (paths) => {
-      dispatch(setShortestPaths(paths));
+    setShortestPaths: (paths, pages) => {
+      dispatch(setShortestPaths(paths, pages));
     },
     setError: (errorMessage) => {
       dispatch(setError(errorMessage));

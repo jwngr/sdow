@@ -2,9 +2,10 @@ import {connect} from 'react-redux';
 
 import PathResults from '../components/PathResults';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({paths, pages}) => {
   return {
-    paths: state.paths,
+    paths,
+    pages,
   };
 };
 

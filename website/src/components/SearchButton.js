@@ -15,7 +15,7 @@ class SearchButton extends React.Component {
   }
 
   fetchShortestPaths(fromArticleTitle, toArticleTitle, setError, setShortestPaths) {
-    console.log(`fetchShortestPaths(${fromArticleTitle}, ${toArticleTitle}) called`);
+    // TODO: handle cases where to or from page title is undefined
 
     // Cancel the previous request
     this.setState({
@@ -23,17 +23,14 @@ class SearchButton extends React.Component {
     });
 
     setError(null);
-    setShortestPaths(null);
+    setShortestPaths(null, null);
 
     axios({
       method: 'get',
       url: `${SDOW_API_URL}/paths/${fromArticleTitle}/${toArticleTitle}`,
     })
       .then((response) => {
-        // TODO: get thumbnails for each page
-        // See https://stackoverflow.com/a/20311613/2955366
-        // Example URL: https://en.wikipedia.org/w/api.php?action=query&titles=Fortification|Albert%20Einstein&prop=pageimages&format=json&pilimit=2
-        setShortestPaths(response.data.paths);
+        setShortestPaths(response.data.paths, response.data.pages);
 
         // TODO: measure the response time
         // See https://www.html5rocks.com/en/tutorials/webperformance/usertiming/

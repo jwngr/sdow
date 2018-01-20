@@ -9,6 +9,14 @@ const rootReducers = {
         return state;
     }
   },
+  pages: (state = null, action) => {
+    switch (action.type) {
+      case actions.SET_SHORTEST_PATHS:
+        return action.pages;
+      default:
+        return state;
+    }
+  },
   toArticleTitle: (state = '', action) => {
     switch (action.type) {
       case actions.SET_TO_ARTICLE_TITLE:

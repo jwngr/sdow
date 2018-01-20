@@ -6,10 +6,11 @@ import {PathResult, PathResultsMessage, PathResultsWrapper} from './PathResults.
 
 class PathResults extends Component {
   render() {
-    const {paths} = this.props;
+    const {paths, pages} = this.props;
 
     let pathsContent;
     if (paths !== null && paths.length === 0) {
+      // TODO: make this look better
       pathsContent = <p>No paths found!</p>;
     } else if (paths !== null) {
       // TODO: special case when to and from page are the same (something snarky like "You can't
@@ -17,12 +18,12 @@ class PathResults extends Component {
       // didn't really need this website to prove that...");
       const pathsCount = paths.length;
       const degreesOfSeparationCount = paths[0].length - 1;
-      const pathResults = paths.map((path) => {
-        const pathArticles = path.map((articleTitle, index) => {
-          const isEndArticle = index === path.length - 1;
-          return <PathArticle title={articleTitle} isEndArticle={isEndArticle} />;
+      const pathResults = paths.map((path, i) => {
+        const pathArticles = path.map((pageId, j) => {
+          const isEndArticle = j === path.length - 1;
+          return <PathArticle key={j} isEndArticle={isEndArticle} {...pages[pageId]} />;
         });
-        return <PathResult>{pathArticles}</PathResult>;
+        return <PathResult key={i}>{pathArticles}</PathResult>;
       });
 
       const pathOrPaths = pathsCount === 1 ? 'path' : 'paths';
