@@ -57,6 +57,21 @@ export const AutosuggestWrapper = styled.div.attrs(classNames)`
     border: solid 3px black;
     text-align: center;
     font-size: 40px;
+
+    &::-webkit-input-placeholder {
+      color: #000;
+      opacity: 0.5;
+      -webkit-transition: opacity 0.35s ease-in-out;
+      transition: opacity 0.35s ease-in-out;
+    }
+
+    &:hover::-webkit-input-placeholder {
+      opacity: 0.75;
+    }
+
+    &:focus::-webkit-input-placeholder {
+      opacity: 0;
+    }
   }
 
   &.${classNames.input_focused} {

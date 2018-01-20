@@ -3,6 +3,8 @@ import axios from 'axios';
 import React from 'react';
 import Autosuggest from 'react-autosuggest';
 
+import articleTitles from '../resources/articleTitles.json';
+
 import {ArticleSuggestion, AutosuggestWrapper} from './ArticleInput.styles';
 
 import {SDOW_API_URL} from '../resources/constants';
@@ -10,7 +12,9 @@ import {SDOW_API_URL} from '../resources/constants';
 // When suggestion is clicked, Autosuggest needs to populate the input
 // based on the clicked suggestion. Teach Autosuggest how to calculate the
 // input value for every given suggestion.
-const getSuggestionValue = (suggestion) => suggestion.name;
+const getSuggestionValue = (suggestion) => {
+  return suggestion.name;
+};
 
 // Use your imagination to render suggestions.
 const renderSuggestion = (suggestion) => <ArticleSuggestion>{suggestion.name}</ArticleSuggestion>;
@@ -27,14 +31,19 @@ class ArticleInput extends React.Component {
     this.state = {
       suggestions: [],
       isFetching: false,
+      placeholderText: articleTitles[Math.floor(Math.random() * articleTitles.length)],
     };
 
     this.debouncedLoadSuggestions = _.debounce(this.loadSuggestions, 500);
+
+    setInterval(() => {
+      this.setState({
+        placeholderText: articleTitles[Math.floor(Math.random() * articleTitles.length)],
+      });
+    }, 3000);
   }
 
   loadSuggestions(value) {
-    console.log(`loadSuggestions(${value})`);
-
     // Cancel the previous request
     this.setState({
       isFetching: true,
@@ -71,14 +80,13 @@ class ArticleInput extends React.Component {
   };
 
   render() {
-    const {suggestions} = this.state;
+    const {suggestions, placeholderText} = this.state;
     const {toOrFrom, toArticleTitle, fromArticleTitle, onChange} = this.props;
     const value = toOrFrom === 'to' ? toArticleTitle : fromArticleTitle;
-    const startOrEnd = toOrFrom === 'from' ? 'Start' : 'End';
 
     // Autosuggest will pass through all these props to the input.
     const inputProps = {
-      placeholder: `${startOrEnd} page title`,
+      placeholder: placeholderText,
       onChange: (event, {newValue}) => {
         onChange(toOrFrom, newValue);
       },

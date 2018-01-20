@@ -15,10 +15,9 @@
     "react-dom": "^16.2.0",
     "react-particles-js": "^2.1.0",
     "react-redux": "^5.0.6",
-    "react-router-dom": "^4.2.2",
-    "react-router-redux": "^5.0.0-alpha.6",
     "react-scripts": "1.1.0",
     "redux": "^3.7.2",
+    "redux-little-router": "^14.2.3",
     "redux-logger": "^3.0.6",
     "styled-components": "^2.4.0",
     "typeface-crimson-text": "0.0.44",
@@ -33,10 +32,7 @@
     "source-map-explorer": "^1.5.0"
   },
   "lint-staged": {
-    "{src}/**/*.{js,css}": [
-      "prettier --write",
-      "git add"
-    ]
+    "{src}/**/*.{js,css}": ["prettier --write", "git add"]
   },
   "scripts": {
     "analyze": "source-map-explorer build/static/js/main.*",

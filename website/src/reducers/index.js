@@ -1,8 +1,6 @@
-import {combineReducers} from 'redux';
-
 import * as actions from '../actions';
 
-const rootReducer = combineReducers({
+const rootReducers = {
   paths: (state = null, action) => {
     switch (action.type) {
       case actions.SET_SHORTEST_PATHS:
@@ -35,6 +33,6 @@ const rootReducer = combineReducers({
         return state;
     }
   },
-});
+};
 
-export default rootReducer;
+export default rootReducers;
