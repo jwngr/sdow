@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
 export const PathResultsWrapper = styled.div`
-  text-align: center;
   margin-top: 40px;
 `;
 
 export const PathResultsMessage = styled.div`
+  text-align: center;
   font-size: 24px;
   font-weight: bold;
 `;

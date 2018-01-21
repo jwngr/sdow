@@ -1,10 +1,14 @@
 import React, {Component} from 'react';
 
-import {PathArticleWrapper} from './PathArticle.styles';
+import {Description, InnerWrapper, Image, Title, Wrapper} from './PathArticle.styles';
+
+import defaultPageThumbnail from '../images/defaultPageThumbnail.png';
 
 class PathArticle extends Component {
   render() {
-    const {title, isEndArticle} = this.props;
+    const {title, thumbnailUrl, description, isEndArticle} = this.props;
+
+    const descriptionContent = description ? <Description>{description}</Description> : null;
 
     let arrowContent;
     if (!isEndArticle) {
@@ -12,10 +16,16 @@ class PathArticle extends Component {
     }
 
     return (
-      <div style={{display: 'flex'}}>
-        <PathArticleWrapper>{title}</PathArticleWrapper>
+      <React.Fragment>
+        <Wrapper>
+          <Image src={thumbnailUrl || defaultPageThumbnail} />
+          <InnerWrapper>
+            <Title>{title}</Title>
+            {descriptionContent}
+          </InnerWrapper>
+        </Wrapper>
         {arrowContent}
-      </div>
+      </React.Fragment>
     );
   }
 }
