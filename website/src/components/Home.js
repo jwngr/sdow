@@ -28,7 +28,7 @@ class Home extends Component {
             See https://fonts.google.com/specimen/Crimson+Text?selection.family=Crimson+Text for a
             similar font
           */}
-          <h1>Six Degrees of Wikipedia</h1>
+          <h1>Six Degrees Of Wikipedia</h1>
         </Header>
         <MainContent>
           <P>Find the shortest paths from</P>

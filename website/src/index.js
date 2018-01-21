@@ -48,6 +48,10 @@ const store = createStore(
   compose(enhancer, applyMiddleware(...middleware))
 );
 
+// TODO: get Particles to be full page height, including when scrolling
+// See https://github.com/VincentGarreau/particles.js/issues/255
+// See https://stackoverflow.com/questions/1145850/how-to-get-height-of-entire-document-with-javascript
+
 ReactDOM.render(
   <div>
     <Particles

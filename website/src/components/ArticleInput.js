@@ -129,7 +129,6 @@ class ArticleInput extends React.Component {
       value,
     };
 
-    // Finally, render it!
     return (
       <AutosuggestWrapper>
         <Autosuggest
