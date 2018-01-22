@@ -7,51 +7,56 @@ const Link = styled.a`
   position: relative;
   display: inline-block;
   outline: none;
-  color: ${colors.yellow};
+  color: ${colors.darkGreen};
   vertical-align: bottom;
   text-decoration: none;
   white-space: nowrap;
 
-  margin: 0 2px;
-  padding: 0 8px;
+  margin: 0 4px;
+  padding: 0;
   font-weight: bold;
   transition: color 0.2s;
 
-  &:hover {
+  & {
+    font-weight: 500;
+    transition: color 0.3s;
+    perspective: 600px;
+    perspective-origin: 50% 100%;
+  }
+
+  &:hover,
+  &:focus {
     color: ${colors.red};
   }
 
   &::before,
   &::after {
-    pointer-events: none;
-    backface-visibility: hidden;
-    font-smoothing: antialiased;
-
     position: absolute;
-    top: -8px;
-    font-weight: 100;
-    font-size: 150%;
-    line-height: 1;
-    opacity: 0;
-    transition: opacity 0.2s, transform 0.2s;
+    top: 0;
+    left: -4px;
+    z-index: -1;
+    box-sizing: content-box;
+    padding: 0 4px;
+    width: 100%;
+    height: 100%;
+    content: '';
   }
 
   &::before {
-    left: -4px;
-    content: '[';
-    transform: translateX(-100%);
-  }
-
-  &::after {
-    right: -4px;
-    content: ']';
-    transform: translateX(100%);
+    background-color: ${colors.yellow};
+    transition: transform 0.2s;
+    transition-timing-function: cubic-bezier(0.7, 0, 0.3, 1);
+    transform: rotateX(90deg);
+    transform-origin: 50% 100%;
   }
 
   &:hover::before,
-  &:hover::after {
-    opacity: 1;
-    transform: translateX(0);
+  &:focus::before {
+    transform: rotateX(0deg);
+  }
+
+  &::after {
+    border-bottom: 2px solid ${colors.yellow};
   }
 `;
 

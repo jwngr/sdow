@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 
 import {
   ArticleDescription,
@@ -6,16 +6,14 @@ import {
   ArticleTitle,
   ArticleWrapper,
   ArticleInnerWrapper,
-  PathArticle,
   Wrapper,
 } from './PathResult.styles';
 
 import defaultPageThumbnail from '../images/defaultPageThumbnail.png';
 
 const PathResult = ({pages}) => {
-  console.log(pages);
-  const pagesContent = pages.map((page) => {
-    const {title, thumbnailUrl, description, isEndArticle} = page;
+  const pagesContent = pages.map((page, i) => {
+    const {title, url, thumbnailUrl, description} = page;
 
     const descriptionContent = description ? (
       <ArticleDescription>{description}</ArticleDescription>
@@ -27,16 +25,13 @@ const PathResult = ({pages}) => {
     // }
 
     return (
-      <React.Fragment>
-        <ArticleWrapper>
-          <ArticleImage src={thumbnailUrl || defaultPageThumbnail} />
-          <ArticleInnerWrapper>
-            <ArticleTitle>{title}</ArticleTitle>
-            {descriptionContent}
-          </ArticleInnerWrapper>
-        </ArticleWrapper>
-        {/* {arrowContent} */}
-      </React.Fragment>
+      <ArticleWrapper key={i} href={url} target="_blank">
+        <ArticleImage src={thumbnailUrl || defaultPageThumbnail} />
+        <ArticleInnerWrapper>
+          <ArticleTitle>{title}</ArticleTitle>
+          {descriptionContent}
+        </ArticleInnerWrapper>
+      </ArticleWrapper>
     );
   });
 

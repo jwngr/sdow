@@ -30,7 +30,6 @@ class SearchButton extends React.Component {
       url: `${SDOW_API_URL}/paths/${fromArticleTitle}/${toArticleTitle}`,
     })
       .then((response) => {
-        console.log('RESPONSE PATHS:', response.data.paths);
         const {pages, paths} = response.data;
 
         const pathsDenormalized = paths.map((path) => {
@@ -39,7 +38,7 @@ class SearchButton extends React.Component {
           });
         });
 
-        console.log('RESPONSE PATHS UPDATED:', pathsDenormalized);
+        console.log(JSON.stringify(pathsDenormalized, null, 2));
 
         setShortestPathResults({
           toArticleTitle,

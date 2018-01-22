@@ -34,18 +34,19 @@ export const AutosuggestWrapper = styled.div.attrs(classNames)`
   }
 
   .${classNames.suggestion_highlighted} {
-    background-color: #ddd;
+    background-color: ${colors.gray};
   }
 
   .${classNames.suggestions_container} {
     display: none;
   }
-
+  
   .${classNames.suggestions_container_open} {
     display: block;
     position: absolute;
-    top: 44px;
-    width: 506px;
+    top: 41px;
+    width: 500px;
+    border: solid 2px ${colors.darkGreen};
     background-color: ${colors.creme};
     border-bottom-left-radius: 12px;
     border-bottom-right-radius: 12px;
@@ -61,7 +62,7 @@ export const AutosuggestWrapper = styled.div.attrs(classNames)`
   .${classNames.input} {
     width: 500px;
     height: 80px;
-    border: solid 3px black;
+    border: solid 3px ${colors.darkGreen};
     text-align: center;
     font-size: 40px;
     background-color: ${colors.creme};

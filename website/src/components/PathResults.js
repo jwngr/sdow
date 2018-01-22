@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 
-import PathArticle from './PathArticle';
 import PathResult from './PathResult';
 import ArticleLink from './ArticleLink';
 
@@ -19,6 +18,7 @@ class PathResults extends Component {
     const toArticleUrl = getArticleUrl(toArticleTitle);
     const fromArticleUrl = getArticleUrl(fromArticleTitle);
 
+    // No paths found.
     if (paths.length === 0) {
       return (
         <ResultsMessage>
@@ -32,22 +32,9 @@ class PathResults extends Component {
       );
     }
 
-    // TODO: special case when to and from page are the same (something snarky like "You can't
-    // trick me that easily..." or "Wow, those articles have zero degrees of separation. But you
-    // didn't really need this website to prove that...");
-    const pathsCount = paths.length;
-    const degreesOfSeparation = paths[0].length - 1;
-    const pathResults = paths.map((path, i) => {
-      // const pathArticles = path.map((pageId, j) => {
-      //   const isEndArticle = j === path.length - 1;
-      //   return <PathArticle key={j} isEndArticle={isEndArticle} {...pages[pageId]} />;
-      // });
-      // return <PathResult key={i}>{pathArticles}</PathResult>;
-      return <PathResult key={i} pages={path} />;
-    });
-
     // Add some character to results by writing a snarky comment for certain degress of separation.
     let snarkyContent;
+    const degreesOfSeparation = paths[0].length - 1;
     if (degreesOfSeparation === 0) {
       snarkyContent = (
         <p>
@@ -80,18 +67,23 @@ class PathResults extends Component {
       );
     }
 
-    const pathOrPaths = pathsCount === 1 ? 'path' : 'paths';
+    const pathOrPaths = paths.length === 1 ? 'path' : 'paths';
     const degreeOrDegrees = degreesOfSeparation === 1 ? 'degree' : 'degrees';
+
+    const pathResultsContent = paths.map((path, i) => {
+      return <PathResult key={i} pages={path} />;
+    });
 
     return (
       <div>
         <ResultsMessage>
           {snarkyContent}
           <p>
+            Found{' '}
             <b>
-              {pathsCount} {pathOrPaths}
+              {paths.length} {pathOrPaths}
             </b>{' '}
-            found with{' '}
+            with{' '}
             <b>
               {degreesOfSeparation} {degreeOrDegrees}
             </b>{' '}
@@ -102,7 +94,7 @@ class PathResults extends Component {
             <ArticleLink title={toArticleTitle} url={toArticleUrl} />!
           </p>
         </ResultsMessage>
-        <PathResultsWrapper>{pathResults}</PathResultsWrapper>
+        <PathResultsWrapper>{pathResultsContent}</PathResultsWrapper>
       </div>
     );
   }
