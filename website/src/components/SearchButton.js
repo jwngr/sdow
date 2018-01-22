@@ -14,7 +14,7 @@ class SearchButton extends React.Component {
     };
   }
 
-  fetchShortestPaths(fromArticleTitle, toArticleTitle, setError, setShortestPaths) {
+  fetchShortestPaths(fromArticleTitle, toArticleTitle, setError, setShortestPathResults) {
     // TODO: handle cases where to or from page title is undefined
 
     // Cancel the previous request
@@ -23,14 +23,29 @@ class SearchButton extends React.Component {
     });
 
     setError(null);
-    setShortestPaths(null, null);
+    setShortestPathResults(null, null);
 
     axios({
       method: 'get',
       url: `${SDOW_API_URL}/paths/${fromArticleTitle}/${toArticleTitle}`,
     })
       .then((response) => {
-        setShortestPaths(response.data.paths, response.data.pages);
+        console.log('RESPONSE PATHS:', response.data.paths);
+        const {pages, paths} = response.data;
+
+        const pathsDenormalized = paths.map((path) => {
+          return path.map((pageId) => {
+            return pages[pageId];
+          });
+        });
+
+        console.log('RESPONSE PATHS UPDATED:', pathsDenormalized);
+
+        setShortestPathResults({
+          toArticleTitle,
+          fromArticleTitle,
+          paths: pathsDenormalized,
+        });
 
         // TODO: measure the response time
         // See https://www.html5rocks.com/en/tutorials/webperformance/usertiming/
@@ -45,7 +60,7 @@ class SearchButton extends React.Component {
   }
 
   render() {
-    const {toArticleTitle, fromArticleTitle, setError, setShortestPaths} = this.props;
+    const {toArticleTitle, fromArticleTitle, setError, setShortestPathResults} = this.props;
 
     return (
       <GoButton
@@ -54,7 +69,7 @@ class SearchButton extends React.Component {
           fromArticleTitle,
           toArticleTitle,
           setError,
-          setShortestPaths
+          setShortestPathResults
         )}
       >
         Go!

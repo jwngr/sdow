@@ -2,10 +2,17 @@ import {connect} from 'react-redux';
 
 import PathResults from '../components/PathResults';
 
-const mapStateToProps = ({paths, pages}) => {
+const mapStateToProps = ({results}) => {
+  if (results === null) {
+    return {
+      paths: null,
+    };
+  }
+
   return {
-    paths,
-    pages,
+    paths: results.paths,
+    toArticleTitle: results.toArticleTitle,
+    fromArticleTitle: results.fromArticleTitle,
   };
 };
 

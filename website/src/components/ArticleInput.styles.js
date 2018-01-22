@@ -11,7 +11,6 @@ const classNames = {
   suggestions_container: 'react-autosuggest__suggestions-container',
   suggestions_container_open: 'react-autosuggest__suggestions-container--open',
   input_open: 'react-autosuggest__input--open',
-  input_focused: 'react-autosuggest__input--focused',
 };
 
 export const AutosuggestWrapper = styled.div.attrs(classNames)`
@@ -65,7 +64,7 @@ export const AutosuggestWrapper = styled.div.attrs(classNames)`
     border: solid 3px black;
     text-align: center;
     font-size: 40px;
-    outline: none;
+    background-color: ${colors.creme};
 
     &::-webkit-input-placeholder {
       color: ${colors.darkGreen};
@@ -81,10 +80,6 @@ export const AutosuggestWrapper = styled.div.attrs(classNames)`
     &:focus::-webkit-input-placeholder {
       opacity: 0;
     }
-  }
-
-  &.${classNames.input_focused} {
-    outline: none;
   }
 
   &.${classNames.input_open} {

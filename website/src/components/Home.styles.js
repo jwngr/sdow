@@ -5,6 +5,7 @@ import colors from '../resources/colors.json';
 export const Header = styled.div`
   text-align: center;
   font-size: 32px;
+  padding-top: 20px;
 
   & h1 {
     color: ${colors.creme};
@@ -23,6 +24,7 @@ export const ErrorMessage = styled.p`
 export const P = styled.p`
   font-size: 32px;
   text-align: center;
+  margin-bottom: 20px;
   color: ${colors.darkGreen};
 `;
 

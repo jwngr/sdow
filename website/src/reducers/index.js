@@ -1,18 +1,10 @@
 import * as actions from '../actions';
 
 const rootReducers = {
-  paths: (state = null, action) => {
+  results: (state = null, action) => {
     switch (action.type) {
-      case actions.SET_SHORTEST_PATHS:
-        return action.paths;
-      default:
-        return state;
-    }
-  },
-  pages: (state = null, action) => {
-    switch (action.type) {
-      case actions.SET_SHORTEST_PATHS:
-        return action.pages;
+      case actions.SET_SHORTEST_PATH_RESULTS:
+        return action.results;
       default:
         return state;
     }

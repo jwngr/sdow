@@ -32,7 +32,10 @@
     "source-map-explorer": "^1.5.0"
   },
   "lint-staged": {
-    "{src}/**/*.{js,css}": ["prettier --write", "git add"]
+    "{src}/**/*.{js,css}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "scripts": {
     "analyze": "source-map-explorer build/static/js/main.*",

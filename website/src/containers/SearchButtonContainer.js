@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 
-import {setError, setShortestPaths} from '../actions';
+import {setError, setShortestPathResults} from '../actions';
 
 import SearchButton from '../components/SearchButton';
 
@@ -13,8 +13,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setShortestPaths: (paths, pages) => {
-      dispatch(setShortestPaths(paths, pages));
+    setShortestPathResults: (paths) => {
+      dispatch(setShortestPathResults(paths));
     },
     setError: (errorMessage) => {
       dispatch(setError(errorMessage));
