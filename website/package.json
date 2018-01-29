@@ -19,9 +19,9 @@
     "redux": "^3.7.2",
     "redux-little-router": "^14.2.3",
     "redux-logger": "^3.0.6",
-    "styled-components": "^3.0.0",
-    "typeface-crimson-text": "0.0.44",
-    "typeface-quicksand": "0.0.44"
+    "styled-components": "^3.1.0",
+    "typeface-crimson-text": "0.0.54",
+    "typeface-quicksand": "0.0.54"
   },
   "dev-dependencies": {
     "husky": "^0.14.3",
