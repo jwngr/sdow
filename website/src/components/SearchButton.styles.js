@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import colors from '../resources/colors.json';
-
 export const GoButton = styled.button`
   position: relative;
   margin: auto;
@@ -10,9 +8,9 @@ export const GoButton = styled.button`
   width: 240px;
   font-size: 32px;
   margin-top: 24px;
-  color: ${colors.creme};
-  background-color: ${colors.red};
-  border: solid 2px ${colors.darkGreen};
+  color: ${(props) => props.theme.colors.creme};
+  background-color: ${(props) => props.theme.colors.red};
+  border: solid 2px ${(props) => props.theme.colors.darkGreen};
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
@@ -28,7 +26,7 @@ export const GoButton = styled.button`
     left: 0;
     width: 150%;
     height: 100%;
-    background-color: ${colors.red};
+    background-color: ${(props) => props.theme.colors.red};
     z-index: -1;
     transform: rotate3d(0, 0, 1, -45deg) translate3d(0, -3em, 0);
     transform-origin: 0% 100%;
@@ -36,11 +34,11 @@ export const GoButton = styled.button`
   }
 
   &:hover {
-    color: ${colors.red};
+    color: ${(props) => props.theme.colors.red};
   }
 
   &:hover::before {
-    background-color: ${colors.creme};
+    background-color: ${(props) => props.theme.colors.creme};
     transform: rotate3d(0, 0, 1, 0deg);
     transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
   }

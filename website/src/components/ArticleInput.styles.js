@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import colors from '../resources/colors.json';
-
 const classNames = {
   input: 'react-autosuggest__input',
   container: 'react-autosuggest__container',
@@ -21,7 +19,7 @@ export const AutosuggestWrapper = styled.div.attrs(classNames)`
 
   .${classNames.suggestion} {
     cursor: pointer;
-    border-bottom: solid 1px ${colors.gray};
+    border-bottom: solid 1px ${(props) => props.theme.colors.gray};
 
     &:last-of-type {
       border-bottom: none;
@@ -34,7 +32,7 @@ export const AutosuggestWrapper = styled.div.attrs(classNames)`
   }
 
   .${classNames.suggestion_highlighted} {
-    background-color: ${colors.gray};
+    background-color: ${(props) => props.theme.colors.gray};
   }
 
   .${classNames.suggestions_container} {
@@ -46,8 +44,8 @@ export const AutosuggestWrapper = styled.div.attrs(classNames)`
     position: absolute;
     top: 41px;
     width: 500px;
-    border: solid 2px ${colors.darkGreen};
-    background-color: ${colors.creme};
+    border: solid 2px ${(props) => props.theme.colors.darkGreen};
+    background-color: ${(props) => props.theme.colors.creme};
     border-bottom-left-radius: 12px;
     border-bottom-right-radius: 12px;
     z-index: 2;
@@ -62,13 +60,13 @@ export const AutosuggestWrapper = styled.div.attrs(classNames)`
   .${classNames.input} {
     width: 500px;
     height: 80px;
-    border: solid 3px ${colors.darkGreen};
+    border: solid 3px ${(props) => props.theme.colors.darkGreen};
     text-align: center;
     font-size: 40px;
-    background-color: ${colors.creme};
+    background-color: ${(props) => props.theme.colors.creme};
 
     &::-webkit-input-placeholder {
-      color: ${colors.darkGreen};
+      color: ${(props) => props.theme.colors.darkGreen};
       opacity: 0.5;
       -webkit-transition: opacity 0.35s ease-in-out;
       transition: opacity 0.35s ease-in-out;

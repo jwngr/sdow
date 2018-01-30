@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import Particles from 'react-particles-js';
+import {ThemeProvider} from 'styled-components';
 import {routerForBrowser, Fragment} from 'redux-little-router';
 import {combineReducers, compose, createStore, applyMiddleware} from 'redux';
 
@@ -10,6 +11,7 @@ import registerServiceWorker from './registerServiceWorker';
 import About from './components/About';
 import HomeContainer from './containers/HomeContainer';
 
+import theme from './resources/theme.json';
 import particlesConfig from './resources/particles.config.json';
 
 import './index.css';
@@ -53,29 +55,31 @@ const store = createStore(
 // See https://stackoverflow.com/questions/1145850/how-to-get-height-of-entire-document-with-javascript
 
 ReactDOM.render(
-  <div>
-    <Particles
-      params={particlesConfig}
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        zIndex: -1,
-      }}
-    />
-    <Provider store={store}>
-      <Fragment forRoute="/">
-        <div>
-          <Fragment forRoute="/about">
-            <About />
-          </Fragment>
-          <Fragment forNoMatch>
-            <HomeContainer />
-          </Fragment>
-        </div>
-      </Fragment>
-    </Provider>
-  </div>,
+  <ThemeProvider theme={theme}>
+    <React.Fragment>
+      <Particles
+        params={particlesConfig}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          zIndex: -1,
+        }}
+      />
+      <Provider store={store}>
+        <Fragment forRoute="/">
+          <React.Fragment>
+            <Fragment forRoute="/about">
+              <About />
+            </Fragment>
+            <Fragment forNoMatch>
+              <HomeContainer />
+            </Fragment>
+          </React.Fragment>
+        </Fragment>
+      </Provider>
+    </React.Fragment>
+  </ThemeProvider>,
   document.getElementById('root')
 );
 

@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import colors from '../resources/colors.json';
-
 export const ResultsMessage = styled.div`
   margin: 40px auto 0 auto;
   text-align: center;
@@ -10,7 +8,7 @@ export const ResultsMessage = styled.div`
   & p {
     font-size: 28px;
     margin-bottom: 12px;
-    color: ${colors.darkGreen};
+    color: ${(props) => props.theme.colors.darkGreen};
   }
 `;
 

@@ -1,16 +1,14 @@
 import styled from 'styled-components';
 
-import colors from '../resources/colors.json';
-
 export const Header = styled.div`
   text-align: center;
   font-size: 32px;
   padding-top: 20px;
 
   & h1 {
-    color: ${colors.creme};
+    color: ${(props) => props.theme.colors.creme};
     font-family: 'Crimson Text';
-    text-shadow: 4px 4px 8px ${colors.darkGreen};
+    text-shadow: 4px 4px 8px ${(props) => props.theme.colors.darkGreen};
   }
 `;
 
@@ -25,7 +23,7 @@ export const P = styled.p`
   font-size: 32px;
   text-align: center;
   margin-bottom: 20px;
-  color: ${colors.darkGreen};
+  color: ${(props) => props.theme.colors.darkGreen};
 `;
 
 export const InputFlexContainer = styled.div`

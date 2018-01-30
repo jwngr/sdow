@@ -1,13 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import colors from '../resources/colors.json';
-
 const Link = styled.a`
   position: relative;
   display: inline-block;
   outline: none;
-  color: ${colors.darkGreen};
+  color: ${(props) => props.theme.colors.darkGreen};
   vertical-align: bottom;
   text-decoration: none;
   white-space: nowrap;
@@ -26,7 +24,7 @@ const Link = styled.a`
 
   &:hover,
   &:focus {
-    color: ${colors.red};
+    color: ${(props) => props.theme.colors.red};
   }
 
   &::before,
@@ -43,7 +41,7 @@ const Link = styled.a`
   }
 
   &::before {
-    background-color: ${colors.yellow};
+    background-color: ${(props) => props.theme.colors.yellow};
     transition: transform 0.2s;
     transition-timing-function: cubic-bezier(0.7, 0, 0.3, 1);
     transform: rotateX(90deg);
@@ -56,7 +54,7 @@ const Link = styled.a`
   }
 
   &::after {
-    border-bottom: 2px solid ${colors.yellow};
+    border-bottom: 2px solid ${(props) => props.theme.colors.yellow};
   }
 `;
 

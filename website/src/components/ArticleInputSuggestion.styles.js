@@ -1,13 +1,11 @@
 import styled from 'styled-components';
 
-import colors from '../resources/colors.json';
-
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   padding: 10px;
   height: 80px;
-  color: ${colors.darkGreen};
+  color: ${(props) => props.theme.colors.darkGreen};
 `;
 
 export const InnerWrapper = styled.div`
@@ -22,7 +20,7 @@ export const Image = styled.img`
   height: 60px;
   margin-right: 12px;
   border-radius: 8px;
-  border: solid 1px ${colors.darkGreen};
+  border: solid 1px ${(props) => props.theme.colors.darkGreen};
 `;
 
 export const Title = styled.p`
