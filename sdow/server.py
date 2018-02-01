@@ -34,104 +34,95 @@ CORS(app)
 
 @app.errorhandler(InvalidRequest)
 def handle_invalid_usage(error):
-  response = jsonify(error.to_dict())
-  response.status_code = error.status_code
-  return response
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
 
 
 @app.route('/paths/<from_page_name>/<to_page_name>')
 def shortest_paths_route(from_page_name, to_page_name):
-  # Look up the IDs for each page
-  try:
-    from_page_id = db.fetch_page_id(from_page_name)
-  except ValueError as error:
-    raise InvalidRequest('From page name "{0}" does not exist.'.format(from_page_name))
+    # Look up the IDs for each page
+    try:
+        from_page_id = db.fetch_page_id(from_page_name)
+    except ValueError as error:
+        raise InvalidRequest(
+            'From page name "{0}" does not exist.'.format(from_page_name))
 
-  try:
-    to_page_id = db.fetch_page_id(to_page_name)
-  except ValueError as error:
-    raise InvalidRequest('To page name "{0}" does not exist.'.format(to_page_name))
+    try:
+        to_page_id = db.fetch_page_id(to_page_name)
+    except ValueError as error:
+        raise InvalidRequest(
+            'To page name "{0}" does not exist.'.format(to_page_name))
 
-  # Compute the shortest paths
-  paths = db.compute_shortest_paths(from_page_id, to_page_id)
+    # Compute the shortest paths
+    paths = db.compute_shortest_paths(from_page_id, to_page_id)
 
-  if len(paths) == 0:
-    # No paths found
-    response = {
-      'paths': [],
-      'pages': [],
-    }
-  else:
-    # Paths found
+    if len(paths) == 0:
+        # No paths found
+        response = {
+            'paths': [],
+            'pages': [],
+        }
+    else:
+        # Paths found
 
-    # TODO: make things work locally without this crazy hack
-    dev_ids_to_prod_ids = {
-      15: 208252,
-      16: 208254,
-      17: 208288,
-      18: 208294,
-      19: 208292,
-      20: 208259
-    }
-    prod_ids_to_dev_ids = {
-      208252: 15,
-      208254: 16,
-      208288: 17,
-      208294: 18,
-      208292: 19,
-      208259: 20
-    }
+        # Get a list of all IDs
+        page_ids = set()
+        for path in paths:
+            for page_id in path:
+                page_ids.add(str(page_id))
 
-    # Get a list of all IDs
-    page_ids = set()
-    for path in paths:
-      for page_id in path:
-        # TODO: remove this mapping hack
-        page_ids.add(str(dev_ids_to_prod_ids[page_id]))
+        page_ids = list(page_ids)
+        pages_info = {}
 
-    query_params = {
-      'action': 'query',
-      'format': 'json',
-      'pageids': '|'.join(page_ids),
-      'prop': 'info|pageimages|pageterms',
-      'inprop': 'url|displaytitle',
-      'piprop': 'thumbnail',
-      'pithumbsize': 160,
-      'pilimit': '2',
-      'wbptterms': 'description',
-      # 'origin': '*'
-    }
+        current_page_ids_index = 0
+        while current_page_ids_index < len(page_ids):
+            # Query at most 50 pages per request (given WikiMedia API limits)
+            end_page_ids_index = min(
+                current_page_ids_index + 50, len(page_ids))
 
-    r = requests.get(WIKIPEDIA_API_URL, params=query_params)
+            query_params = {
+                'action': 'query',
+                'format': 'json',
+                'pageids': '|'.join(page_ids[current_page_ids_index:end_page_ids_index]),
+                'prop': 'info|pageimages|pageterms',
+                'inprop': 'url|displaytitle',
+                'piprop': 'thumbnail',
+                'pithumbsize': 160,
+                'pilimit': 50,
+                'wbptterms': 'description',
+            }
 
-    pages_result = r.json().get('query', {}).get('pages')
+            current_page_ids_index = end_page_ids_index
 
-    # TODO: handle 'continue' and picontinue' keys
+            req = requests.get(WIKIPEDIA_API_URL, params=query_params)
 
-    pages_info = {}
-    for page_id, page in pages_result.iteritems():
-      # TODO: remove this hack
-      dev_page_id = prod_ids_to_dev_ids[int(page_id)]
+            pages_result = req.json().get('query', {}).get('pages')
 
-      pages_info[dev_page_id] = {
-        'title': page['title'],
-        'url': page['fullurl']
-      }
+            for page_id, page in pages_result.iteritems():
+                dev_page_id = int(page_id)
 
-      thumbnail_url = page.get('thumbnail', {}).get('source')
-      if thumbnail_url:
-        pages_info[dev_page_id]['thumbnailUrl'] = thumbnail_url
+                pages_info[dev_page_id] = {
+                    'title': page['title'],
+                    'url': page['fullurl']
+                }
 
-      description = page.get('terms', {}).get('description', [])
-      if description:
-        pages_info[dev_page_id]['description'] = description[0][0].upper() + description[0][1:]
+                thumbnail_url = page.get('thumbnail', {}).get('source')
+                if thumbnail_url:
+                    pages_info[dev_page_id]['thumbnailUrl'] = thumbnail_url
 
-    response = {
-      'paths': paths,
-      'pages': pages_info
-    }
+                description = page.get('terms', {}).get('description', [])
+                if description:
+                    pages_info[dev_page_id]['description'] = description[0][0].upper(
+                    ) + description[0][1:]
 
-  return jsonify(response)
+        response = {
+            'paths': paths,
+            'pages': pages_info
+        }
+
+    return jsonify(response)
+
 
 if __name__ == "__main__":
-  app.run()
+    app.run()
