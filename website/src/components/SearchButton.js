@@ -54,6 +54,8 @@ class SearchButton extends React.Component {
         });
       })
       .catch((error) => {
+        // TODO: test when the backend API URL is wrong or the Flask app is not running
+        console.log(error);
         setError(error.response.data.error);
       });
   }
