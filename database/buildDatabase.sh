@@ -1,5 +1,10 @@
 #!/bin/bash
 
+set -euo pipefail
+
+# Force default language for output sorting to be bytewise.
+export LC_ALL=C
+
 # By default, the latest Wikipedia dump will be downloaded. If a download date in the format
 # YYYYMMDD is provided as the first argument, it will be used instead.
 if [ ${#1} -ne 8 ]; then
@@ -31,9 +36,6 @@ echo "[INFO] Output directory: $OUT_DIR"
 ##############################
 #  DOWNLOAD WIKIPEDIA DUMPS  #
 ##############################
-echo
-echo "[INFO] Downloading files"
-
 if [ ! -f $MD5SUM_FILENAME ]; then
   echo "[INFO] Downloading md5sums file"
   wget "$DOWNLOAD_URL/$MD5SUM_FILENAME"
@@ -87,13 +89,9 @@ fi
 ##########################
 #  TRIM WIKIPEDIA DUMPS  #
 ##########################
-echo
-echo "[INFO] Trimming files"
-
 if [ ! -f redirects.txt.gz ]; then
-  echo "[INFO] Trimming the redirects file"
+  echo "[INFO] Trimming redirects file"
 
-  # Print progress bar
   # Unzip
   # Remove all lines that don't start with INSERT INTO...
   # Split into individual records
@@ -101,22 +99,20 @@ if [ ! -f redirects.txt.gz ]; then
   # Replace namespace with a tab
   # Remove everything starting at the to page name's closing apostrophe
   # Zip into output file
-  pv $REDIRECTS_FILENAME \
-    | gunzip \
-    | LC_ALL=C sed -n 's/^INSERT INTO `redirect` VALUES (//p' \
-    | LC_ALL=C sed -e 's/),(/\'$'\n/g' \
-    | LC_ALL=C egrep "^[0-9]+,0," \
-    | LC_ALL=C sed -e $"s/,0,'/\t/g" \
-    | LC_ALL=C sed -e "s/','.*//g" \
-    | gzip > redirects.txt.gz
+  time pigz -dc $REDIRECTS_FILENAME \
+    | sed -n 's/^INSERT INTO `redirect` VALUES (//p' \
+    | sed -e 's/),(/\'$'\n/g' \
+    | egrep "^[0-9]+,0," \
+    | sed -e $"s/,0,'/\t/g" \
+    | sed -e "s/','.*//g" \
+    | pigz -1 > redirects.txt.gz
 else
-  echo "[WARN] Already created trimmed redirects file"
+  echo "[WARN] Already trimmed redirects file"
 fi
 
 if [ ! -f pages.txt.gz ]; then
-  echo "[INFO] Trimming the pages file"
+  echo "[INFO] Trimming pages file"
 
-  # Print progress bar
   # Unzip
   # Remove all lines that don't start with INSERT INTO...
   # Split into individual records
@@ -124,22 +120,20 @@ if [ ! -f pages.txt.gz ]; then
   # Replace namespace with a tab
   # Remove everything starting at the page name's closing apostrophe
   # Zip into output file
-  pv $PAGES_FILENAME \
-    | gunzip \
-    | LC_ALL=C sed -n 's/^INSERT INTO `page` VALUES (//p' \
-    | LC_ALL=C sed -e 's/),(/\'$'\n/g' \
-    | LC_ALL=C egrep "^[0-9]+,0," \
-    | LC_ALL=C sed -e $"s/,0,'/\t/g" \
-    | LC_ALL=C sed -e "s/','.*//g" \
-    | gzip > pages.txt.gz
+  time pigz -dc $PAGES_FILENAME \
+    | sed -n 's/^INSERT INTO `page` VALUES (//p' \
+    | sed -e 's/),(/\'$'\n/g' \
+    | egrep "^[0-9]+,0," \
+    | sed -e $"s/,0,'/\t/g" \
+    | sed -e "s/','.*//g" \
+    | pigz -1 > pages.txt.gz
 else
-  echo "[WARN] Already created trimmed pages file"
+  echo "[WARN] Already trimmed pages file"
 fi
 
 if [ ! -f links.txt.gz ]; then
-  echo "[INFO] Trimming the links file"
+  echo "[INFO] Trimming links file"
 
-  # Print progress bar
   # Unzip
   # Remove all lines that don't start with INSERT INTO...
   # Split into individual records
@@ -147,65 +141,110 @@ if [ ! -f links.txt.gz ]; then
   # Replace namespace with a tab
   # Remove everything starting at the to page name's closing apostrophe
   # Zip into output file
-  pv $LINKS_FILENAME \
-    | gunzip \
-    | LC_ALL=C sed -n 's/^INSERT INTO `pagelinks` VALUES (//p' \
-    | LC_ALL=C sed -e 's/),(/\'$'\n/g' \
-    | LC_ALL=C egrep "^[0-9]+,0,.*,0$" \
-    | LC_ALL=C sed -e $"s/,0,'/\t/g" \
-    | LC_ALL=C sed -e "s/',0//g" \
-    | gzip > links.txt.gz
+  time pigz -dc $LINKS_FILENAME \
+    | sed -n 's/^INSERT INTO `pagelinks` VALUES (//p' \
+    | sed -e 's/),(/\'$'\n/g' \
+    | egrep "^[0-9]+,0,.*,0$" \
+    | sed -e $"s/,0,'/\t/g" \
+    | sed -e "s/',0//g" \
+    | pigz -1 > links.txt.gz
 else
-  echo "[WARN] Already created trimmed links file"
+  echo "[WARN] Already trimmed links file"
 fi
 
 
-######################################################
-#  REPLACE PAGE NAMES WITH IDS AND REMOVE REDIRECTS  #
-######################################################
-echo
-echo "[INFO] Replacing page names with IDs and removing redirects"
-
-if [ ! -f redirects.with_ids.txt.gz ]; then
-  echo "[INFO] Replacing page names with IDs in redirects file"
-  time python "$ROOT_DIR/replacePageNamesWithIdsInRedirectsFile.py" pages.txt.gz redirects.txt.gz \
-    | gzip > redirects.with_ids.txt.gz
+######################################
+#  REPLACE TITLES IN REDIRECTS FILE  #
+######################################
+if [ ! -f links.sorted_by_from_id.txt.gz ]; then
+  echo "[INFO] Replacing titles in redirects file"
+  time python "$ROOT_DIR/replaceTitlesInRedirectsFile.py" pages.txt.gz redirects.txt.gz \
+    | pigz -1 > redirects.with_ids.txt.gz
 else
-  echo "[WARN] Already replaced page names with IDs in redirects file"
+  echo "[WARN] Already replaced titles in redirects file"
 fi
 
-if [ ! -f links.with_ids.txt.gz ]; then
-  echo "[INFO] Replacing page names with IDs and removing redirects in links file"
-  time python "$ROOT_DIR/replacePageNamesWithIdsAndRemoveRedirectsInLinksFile.py" pages.txt.gz redirects.with_ids.txt.gz links.txt.gz \
-    | gzip > links.with_ids.txt.gz
+#####################
+#  SORT LINKS FILE  #
+#####################
+if [ ! -f links.sorted_by_from_id.txt.gz ]; then
+  echo "[INFO] Sorting links file by from page ID"
+  time pigz -dc links.txt.gz \
+    | sort -S 100% -t $'\t' -k 1n,1n \
+    | pigz -1 > links.sorted_by_from_id.txt.gz
 else
-  echo "[WARN] Already replaced page names with IDs and removed redirects in links file"
+  echo "[WARN] Already sorted links file by from page ID"
 fi
 
-if [ ! -f pages.with_popularity.txt.gz ]; then
-  echo "[INFO] Adding popularity to pages file"
-  time python "$ROOT_DIR/addPopularityToPagesFile.py" pages.txt.gz links.with_ids.txt.gz \
-    | gzip > pages.with_popularity.txt.gz
+if [ ! -f links.sorted_by_to_title.txt.gz ]; then
+  echo "[INFO] Sorting links file by to page title"
+  time pigz -dc links.txt.gz \
+    | sort -S 100% -t $'\t' -k 2,2 \
+    | pigz -1 > links.sorted_by_to_title.txt.gz
 else
-  echo "[WARN] Already added popularity to pages file"
+  echo "[WARN] Already sorted links file by to page title"
+fi
+
+
+#############################
+#  GROUP SORTED LINKS FILE  #
+#############################
+if [ ! -f links.grouped_by_from_id.txt.gz ]; then
+  echo "[INFO] Grouping from links file by page ID"
+  time pigz -dc links.sorted_by_from_id.txt.gz \
+   | awk -F '\t' '$1==last {printf ",%s",$2; next} NR>1 {print "";} {last=$1; printf "%s\t%s",$1,$2;} END{print "";}' \
+   | pigz -1 > links.grouped_by_from_id.txt.gz
+else
+  echo "[WARN] Already grouped links file by from page ID"
+fi
+
+if [ ! -f links.grouped_by_to_title.txt.gz ]; then
+  echo "[INFO] Grouping links file by to page title"
+  time pigz -dc links.sorted_by_to_title.txt.gz \
+    | awk -F '\t' '$2==last {printf ",%s",$1; next} NR>1 {print "";} {last=$2; printf "%s\t%s",$2,$1;} END{print "";}' \
+    | gzip > links.grouped_by_to_title.txt.gz
+else
+  echo "[WARN] Already grouped links file by to page title"
+fi
+
+
+###################################################
+#  REPLACE TITLES WITH IDS IN GROUPED LINKS FILE  #
+###################################################
+if [ ! -f links_from.txt.gz ]; then
+  echo "[INFO] Replacing titles with IDs in grouped from links file"
+  time python "$ROOT_DIR/replaceTitlesAndRedirectsInLinksFile.py" "from" pages.txt.gz redirects.with_ids.txt.gz links.grouped_by_from_id.txt.gz \
+    | pigz -1 > links_from.txt.gz
+else
+  echo "[WARN] Already replaced titles with IDs in grouped from links file"
+fi
+
+if [ ! -f links_to.txt.gz ]; then
+  echo "[INFO] Replacing titles with IDs in grouped to links file"
+  time python "$ROOT_DIR/replaceTitlesAndRedirectsInLinksFile.py" "to" pages.txt.gz redirects.with_ids.txt.gz links.grouped_by_to_title.txt.gz \
+    | pigz -1 > links_to.txt.gz
+else
+  echo "[WARN] Already replaced titles with IDs in grouped to links file"
+fi
+
+###################################
+#  GENERATE COMPOSITE TEXT FILES  #
+###################################
+if [ ! -f composite.txt.gz ]; then
+  echo "[INFO] Generating composite SQL import file"
+  time python "$ROOT_DIR/generateCompositeFile.py" pages.txt.gz redirects.with_ids.txt.gz links_from.txt.gz links_to.txt.gz \
+    | pigz -1 > composite.txt.gz
+else
+  echo "[WARN] Already generated composite SQL import file"
 fi
 
 
 ############################
 #  CREATE SQLITE DATABASE  #
 ############################
-echo
-echo "[INFO] Creating SQLite databases"
-
 if [ ! -f sdow.sqlite ]; then
-  echo "[INFO] Creating redirects table"
-  time zcat redirects.with_ids.txt.gz | sqlite3 sdow.sqlite ".read $ROOT_DIR/createRedirectsTable.sql"
-
-  echo "[INFO] Creating pages table"
-  time zcat pages.with_popularity.txt.gz | sqlite3 sdow.sqlite ".read $ROOT_DIR/createPagesTable.sql"
-
-  echo "[INFO] Creating links table"
-  time zcat links.with_ids.txt.gz | sqlite3 sdow.sqlite ".read $ROOT_DIR/createLinksTable.sql"
+  echo "[INFO] Creating SQLite database"
+  time zcat composite.txt.gz | sqlite3 sdow.sqlite ".read createPagesTable.sql"
 else
   echo "[WARN] Already created SQLite database"
 fi
