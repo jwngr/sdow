@@ -74,15 +74,16 @@ instructions below:
    for the backup:
    ```bash
    $ cd sdow/database/
-   $ time ./buildDatabase.sh [<YYYYMMDD>]
+   $ (time ./buildDatabase.sh [<YYYYMMDD>]) &> output.txt
    ```
 1. Detach from the current screen session by pressing `<CTRL> + <a>` and then `<d>`. To reattach to
    the screen, run `screen -r`. Make sure to always detach from the screen cleanly so it can be
    resumed!
+1. Copy the script output and the resulting SQLite file to the `sdow-prod` GCS bucket:
    # TODO: move this command into a script which is easier to run
-1. Copy the resulting SQLite file to the `sdow-prod` GCS bucket:
    ```
-   $ gsutil cp dump/sdow.sqlite gs://sdow-prod/dumps/sdow-<YYYYMMDD>.sqlite
+   $ gsutil cp output.txt gs://sdow-prod/dumps/<YYYYMMDD>/
+   $ gsutil cp dump/sdow.sqlite gs://sdow-prod/dumps/<YYYYMMDD>/
    ```
 1. To avoid charges for running VMS and SSD persistent disk, delete the VM as soon as the job is
    complete and the database is saved.
@@ -121,7 +122,7 @@ Endpoint: http://<external*ip>:5000/paths/Usain%20Bolt/40*(number)
    current directory.
 1. Copy the latest SQLite file from the `sdow-prod` GCS bucket:
    ```bash
-   $ gsutil cp gs://sdow-prod/dumps/sdow-<YYYYMMDD>.sqlite .
+   $ gsutil cp gs://sdow-prod/dumps/<YYYYMMDD>/sdow.sqlite .
    ```
 1. Start the Flask app, making sure to bind the Flask web service to the public facing network
    interface of the VM:

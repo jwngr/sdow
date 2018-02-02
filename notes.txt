@@ -1,3 +1,90 @@
+February 2, 2018 timings:
+
+[INFO] Verifying md5sum for pages file
+
+real    0m3.485s
+user    0m3.180s
+sys     0m0.304s
+
+[INFO] Downloading links file
+converted 'https://dumps.wikimedia.your.org/enwiki/20180101/enwiki-20180101-pagelinks.sql.gz' (ANSI_X3.4-1968) -> 'https://dumps.wikimedia.your.org/enwiki/20180101/enwiki-20180101-pagelinks.sql.gz' (UTF-8)
+--2018-02-02 12:58:26--  https://dumps.wikimedia.your.org/enwiki/20180101/enwiki-20180101-pagelinks.sql.gz
+Resolving dumps.wikimedia.your.org (dumps.wikimedia.your.org)... 204.9.55.82, 2001:4978:1:420::cc09:3752
+Connecting to dumps.wikimedia.your.org (dumps.wikimedia.your.org)|204.9.55.82|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 5710190750 (5.3G) [application/x-gzip]
+Saving to: 'enwiki-20180101-pagelinks.sql.gz'
+
+enwiki-20180101-pagelinks.sql.gz                   100%[==================================================================================================================>]   5.32G   234MB/s   in 33s    
+
+2018-02-02 12:59:00 (163 MB/s) - 'enwiki-20180101-pagelinks.sql.gz' saved [5710190750/5710190750]
+
+[INFO] Verifying md5sum for links file
+
+real    0m11.881s
+user    0m10.860s
+sys     0m1.016s
+
+[INFO] Trimming redirects file
+
+real    0m9.488s
+user    0m21.112s
+sys     0m3.364s
+
+[INFO] Trimming pages file
+
+real    1m2.060s
+user    1m44.948s
+sys     0m24.152s
+
+[INFO] Trimming links file
+
+real    10m56.004s
+user    19m55.236s
+sys     3m45.660s
+
+[INFO] Replacing titles in redirects file
+
+real    0m54.280s
+user    0m54.304s
+sys     0m3.572s
+
+[INFO] Sorting links file by from page ID
+
+real    7m5.475s
+user    24m55.360s
+sys     1m55.488s
+
+[INFO] Sorting links file by to page title
+
+real    4m31.675s
+user    10m39.060s
+sys     1m22.260s
+
+[INFO] Grouping from links file by from page ID
+
+real    5m34.678s
+user    10m7.772s
+sys     1m2.972s
+
+[INFO] Grouping to links file by to page title
+
+real    4m43.239s
+user    8m26.952s
+sys     0m46.896s
+
+[INFO] Replacing titles with IDs in grouped from links file
+
+real    16m8.587s
+user    16m56.604s
+sys     0m35.760s
+
+[INFO] Replacing titles with IDs in grouped to links file
+
+
+--------------------------------------------
+
+
 January 17th, 2018 timings:
 [INFO] Replacing page names with IDs and removing redirects
 [INFO] Replacing page names with IDs in redirects file

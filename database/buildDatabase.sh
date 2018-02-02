@@ -200,22 +200,22 @@ fi
 #############################
 if [ ! -f links.grouped_by_from_id.txt.gz ]; then
   echo
-  echo "[INFO] Grouping from links file by page ID"
+  echo "[INFO] Grouping from links file by from page ID"
   time pigz -dc links.sorted_by_from_id.txt.gz \
-   | awk -F '\t' '$1==last {printf ",%s",$2; next} NR>1 {print "";} {last=$1; printf "%s\t%s",$1,$2;} END{print "";}' \
+   | awk -F '\t' '$1==last {printf "|%s",$2; next} NR>1 {print "";} {last=$1; printf "%s\t%s",$1,$2;} END{print "";}' \
    | pigz -1 > links.grouped_by_from_id.txt.gz
 else
-  echo "[WARN] Already grouped links file by from page ID"
+  echo "[WARN] Already grouped from links file by from page ID"
 fi
 
 if [ ! -f links.grouped_by_to_title.txt.gz ]; then
   echo
-  echo "[INFO] Grouping links file by to page title"
+  echo "[INFO] Grouping to links file by to page title"
   time pigz -dc links.sorted_by_to_title.txt.gz \
-    | awk -F '\t' '$2==last {printf ",%s",$1; next} NR>1 {print "";} {last=$2; printf "%s\t%s",$2,$1;} END{print "";}' \
+    | awk -F '\t' '$2==last {printf "|%s",$1; next} NR>1 {print "";} {last=$2; printf "%s\t%s",$2,$1;} END{print "";}' \
     | gzip > links.grouped_by_to_title.txt.gz
 else
-  echo "[WARN] Already grouped links file by to page title"
+  echo "[WARN] Already grouped to links file by to page title"
 fi
 
 

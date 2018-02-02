@@ -55,8 +55,8 @@ for line in io.BufferedReader(gzip.open(redirects_file, 'r')):
 # Loop through each line in the links file, replacing titles with IDs, applying redirects, and
 # removing nonexistent pages.
 links = defaultdict(Set)
-for line in io.BufferedReader(gzip.open(links_file, 'r')):
-    if link_direction == 'from':
+if link_direction == 'from':
+    for line in io.BufferedReader(gzip.open(links_file, 'r')):
         [from_page_id, to_page_titles] = line.rstrip('\n').split('\t')
 
         from_page_exists = from_page_id in all_page_ids
@@ -71,7 +71,8 @@ for line in io.BufferedReader(gzip.open(links_file, 'r')):
                     to_page_id = redirects.get(to_page_id, to_page_id)
 
                     links[from_page_id].add(to_page_id)
-    else:
+else:
+    for line in io.BufferedReader(gzip.open(links_file, 'r')):
         [to_page_title, from_page_ids] = line.rstrip('\n').split('\t')
 
         to_page_id = page_titles_to_ids.get(to_page_title)
