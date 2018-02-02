@@ -44,6 +44,7 @@ else
 fi
 
 if [ ! -f $REDIRECTS_FILENAME ]; then
+  echo
   echo "[INFO] Downloading redirects file"
   wget "$DOWNLOAD_URL/$REDIRECTS_FILENAME"
 
@@ -58,6 +59,7 @@ else
 fi
 
 if [ ! -f $PAGES_FILENAME ]; then
+  echo
   echo "[INFO] Downloading pages file"
   wget "$DOWNLOAD_URL/$PAGES_FILENAME"
 
@@ -72,6 +74,7 @@ else
 fi
 
 if [ ! -f $LINKS_FILENAME ]; then
+  echo
   echo "[INFO] Downloading links file"
   wget "$DOWNLOAD_URL/$LINKS_FILENAME"
 
@@ -90,6 +93,7 @@ fi
 #  TRIM WIKIPEDIA DUMPS  #
 ##########################
 if [ ! -f redirects.txt.gz ]; then
+  echo
   echo "[INFO] Trimming redirects file"
 
   # Unzip
@@ -111,6 +115,7 @@ else
 fi
 
 if [ ! -f pages.txt.gz ]; then
+  echo
   echo "[INFO] Trimming pages file"
 
   # Unzip
@@ -132,6 +137,7 @@ else
 fi
 
 if [ ! -f links.txt.gz ]; then
+  echo
   echo "[INFO] Trimming links file"
 
   # Unzip
@@ -157,6 +163,7 @@ fi
 #  REPLACE TITLES IN REDIRECTS FILE  #
 ######################################
 if [ ! -f links.sorted_by_from_id.txt.gz ]; then
+  echo
   echo "[INFO] Replacing titles in redirects file"
   time python "$ROOT_DIR/replaceTitlesInRedirectsFile.py" pages.txt.gz redirects.txt.gz \
     | pigz -1 > redirects.with_ids.txt.gz
@@ -168,6 +175,7 @@ fi
 #  SORT LINKS FILE  #
 #####################
 if [ ! -f links.sorted_by_from_id.txt.gz ]; then
+  echo
   echo "[INFO] Sorting links file by from page ID"
   time pigz -dc links.txt.gz \
     | sort -S 100% -t $'\t' -k 1n,1n \
@@ -177,6 +185,7 @@ else
 fi
 
 if [ ! -f links.sorted_by_to_title.txt.gz ]; then
+  echo
   echo "[INFO] Sorting links file by to page title"
   time pigz -dc links.txt.gz \
     | sort -S 100% -t $'\t' -k 2,2 \
@@ -190,6 +199,7 @@ fi
 #  GROUP SORTED LINKS FILE  #
 #############################
 if [ ! -f links.grouped_by_from_id.txt.gz ]; then
+  echo
   echo "[INFO] Grouping from links file by page ID"
   time pigz -dc links.sorted_by_from_id.txt.gz \
    | awk -F '\t' '$1==last {printf ",%s",$2; next} NR>1 {print "";} {last=$1; printf "%s\t%s",$1,$2;} END{print "";}' \
@@ -199,6 +209,7 @@ else
 fi
 
 if [ ! -f links.grouped_by_to_title.txt.gz ]; then
+  echo
   echo "[INFO] Grouping links file by to page title"
   time pigz -dc links.sorted_by_to_title.txt.gz \
     | awk -F '\t' '$2==last {printf ",%s",$1; next} NR>1 {print "";} {last=$2; printf "%s\t%s",$2,$1;} END{print "";}' \
@@ -212,6 +223,7 @@ fi
 #  REPLACE TITLES WITH IDS IN GROUPED LINKS FILE  #
 ###################################################
 if [ ! -f links_from.txt.gz ]; then
+  echo
   echo "[INFO] Replacing titles with IDs in grouped from links file"
   time python "$ROOT_DIR/replaceTitlesAndRedirectsInLinksFile.py" "from" pages.txt.gz redirects.with_ids.txt.gz links.grouped_by_from_id.txt.gz \
     | pigz -1 > links_from.txt.gz
@@ -220,6 +232,7 @@ else
 fi
 
 if [ ! -f links_to.txt.gz ]; then
+  echo
   echo "[INFO] Replacing titles with IDs in grouped to links file"
   time python "$ROOT_DIR/replaceTitlesAndRedirectsInLinksFile.py" "to" pages.txt.gz redirects.with_ids.txt.gz links.grouped_by_to_title.txt.gz \
     | pigz -1 > links_to.txt.gz
@@ -231,6 +244,7 @@ fi
 #  GENERATE COMPOSITE TEXT FILES  #
 ###################################
 if [ ! -f composite.txt.gz ]; then
+  echo
   echo "[INFO] Generating composite SQL import file"
   time python "$ROOT_DIR/generateCompositeFile.py" pages.txt.gz redirects.with_ids.txt.gz links_from.txt.gz links_to.txt.gz \
     | pigz -1 > composite.txt.gz
@@ -243,6 +257,7 @@ fi
 #  CREATE SQLITE DATABASE  #
 ############################
 if [ ! -f sdow.sqlite ]; then
+  echo
   echo "[INFO] Creating SQLite database"
   time zcat composite.txt.gz | sqlite3 sdow.sqlite ".read createPagesTable.sql"
 else
