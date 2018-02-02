@@ -159,10 +159,10 @@ else
 fi
 
 
-######################################
-#  REPLACE TITLES IN REDIRECTS FILE  #
-######################################
-if [ ! -f links.sorted_by_from_id.txt.gz ]; then
+###########################################
+#  REPLACE TITLES AND REDIRECTS IN FILES  #
+###########################################
+if [ ! -f redirects.with_ids.txt.gz ]; then
   echo
   echo "[INFO] Replacing titles in redirects file"
   time python "$ROOT_DIR/replaceTitlesInRedirectsFile.py" pages.txt.gz redirects.txt.gz \
@@ -171,27 +171,36 @@ else
   echo "[WARN] Already replaced titles in redirects file"
 fi
 
+if [ ! -f links.with_ids.txt.gz ]; then
+  echo
+  echo "[INFO] Replacing titles and redirects in links file"
+  time python "$ROOT_DIR/replaceTitlesAndRedirectsInLinksFile.py" pages.txt.gz redirects.with_ids.txt.gz links.txt.gz \
+    | pigz -1 > links.with_ids.txt.gz
+else
+  echo "[WARN] Already replaced titles and redirects in links file"
+fi
+
 #####################
 #  SORT LINKS FILE  #
 #####################
 if [ ! -f links.sorted_by_from_id.txt.gz ]; then
   echo
   echo "[INFO] Sorting links file by from page ID"
-  time pigz -dc links.txt.gz \
+  time pigz -dc links.with_ids.txt.gz \
     | sort -S 100% -t $'\t' -k 1n,1n \
     | pigz -1 > links.sorted_by_from_id.txt.gz
 else
   echo "[WARN] Already sorted links file by from page ID"
 fi
 
-if [ ! -f links.sorted_by_to_title.txt.gz ]; then
+if [ ! -f links.sorted_by_to_id.txt.gz ]; then
   echo
-  echo "[INFO] Sorting links file by to page title"
-  time pigz -dc links.txt.gz \
-    | sort -S 100% -t $'\t' -k 2,2 \
-    | pigz -1 > links.sorted_by_to_title.txt.gz
+  echo "[INFO] Sorting links file by to page ID"
+  time pigz -dc links.with_ids.txt.gz \
+    | sort -S 100% -t $'\t' -k 2n,2n \
+    | pigz -1 > links.sorted_by_to_id.txt.gz
 else
-  echo "[WARN] Already sorted links file by to page title"
+  echo "[WARN] Already sorted links file by to page ID"
 fi
 
 
@@ -208,37 +217,16 @@ else
   echo "[WARN] Already grouped from links file by from page ID"
 fi
 
-if [ ! -f links.grouped_by_to_title.txt.gz ]; then
+if [ ! -f links.grouped_by_to_id.txt.gz ]; then
   echo
-  echo "[INFO] Grouping to links file by to page title"
-  time pigz -dc links.sorted_by_to_title.txt.gz \
+  echo "[INFO] Grouping to links file by to page ID"
+  time pigz -dc links.sorted_by_to_id.txt.gz \
     | awk -F '\t' '$2==last {printf "|%s",$1; next} NR>1 {print "";} {last=$2; printf "%s\t%s",$2,$1;} END{print "";}' \
-    | gzip > links.grouped_by_to_title.txt.gz
+    | gzip > links.grouped_by_to_id.txt.gz
 else
-  echo "[WARN] Already grouped to links file by to page title"
+  echo "[WARN] Already grouped to links file by to page ID"
 fi
 
-
-###################################################
-#  REPLACE TITLES WITH IDS IN GROUPED LINKS FILE  #
-###################################################
-if [ ! -f links_from.txt.gz ]; then
-  echo
-  echo "[INFO] Replacing titles with IDs in grouped from links file"
-  time python "$ROOT_DIR/replaceTitlesAndRedirectsInLinksFile.py" "from" pages.txt.gz redirects.with_ids.txt.gz links.grouped_by_from_id.txt.gz \
-    | pigz -1 > links_from.txt.gz
-else
-  echo "[WARN] Already replaced titles with IDs in grouped from links file"
-fi
-
-if [ ! -f links_to.txt.gz ]; then
-  echo
-  echo "[INFO] Replacing titles with IDs in grouped to links file"
-  time python "$ROOT_DIR/replaceTitlesAndRedirectsInLinksFile.py" "to" pages.txt.gz redirects.with_ids.txt.gz links.grouped_by_to_title.txt.gz \
-    | pigz -1 > links_to.txt.gz
-else
-  echo "[WARN] Already replaced titles with IDs in grouped to links file"
-fi
 
 ###################################
 #  GENERATE COMPOSITE TEXT FILES  #
@@ -246,7 +234,7 @@ fi
 if [ ! -f composite.txt.gz ]; then
   echo
   echo "[INFO] Generating composite SQL import file"
-  time python "$ROOT_DIR/generateCompositeFile.py" pages.txt.gz redirects.with_ids.txt.gz links_from.txt.gz links_to.txt.gz \
+  time python "$ROOT_DIR/generateCompositeFile.py" pages.txt.gz redirects.with_ids.txt.gz links.grouped_by_from_id.txt.gz links.grouped_by_to_id.txt.gz \
     | pigz -1 > composite.txt.gz
 else
   echo "[WARN] Already generated composite SQL import file"

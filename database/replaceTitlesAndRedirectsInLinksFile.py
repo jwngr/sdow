@@ -14,27 +14,22 @@ from collections import defaultdict
 # Validate inputs
 if (len(sys.argv) < 4):
     print '[ERROR] Not enough arguments provided!'
-    print '[INFO] Usage: {0} <link_direction> <pages_file> <redirects_file> <links_file>'.format(sys.argv[0])
+    print '[INFO] Usage: {0} <pages_file> <redirects_file> <links_file>'.format(sys.argv[0])
     sys.exit()
 
-link_direction = sys.argv[1]
-pages_file = sys.argv[2]
-redirects_file = sys.argv[3]
-links_file = sys.argv[4]
+pages_file = sys.argv[1]
+redirects_file = sys.argv[2]
+links_file = sys.argv[3]
 
-if (link_direction not in ['to', 'from']):
-    print '[ERROR] Link direction must be "to" or "from".'
-    sys.exit()
-
-if (pages_file.endswith('.gz') == False):
+if not pages_file.endswith('.gz'):
     print '[ERROR] Pages file must be gzipped.'
     sys.exit()
 
-if (redirects_file.endswith('.gz') == False):
+if not redirects_file.endswith('.gz'):
     print '[ERROR] Redirects file must be gzipped.'
     sys.exit()
 
-if (links_file.endswith('.gz') == False):
+if not links_file.endswith('.gz'):
     print '[ERROR] Links file must be gzipped.'
     sys.exit()
 
@@ -53,39 +48,18 @@ for line in io.BufferedReader(gzip.open(redirects_file, 'r')):
     redirects[from_page_id] = to_page_id
 
 # Loop through each line in the links file, replacing titles with IDs, applying redirects, and
-# removing nonexistent pages.
+# removing nonexistent pages, writing the result to stdout.
 links = defaultdict(Set)
-if link_direction == 'from':
-    for line in io.BufferedReader(gzip.open(links_file, 'r')):
-        [from_page_id, to_page_titles] = line.rstrip('\n').split('\t')
+for line in io.BufferedReader(gzip.open(links_file, 'r')):
+    [from_page_id, to_page_title] = line.rstrip('\n').split('\t')
 
-        from_page_exists = from_page_id in all_page_ids
+    from_page_exists = from_page_id in all_page_ids
 
-        if from_page_exists:
-            from_page_id = redirects.get(from_page_id, from_page_id)
-
-            for to_page_title in to_page_titles.split('|'):
-                to_page_id = page_titles_to_ids.get(to_page_title)
-
-                if to_page_id is not None:
-                    to_page_id = redirects.get(to_page_id, to_page_id)
-
-                    links[from_page_id].add(to_page_id)
-else:
-    for line in io.BufferedReader(gzip.open(links_file, 'r')):
-        [to_page_title, from_page_ids] = line.rstrip('\n').split('\t')
+    if from_page_exists:
+        from_page_id = redirects.get(from_page_id, from_page_id)
 
         to_page_id = page_titles_to_ids.get(to_page_title)
-        to_page_id = redirects.get(to_page_id, to_page_id)
 
         if to_page_id is not None:
-            for from_page_id in from_page_ids.split('|'):
-                from_page_exists = from_page_id in all_page_ids
-
-                if from_page_exists:
-                    from_page_id = redirects.get(from_page_id, from_page_id)
-                    links[to_page_id].add(from_page_id)
-
-# Loop through each link and print it to stdout.
-for page_id, linked_page_ids in links.iteritems():
-    print '\t'.join([page_id, '|'.join(linked_page_ids)])
+            to_page_id = redirects.get(to_page_id, to_page_id)
+            print '\t'.join([from_page_id, to_page_id])
