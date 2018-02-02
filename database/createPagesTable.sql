@@ -1,11 +1,15 @@
-CREATE TABLE IF NOT EXISTS pages(
+CREATE TABLE IF NOT EXISTS pages
+(
   id INTEGER PRIMARY KEY,
-  name TEXT,
-  popularity INTEGER
+  title TEXT NOT NULL,
+  redirect_id INTEGER,
+  popularity INTEGER,
+  to_links TEXT,
+  from_links TEXT
 );
 
 .mode csv
 .separator "\t"
 .import /dev/stdin pages
 
-CREATE INDEX pages_covering_index ON pages(id, name, popularity);
+CREATE INDEX pages_title_index ON pages(title COLLATE NOCASE);
