@@ -187,7 +187,7 @@ if [ ! -f links.sorted_by_from_id.txt.gz ]; then
   echo
   echo "[INFO] Sorting links file by from page ID"
   time pigz -dc links.with_ids.txt.gz \
-    | sort -S 100% -t $'\t' -k 1n,1n \
+    | sort -u -S 100% -t $'\t' -k 1n,1n \
     | pigz -1 > links.sorted_by_from_id.txt.gz
 else
   echo "[WARN] Already sorted links file by from page ID"
@@ -197,7 +197,7 @@ if [ ! -f links.sorted_by_to_id.txt.gz ]; then
   echo
   echo "[INFO] Sorting links file by to page ID"
   time pigz -dc links.with_ids.txt.gz \
-    | sort -S 100% -t $'\t' -k 2n,2n \
+    | sort -u -S 100% -t $'\t' -k 2n,2n \
     | pigz -1 > links.sorted_by_to_id.txt.gz
 else
   echo "[WARN] Already sorted links file by to page ID"
