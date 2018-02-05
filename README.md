@@ -60,7 +60,7 @@ instructions below:
 1. Install required dependencies:
    ```bash
    $ sudo apt-get update
-   $ sudo apt-get install git pigz sqlite3
+   $ sudo apt-get -y install git pigz sqlite3
    ```
 1. Clone this directory via HTTPS:
    ```bash

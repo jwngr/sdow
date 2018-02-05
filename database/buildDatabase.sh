@@ -38,7 +38,7 @@ echo "[INFO] Output directory: $OUT_DIR"
 ##############################
 if [ ! -f $MD5SUM_FILENAME ]; then
   echo "[INFO] Downloading md5sums file"
-  wget "$DOWNLOAD_URL/$MD5SUM_FILENAME"
+  time wget -nv "$DOWNLOAD_URL/$MD5SUM_FILENAME"
 else
   echo "[WARN] Already downloaded md5sums file"
 fi
@@ -46,7 +46,7 @@ fi
 if [ ! -f $REDIRECTS_FILENAME ]; then
   echo
   echo "[INFO] Downloading redirects file"
-  wget "$DOWNLOAD_URL/$REDIRECTS_FILENAME"
+  time wget -nv "$DOWNLOAD_URL/$REDIRECTS_FILENAME"
 
   echo "[INFO] Verifying md5sum for redirects file"
   time md5sum $REDIRECTS_FILENAME | sed "s/\s.*$//" | grep --quiet --file - $MD5SUM_FILENAME
@@ -61,7 +61,7 @@ fi
 if [ ! -f $PAGES_FILENAME ]; then
   echo
   echo "[INFO] Downloading pages file"
-  wget "$DOWNLOAD_URL/$PAGES_FILENAME"
+  time wget -nv "$DOWNLOAD_URL/$PAGES_FILENAME"
 
   echo "[INFO] Verifying md5sum for pages file"
   time md5sum $PAGES_FILENAME | sed "s/\s.*$//" | grep --quiet --file - $MD5SUM_FILENAME
@@ -76,7 +76,7 @@ fi
 if [ ! -f $LINKS_FILENAME ]; then
   echo
   echo "[INFO] Downloading links file"
-  wget "$DOWNLOAD_URL/$LINKS_FILENAME"
+  time wget -nv "$DOWNLOAD_URL/$LINKS_FILENAME"
 
   echo "[INFO] Verifying md5sum for links file"
   time md5sum $LINKS_FILENAME | sed "s/\s.*$//" | grep --quiet --file - $MD5SUM_FILENAME
@@ -187,7 +187,8 @@ if [ ! -f links.sorted_by_from_id.txt.gz ]; then
   echo
   echo "[INFO] Sorting links file by from page ID"
   time pigz -dc links.with_ids.txt.gz \
-    | sort -u -S 100% -t $'\t' -k 1n,1n \
+    | sort -S 100% -t $'\t' -k 1n,1n \
+    | uniq \
     | pigz -1 > links.sorted_by_from_id.txt.gz
 else
   echo "[WARN] Already sorted links file by from page ID"
@@ -197,7 +198,8 @@ if [ ! -f links.sorted_by_to_id.txt.gz ]; then
   echo
   echo "[INFO] Sorting links file by to page ID"
   time pigz -dc links.with_ids.txt.gz \
-    | sort -u -S 100% -t $'\t' -k 2n,2n \
+    | sort -S 100% -t $'\t' -k 2n,2n \
+    | uniq \
     | pigz -1 > links.sorted_by_to_id.txt.gz
 else
   echo "[WARN] Already sorted links file by to page ID"
@@ -247,7 +249,7 @@ fi
 if [ ! -f sdow.sqlite ]; then
   echo
   echo "[INFO] Creating SQLite database"
-  time zcat composite.txt.gz | sqlite3 sdow.sqlite ".read createPagesTable.sql"
+  time zcat composite.txt.gz | sqlite3 sdow.sqlite ".read $ROOT_DIR/createPagesTable.sql"
 else
   echo "[WARN] Already created SQLite database"
 fi
