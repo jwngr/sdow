@@ -1,8 +1,13 @@
-import React from 'react';
 import styled from 'styled-components';
 
-const Indicator = styled.div`
-  margin: 60px auto;
+export const Wrapper = styled.div`
+  width: 800px;
+  margin: auto;
+  text-align: center;
+`;
+
+export const LoadingIndicator = styled.div`
+  margin: 40px auto;
   width: 60px;
   height: 60px;
   position: relative;
@@ -89,13 +94,7 @@ const Indicator = styled.div`
   }
 `;
 
-const LoadingIndicator = () => (
-  <Indicator>
-    <div />
-    <div />
-    <div />
-    <div />
-  </Indicator>
-);
-
-export default LoadingIndicator;
+export const Fact = styled.p`
+  font-size: 20px;
+  line-height: 1.5;
+`;

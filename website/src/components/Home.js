@@ -4,7 +4,7 @@ import PathResultsContainer from '../containers/PathResultsContainer';
 import ArticleInputContainer from '../containers/ArticleInputContainer';
 import SearchButtonContainer from '../containers/SearchButtonContainer';
 
-import LoadingIndicator from './LoadingIndicator';
+import Loading from './Loading';
 
 import {P, Header, InputFlexContainer, MainContent, ErrorMessage} from './Home.styles';
 
@@ -16,7 +16,7 @@ class Home extends Component {
     if (error !== null) {
       resultContent = <ErrorMessage>{error}</ErrorMessage>;
     } else if (isFetchingResults) {
-      resultContent = <LoadingIndicator />;
+      resultContent = <Loading />;
     } else {
       resultContent = <PathResultsContainer />;
     }
