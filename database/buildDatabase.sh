@@ -230,14 +230,14 @@ else
 fi
 
 
-###################################
-#  GENERATE COMPOSITE TEXT FILES  #
-###################################
-if [ ! -f composite.txt.gz ]; then
+#############################
+#  ADD LINKS TO PAGES FILE  #
+#############################
+if [ ! -f pages.with_links.txt.gz ]; then
   echo
-  echo "[INFO] Generating composite SQL import file"
-  time python "$ROOT_DIR/generateCompositeFile.py" pages.txt.gz redirects.with_ids.txt.gz links.grouped_by_from_id.txt.gz links.grouped_by_to_id.txt.gz \
-    | pigz -1 > composite.txt.gz
+  echo "[INFO] Adding links to pages file"
+  time python "$ROOT_DIR/addLinksToPagesFile.py" pages.txt.gz redirects.with_ids.txt.gz links.grouped_by_from_id.txt.gz links.grouped_by_to_id.txt.gz \
+    | pigz -1 > pages.with_links.txt.gz
 else
   echo "[WARN] Already generated composite SQL import file"
 fi
@@ -247,9 +247,12 @@ fi
 #  CREATE SQLITE DATABASE  #
 ############################
 if [ ! -f sdow.sqlite ]; then
+  echo "[INFO] Creating redirects table"
+  time pigz -dc redirects.with_ids.txt.gz | sqlite3 sdow.sqlite ".read $ROOT_DIR/createRedirectsTable.sql"
+
   echo
-  echo "[INFO] Creating SQLite database"
-  time zcat composite.txt.gz | sqlite3 sdow.sqlite ".read $ROOT_DIR/createPagesTable.sql"
+  echo "[INFO] Creating pages table"
+  time pigz -dc pages.with_links.txt.gz | sqlite3 sdow.sqlite ".read $ROOT_DIR/createPagesTable.sql"
 else
   echo "[WARN] Already created SQLite database"
 fi

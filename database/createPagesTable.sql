@@ -2,10 +2,10 @@ CREATE TABLE IF NOT EXISTS pages
 (
   id INTEGER PRIMARY KEY,
   title TEXT NOT NULL,
-  redirect_id INTEGER,
-  popularity INTEGER,
-  to_links TEXT,
-  from_links TEXT
+  from_links_count INTEGER NOT NULL,
+  to_links_count INTEGER NOT NULL,
+  from_links TEXT NOT NULL,
+  to_links TEXT NOT NULL
 );
 
 .mode csv

@@ -45,7 +45,7 @@ for line in io.BufferedReader(gzip.open(from_links_file, 'r')):
     [from_page_id, to_page_ids] = line.rstrip('\n').split('\t')
     from_links_dict[from_page_id] = to_page_ids
 
-# Create a dictionary from page ID to a list of pages whic link to it.
+# Create a dictionary from page ID to a list of pages which link to it.
 to_links_dict = {}
 for line in io.BufferedReader(gzip.open(to_links_file, 'r')):
     [to_page_id, from_page_ids] = line.rstrip('\n').split('\t')
@@ -54,14 +54,16 @@ for line in io.BufferedReader(gzip.open(to_links_file, 'r')):
 # Print out all details for each page in the pages file.
 for line in io.BufferedReader(gzip.open(pages_file, 'r')):
     [page_id, page_title] = line.rstrip('\n').split('\t')
-    redirected_id = redirects_dict.get(page_id)
+    is_redirect = page_id in redirects_dict
 
-    if redirected_id is not None:
-        columns = [page_id, page_title, redirected_id, '', '', '']
-    else:
-        to_links = to_links_dict.get(page_id, '')
+    if not is_redirect:
         from_links = from_links_dict.get(page_id, '')
-        columns = [page_id, page_title, '', str(
-            len(from_links)), to_links, from_links]
+        from_links_count = len(from_links.split(','))
 
-    print '\t'.join(columns)
+        to_links = to_links_dict.get(page_id, '')
+        to_links_count = len(to_links.split(','))
+
+        columns = [page_id, page_title, str(from_links_count),
+                   str(to_links_count), from_links, to_links]
+
+        print '\t'.join(columns)
