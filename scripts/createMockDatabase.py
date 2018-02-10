@@ -9,49 +9,100 @@ conn = sqlite3.connect(mock_database_filename)
 conn.execute('DROP TABLE IF EXISTS pages')
 conn.execute('CREATE TABLE pages(id INTEGER PRIMARY KEY, name TEXT)')
 
-for page_id in range(1, 101):
-  if page_id <= 10:
-    page_name = '{0}'.format(page_id)
-  else:
-    page_name = '{0}_(number)'.format(page_id)
-  conn.execute('INSERT INTO pages VALUES ({0}, "{1}")'.format(page_id, page_name))
+
+page_ids = {
+    1: 22770,
+    2: 64516,
+    3: 208157,
+    4: 208161,
+    5: 6412297,
+    6: 208171,
+    7: 208159,
+    8: 208174,
+    9: 173457,
+    10: 208151,
+    10: 53336456,
+    11: 208156,
+    12: 208155,
+    13: 37231,
+    14: 19223527,
+    15: 208252,
+    16: 208254,
+    17: 208288,
+    18: 208294,
+    19: 208292,
+    20: 208259,
+    21: 209248,
+    22: 362193,
+    23: 362203,
+    24: 362201,
+    25: 362204,
+    26: 362205,
+    27: 369235,
+    28: 362213,
+    29: 362212,
+    # Redirects
+    30: 341668,
+    31: 392390,
+    32: 391918,
+    33: 305606,
+    34: 391919,
+    35: 379525
+}
+
+for i in range(1, 36):
+    if i <= 10:
+        page_name = '{0}'.format(i)
+    else:
+        page_name = '{0}_(number)'.format(i)
+    conn.execute('INSERT INTO pages VALUES ({0}, "{1}")'.format(
+        page_ids[i], page_name))
 
 conn.execute('DROP TABLE IF EXISTS redirects')
-conn.execute('CREATE TABLE redirects(from_id INTEGER PRIMARY KEY, to_id INTEGER)')
+conn.execute(
+    'CREATE TABLE redirects(from_id INTEGER PRIMARY KEY, to_id INTEGER)')
 
-for page_id in range(50, 60):
-  conn.execute('INSERT INTO redirects VALUES ({0}, {1})'.format(page_id, page_id + 10))
+for i in range(30, 35):
+    conn.execute('INSERT INTO redirects VALUES ({0}, {1})'.format(
+        page_ids[i], page_ids[1]))
 
 conn.execute('DROP TABLE IF EXISTS links')
-conn.execute('CREATE TABLE links(from_id INTEGER, to_id INTEGER, PRIMARY KEY (from_id, to_id)) WITHOUT ROWID;')
+conn.execute(
+    'CREATE TABLE links(from_id INTEGER, to_id INTEGER, PRIMARY KEY (from_id, to_id)) WITHOUT ROWID;')
 
-conn.execute('INSERT INTO links VALUES (1, 2)')
-conn.execute('INSERT INTO links VALUES (1, 4)')
-conn.execute('INSERT INTO links VALUES (1, 5)')
-conn.execute('INSERT INTO links VALUES (1, 10)')
-conn.execute('INSERT INTO links VALUES (2, 1)')
-conn.execute('INSERT INTO links VALUES (2, 3)')
-conn.execute('INSERT INTO links VALUES (2, 10)')
-conn.execute('INSERT INTO links VALUES (3, 4)')
-conn.execute('INSERT INTO links VALUES (3, 11)')
-conn.execute('INSERT INTO links VALUES (4, 1)')
-conn.execute('INSERT INTO links VALUES (4, 6)')
-conn.execute('INSERT INTO links VALUES (4, 9)')
-conn.execute('INSERT INTO links VALUES (5, 6)')
-conn.execute('INSERT INTO links VALUES (7, 8)')
-conn.execute('INSERT INTO links VALUES (8, 7)')
-conn.execute('INSERT INTO links VALUES (9, 3)')
-conn.execute('INSERT INTO links VALUES (11, 12)')
-conn.execute('INSERT INTO links VALUES (13, 12)')
-conn.execute('INSERT INTO links VALUES (15, 16)')
-conn.execute('INSERT INTO links VALUES (15, 17)')
-conn.execute('INSERT INTO links VALUES (16, 17)')
-conn.execute('INSERT INTO links VALUES (16, 18)')
-conn.execute('INSERT INTO links VALUES (17, 18)')
-conn.execute('INSERT INTO links VALUES (18, 19)')
-conn.execute('INSERT INTO links VALUES (19, 20)')
-conn.execute('INSERT INTO links VALUES (21, 20)')
-conn.execute('INSERT INTO links VALUES (22, 20)')
+links = [
+    (1, 2),
+    (1, 4),
+    (1, 5),
+    (1, 10),
+    (2, 1),
+    (2, 3),
+    (2, 10),
+    (3, 4),
+    (3, 11),
+    (4, 1),
+    (4, 6),
+    (4, 9),
+    (5, 6),
+    (7, 8),
+    (8, 7),
+    (9, 3),
+    (11, 12),
+    (13, 12),
+    (15, 16),
+    (15, 17),
+    (16, 17),
+    (16, 18),
+    (17, 18),
+    (18, 19),
+    (19, 20),
+    (21, 20),
+    (22, 20)
+]
+
+for from_id, to_id in links:
+    conn.execute('INSERT INTO links VALUES ({0}, {1})'.format(
+        page_ids[from_id], page_ids[to_id]))
 
 conn.commit()
 
