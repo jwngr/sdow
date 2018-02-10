@@ -40,17 +40,30 @@ class Database(object):
 
     sanitized_page_title = page_title.replace(' ', '_')
 
-    query = 'SELECT id FROM pages WHERE title = ? COLLATE NOCASE;'
+    query = 'SELECT * FROM pages WHERE title = ? COLLATE NOCASE;'
     query_bindings = (sanitized_page_title,)
     self.cursor.execute(query, query_bindings)
 
-    page_id = self.cursor.fetchone()
+    # Because the above query is case-insensitive (due to the COLLATE NOCASE), multiple articles
+    # can be matched.
+    results = self.cursor.fetchall()
 
-    if not page_id:
+    if not results:
       raise ValueError(
           'Invalid page title {0} provided. Page title does not exist.'.format(page_title))
 
-    return page_id[0]
+    # First, look for an exact match with the page title.
+    for current_page_title, current_page_id, _ in results:
+      if current_page_title == sanitized_page_title:
+        return current_page_id
+
+    # Next, look for a match with a non-redirect page.
+    for _, current_page_id, current_page_is_redirect in results:
+      if not current_page_is_redirect:
+        return current_page_id
+
+    # If all the results are redirects, just return the ID of the first result.
+    return results[0].id
 
   def fetch_page_title(self, page_id):
     """Returns the page title corresponding to the provided page ID.
@@ -171,7 +184,7 @@ class Database(object):
     # TODO: measure the performance impact of this versus just appending to an array (above) or
     # just returning the cursor (not yet implemented)
     # There is no need to escape the query parameters here since they are never user-defined
-    query = 'SELECT {0} FROM links WHERE id IN {1};'.format(
+    query = 'SELECT id, {0} FROM links WHERE id IN {1};'.format(
         outcoming_or_incoming_links, page_ids)
     self.cursor.execute(query)
 

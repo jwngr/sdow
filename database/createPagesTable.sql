@@ -1,7 +1,8 @@
 CREATE TABLE IF NOT EXISTS pages
 (
   id INTEGER PRIMARY KEY,
-  title TEXT NOT NULL
+  title TEXT NOT NULL,
+  is_redirect INT NOT NULL 
 );
 
 .mode csv

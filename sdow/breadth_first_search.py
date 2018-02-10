@@ -86,21 +86,24 @@ def breadth_first_search(start, end, database, verbose=False):
       else:
         unvisited_forward_keys_tuple = str(tuple(unvisited_forward.keys()))
 
-      forwards_results = database.fetch_outgoing_links(unvisited_forward_keys_tuple)
+      outgoing_links = database.fetch_outgoing_links(unvisited_forward_keys_tuple)
 
       # Clear the unvisited forward dictionary
       unvisited_forward.clear()
 
       # Loop through each link retrieved by the query
-      for from_id, to_id in forwards_results:
-        # If the to id is in neither visited forward nor unvisited forward, add it to unvisited
-        # forward
-        if (to_id not in visited_forward) and (to_id not in unvisited_forward):
-          unvisited_forward[to_id] = [from_id]
+      for from_id, to_ids in outgoing_links:
+        for to_id in to_ids.split('|'):
+          if to_id:
+            to_id = int(to_id)
+            # If the to id is in neither visited forward nor unvisited forward, add it to unvisited
+            # forward
+            if (to_id not in visited_forward) and (to_id not in unvisited_forward):
+              unvisited_forward[to_id] = [from_id]
 
-        # If the to id is in unvisited forward, append the from id as another one of its parents
-        elif to_id in unvisited_forward:
-          unvisited_forward[to_id].append(from_id)
+            # If the to id is in unvisited forward, append the from id as another one of its parents
+            elif to_id in unvisited_forward:
+              unvisited_forward[to_id].append(from_id)
 
     #---  BACKWARD BREADTH FIRST SEARCH  ---#
     # Run the next iteration of the breadth first search in the backward direction if unvisited
@@ -124,21 +127,24 @@ def breadth_first_search(start, end, database, verbose=False):
       else:
         unvisited_backward_keys_tuple = str(tuple(unvisited_backward.keys()))
 
-      backwards_results = database.fetch_incoming_links(unvisited_backward_keys_tuple)
+      incoming_links = database.fetch_incoming_links(unvisited_backward_keys_tuple)
 
       # Clear the unvisited backward dictionary
       unvisited_backward.clear()
 
       # Loop through each link retrieved by the query
-      for from_id, to_id in backwards_results:
-        # If the from id is in neither visited backward nor unvisited backward, add it to unvisited
-        # backward
-        if (from_id not in visited_backward) and (from_id not in unvisited_backward):
-          unvisited_backward[from_id] = [to_id]
+      for to_id, from_ids in incoming_links:
+        for from_id in from_ids.split('|'):
+          if from_id:
+            from_id = int(from_id)
+            # If the from id is in neither visited backward nor unvisited backward, add it to unvisited
+            # backward
+            if (from_id not in visited_backward) and (from_id not in unvisited_backward):
+              unvisited_backward[from_id] = [to_id]
 
-        # If the from id is in unvisited backward, append the to id as another one of its parents
-        elif from_id in unvisited_backward:
-          unvisited_backward[from_id].append(to_id)
+            # If the from id is in unvisited backward, append the to id as another one of its parents
+            elif from_id in unvisited_backward:
+              unvisited_backward[from_id].append(to_id)
 
     #---  CHECK FOR PATH COMPLETION  ---#
     # If any of the ids in unvisited backward are also in unvisited forward, the breadth first

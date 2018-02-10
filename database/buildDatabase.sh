@@ -136,8 +136,7 @@ if [ ! -f pages.txt.gz ]; then
     | sed -n 's/^INSERT INTO `page` VALUES (//p' \
     | sed -e 's/),(/\'$'\n/g' \
     | egrep "^[0-9]+,0," \
-    | sed -e $"s/,0,'/\t/g" \
-    | sed -e "s/','.*//g" \
+    | awk -F',' '{printf ("%s\t%s\t%s\n", $1, substr($3, 2, length($3) - 2), $6)}' \
     | pigz -1 > pages.txt.gz
 else
   echo "[WARN] Already trimmed pages file"

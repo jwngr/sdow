@@ -55,7 +55,7 @@ instructions below:
    1. **Notes**: Allow full access to all Cloud APIs.
 1. SSH into the machine:
    ```bash
-   $ gcloud compute ssh sdow-build-db
+   $ gcloud compute ssh sdow-db-builder-1
    ```
 1. Install required dependencies:
    ```bash
@@ -105,10 +105,13 @@ Endpoint: http://<external*ip>:5000/paths/Usain%20Bolt/40*(number)
    ```bash
    $ gcloud compute ssh sdow-web-server
    ```
-1. Expose the Flask HTTP port (5000) from the VM’s firewall by running the following command from
-   your local development environment:
+1. Clone this directory via HTTPS:
    ```bash
-   gcloud compute firewall-rules create open-flask-rule --allow tcp:5000 --source-tags=sdow-web-server --source-ranges=0.0.0.0/0
+   $ git clone https://github.com/jwngr/sdow.git
+   ```
+1. Copy the latest SQLite file from the `sdow-prod` GCS bucket:
+   ```bash
+   $ gsutil cp gs://sdow-prod/dumps/<YYYYMMDD>/sdow.sqlite .
    ```
 1. Install required dependencies:
    ```bash
@@ -118,11 +121,10 @@ Endpoint: http://<external*ip>:5000/paths/Usain%20Bolt/40*(number)
    $ sudo pip install --upgrade virtualenv
    $ sudo pip install flask
    ```
-1. Copy all scripts from the [`breadth_first_search/`](./breadth_first_search) directory into the
-   current directory.
-1. Copy the latest SQLite file from the `sdow-prod` GCS bucket:
+1. Expose the Flask HTTP port (5000) from the VM’s firewall by running the following command from
+   your local development environment:
    ```bash
-   $ gsutil cp gs://sdow-prod/dumps/<YYYYMMDD>/sdow.sqlite .
+   gcloud compute firewall-rules create open-flask-rule --allow tcp:5000 --source-tags=sdow-web-server --source-ranges=0.0.0.0/0
    ```
 1. Start the Flask app, making sure to bind the Flask web service to the public facing network
    interface of the VM:
