@@ -56,14 +56,19 @@ for line in io.BufferedReader(gzip.open(pages_file, 'r')):
     [page_id, page_title] = line.rstrip('\n').split('\t')
     is_redirect = page_id in redirects_dict
 
-    if not is_redirect:
+    if is_redirect:
+        # SQL imports do not support NULL (empty columns are signified by empty strings), so use -1
+        # for link counts to indicate redirects.
+        from_links_count = -1
+        to_links_count = -1
+    else:
         from_links = from_links_dict.get(page_id, '')
         from_links_count = len(from_links.split(','))
 
         to_links = to_links_dict.get(page_id, '')
         to_links_count = len(to_links.split(','))
 
-        columns = [page_id, page_title, str(from_links_count),
-                   str(to_links_count), from_links, to_links]
+    columns = [page_id, page_title, str(
+        from_links_count), str(to_links_count)]
 
-        print '\t'.join(columns)
+    print '\t'.join(columns)

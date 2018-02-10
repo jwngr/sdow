@@ -3,9 +3,7 @@ CREATE TABLE IF NOT EXISTS pages
   id INTEGER PRIMARY KEY,
   title TEXT NOT NULL,
   from_links_count INTEGER NOT NULL,
-  to_links_count INTEGER NOT NULL,
-  from_links TEXT NOT NULL,
-  to_links TEXT NOT NULL
+  to_links_count INTEGER NOT NULL
 );
 
 .mode csv
