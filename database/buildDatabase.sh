@@ -230,14 +230,14 @@ else
 fi
 
 
-###################################
-#  ADD LINK COUNTS TO PAGES FILE  #
-###################################
-if [ ! -f pages.with_link_counts.txt.gz ]; then
+##################################
+# GENERATE COMPOSITE LINKS FILE  #
+##################################
+if [ ! -f links.with_counts.txt.gz ]; then
   echo
   echo "[INFO] Adding link counts to pages file"
-  time python "$ROOT_DIR/addLinkCountsToPagesFile.py" pages.txt.gz redirects.with_ids.txt.gz links.grouped_by_from_id.txt.gz links.grouped_by_to_id.txt.gz \
-    | pigz -1 > pages.with_link_counts.txt.gz
+  time python "$ROOT_DIR/generateCompositeLinksFile.py" pages.txt.gz redirects.with_ids.txt.gz links.grouped_by_from_id.txt.gz links.grouped_by_to_id.txt.gz \
+    | pigz -1 > links.with_counts.txt.gz
 else
   echo "[WARN] Already generated pages file with link counts"
 fi
@@ -252,15 +252,11 @@ if [ ! -f sdow.sqlite ]; then
 
   echo
   echo "[INFO] Creating pages table"
-  time pigz -dc pages.with_link_counts.txt.gz | sqlite3 sdow.sqlite ".read $ROOT_DIR/createPagesTable.sql"
+  time pigz -dc pages.txt.gz | sqlite3 sdow.sqlite ".read $ROOT_DIR/createPagesTable.sql"
 
   echo
-  echo "[INFO] Creating from links table"
-  time pigz -dc links.grouped_by_from_id.txt.gz | sqlite3 sdow.sqlite ".read $ROOT_DIR/createFromLinksTable.sql"
-
-  echo
-  echo "[INFO] Creating to links table"
-  time pigz -dc links.grouped_by_to_id.txt.gz | sqlite3 sdow.sqlite ".read $ROOT_DIR/createToLinksTable.sql"
+  echo "[INFO] Creating links table"
+  time pigz -dc links.with_counts.txt.gz | sqlite3 sdow.sqlite ".read $ROOT_DIR/createLinksTable.sql"
 else
   echo "[WARN] Already created SQLite database"
 fi
