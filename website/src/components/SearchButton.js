@@ -9,21 +9,23 @@ class SearchButton extends React.Component {
   constructor() {
     super();
 
-    this.state = {
-      isFetching: false,
-    };
+    this.fetchShortestPaths = this.fetchShortestPaths.bind(this);
   }
 
-  fetchShortestPaths(fromArticleTitle, toArticleTitle, setError, setShortestPathResults) {
+  fetchShortestPaths() {
+    const {
+      toArticleTitle,
+      fromArticleTitle,
+      setError,
+      setIsFetchingResults,
+      setShortestPathResults,
+    } = this.props;
+
     // TODO: handle cases where to or from page title is undefined
 
-    // Cancel the previous request
-    this.setState({
-      isFetching: true,
-    });
+    // TODO: handle concurrent requests (e.g. cancel prior request)
 
-    setError(null);
-    setShortestPathResults(null, null);
+    setIsFetchingResults(true);
 
     axios({
       method: 'get',
@@ -38,8 +40,6 @@ class SearchButton extends React.Component {
           });
         });
 
-        console.log(JSON.stringify(pathsDenormalized, null, 2));
-
         setShortestPathResults({
           toArticleTitle,
           fromArticleTitle,
@@ -48,10 +48,6 @@ class SearchButton extends React.Component {
 
         // TODO: measure the response time
         // See https://www.html5rocks.com/en/tutorials/webperformance/usertiming/
-
-        this.setState({
-          isFetching: false,
-        });
       })
       .catch((error) => {
         // TODO: test when the backend API URL is wrong or the Flask app is not running
@@ -61,21 +57,7 @@ class SearchButton extends React.Component {
   }
 
   render() {
-    const {toArticleTitle, fromArticleTitle, setError, setShortestPathResults} = this.props;
-
-    return (
-      <GoButton
-        onClick={this.fetchShortestPaths.bind(
-          this,
-          fromArticleTitle,
-          toArticleTitle,
-          setError,
-          setShortestPathResults
-        )}
-      >
-        Go!
-      </GoButton>
-    );
+    return <GoButton onClick={this.fetchShortestPaths}>Go!</GoButton>;
   }
 }
 

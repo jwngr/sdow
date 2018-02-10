@@ -5,6 +5,7 @@ import Home from '../components/Home';
 const mapStateToProps = (state) => {
   return {
     error: state.error,
+    isFetchingResults: state.isFetchingResults,
   };
 };
 

@@ -9,6 +9,17 @@ const rootReducers = {
         return state;
     }
   },
+  isFetchingResults: (state = false, action) => {
+    switch (action.type) {
+      case actions.SET_IS_FETCHING_RESULTS:
+        return action.isFetchingResults;
+      case actions.SET_ERROR:
+      case actions.SET_SHORTEST_PATH_RESULTS:
+        return false;
+      default:
+        return state;
+    }
+  },
   toArticleTitle: (state = '', action) => {
     switch (action.type) {
       case actions.SET_TO_ARTICLE_TITLE:

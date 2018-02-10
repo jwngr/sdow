@@ -4,15 +4,21 @@ import PathResultsContainer from '../containers/PathResultsContainer';
 import ArticleInputContainer from '../containers/ArticleInputContainer';
 import SearchButtonContainer from '../containers/SearchButtonContainer';
 
+import LoadingIndicator from './LoadingIndicator';
+
 import {P, Header, InputFlexContainer, MainContent, ErrorMessage} from './Home.styles';
 
 class Home extends Component {
   render() {
-    const {error} = this.props;
+    const {error, isFetchingResults} = this.props;
 
-    let errorContent;
+    let resultContent;
     if (error !== null) {
-      errorContent = <ErrorMessage>{error}</ErrorMessage>;
+      resultContent = <ErrorMessage>{error}</ErrorMessage>;
+    } else if (isFetchingResults) {
+      resultContent = <LoadingIndicator />;
+    } else {
+      resultContent = <PathResultsContainer />;
     }
 
     return (
@@ -40,9 +46,7 @@ class Home extends Component {
 
           <SearchButtonContainer />
 
-          <PathResultsContainer />
-
-          {errorContent}
+          {resultContent}
         </MainContent>
       </div>
     );
