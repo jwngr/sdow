@@ -1,5 +1,10 @@
-'''Runs a bi-directional breadth-first search between two Wikipedia articles and returns a list of
-the shortest paths between them.'''
+"""
+Runs a bi-directional breadth-first search between two Wikipedia articles and returns a list of
+the shortest paths between them.
+"""
+
+from __future__ import print_function
+
 
 def get_paths(page_ids, visited_dict):
   """Returns a list of paths which go from page_ids to either the start or end page."""
@@ -8,7 +13,7 @@ def get_paths(page_ids, visited_dict):
   paths = []
 
   for page_id in page_ids:
-    if page_id == None:
+    if page_id is None:
       # If the current page ID is None, it is either the start or end page, so return an empty path
       return [[]]
     else:
@@ -22,7 +27,7 @@ def get_paths(page_ids, visited_dict):
   return paths
 
 
-def breadth_first_search(start, end, db, verbose=False):
+def breadth_first_search(start, end, database, verbose=False):
   """Runs a bi-directional breadth-first search from start to end and returns a list of the shortest
   paths between them.
 
@@ -53,11 +58,11 @@ def breadth_first_search(start, end, db, verbose=False):
   # are empty
   while (len(paths) == 0) and ((len(unvisited_forward) != 0) and (len(unvisited_backward) != 0)):
     if verbose:
-      print '\nLooping again...'
-      print 'visited_forward: ' + str(visited_forward)
-      print 'visited_backward: ' + str(visited_backward)
-      print 'unvisited_forward: ' + str(unvisited_forward)
-      print 'unvisited_backward: ' + str(unvisited_backward)
+      print('\nLooping again...')
+      print('visited_forward: ' + str(visited_forward))
+      print('visited_backward: ' + str(visited_backward))
+      print('unvisited_forward: ' + str(unvisited_forward))
+      print('unvisited_backward: ' + str(unvisited_backward))
 
     #---  FORWARD BREADTH FIRST SEARCH  ---#
     # Run the next iteration of the breadth first search in the forward direction if unvisited
@@ -68,7 +73,7 @@ def breadth_first_search(start, end, db, verbose=False):
 
       # Print out the forward depth if the verbose flag is used
       if verbose:
-        print 'Forward depth: ' + str(forward_depth)
+        print('Forward depth: ' + str(forward_depth))
 
       # Add each element from unvisited forward to visited forward
       for page_id in unvisited_forward:
@@ -81,7 +86,7 @@ def breadth_first_search(start, end, db, verbose=False):
       else:
         unvisited_forward_keys_tuple = str(tuple(unvisited_forward.keys()))
 
-      forwards_results = db.fetch_forwards_links(unvisited_forward_keys_tuple)
+      forwards_results = database.fetch_outgoing_links(unvisited_forward_keys_tuple)
 
       # Clear the unvisited forward dictionary
       unvisited_forward.clear()
@@ -106,7 +111,7 @@ def breadth_first_search(start, end, db, verbose=False):
 
       # Print out the backward depth if the verbose flag is used
       if verbose:
-        print "Backward depth: " + str(backward_depth)
+        print('Backward depth: ' + str(backward_depth))
 
       # Add each element from unvisited backward to visited backward
       for page_id in unvisited_backward:
@@ -119,7 +124,7 @@ def breadth_first_search(start, end, db, verbose=False):
       else:
         unvisited_backward_keys_tuple = str(tuple(unvisited_backward.keys()))
 
-      backwards_results = db.fetch_backwards_links(unvisited_backward_keys_tuple)
+      backwards_results = database.fetch_incoming_links(unvisited_backward_keys_tuple)
 
       # Clear the unvisited backward dictionary
       unvisited_backward.clear()
@@ -147,8 +152,8 @@ def breadth_first_search(start, end, db, verbose=False):
         end_paths = get_paths(unvisited_backward[page_id], visited_backward)
 
         if verbose:
-          print 'start_paths: {0}'.format(start_paths)
-          print 'end_paths: {0}'.format(end_paths)
+          print('start_paths: {0}'.format(start_paths))
+          print('end_paths: {0}'.format(end_paths))
 
         # Concatenate each start path with each end path and add them to the paths list
         for start_path in start_paths:

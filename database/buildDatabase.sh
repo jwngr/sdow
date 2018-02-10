@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euo pipefail
+set -uo pipefail
 
 # Force default language for output sorting to be bytewise.
 export LC_ALL=C
@@ -37,6 +37,7 @@ echo "[INFO] Output directory: $OUT_DIR"
 #  DOWNLOAD WIKIPEDIA DUMPS  #
 ##############################
 if [ ! -f $MD5SUM_FILENAME ]; then
+  echo
   echo "[INFO] Downloading md5sums file"
   time wget -nv "$DOWNLOAD_URL/$MD5SUM_FILENAME"
 else
@@ -48,9 +49,11 @@ if [ ! -f $REDIRECTS_FILENAME ]; then
   echo "[INFO] Downloading redirects file"
   time wget -nv "$DOWNLOAD_URL/$REDIRECTS_FILENAME"
 
+  echo
   echo "[INFO] Verifying md5sum for redirects file"
   time md5sum $REDIRECTS_FILENAME | sed "s/\s.*$//" | grep --quiet --file - $MD5SUM_FILENAME
   if [ $? -ne 0 ]; then
+    echo
     echo "[ERROR] Downloaded redirects file has incorrect md5sum"
     exit 1
   fi
@@ -63,9 +66,11 @@ if [ ! -f $PAGES_FILENAME ]; then
   echo "[INFO] Downloading pages file"
   time wget -nv "$DOWNLOAD_URL/$PAGES_FILENAME"
 
+  echo
   echo "[INFO] Verifying md5sum for pages file"
   time md5sum $PAGES_FILENAME | sed "s/\s.*$//" | grep --quiet --file - $MD5SUM_FILENAME
   if [ $? -ne 0 ]; then
+    echo
     echo "[ERROR] Downloaded pages file has incorrect md5sum"
     exit 1
   fi
@@ -78,9 +83,11 @@ if [ ! -f $LINKS_FILENAME ]; then
   echo "[INFO] Downloading links file"
   time wget -nv "$DOWNLOAD_URL/$LINKS_FILENAME"
 
+  echo
   echo "[INFO] Verifying md5sum for links file"
   time md5sum $LINKS_FILENAME | sed "s/\s.*$//" | grep --quiet --file - $MD5SUM_FILENAME
   if [ $? -ne 0 ]; then
+    echo
     echo "[ERROR] Downloaded links file has incorrect md5sum"
     exit 1
   fi
@@ -165,7 +172,7 @@ fi
 if [ ! -f redirects.with_ids.txt.gz ]; then
   echo
   echo "[INFO] Replacing titles in redirects file"
-  time python "$ROOT_DIR/replaceTitlesInRedirectsFile.py" pages.txt.gz redirects.txt.gz \
+  time python "$ROOT_DIR/replace_titles_in_redirects_file.py" pages.txt.gz redirects.txt.gz \
     | pigz -1 > redirects.with_ids.txt.gz
 else
   echo "[WARN] Already replaced titles in redirects file"
@@ -174,7 +181,7 @@ fi
 if [ ! -f links.with_ids.txt.gz ]; then
   echo
   echo "[INFO] Replacing titles and redirects in links file"
-  time python "$ROOT_DIR/replaceTitlesAndRedirectsInLinksFile.py" pages.txt.gz redirects.with_ids.txt.gz links.txt.gz \
+  time python "$ROOT_DIR/replace_titles_and_redirects_in_links_file.py" pages.txt.gz redirects.with_ids.txt.gz links.txt.gz \
     | pigz -1 > links.with_ids.txt.gz
 else
   echo "[WARN] Already replaced titles and redirects in links file"
@@ -230,16 +237,16 @@ else
 fi
 
 
-##################################
-# GENERATE COMPOSITE LINKS FILE  #
-##################################
+################################
+# COMBINE GROUPED LINKS FILES  #
+################################
 if [ ! -f links.with_counts.txt.gz ]; then
   echo
-  echo "[INFO] Adding link counts to pages file"
-  time python "$ROOT_DIR/generateCompositeLinksFile.py" pages.txt.gz redirects.with_ids.txt.gz links.grouped_by_from_id.txt.gz links.grouped_by_to_id.txt.gz \
+  echo "[INFO] Combining grouped links files"
+  time python "$ROOT_DIR/combine_grouped_links_files.py" links.grouped_by_from_id.txt.gz links.grouped_by_to_id.txt.gz \
     | pigz -1 > links.with_counts.txt.gz
 else
-  echo "[WARN] Already generated pages file with link counts"
+  echo "[WARN] Already combined grouped links files"
 fi
 
 
@@ -247,6 +254,7 @@ fi
 #  CREATE SQLITE DATABASE  #
 ############################
 if [ ! -f sdow.sqlite ]; then
+  echo
   echo "[INFO] Creating redirects table"
   time pigz -dc redirects.with_ids.txt.gz | sqlite3 sdow.sqlite ".read $ROOT_DIR/createRedirectsTable.sql"
 

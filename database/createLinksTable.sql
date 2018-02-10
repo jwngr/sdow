@@ -1,4 +1,5 @@
-CREATE TABLE IF NOT EXISTS links(
+CREATE TABLE IF NOT EXISTS links
+(
   id INTEGER PRIMARY KEY,
   outgoing_links_count INTEGER NOT NULL,
   incoming_links_count INTEGER NOT NULL,

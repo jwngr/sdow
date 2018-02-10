@@ -1,17 +1,17 @@
-'''
+"""
 Helper classes and methods.
-'''
+"""
+
 
 def is_str(val):
-  '''
-  Returns whether or not the provided value is a string type.
+  """Returns whether or not the provided value is a string type.
 
   Args:
     val: The value to check.
 
   Returns:
     bool: Whether or not the provided value is a string type.
-  '''
+  """
   try:
     return isinstance(val, basestring)
   except NameError:
@@ -19,22 +19,19 @@ def is_str(val):
 
 
 def is_positive_int(val):
-  '''
-  Returns whether or not the provided value is a positive integer type.
+  """Returns whether or not the provided value is a positive integer type.
 
   Args:
     val: The value to check.
 
   Returns:
     bool: Whether or not the provided value is a positive integer type.
-  '''
+  """
   return val and isinstance(val, int) and val > 0
 
 
-
 def validate_page_id(page_id):
-  '''
-  Validates the provided value is a valid page ID.
+  """Validates the provided value is a valid page ID.
 
   Args:
     page_id: The page ID to validate.
@@ -44,36 +41,34 @@ def validate_page_id(page_id):
 
   Raises:
     ValueError: If the provided page ID is invalid.
-  '''
+  """
   if not is_positive_int(page_id):
     raise ValueError((
-      'Invalid page ID "{0}" provided. Page ID must be a positive integer.'.format(page_id)
+        'Invalid page ID "{0}" provided. Page ID must be a positive integer.'.format(page_id)
     ))
 
 
-def validate_page_name(page_name):
-  '''
-  Validates the provided value is a valid page name.
+def validate_page_title(page_title):
+  """Validates the provided value is a valid page title.
 
   Args:
-    page_name: The page name to validate.
+    page_title: The page title to validate.
 
   Returns:
     None
 
   Raises:
-    ValueError: If the provided page name is invalid.
-  '''
-  if not page_name or not is_str(page_name):
+    ValueError: If the provided page title is invalid.
+  """
+  if not page_title or not is_str(page_title):
     raise ValueError((
-      'Invalid page name "{0}" provided. Page name must be a non-empty string.'.format(page_name)
+        'Invalid page title "{0}" provided. Page title must be a non-empty string.'.format(
+            page_title)
     ))
 
 
 class InvalidRequest(Exception):
-  '''
-  Wrapper class for building invalid request error responses.
-  '''
+  """Wrapper class for building invalid request error responses."""
   status_code = 400
 
   def __init__(self, message, status_code=None, payload=None):
@@ -84,6 +79,6 @@ class InvalidRequest(Exception):
     self.payload = payload
 
   def to_dict(self):
-    rv = dict(self.payload or ())
-    rv['error'] = self.message
-    return rv
+    result = dict(self.payload or ())
+    result['error'] = self.message
+    return result
