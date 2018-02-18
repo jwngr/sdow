@@ -4,11 +4,12 @@ Replaces page titles in the redirects file with their corresponding IDs.
 Output is written to stdout.
 """
 
+from __future__ import print_function
+
 import io
 import sys
 import gzip
 from sets import Set
-from __future__ import print_function
 
 # Validate input arguments.
 if len(sys.argv) < 3:

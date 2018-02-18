@@ -5,11 +5,12 @@ non-existing pages, and replaces redirects with the pages to which they redirect
 Output is written to stdout.
 """
 
+from __future__ import print_function
+
 import io
 import sys
 import gzip
 from sets import Set
-from __future__ import print_function
 
 # Validate inputs
 if len(sys.argv) < 4:

@@ -4,6 +4,8 @@ Combines the incoming and outgoing links (as well as their counts) for each page
 Output is written to stdout.
 """
 
+from __future__ import print_function
+
 import io
 import sys
 import gzip
@@ -11,19 +13,19 @@ from collections import defaultdict
 
 # Validate input arguments.
 if len(sys.argv) < 2:
-  print '[ERROR] Not enough arguments provided!'
-  print '[INFO] Usage: {0} <outgoing_links_file> <incoming_links_file>'.format(sys.argv[0])
+  print('[ERROR] Not enough arguments provided!')
+  print('[INFO] Usage: {0} <outgoing_links_file> <incoming_links_file>'.format(sys.argv[0]))
   sys.exit()
 
 OUTGOING_LINKS_FILE = sys.argv[1]
 INCOMING_LINKS_FILE = sys.argv[2]
 
 if not OUTGOING_LINKS_FILE.endswith('.gz'):
-  print '[ERROR] From links file must be gzipped.'
+  print('[ERROR] From links file must be gzipped.')
   sys.exit()
 
 if not INCOMING_LINKS_FILE.endswith('.gz'):
-  print '[ERROR] To links file must be gzipped.'
+  print('[ERROR] To links file must be gzipped.')
   sys.exit()
 
 # Create a dictionary from page ID to a string containing its incoming and outgoing links.
@@ -50,4 +52,4 @@ for page_id, links in LINKS.iteritems():
   columns = [page_id, str(outgoing_links_count), str(
       incoming_links_count), outgoing_links, incoming_links]
 
-  print '\t'.join(columns)
+  print('\t'.join(columns))
