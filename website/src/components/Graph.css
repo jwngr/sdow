@@ -1,0 +1,18 @@
+.results-graph {
+  display: flex;
+  justify-content: center;
+}
+
+.results-graph > div {
+  background: rgba(256, 256, 256, 0.7);
+}
+
+.links line {
+  stroke-opacity: 0.6;
+  stroke-width: 1px;
+  fill: none;
+}
+
+.nodes circle {
+  stroke-width: 2px;
+}

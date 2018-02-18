@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 
+import Graph from './Graph';
 import PathResult from './PathResult';
 import ArticleLink from './ArticleLink';
 
@@ -95,6 +96,7 @@ class PathResults extends Component {
           </p>
         </ResultsMessage>
         <PathResultsWrapper>{pathResultsContent}</PathResultsWrapper>
+        <Graph paths={paths} />
       </div>
     );
   }
