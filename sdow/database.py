@@ -36,9 +36,7 @@ class Database(object):
     Raises:
       ValueError: If the provided page title is invalid or does not exist.
     """
-    helpers.validate_page_title(page_title)
-
-    sanitized_page_title = page_title.replace(' ', '_')
+    sanitized_page_title = helpers.get_sanitize_page_title(page_title)
 
     query = 'SELECT * FROM pages WHERE title = ? COLLATE NOCASE;'
     query_bindings = (sanitized_page_title,)

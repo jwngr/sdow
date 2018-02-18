@@ -4,9 +4,9 @@ Server web framework.
 
 from sets import Set
 from flask_cors import CORS
-from flask import Flask, jsonify
 from sdow.database import Database
 from sdow.helpers import InvalidRequest
+from flask import Flask, request, jsonify
 
 import requests
 
@@ -39,13 +39,13 @@ def handle_invalid_usage(error):
   return response
 
 
-@app.route('/paths/<from_page_title>/<to_page_title>')
-def shortest_paths_route(from_page_title, to_page_title):
+@app.route('/paths', methods=['POST'])
+def shortest_paths_route():
   """Endpoint which returns a list of shortest paths between two Wikipedia pages.
 
     Args:
-      from_page_title: The title of the page at which to start the search.
-      to_page_title: The title of the page at which to end the search.
+      source: The title of the page at which to start the search.
+      target: The title of the page at which to end the search.
 
     Returns:
       dict: A JSON-ified dictionary containing the shortest paths (represented by a list of lists of
@@ -54,6 +54,9 @@ def shortest_paths_route(from_page_title, to_page_title):
     Raises:
       InvalidRequest: If either of the provided titles correspond to pages which do not exist.
   """
+  from_page_title = request.json['source']
+  to_page_title = request.json['target']
+
   # Look up the IDs for each page
   try:
     from_page_id = database.fetch_page_id(from_page_title)

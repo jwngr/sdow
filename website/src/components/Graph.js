@@ -30,15 +30,10 @@ class Graph extends Component {
 
     const pathsLength = paths[0].length;
 
-    _.forEach(paths, (path, pathIndex) => {
+    _.forEach(paths, (path) => {
       let priorNodeId;
       _.forEach(path, (node, nodeIndex) => {
-        let currentNodeId;
-        if (nodeIndex === 0 || nodeIndex === pathsLength - 1) {
-          currentNodeId = node.title;
-        } else {
-          currentNodeId = `${pathIndex}-${node.title}`;
-        }
+        const currentNodeId = node.title;
 
         if (!nodeIdsSet.has(currentNodeId)) {
           nodesList.push({
@@ -60,8 +55,6 @@ class Graph extends Component {
         priorNodeId = currentNodeId;
       });
     });
-
-    nodesList.reverse();
 
     const zoomed = () => {
       graph.attr(

@@ -28,8 +28,12 @@ class SearchButton extends React.Component {
     setIsFetchingResults(true);
 
     axios({
-      method: 'get',
-      url: `${SDOW_API_URL}/paths/${fromArticleTitle}/${toArticleTitle}`,
+      url: `${SDOW_API_URL}/paths`,
+      method: 'POST',
+      data: {
+        source: fromArticleTitle,
+        target: toArticleTitle,
+      },
     })
       .then((response) => {
         const {pages, paths} = response.data;

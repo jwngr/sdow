@@ -3,6 +3,30 @@ Helper classes and methods.
 """
 
 
+def get_sanitize_page_title(page_title):
+  """Validates and returns the sanitized version of the provided page title, transforming it into
+  the same format used to store pages titles in the database.
+
+  Args:
+    page_title: The page title to validate and sanitize.
+
+  Returns:
+    The sanitized page title.
+
+  Examples:
+    "Notre Dame Fighting Irish"   =>   "Notre_Dame_Fighting_Irish"
+    "Farmers' market"             =>   "Farmers\'_market"
+    "3.5" Floppy disk"            =>   "3.5\"_Floppy_disk"
+    "Nip/Tuck"                    =>   "Nip\\Tuck"
+
+  Raises:
+    ValueError: If the provided page title is invalid.
+  """
+  validate_page_title(page_title)
+
+  return page_title.replace(' ', '_').replace("'", "\\'").replace('"', '\\"')
+
+
 def is_str(val):
   """Returns whether or not the provided value is a string type.
 
