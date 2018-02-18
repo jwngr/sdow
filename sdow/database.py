@@ -53,12 +53,12 @@ class Database(object):
           'Invalid page title {0} provided. Page title does not exist.'.format(page_title))
 
     # First, look for an exact match with the page title.
-    for current_page_title, current_page_id, _ in results:
+    for current_page_id, current_page_title, _ in results:
       if current_page_title == sanitized_page_title:
         return current_page_id
 
     # Next, look for a match with a non-redirect page.
-    for _, current_page_id, current_page_is_redirect in results:
+    for current_page_id, _, current_page_is_redirect in results:
       if not current_page_is_redirect:
         return current_page_id
 
