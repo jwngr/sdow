@@ -43,11 +43,11 @@ for line in io.BufferedReader(gzip.open(INCOMING_LINKS_FILE, 'r')):
 for page_id, links in LINKS.iteritems():
   outgoing_links = links.get('outgoing', '')
   outgoing_links_count = 0 if outgoing_links is '' else len(
-      outgoing_links.split(','))
+      outgoing_links.split('|'))
 
   incoming_links = links.get('incoming', '')
   incoming_links_count = 0 if incoming_links is '' else len(
-      incoming_links.split(','))
+      incoming_links.split('|'))
 
   columns = [page_id, str(outgoing_links_count), str(
       incoming_links_count), outgoing_links, incoming_links]
