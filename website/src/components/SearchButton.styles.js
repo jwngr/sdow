@@ -7,7 +7,6 @@ export const GoButton = styled.button`
   height: 68px;
   width: 240px;
   font-size: 32px;
-  margin-top: 24px;
   color: ${(props) => props.theme.colors.creme};
   background-color: ${(props) => props.theme.colors.red};
   border: solid 2px ${(props) => props.theme.colors.darkGreen};

@@ -5,8 +5,9 @@ import ArticleInputContainer from '../containers/ArticleInputContainer';
 import SearchButtonContainer from '../containers/SearchButtonContainer';
 
 import Loading from './Loading';
+import logo from '../images/logo.png';
 
-import {P, Header, InputFlexContainer, MainContent, ErrorMessage} from './Home.styles';
+import {P, Logo, InputFlexContainer, MainContent, ErrorMessage} from './Home.styles';
 
 class Home extends Component {
   render() {
@@ -23,19 +24,7 @@ class Home extends Component {
 
     return (
       <div>
-        <Header>
-          {/*
-            TODO: turn header logo into particle text
-            See https://codepen.io/kelvinh111/pen/bNKQeY
-            See https://codepen.io/Gthibaud/pen/pyeNKj
-            See https://codepen.io/anon/pen/vpQeoy
-            See https://codepen.io/tonx/pen/gbzJYO?q=particle+text&limit=all&type=type-pens
-            Wikipedia fonts: Linux Libertine (current) and Hoefler Text (prior to 2010)
-            See https://fonts.google.com/specimen/Crimson+Text?selection.family=Crimson+Text for a
-            similar font
-          */}
-          <h1>Six Degrees Of Wikipedia</h1>
-        </Header>
+        <Logo src={logo} alt="Six Degrees of Wikipedia Logo" />
         <MainContent>
           <P>Find the shortest paths from</P>
           <InputFlexContainer>
