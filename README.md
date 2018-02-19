@@ -43,10 +43,6 @@ three tables:
 Generating the SDOW database from a dump of Wikipedia takes approximately two hours given the
 instructions below:
 
-# TODO: update to indicate I should now just use the `sdow-db-builder` template.
-
-# TODO: move some of these setup instructions into a single template startup script.
-
 1. Create a new [Google Compute Engine instance](https://console.cloud.google.com/compute/instances?project=sdow-prod)
    from the `sdow-db-builder` instance template, which is configured with the following specs:
    1. **Name:** `sdow-db-builder-1`
@@ -88,12 +84,7 @@ instructions below:
    ```
 1. Delete the VM to prevent incurring large fees.
 
-TODO: make sure the external IP is permanent (maybe use a load balancer with a permanent IP?)
-Endpoint: http://<external*ip>:5000/paths/Usain%20Bolt/40*(number)
-
 ## Web Server Setup Process
-
-**TODO: finish these instructions**
 
 1. Create a new [Google Compute Engine instance](https://console.cloud.google.com/compute/instances?project=sdow-prod)
    from the `sdow-web-server` instance template, which is configured with the following specs::
