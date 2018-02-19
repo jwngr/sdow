@@ -130,13 +130,14 @@ if [ ! -f pages.txt.gz ]; then
   # Split into individual records
   # Only keep records in namespace 0
   # Replace namespace with a tab
-  # Remove everything starting at the page name's closing apostrophe
+  # Splice out the page title and whether or not the page is a redirect
   # Zip into output file
   time pigz -dc $PAGES_FILENAME \
     | sed -n 's/^INSERT INTO `page` VALUES (//p' \
     | sed -e 's/),(/\'$'\n/g' \
     | egrep "^[0-9]+,0," \
-    | awk -F',' '{printf ("%s\t%s\t%s\n", $1, substr($3, 2, length($3) - 2), $6)}' \
+    | sed -e $"s/,0,'/\t/" \
+    | sed -e $"s/','[^,]*,[^,]*,\([01]\).*/\t\1/" \
     | pigz -1 > pages.txt.gz
 else
   echo "[WARN] Already trimmed pages file"
