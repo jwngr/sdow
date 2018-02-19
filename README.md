@@ -47,12 +47,14 @@ instructions below:
 
 # TODO: move some of these setup instructions into a single template startup script.
 
-1. Create a new [Google Compute Engine instance](https://console.cloud.google.com/compute/instances?project=sdow-prod):
-   1. **Name:** `sdow-build-db`
+1. Create a new [Google Compute Engine instance](https://console.cloud.google.com/compute/instances?project=sdow-prod)
+   from the `sdow-db-builder` instance template, which is configured with the following specs:
+   1. **Name:** `sdow-db-builder-1`
    1. **Zone:** `us-central1-c`
-   1. **Machine Type:** 8 vCPUS, 52 GB RAM
+   1. **Machine Type:** n1-highmem-8 (8 vCPUs, 52 GB RAM)
    1. **Boot disk**: 256 GB SSD, Debian GNU/Linux 8 (jessie)
-   1. **Notes**: Allow full access to all Cloud APIs.
+   1. **Notes**: Allow full access to all Cloud APIs. Do not use Debian GNU/Linux 9 (stretch) due to
+      degraded performance.
 1. SSH into the machine:
    ```bash
    $ gcloud compute ssh sdow-db-builder-1
@@ -66,27 +68,25 @@ instructions below:
    ```bash
    $ git clone https://github.com/jwngr/sdow.git
    ```
-1. Create a new screen in case you lose connection to the VM:
-   ```bash
-   $ screen
-   ```
-1. Run the database creation script, providing [an optional date](https://dumps.wikimedia.your.org/enwiki/)
-   for the backup:
+1. Move to the proper directory and create a new screen in case the VM connection is lost:
    ```bash
    $ cd sdow/database/
+   $ screen  # And then press <ENTER> on the screen that pops up
+   ```
+1. Run the database creation script, providing
+   [an optional date](https://dumps.wikimedia.your.org/enwiki/) for the backup:
+   ```bash
    $ (time ./buildDatabase.sh [<YYYYMMDD>]) &> output.txt
    ```
 1. Detach from the current screen session by pressing `<CTRL> + <a>` and then `<d>`. To reattach to
    the screen, run `screen -r`. Make sure to always detach from the screen cleanly so it can be
    resumed!
 1. Copy the script output and the resulting SQLite file to the `sdow-prod` GCS bucket:
-   # TODO: move this command into a script which is easier to run
    ```
    $ gsutil cp output.txt gs://sdow-prod/dumps/<YYYYMMDD>/
    $ gsutil cp dump/sdow.sqlite gs://sdow-prod/dumps/<YYYYMMDD>/
    ```
-1. To avoid charges for running VMS and SSD persistent disk, delete the VM as soon as the job is
-   complete and the database is saved.
+1. Delete the VM to prevent incurring large fees.
 
 TODO: make sure the external IP is permanent (maybe use a load balancer with a permanent IP?)
 Endpoint: http://<external*ip>:5000/paths/Usain%20Bolt/40*(number)
@@ -95,15 +95,17 @@ Endpoint: http://<external*ip>:5000/paths/Usain%20Bolt/40*(number)
 
 **TODO: finish these instructions**
 
-1. Create a new [Google Compute Engine instance](https://console.cloud.google.com/compute/instances?project=sdow-prod):
+1. Create a new [Google Compute Engine instance](https://console.cloud.google.com/compute/instances?project=sdow-prod)
+   from the `sdow-web-server` instance template, which is configured with the following specs::
    1. **Name:** `sdow-web-server`
    1. **Zone:** `us-central1-c`
-   1. **Machine Type:** TODO
-   1. **Boot disk**: TODO
-   1. **Notes**: TODO
+   1. **Machine Type:** n1-standard-1 (1 vCPU, 3.75 GB RAM)
+   1. **Boot disk**: 64 GB HHD, Debian GNU/Linux 8 (jessie)
+   1. **Notes**: Allow default access to Cloud APIs. Do not use Debian GNU/Linux 9 (stretch) due to
+      degraded performance.
 1. SSH into the machine:
    ```bash
-   $ gcloud compute ssh sdow-web-server
+   $ gcloud compute ssh sdow-web-server-1
    ```
 1. Clone this directory via HTTPS:
    ```bash
@@ -115,10 +117,9 @@ Endpoint: http://<external*ip>:5000/paths/Usain%20Bolt/40*(number)
    ```
 1. Install required dependencies:
    ```bash
-   $ sudo apt-get install git sqlite
-   $ sudo apt-get install python-pip python-dev build-essential
-   $ sudo pip install --upgrade pip
-   $ sudo pip install --upgrade virtualenv
+   $ sudo apt-get update
+   $ sudo apt-get install git sqlite python-pip python-dev build-essential
+   $ sudo pip install --upgrade pip virtualenv
    $ sudo pip install flask
    ```
 1. Expose the Flask HTTP port (5000) from the VM’s firewall by running the following command from
@@ -136,20 +137,20 @@ Endpoint: http://<external*ip>:5000/paths/Usain%20Bolt/40*(number)
 
 ## Edge Case Pages
 
-| -------- | --------------------------------------------- | ------------------------- |
-| Page ID | Page Name | Notes |
-| -------- | --------------------------------------------- | ------------------------- |
-| 1514 | Albert,\_Duke_of_Prussia | |
-| 8695 | Dr.\_Strangelove | |
-| 11760 | F-110_Spectre | |
-| 49940 | Aaron\'s_rod | |
-| 161512 | DivX\_;-) | |
-| 24781871 | Jack_in_the_Green:\_Live_in_Germany_1970–1993 | |
-| 24781873 | Lindström\_(company) | |
-| 54201834 | Disinformation\_(book) | Missing in `pages.txt.gz` |
-| 54201536 | .nds | Missing in `pages.txt.gz` |
-| | Antonio_L%C3%B3pez_Fajardo | Missing in `pages.txt.gz` |
-| -------- | --------------------------------------------- | ------------------------- |
+| ID       | Title                                        | Sanitized Title                                |
+| -------- | -------------------------------------------- | ---------------------------------------------- |
+| 50899560 | 🦎                                           | `🦎`                                           |
+| 725006   | "                                            | `\"`                                           |
+| 32055176 | Λ-ring                                       | `Λ-ring`                                       |
+| 11760    | F-110 Spectre                                | `F-110_Spectre`                                |
+| 8695     | Dr. Strangelove                              | `Dr._Strangelove`                              |
+| 337903   | Farmers' market                              | `Farmers\'_market`                             |
+| 24781873 | Lindström (company)                          | `Lindström_(company)`                          |
+| 54201777 | Disinformation (book)                        | `Disinformation_(book)`                        |
+| 1514     | Albert, Duke of Prussia                      | `Albert,_Duke_of_Prussia`                      |
+| 35703467 | "A," My Name is Alex - Parts I & II          | `\"A,\"\_My_Name_is_Alex_-_Parts_I_&_II`       |
+| 54680944 | N,N,N′,N′-tetramethylethylenediamine         | `N,N,N′,N′-tetramethylethylenediamine`         |
+| 24781871 | Jack in the Green: Live in Germany 1970–1993 | `Jack_in_the_Green:_Live_in_Germany_1970–1993` |
 
 ## Contributing
 
