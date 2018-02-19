@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import * as d3 from 'd3';
-import {schemeSet1} from 'd3-scale-chromatic';
 // import {findDOMNode} from 'react-dom';
 import React, {Component} from 'react';
 
@@ -56,8 +55,23 @@ class Graph extends Component {
       });
     });
 
+    const legendData = [];
+    for (let i = 0; i < pathsLength; ++i) {
+      if (i === 0) {
+        legendData[i] = 'Start page';
+        if (pathsLength === 1) {
+          legendData[i] += ' / end page';
+        }
+      } else if (i + 1 === pathsLength) {
+        legendData[i] = 'End page';
+      } else {
+        const degreeOrDegrees = i === 1 ? 'degree' : 'degrees';
+        legendData[i] = `Pages ${i} ${degreeOrDegrees} away`;
+      }
+    }
+
     const zoomed = () => {
-      graph.attr(
+      zoomableGraph.attr(
         'transform',
         'translate(' +
           d3.event.transform.x +
@@ -88,7 +102,7 @@ class Graph extends Component {
       //     return Math.max(NODE_RADIUS, Math.min(DEFAULT_CHART_HEIGHT - NODE_RADIUS, d.y));
       //   });
 
-      text.attr('transform', (d) => 'translate(' + d.x + ',' + d.y + ')');
+      nodeLabels.attr('transform', (d) => 'translate(' + d.x + ',' + d.y + ')');
     };
 
     const dragstarted = (d) => {
@@ -108,7 +122,7 @@ class Graph extends Component {
       d.fy = null;
     };
 
-    var color = d3.scaleOrdinal(schemeSet1);
+    var color = d3.scaleOrdinal(d3.schemeCategory10);
 
     const graph = d3
       .select(this.graphRef)
@@ -117,7 +131,9 @@ class Graph extends Component {
       .call(d3.zoom().on('zoom', zoomed))
       .append('g');
 
-    graph
+    var zoomableGraph = graph.append('g').attr('class', 'grAPH');
+
+    zoomableGraph
       .append('defs')
       .append('marker')
       .attr('id', 'arrow')
@@ -144,7 +160,7 @@ class Graph extends Component {
       .id((d) => d.id)
       .distance(100);
 
-    var link = graph
+    var link = zoomableGraph
       .append('g')
       .attr('class', 'links')
       .selectAll('line')
@@ -154,7 +170,7 @@ class Graph extends Component {
       .attr('stroke', (d) => '#000')
       .attr('marker-end', 'url(#arrow)');
 
-    var node = graph
+    var node = zoomableGraph
       .append('g')
       .attr('class', 'nodes')
       .selectAll('circle')
@@ -178,20 +194,47 @@ class Graph extends Component {
           .on('end', dragended)
       );
 
-    var text = graph
+    var nodeLabels = zoomableGraph
       .append('g')
       .attr('class', 'labels')
       .selectAll('g')
       .data(nodesList)
       .enter()
-      .append('g');
-    text
       .append('text')
       .attr('x', 10)
       .attr('y', '.31em')
       .style('font-family', 'sans-serif')
       .style('font-size', '0.7em')
       .text((d) => d.title);
+
+    // Legend
+    var legend = graph
+      .append('g')
+      .attr('class', 'legend')
+      .selectAll('g')
+      .data(legendData);
+
+    // Legend color
+    legend
+      .enter()
+      .append('circle')
+      .attr('class', 'legend-color')
+      .attr('cx', 20)
+      .attr('cy', (d, i) => i * 24 + 20)
+      .attr('r', 6)
+      .attr('fill', (d, i) => color(i))
+      .attr('stroke', (d, i) => d3.rgb(color(i)).darker(2));
+
+    // Legend labels
+    legend
+      .enter()
+      .append('text')
+      .attr('class', 'legend-label')
+      .attr('x', 34)
+      .attr('y', (d, i) => i * 24 + 24)
+      .style('font-family', 'sans-serif')
+      .style('font-size', '0.7em')
+      .text((d) => d);
 
     node.on('click', function(d) {
       console.log('clicked', d.id);

@@ -16,3 +16,7 @@
 .nodes circle {
   stroke-width: 2px;
 }
+
+.legend-color {
+  stroke-width: 2px;
+}

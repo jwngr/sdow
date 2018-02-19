@@ -6,7 +6,6 @@
     "axios": "^0.17.1",
     "classnames": "^2.2.5",
     "d3": "^4.13.0",
-    "d3-scale-chromatic": "^1.2.0",
     "date-fns": "^1.29.0",
     "history": "^4.7.2",
     "lodash": "^4.17.4",
