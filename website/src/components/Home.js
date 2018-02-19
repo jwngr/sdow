@@ -11,11 +11,11 @@ import {P, Logo, InputFlexContainer, MainContent, ErrorMessage} from './Home.sty
 
 class Home extends Component {
   render() {
-    const {error, isFetchingResults} = this.props;
+    const {errorMessage, isFetchingResults} = this.props;
 
     let resultContent;
-    if (error !== null) {
-      resultContent = <ErrorMessage>{error}</ErrorMessage>;
+    if (errorMessage !== null) {
+      resultContent = <ErrorMessage>{errorMessage}</ErrorMessage>;
     } else if (isFetchingResults) {
       resultContent = <Loading />;
     } else {

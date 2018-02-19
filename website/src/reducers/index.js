@@ -13,7 +13,7 @@ const rootReducers = {
     switch (action.type) {
       case actions.SET_IS_FETCHING_RESULTS:
         return action.isFetchingResults;
-      case actions.SET_ERROR:
+      case actions.SET_ERROR_MESSAGE:
       case actions.SET_SHORTEST_PATH_RESULTS:
         return false;
       default:
@@ -36,10 +36,12 @@ const rootReducers = {
         return state;
     }
   },
-  error: (state = null, action) => {
+  errorMessage: (state = null, action) => {
     switch (action.type) {
-      case actions.SET_ERROR:
+      case actions.SET_ERROR_MESSAGE:
         return action.errorMessage;
+      case actions.SET_IS_FETCHING_RESULTS:
+        return action.isFetchingResults ? null : state;
       default:
         return state;
     }

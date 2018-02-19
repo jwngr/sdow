@@ -1,14 +1,14 @@
 // Action types
-export const SET_ERROR = 'SET_ERROR';
+export const SET_ERROR_MESSAGE = 'SET_ERROR_MESSAGE';
 export const SET_TO_ARTICLE_TITLE = 'SET_TO_ARTICLE_TITLE';
 export const SET_FROM_ARTICLE_TITLE = 'SET_FROM_ARTICLE_TITLE';
 export const SET_IS_FETCHING_RESULTS = 'SET_IS_FETCHING_RESULTS';
 export const SET_SHORTEST_PATH_RESULTS = 'SET_SHORTEST_PATH_RESULTS';
 
 // Action creators
-export function setError(errorMessage) {
+export function setErrorMessage(errorMessage) {
   return {
-    type: SET_ERROR,
+    type: SET_ERROR_MESSAGE,
     errorMessage,
   };
 }

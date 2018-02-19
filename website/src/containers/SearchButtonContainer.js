@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 
-import {setError, setIsFetchingResults, setShortestPathResults} from '../actions';
+import {setErrorMessage, setIsFetchingResults, setShortestPathResults} from '../actions';
 
 import SearchButton from '../components/SearchButton';
 
@@ -16,8 +16,8 @@ const mapDispatchToProps = (dispatch) => {
     setShortestPathResults: (paths) => {
       dispatch(setShortestPathResults(paths));
     },
-    setError: (errorMessage) => {
-      dispatch(setError(errorMessage));
+    setErrorMessage: (errorMessage) => {
+      dispatch(setErrorMessage(errorMessage));
     },
     setIsFetchingResults: (isFetchingResults) => {
       dispatch(setIsFetchingResults(isFetchingResults));
