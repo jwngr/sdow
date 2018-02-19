@@ -173,6 +173,7 @@ if [ ! -f redirects.with_ids.txt.gz ]; then
   echo
   echo "[INFO] Replacing titles in redirects file"
   time python "$ROOT_DIR/replace_titles_in_redirects_file.py" pages.txt.gz redirects.txt.gz \
+    | sort -S 100% -t $'\t' -k 1n,1n \
     | pigz -1 > redirects.with_ids.txt.gz
 else
   echo "[WARN] Already replaced titles in redirects file"
