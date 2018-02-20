@@ -3,11 +3,13 @@ import * as d3 from 'd3';
 // import {findDOMNode} from 'react-dom';
 import React, {Component} from 'react';
 
+import {getWikipediaPageUrl} from '../utils';
+
 // TODO: update to styled-components
 import './Graph.css';
 
 const DEFAULT_CHART_WIDTH = 800;
-const DEFAULT_CHART_HEIGHT = 400;
+const DEFAULT_CHART_HEIGHT = 600;
 
 class Graph extends Component {
   // state = {
@@ -66,7 +68,7 @@ class Graph extends Component {
         legendData[i] = 'End page';
       } else {
         const degreeOrDegrees = i === 1 ? 'degree' : 'degrees';
-        legendData[i] = `Pages ${i} ${degreeOrDegrees} away`;
+        legendData[i] = `${i} ${degreeOrDegrees} away`;
       }
     }
 
@@ -129,8 +131,10 @@ class Graph extends Component {
       .attr('width', DEFAULT_CHART_WIDTH)
       .attr('height', DEFAULT_CHART_HEIGHT)
       .call(d3.zoom().on('zoom', zoomed))
+      .on('dblclick.zoom', null)
       .append('g');
 
+    // TODO: fix class name
     var zoomableGraph = graph.append('g').attr('class', 'grAPH');
 
     zoomableGraph
@@ -203,8 +207,8 @@ class Graph extends Component {
       .append('text')
       .attr('x', 10)
       .attr('y', '.31em')
-      .style('font-family', 'sans-serif')
-      .style('font-size', '0.7em')
+      .style('font-family', 'Quicksand')
+      .style('font-size', '12px')
       .text((d) => d.title);
 
     // Legend
@@ -232,12 +236,37 @@ class Graph extends Component {
       .attr('class', 'legend-label')
       .attr('x', 34)
       .attr('y', (d, i) => i * 24 + 24)
-      .style('font-family', 'sans-serif')
-      .style('font-size', '0.7em')
+      .style('font-family', 'Quicksand')
+      .style('font-size', '12px')
       .text((d) => d);
 
-    node.on('click', function(d) {
-      console.log('clicked', d.id);
+    // Notes
+    var instructions = graph
+      .append('g')
+      .attr('class', 'instructions')
+      .selectAll('g')
+      .data(legendData);
+
+    instructions
+      .enter()
+      .append('text')
+      .attr('x', 10)
+      .attr('y', DEFAULT_CHART_HEIGHT - 24)
+      .style('font-family', 'Quicksand')
+      .style('font-size', '12px')
+      .text('Drag to pan. Scroll to zoom.');
+
+    instructions
+      .enter()
+      .append('text')
+      .attr('x', 10)
+      .attr('y', DEFAULT_CHART_HEIGHT - 10)
+      .style('font-family', 'Quicksand')
+      .style('font-size', '12px')
+      .text('Double click node to open Wikipedia page in new tab.');
+
+    node.on('dblclick', function(d) {
+      window.open(getWikipediaPageUrl(d.id), '_blank');
     });
 
     node.append('title').text((d) => d.title);

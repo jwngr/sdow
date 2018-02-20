@@ -70,7 +70,7 @@ class PathResults extends Component {
     });
 
     return (
-      <div>
+      <React.Fragment>
         <ResultsMessage>
           {snarkyContent}
           <p>
@@ -88,9 +88,9 @@ class PathResults extends Component {
             <ArticleLink title={fromArticleTitle} /> to <ArticleLink title={toArticleTitle} />!
           </p>
         </ResultsMessage>
-        <PathResultsWrapper>{pathResultsContent}</PathResultsWrapper>
         <Graph paths={paths} />
-      </div>
+        <PathResultsWrapper>{pathResultsContent}</PathResultsWrapper>
+      </React.Fragment>
     );
   }
 }

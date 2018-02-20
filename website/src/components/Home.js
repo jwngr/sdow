@@ -22,6 +22,11 @@ class Home extends Component {
       resultContent = <PathResultsContainer />;
     }
 
+    let searchButtonContent;
+    if (!isFetchingResults) {
+      searchButtonContent = <SearchButtonContainer />;
+    }
+
     return (
       <div>
         <Logo src={logo} alt="Six Degrees of Wikipedia Logo" />
@@ -33,7 +38,7 @@ class Home extends Component {
             <ArticleInputContainer toOrFrom="to" placeholder="Fortune-telling" />
           </InputFlexContainer>
 
-          <SearchButtonContainer />
+          {searchButtonContent}
 
           {resultContent}
         </MainContent>

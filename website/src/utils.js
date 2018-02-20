@@ -6,7 +6,7 @@ import wikipediaFacts from './resources/wikipediaFacts.json';
 export const getWikipediaPageUrl = (pageTitle) => {
   const baseUrl = 'https://en.wikipedia.org/wiki/';
   const sanitizedPageTitle = pageTitle.replace(' ', '_');
-  return `${baseUrl}${sanitizedPageTitle}`;
+  return `${baseUrl}${encodeURIComponent(sanitizedPageTitle)}`;
 };
 
 export const getRandomPageTitle = (previousPageTitle) => {

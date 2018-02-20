@@ -1,10 +1,18 @@
 .results-graph {
   display: flex;
   justify-content: center;
+  margin-top: 40px;
+  cursor: grab;
+}
+
+.results-graph:active {
+  cursor: grabbing;
 }
 
 .results-graph > div {
   background: rgba(256, 256, 256, 0.7);
+  background-color: #f7fff7;
+  border: solid 3px #1a535c;
 }
 
 .links line {
@@ -15,6 +23,7 @@
 
 .nodes circle {
   stroke-width: 2px;
+  cursor: pointer;
 }
 
 .legend-color {
