@@ -38,17 +38,14 @@ class Loading extends Component {
     tokens.forEach((token, i) => {
       if (skipCount === 0) {
         if (i % 2 === 0) {
-          factContent.push(<span>{token}</span>);
+          factContent.push(<span key={i}>{token}</span>);
         } else {
           if (token === 'Suzukake no Ki no Michi de ') {
             // Special-case stupid long page title which contains a double quotation mark.
-            factContent.push(
-              <ArticleLink title={tokens[i] + '"' + tokens[i + 1] + '"' + tokens[i + 2]} />
-            );
             skipCount = 2;
-          } else {
-            factContent.push(<ArticleLink title={token} />);
+            token = tokens[i] + '"' + tokens[i + 1] + '"' + tokens[i + 2];
           }
+          factContent.push(<ArticleLink title={token} key={i} />);
         }
       } else {
         skipCount--;
