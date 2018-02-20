@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import {getArticleUrl} from '../utils';
+import {getWikipediaPageUrl} from '../utils';
 
 const Link = styled.a`
   position: relative;
@@ -61,7 +61,7 @@ const Link = styled.a`
 `;
 
 const ArticleLink = ({title}) => (
-  <Link href={getArticleUrl(title)} target="_blank">
+  <Link href={getWikipediaPageUrl(title)} target="_blank">
     {title}
   </Link>
 );

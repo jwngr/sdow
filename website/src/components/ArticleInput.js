@@ -3,7 +3,7 @@ import axios from 'axios';
 import React from 'react';
 import Autosuggest from 'react-autosuggest';
 
-import {getRandomArticleTitle} from '../utils';
+import {getRandomPageTitle} from '../utils';
 
 import ArticleInputSuggestion from './ArticleInputSuggestion';
 
@@ -31,14 +31,14 @@ class ArticleInput extends React.Component {
     this.state = {
       suggestions: [],
       isFetching: false,
-      placeholderText: getRandomArticleTitle(),
+      placeholderText: getRandomPageTitle(),
     };
 
     this.debouncedLoadSuggestions = _.debounce(this.loadSuggestions, 250);
 
     setInterval(() => {
       this.setState((prevState) => ({
-        placeholderText: getRandomArticleTitle(prevState.placeholderText),
+        placeholderText: getRandomPageTitle(prevState.placeholderText),
       }));
     }, 5000);
   }

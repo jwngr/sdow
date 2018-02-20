@@ -1,20 +1,20 @@
 import _ from 'lodash';
 
-import articleTitles from './resources/articleTitles.json';
+import pageTitles from './resources/pageTitles.json';
 import wikipediaFacts from './resources/wikipediaFacts.json';
 
-export const getArticleUrl = (articleTitle) => {
+export const getWikipediaPageUrl = (pageTitle) => {
   const baseUrl = 'https://en.wikipedia.org/wiki/';
-  const normalizedArticleTitle = articleTitle.replace(' ', '_');
-  return `${baseUrl}${normalizedArticleTitle}`;
+  const sanitizedPageTitle = pageTitle.replace(' ', '_');
+  return `${baseUrl}${sanitizedPageTitle}`;
 };
 
-export const getRandomArticleTitle = (previousArticleTitle) => {
-  let articleTitle;
-  while (typeof articleTitle === 'undefined' || articleTitle === previousArticleTitle) {
-    articleTitle = articleTitles[Math.floor(Math.random() * articleTitles.length)];
+export const getRandomPageTitle = (previousPageTitle) => {
+  let pageTitle;
+  while (typeof pageTitle === 'undefined' || pageTitle === previousPageTitle) {
+    pageTitle = pageTitles[Math.floor(Math.random() * pageTitles.length)];
   }
-  return articleTitle;
+  return pageTitle;
 };
 
 export const getRandomWikipediaFact = (previousFacts) => {
