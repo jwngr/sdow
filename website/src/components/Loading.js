@@ -30,6 +30,11 @@ class Loading extends Component {
 
   render() {
     let {currentFact} = this.state;
+    const {isFetchingResults} = this.props;
+
+    if (!isFetchingResults) {
+      return null;
+    }
 
     // Replace page titles in the current fact with a link to the corresponding Wikipedia article.
     let skipCount = 0;

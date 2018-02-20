@@ -9,14 +9,6 @@ export const Logo = styled.img`
 
 export const MainContent = styled.div``;
 
-export const ErrorMessage = styled.p`
-  width: 800px;
-  margin: 40px auto 0 auto;
-  font-size: 32px;
-  text-align: center;
-  color: ${(props) => props.theme.colors.red};
-`;
-
 export const P = styled.p`
   font-size: 32px;
   text-align: center;

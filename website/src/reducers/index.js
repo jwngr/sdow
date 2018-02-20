@@ -5,6 +5,9 @@ const rootReducers = {
     switch (action.type) {
       case actions.SET_SHORTEST_PATH_RESULTS:
         return action.results;
+      case actions.SET_ERROR_MESSAGE:
+      case actions.SET_IS_FETCHING_RESULTS:
+        return null;
       default:
         return state;
     }
@@ -42,6 +45,8 @@ const rootReducers = {
         return action.errorMessage;
       case actions.SET_IS_FETCHING_RESULTS:
         return action.isFetchingResults ? null : state;
+      case actions.SET_SHORTEST_PATH_RESULTS:
+        return null;
       default:
         return state;
     }

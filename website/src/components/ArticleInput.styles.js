@@ -42,9 +42,9 @@ export const AutosuggestWrapper = styled.div.attrs(classNames)`
   .${classNames.suggestions_container_open} {
     display: block;
     position: absolute;
-    top: 41px;
+    top: 38px;
     width: 500px;
-    border: solid 2px ${(props) => props.theme.colors.darkGreen};
+    border: solid 3px ${(props) => props.theme.colors.darkGreen};
     background-color: ${(props) => props.theme.colors.creme};
     border-bottom-left-radius: 12px;
     border-bottom-right-radius: 12px;

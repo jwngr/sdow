@@ -4,7 +4,7 @@ import {Description, InnerWrapper, Image, Title, Wrapper} from './ArticleInputSu
 
 import defaultPageThumbnail from '../images/defaultPageThumbnail.png';
 
-const ArticleInputSuggestion = ({title, description, thumbnailUrl}) => {
+export default ({title, description, thumbnailUrl}) => {
   if (typeof description === 'string' && description.length > 153) {
     description = `${description.slice(0, 150)}...`;
   }
@@ -21,5 +21,3 @@ const ArticleInputSuggestion = ({title, description, thumbnailUrl}) => {
     </Wrapper>
   );
 };
-
-export default ArticleInputSuggestion;

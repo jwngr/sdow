@@ -8,10 +8,11 @@ const mapStateToProps = (state) => {
   return {
     toArticleTitle: state.toArticleTitle,
     fromArticleTitle: state.fromArticleTitle,
+    isFetchingResults: state.isFetchingResults,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, state) => {
   return {
     setShortestPathResults: (paths) => {
       dispatch(setShortestPathResults(paths));

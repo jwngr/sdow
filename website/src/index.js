@@ -8,8 +8,8 @@ import {combineReducers, compose, createStore, applyMiddleware} from 'redux';
 
 import registerServiceWorker from './registerServiceWorker';
 
+import Home from './components/Home';
 import About from './components/About';
-import HomeContainer from './containers/HomeContainer';
 
 import theme from './resources/theme.json';
 import particlesConfig from './resources/particles.config.json';
@@ -73,7 +73,7 @@ ReactDOM.render(
               <About />
             </Fragment>
             <Fragment forNoMatch>
-              <HomeContainer />
+              <Home />
             </Fragment>
           </React.Fragment>
         </Fragment>
