@@ -12,7 +12,7 @@ import {P, Logo, InputFlexContainer, MainContent, ErrorMessage} from './Home.sty
 
 class Home extends Component {
   render() {
-    const {errorMessage, fromArticleTitle, toArticleTitle, isFetchingResults} = this.props;
+    const {errorMessage, isFetchingResults} = this.props;
 
     let resultContent;
     if (errorMessage !== null) {
