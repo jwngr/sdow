@@ -1,39 +1,39 @@
 [
   "Wikipedia contains 5,562,961 pages.",
-  "Wikipedia contains 427,834,963 links between pages.",
-  "Wikipedia contains 8,148,752 redirects to actual pages.",
+  "There are a total of 427,834,963 links between Wikipedia pages.",
+  "8,148,752 Wikipedia pages are actually just redirects to other pages.",
 
-  "\"List of current U.S. state legislators\" contains the highest number of outgoing links (9,769).",
-  "\"List of people from Illinois\" contains the second highest number of outgoing links (8,049).",
-  "\"List of least concern birds\" contains the third highest number of outgoing links (7,901).",
-  "\"List of stage names\" contains the fourth highest number of outgoing links (6,661).",
-  "\"List of birds of the world\" contains the fifth highest number of outgoing links (6,232).",
+  "\"List of current U.S. state legislators\" is the Wikipedia page with the highest number of outgoing links (9,769).",
+  "\"List of people from Illinois\" is the Wikipedia page with the second highest number of outgoing links (8,049).",
+  "\"List of least concern birds\" is the Wikipedia page with the third highest number of outgoing links (7,901).",
+  "\"List of stage names\" is the Wikipedia page with the fourth highest number of outgoing links (6,661).",
+  "\"List of birds of the world\" is the Wikipedia page with the fifth highest number of outgoing links (6,232).",
 
-  "\"Geographic coordinate system\" is the most linked to page (1,047,096).",
-  "\"International Standard Book Number\" is the second most linked to page (955,957).",
-  "\"United States\" is the third most linked to page (474,245).",
-  "\"Virtual International Authority File\" is the fourth most linked to page (429,737).",
-  "\"Time zone\" is the fifth most linked to page (358,963).",
-
-  "Sorted alphabetically, the first page title is \"!!\".",
-  "Sorted alphabetically, the last page title is \"𓈖\".",
+  "\"Geographic coordinate system\" is the most linked to page on Wikipedia (1,047,096 incoming links).",
+  "\"International Standard Book Number\" is the second most linked to page on Wikipedia (955,957 incoming link).",
+  "\"United States\" is the third most linked to page on Wikipedia (474,245 incoming link).",
+  "\"Virtual International Authority File\" is the fourth most linked to page on Wikipedia (429,737 incoming link).",
+  "\"Time zone\" is the fifth most linked to page on Wikipedia (358,963 incoming link).",
 
   "There are only 1,300 (0.02%) Wikipedia pages which link to no other pages.",
   "There are 157,457 Wikipedia pages (2.83%) which are not linked to from any other page.",
 
+  "The first Wikipedia page title in alphabetical order is \"!!\".",
+  "The last Wikipedia page title in alphabetical order is \"𓈖\".",
+
   "At an impressive 211 characters, \"Suzukake no Ki no Michi de \"Kimi no Hohoemi o Yume ni Miru\" to Itte Shimattara Bokutachi no Kankei wa Dō Kawatte Shimau no ka, Bokunari ni Nannichi ka Kangaeta Ue de no Yaya Kihazukashii Ketsuron no Yō na Mono\" is the longest page title on Wikipedia.",
-  "There are 252 Wikipedia page titles which are just a single character long, including \"Œ\", \"↓\", and \"膾\".",
+  "There are 252 Wikipedia pages whose titles are just a single character, including \"Œ\", \"↓\", and \"膾\".",
 
-  "17 Wikipedia page titles begin with an exclamation mark, including \"!O!ung_language\".",
-  "Of all Wikipedia page titles, 8,841 (0.16%) contain an exclamation mark.",
+  "Only 17 Wikipedia page titles begin with an exclamation mark, one of which is \"!O!ung_language\".",
+  "8,841 Wikipedia pages (0.16%) have a title which contains an exclamation mark.",
 
-  "17 Wikipedia page titles begin with a question mark, including \"?:_A_Question_Mark\".",
-  "Of all Wikipedia page titles, 3,601 (0.06%) contain a question mark.",
+  "Only 17 Wikipedia page titles begin with a question mark, one of which is \"?:_A_Question_Mark\".",
+  "3,601 Wikipedia pages (0.06%) have a title which contains a question mark.",
 
-  "Of all Wikipedia page titles, 4,826,829 (86.7%) contain a space.",
-  "Of all Wikipedia page titles, 736,132 (13.2%) do not contain a space.",
+  "4,826,829 Wikipedia pages (86.7%) have a title which contains a space.",
+  "736,132 Wikipedia pages (13.2%) have a title which does not contain a space.",
 
-  "A single or double apostrophe can be found in 160,631 Wikipedia page titles (2.89%), leading to countless parsing issues.",
+  "A single or double quotation mark can be found in 160,631 Wikipedia page (2.89%), leading to countless parsing issues.",
 
   "At a staggering 182 characters, \"Lopadotemachoselachogaleokranioleipsanodrimhypotrimmatosilphioparaomelitokatakechymenokichlepikossyphophattoperisteralektryonoptekephalliokigklopeleiolagoiosiraiobaphetraganopterygon\" is the longest Wikipedia page title which contains no spaces.",
   "At a whopping 85 characters, \"Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu\" is the second longest Wikipedia page title which contains no spaces.",
