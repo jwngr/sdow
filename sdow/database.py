@@ -181,9 +181,39 @@ class Database(object):
 
     # TODO: measure the performance impact of this versus just appending to an array (above) or
     # just returning the cursor (not yet implemented)
-    # There is no need to escape the query parameters here since they are never user-defined
+    # There is no need to escape the query parameters here since they are never user-defined.
     query = 'SELECT id, {0} FROM links WHERE id IN {1};'.format(
         outcoming_or_incoming_links, page_ids)
     self.cursor.execute(query)
 
     return self.cursor.fetchall()
+
+  def insert_result(self, search):
+    """Inserts a new search result into the searches table.
+
+    Args:
+      results: A dictionary containing search information.
+
+    Returns: 
+      None
+    """
+    paths_count = len(search['paths'])
+
+    if paths_count == 0:
+      degrees_count = None
+      paths = None
+    else:
+      degrees_count = len(search['paths'][0])
+      paths = str(search['paths']).replace(' ', '')
+
+    # There is no need to escape the query parameters here since they are never user-defined.
+    query = 'INSERT INTO searches VALUES ({source_id}, {target_id}, {duration}, {degrees_count}, {paths_count}, "{paths}", CURRENT_TIMESTAMP);'.format(
+        source_id=search['source_id'],
+        target_id=search['target_id'],
+        duration=search['duration'],
+        degrees_count=degrees_count,
+        paths_count=paths_count,
+        paths=paths
+    )
+    self.conn.execute(query)
+    self.conn.commit()

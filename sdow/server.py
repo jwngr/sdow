@@ -2,6 +2,7 @@
 Server web framework.
 """
 
+import time
 from sets import Set
 from flask_cors import CORS
 from sdow.database import Database
@@ -54,6 +55,8 @@ def shortest_paths_route():
     Raises:
       InvalidRequest: If either of the provided titles correspond to pages which do not exist.
   """
+  start_time = time.time()
+
   from_page_title = request.json['source']
   to_page_title = request.json['target']
 
@@ -135,6 +138,13 @@ def shortest_paths_route():
         'paths': paths,
         'pages': pages_info
     }
+
+  database.insert_result({
+      'source_id': from_page_id,
+      'target_id': to_page_id,
+      'duration': time.time() - start_time,
+      'paths': paths,
+  })
 
   return jsonify(response)
 
