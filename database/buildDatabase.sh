@@ -191,50 +191,50 @@ fi
 #####################
 #  SORT LINKS FILE  #
 #####################
-if [ ! -f links.sorted_by_from_id.txt.gz ]; then
+if [ ! -f links.sorted_by_source_id.txt.gz ]; then
   echo
-  echo "[INFO] Sorting links file by from page ID"
+  echo "[INFO] Sorting links file by source page ID"
   time pigz -dc links.with_ids.txt.gz \
     | sort -S 100% -t $'\t' -k 1n,1n \
     | uniq \
-    | pigz -1 > links.sorted_by_from_id.txt.gz
+    | pigz -1 > links.sorted_by_source_id.txt.gz
 else
-  echo "[WARN] Already sorted links file by from page ID"
+  echo "[WARN] Already sorted links file by source page ID"
 fi
 
-if [ ! -f links.sorted_by_to_id.txt.gz ]; then
+if [ ! -f links.sorted_by_target_id.txt.gz ]; then
   echo
-  echo "[INFO] Sorting links file by to page ID"
+  echo "[INFO] Sorting links file by target page ID"
   time pigz -dc links.with_ids.txt.gz \
     | sort -S 100% -t $'\t' -k 2n,2n \
     | uniq \
-    | pigz -1 > links.sorted_by_to_id.txt.gz
+    | pigz -1 > links.sorted_by_target_id.txt.gz
 else
-  echo "[WARN] Already sorted links file by to page ID"
+  echo "[WARN] Already sorted links file by target page ID"
 fi
 
 
 #############################
 #  GROUP SORTED LINKS FILE  #
 #############################
-if [ ! -f links.grouped_by_from_id.txt.gz ]; then
+if [ ! -f links.grouped_by_source_id.txt.gz ]; then
   echo
-  echo "[INFO] Grouping from links file by from page ID"
-  time pigz -dc links.sorted_by_from_id.txt.gz \
+  echo "[INFO] Grouping source links file by source page ID"
+  time pigz -dc links.sorted_by_source_id.txt.gz \
    | awk -F '\t' '$1==last {printf "|%s",$2; next} NR>1 {print "";} {last=$1; printf "%s\t%s",$1,$2;} END{print "";}' \
-   | pigz -1 > links.grouped_by_from_id.txt.gz
+   | pigz -1 > links.grouped_by_source_id.txt.gz
 else
-  echo "[WARN] Already grouped from links file by from page ID"
+  echo "[WARN] Already grouped source links file by source page ID"
 fi
 
-if [ ! -f links.grouped_by_to_id.txt.gz ]; then
+if [ ! -f links.grouped_by_target_id.txt.gz ]; then
   echo
-  echo "[INFO] Grouping to links file by to page ID"
-  time pigz -dc links.sorted_by_to_id.txt.gz \
+  echo "[INFO] Grouping target links file by target page ID"
+  time pigz -dc links.sorted_by_target_id.txt.gz \
     | awk -F '\t' '$2==last {printf "|%s",$1; next} NR>1 {print "";} {last=$2; printf "%s\t%s",$2,$1;} END{print "";}' \
-    | gzip > links.grouped_by_to_id.txt.gz
+    | gzip > links.grouped_by_target_id.txt.gz
 else
-  echo "[WARN] Already grouped to links file by to page ID"
+  echo "[WARN] Already grouped target links file by target page ID"
 fi
 
 
@@ -244,7 +244,7 @@ fi
 if [ ! -f links.with_counts.txt.gz ]; then
   echo
   echo "[INFO] Combining grouped links files"
-  time python "$ROOT_DIR/combine_grouped_links_files.py" links.grouped_by_from_id.txt.gz links.grouped_by_to_id.txt.gz \
+  time python "$ROOT_DIR/combine_grouped_links_files.py" links.grouped_by_source_id.txt.gz links.grouped_by_target_id.txt.gz \
     | pigz -1 > links.with_counts.txt.gz
 else
   echo "[WARN] Already combined grouped links files"

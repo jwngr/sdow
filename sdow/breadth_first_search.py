@@ -92,18 +92,18 @@ def breadth_first_search(start, end, database, verbose=False):
       unvisited_forward.clear()
 
       # Loop through each link retrieved by the query
-      for from_id, to_ids in outgoing_links:
-        for to_id in to_ids.split('|'):
-          if to_id:
-            to_id = int(to_id)
+      for source_page_ids, target_page_ids in outgoing_links:
+        for target_page_id in target_page_ids.split('|'):
+          if target_page_id:
+            target_page_id = int(target_page_id)
             # If the to id is in neither visited forward nor unvisited forward, add it to unvisited
             # forward
-            if (to_id not in visited_forward) and (to_id not in unvisited_forward):
-              unvisited_forward[to_id] = [from_id]
+            if (target_page_id not in visited_forward) and (target_page_id not in unvisited_forward):
+              unvisited_forward[target_page_id] = [source_page_ids]
 
             # If the to id is in unvisited forward, append the from id as another one of its parents
-            elif to_id in unvisited_forward:
-              unvisited_forward[to_id].append(from_id)
+            elif target_page_id in unvisited_forward:
+              unvisited_forward[target_page_id].append(source_page_ids)
 
     #---  BACKWARD BREADTH FIRST SEARCH  ---#
     # Run the next iteration of the breadth first search in the backward direction if unvisited
@@ -133,18 +133,18 @@ def breadth_first_search(start, end, database, verbose=False):
       unvisited_backward.clear()
 
       # Loop through each link retrieved by the query
-      for to_id, from_ids in incoming_links:
-        for from_id in from_ids.split('|'):
-          if from_id:
-            from_id = int(from_id)
+      for target_page_id, source_page_idss in incoming_links:
+        for source_page_ids in source_page_idss.split('|'):
+          if source_page_ids:
+            source_page_ids = int(source_page_ids)
             # If the from id is in neither visited backward nor unvisited backward, add it to unvisited
             # backward
-            if (from_id not in visited_backward) and (from_id not in unvisited_backward):
-              unvisited_backward[from_id] = [to_id]
+            if (source_page_ids not in visited_backward) and (source_page_ids not in unvisited_backward):
+              unvisited_backward[source_page_ids] = [target_page_id]
 
             # If the from id is in unvisited backward, append the to id as another one of its parents
-            elif from_id in unvisited_backward:
-              unvisited_backward[from_id].append(to_id)
+            elif source_page_ids in unvisited_backward:
+              unvisited_backward[source_page_ids].append(target_page_id)
 
     #---  CHECK FOR PATH COMPLETION  ---#
     # If any of the ids in unvisited backward are also in unvisited forward, the breadth first

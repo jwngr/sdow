@@ -21,22 +21,22 @@ OUTGOING_LINKS_FILE = sys.argv[1]
 INCOMING_LINKS_FILE = sys.argv[2]
 
 if not OUTGOING_LINKS_FILE.endswith('.gz'):
-  print('[ERROR] From links file must be gzipped.')
+  print('[ERROR] Outgoing links file must be gzipped.')
   sys.exit()
 
 if not INCOMING_LINKS_FILE.endswith('.gz'):
-  print('[ERROR] To links file must be gzipped.')
+  print('[ERROR] Incoming links file must be gzipped.')
   sys.exit()
 
-# Create a dictionary from page ID to a string containing its incoming and outgoing links.
+# Create a dictionary of page IDs to their incoming and outgoing links.
 LINKS = defaultdict(lambda: defaultdict(str))
 for line in io.BufferedReader(gzip.open(OUTGOING_LINKS_FILE, 'r')):
-  [from_page_id, to_page_ids] = line.rstrip('\n').split('\t')
-  LINKS[from_page_id]['outgoing'] = to_page_ids
+  [source_page_id, target_page_ids] = line.rstrip('\n').split('\t')
+  LINKS[source_page_id]['outgoing'] = target_page_ids
 
 for line in io.BufferedReader(gzip.open(INCOMING_LINKS_FILE, 'r')):
-  [to_page_id, from_page_ids] = line.rstrip('\n').split('\t')
-  LINKS[to_page_id]['incoming'] = from_page_ids
+  [target_page_id, source_page_ids] = line.rstrip('\n').split('\t')
+  LINKS[target_page_id]['incoming'] = source_page_ids
 
 # For each page in the links dictionary, print out its incoming and outgoing links as well as their
 # counts.

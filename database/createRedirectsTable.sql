@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS redirects
 (
-  from_id INTEGER PRIMARY KEY,
-  to_id INTEGER NOT NULL
+  source_id INTEGER PRIMARY KEY,
+  target_id INTEGER NOT NULL
 );
 
 .mode csv

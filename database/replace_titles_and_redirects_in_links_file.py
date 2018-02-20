@@ -42,24 +42,24 @@ for line in io.BufferedReader(gzip.open(PAGES_FILE, 'r')):
   ALL_PAGE_IDS.add(page_id)
   PAGE_TITLES_TO_IDS[page_title] = page_id
 
-# Create a dictionary from page ID to the ID of the page to which it redirects.
+# Create a dictionary of page IDs to the target page ID to which they redirect.
 REDIRECTS = {}
 for line in io.BufferedReader(gzip.open(REDIRECTS_FILE, 'r')):
-  [from_page_id, to_page_id] = line.rstrip('\n').split('\t')
-  REDIRECTS[from_page_id] = to_page_id
+  [source_page_id, target_page_id] = line.rstrip('\n').split('\t')
+  REDIRECTS[source_page_id] = target_page_id
 
 # Loop through each line in the links file, replacing titles with IDs, applying redirects, and
 # removing nonexistent pages, writing the result to stdout.
 for line in io.BufferedReader(gzip.open(LINKS_FILE, 'r')):
-  [from_page_id, to_page_title] = line.rstrip('\n').split('\t')
+  [source_page_id, target_page_title] = line.rstrip('\n').split('\t')
 
-  from_page_exists = from_page_id in ALL_PAGE_IDS
+  source_page_exists = source_page_id in ALL_PAGE_IDS
 
-  if from_page_exists:
-    from_page_id = REDIRECTS.get(from_page_id, from_page_id)
+  if source_page_exists:
+    source_page_id = REDIRECTS.get(source_page_id, source_page_id)
 
-    to_page_id = PAGE_TITLES_TO_IDS.get(to_page_title)
+    target_page_id = PAGE_TITLES_TO_IDS.get(target_page_title)
 
-    if to_page_id is not None:
-      to_page_id = REDIRECTS.get(to_page_id, to_page_id)
-      print('\t'.join([from_page_id, to_page_id]))
+    if target_page_id is not None:
+      target_page_id = REDIRECTS.get(target_page_id, target_page_id)
+      print('\t'.join([source_page_id, target_page_id]))

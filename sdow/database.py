@@ -1,5 +1,5 @@
 """
-Wrapper for connecting to the SDOW database.
+Wrapper for reading from and writing to the SDOW database.
 """
 
 import os.path
@@ -90,12 +90,12 @@ class Database(object):
     # TODO: test this with special pages like https://en.wikipedia.org/wiki/Jos%C3%A9_Clavijo_y_Fajardo
     return page_title[0].encode('utf-8').replace('_', ' ')
 
-  def fetch_redirected_page_id(self, from_page_id):
+  def fetch_redirected_page_id(self, source_page_id):
     """If the provided page ID is a redirect, returns the ID of the page to which it redirects.
     Otherwise, returns None.
 
     Args:
-      from_page_id: The page ID whose redirected page ID to fetch.
+      source_page_id: The page ID whose redirected page ID to fetch.
 
     Returns:
       int: The ID of the page to which the provided page ID redirects.
@@ -105,36 +105,36 @@ class Database(object):
     Raises:
       ValueError: If the provided page ID is invalid.
     """
-    helpers.validate_page_id(from_page_id)
+    helpers.validate_page_id(source_page_id)
 
-    query = 'SELECT to_id FROM redirects WHERE from_id = ?'
-    query_bindings = (from_page_id,)
+    query = 'SELECT target_id FROM redirects WHERE source_id = ?'
+    query_bindings = (source_page_id,)
     self.cursor.execute(query, query_bindings)
 
-    to_page_id = self.cursor.fetchone()
+    target_page_id = self.cursor.fetchone()
 
-    return to_page_id and to_page_id[0]
+    return target_page_id and target_page_id[0]
 
-  def compute_shortest_paths(self, from_page_id, to_page_id):
-    """Returns a list of page IDs indicating the shortest path between the from and to page IDs.
+  def compute_shortest_paths(self, source_page_id, target_page_id):
+    """Returns a list of page IDs indicating the shortest path between the source and target pages.
 
     Args:
-      from_page_id: The ID corresponding to the page at which to start the search.
-      to_page_id: The ID corresponding to the page at which to end the search.
+      source_page_id: The ID corresponding to the page at which to start the search.
+      target_page_id: The ID corresponding to the page at which to end the search.
 
     Returns:
       list(list(int)): A list of integer lists corresponding to the page IDs indicating the shortest path
-              between the from and to page IDs.
+        between the source and target page IDs.
 
     Raises:
       ValueError: If either of the provided page IDs are invalid.
     """
-    helpers.validate_page_id(from_page_id)
-    helpers.validate_page_id(to_page_id)
+    helpers.validate_page_id(source_page_id)
+    helpers.validate_page_id(target_page_id)
 
     # TODO: handle pages which are redirects
 
-    return breadth_first_search(from_page_id, to_page_id, self)
+    return breadth_first_search(source_page_id, target_page_id, self)
 
   def fetch_outgoing_links(self, page_ids):
     """Returns a list of tuples of page IDs representing outgoing links from the list of provided
@@ -145,7 +145,7 @@ class Database(object):
 
     Returns:
       list(int, int): A lists of integer tuples representing outgoing links from the list of
-                    provided page IDs to other pages.
+        provided page IDs to other pages.
     """
     return self.fetch_links_helper(page_ids, 'outgoing_links')
 
@@ -158,7 +158,7 @@ class Database(object):
 
     Returns:
       list(int, int): A lists of integer tuples representing incoming links from the list of
-                    provided page IDs to other pages.
+        provided page IDs to other pages.
     """
     return self.fetch_links_helper(page_ids, 'incoming_links')
 
@@ -168,12 +168,12 @@ class Database(object):
 
     Args:
       page_ids: The page IDs whose links to fetch.
-      outcoming_or_incoming_links: String which indicates whether to fetch outgoing ("from_id") or incoming
-                        ("to_id") links.
+      outcoming_or_incoming_links: String which indicates whether to fetch outgoing ("source_id") or
+        incoming ("target_id") links.
 
     Returns:
       list(int, int): A lists of integer tuples representing links from the list of provided page
-                    IDs to other pages.
+        IDs to other pages.
     """
     # results = []
     # for row in self.cursor.execute(query):

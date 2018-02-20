@@ -57,24 +57,24 @@ def shortest_paths_route():
   """
   start_time = time.time()
 
-  from_page_title = request.json['source']
-  to_page_title = request.json['target']
+  source_page_title = request.json['source']
+  target_page_title = request.json['target']
 
   # Look up the IDs for each page
   try:
-    from_page_id = database.fetch_page_id(from_page_title)
+    source_page_id = database.fetch_page_id(source_page_title)
   except ValueError:
     raise InvalidRequest(
-        'Start page "{0}" does not exist. Please try another search.'.format(from_page_title))
+        'Start page "{0}" does not exist. Please try another search.'.format(source_page_title))
 
   try:
-    to_page_id = database.fetch_page_id(to_page_title)
+    target_page_id = database.fetch_page_id(target_page_title)
   except ValueError:
     raise InvalidRequest(
-        'End page "{0}" does not exist. Please try another search.'.format(to_page_title))
+        'End page "{0}" does not exist. Please try another search.'.format(target_page_title))
 
   # Compute the shortest paths
-  paths = database.compute_shortest_paths(from_page_id, to_page_id)
+  paths = database.compute_shortest_paths(source_page_id, target_page_id)
 
   if len(paths) == 0:
     # No paths found
@@ -140,8 +140,8 @@ def shortest_paths_route():
     }
 
   database.insert_result({
-      'source_id': from_page_id,
-      'target_id': to_page_id,
+      'source_id': source_page_id,
+      'target_id': target_page_id,
       'duration': time.time() - start_time,
       'paths': paths,
   })

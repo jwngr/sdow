@@ -9,9 +9,10 @@ print('[INFO] Creating mock database: {0}'.format(mock_database_filename))
 
 conn = sqlite3.connect(mock_database_filename)
 
+
+# Create pages table.
 conn.execute('DROP TABLE IF EXISTS pages')
 conn.execute('CREATE TABLE pages(id INTEGER PRIMARY KEY, title TEXT, is_redirect INT)')
-
 
 prod_page_ids = {
     1: '22770',
@@ -63,15 +64,18 @@ for i in range(1, 36):
   conn.execute('INSERT INTO pages VALUES ({0}, "{1}", {2});'.format(
       prod_page_ids[i], page_name, is_redirect))
 
+
+# Create redirects table.
 conn.execute('DROP TABLE IF EXISTS redirects')
 conn.execute(
-    'CREATE TABLE redirects(from_id INTEGER PRIMARY KEY, to_id INTEGER)')
+    'CREATE TABLE redirects(source_id INTEGER PRIMARY KEY, target_id INTEGER NOT NULL)')
 
 for i in range(30, 35):
   conn.execute('INSERT INTO redirects VALUES ({0}, {1});'.format(
       prod_page_ids[i], prod_page_ids[1]))
 
 
+# Create links table.
 conn.execute('DROP TABLE IF EXISTS links')
 conn.execute(
     'CREATE TABLE links(id INTEGER PRIMARY KEY, outgoing_links_count INTEGER, incoming_links_count INTEGER, outgoing_links TEXT, incoming_links TEXT);')
@@ -100,9 +104,9 @@ forward_links = [
 ]
 
 backward_links = defaultdict(list)
-for from_page_id, outgoing_links in forward_links:
-  for to_page_id in outgoing_links:
-    backward_links[to_page_id].append(from_page_id)
+for source_page_id, outgoing_links in forward_links:
+  for target_page_id in outgoing_links:
+    backward_links[target_page_id].append(source_page_id)
 
 for page_id, outgoing_links in forward_links:
   incoming_links = backward_links[page_id]
@@ -118,6 +122,11 @@ for page_id, outgoing_links in forward_links:
 
   conn.execute('INSERT INTO links VALUES ({0}, {1}, {2}, "{3}", "{4}");'.format(
       prod_page_ids[page_id], outgoing_links_count, incoming_links_count, outgoing_links, incoming_links))
+
+
+# Create searches table.
+conn.execute('DROP TABLE IF EXISTS searches')
+conn.execute('CREATE TABLE IF NOT EXISTS searches(source_id INTEGER NOT NULL, target_id INTEGER NOT NULL, duration REAL NOT NULL, degrees_count INTEGER, paths_count INTEGER NOT NULL, paths TEXT, t TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL);')
 
 conn.commit()
 
