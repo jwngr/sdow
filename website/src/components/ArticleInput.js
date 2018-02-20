@@ -29,11 +29,6 @@ class ArticleInput extends React.Component {
     this.placeholderTextInterval = setInterval(() => this.updatePlaceholderText(), 5000);
   }
 
-  getValue() {
-    const {toOrFrom, toArticleTitle, fromArticleTitle} = this.props;
-    return toOrFrom === 'to' ? toArticleTitle : fromArticleTitle;
-  }
-
   updatePlaceholderText() {
     this.setState((prevState) => ({
       placeholderText: getRandomPageTitle(prevState.placeholderText),
@@ -102,9 +97,8 @@ class ArticleInput extends React.Component {
   }
 
   render() {
+    const {value, setArticleTitle} = this.props;
     const {suggestions, placeholderText} = this.state;
-    const {toOrFrom, setArticleTitle} = this.props;
-    const value = this.getValue();
 
     return (
       <AutosuggestWrapper>
@@ -123,7 +117,7 @@ class ArticleInput extends React.Component {
           inputProps={{
             placeholder: placeholderText,
             onChange: (event, {newValue}) => {
-              setArticleTitle(toOrFrom, newValue);
+              setArticleTitle(newValue);
               if (newValue === '') {
                 this.placeholderTextInterval = setInterval(
                   () => this.updatePlaceholderText(),

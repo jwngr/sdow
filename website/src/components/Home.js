@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 
 import PathResultsContainer from '../containers/PathResultsContainer';
-import ArticleInputContainer from '../containers/ArticleInputContainer';
 import SearchButtonContainer from '../containers/SearchButtonContainer';
+import ToArticleInputContainer from '../containers/ToArticleInputContainer';
+import FromArticleInputContainer from '../containers/FromArticleInputContainer';
 
 import Loading from './Loading';
 import logo from '../images/logo.png';
@@ -11,7 +12,7 @@ import {P, Logo, InputFlexContainer, MainContent, ErrorMessage} from './Home.sty
 
 class Home extends Component {
   render() {
-    const {errorMessage, isFetchingResults} = this.props;
+    const {errorMessage, fromArticleTitle, toArticleTitle, isFetchingResults} = this.props;
 
     let resultContent;
     if (errorMessage !== null) {
@@ -33,9 +34,9 @@ class Home extends Component {
         <MainContent>
           <P>Find the shortest paths from</P>
           <InputFlexContainer>
-            <ArticleInputContainer toOrFrom="from" placeholder="T. S. Eliot" />
+            <ToArticleInputContainer />
             <P style={{margin: '20px 24px'}}>to</P>
-            <ArticleInputContainer toOrFrom="to" placeholder="Fortune-telling" />
+            <FromArticleInputContainer />
           </InputFlexContainer>
 
           {searchButtonContent}
