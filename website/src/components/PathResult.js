@@ -16,13 +16,13 @@ const PathResult = ({pages}) => {
     let {description} = page;
     const {title, url, thumbnailUrl} = page;
 
-    if (description.length > 103) {
-      description = `${description.slice(0, 100)}...`;
+    let descriptionContent;
+    if (typeof description !== 'undefined') {
+      if (description.length > 103) {
+        description = `${description.slice(0, 100)}...`;
+      }
+      descriptionContent = <ArticleDescription>{description}</ArticleDescription>;
     }
-
-    const descriptionContent = description ? (
-      <ArticleDescription>{description}</ArticleDescription>
-    ) : null;
 
     // let arrowContent;
     // if (!isEndArticle) {
