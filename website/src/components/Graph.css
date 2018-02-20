@@ -10,9 +10,18 @@
 }
 
 .results-graph > div {
+  position: relative;
   background: rgba(256, 256, 256, 0.7);
   background-color: #f7fff7;
   border: solid 3px #1a535c;
+}
+
+.reset-button {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 80px;
+  height: 24px;
 }
 
 .links line {

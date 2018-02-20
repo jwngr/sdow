@@ -11,6 +11,10 @@ import './Graph.css';
 const DEFAULT_CHART_WIDTH = 800;
 const DEFAULT_CHART_HEIGHT = 600;
 
+// TODO: move into state
+let zoom;
+let graph;
+
 class Graph extends Component {
   // state = {
   //   tooltip: null,
@@ -126,16 +130,18 @@ class Graph extends Component {
 
     var color = d3.scaleOrdinal(d3.schemeCategory10);
 
-    const graph = d3
+    zoom = d3.zoom().on('zoom', zoomed);
+
+    graph = d3
       .select(this.graphRef)
       .attr('width', DEFAULT_CHART_WIDTH)
       .attr('height', DEFAULT_CHART_HEIGHT)
-      .call(d3.zoom().on('zoom', zoomed))
+      .call(zoom)
       .on('dblclick.zoom', null)
       .append('g');
 
     // TODO: fix class name
-    var zoomableGraph = graph.append('g').attr('class', 'grAPH');
+    const zoomableGraph = graph.append('g').attr('class', 'grAPH');
 
     zoomableGraph
       .append('defs')
@@ -276,6 +282,10 @@ class Graph extends Component {
     simulation.force('link').links(linksList);
   }
 
+  resetGraph() {
+    graph.transition().call(zoom.transform, d3.zoomIdentity);
+  }
+
   render() {
     // const {tooltip} = this.state;
 
@@ -291,6 +301,9 @@ class Graph extends Component {
     return (
       <div className="results-graph">
         <div>
+          <button className="reset-button" onClick={this.resetGraph}>
+            Reset
+          </button>
           <svg ref={(r) => (this.graphRef = r)} />
         </div>
       </div>
