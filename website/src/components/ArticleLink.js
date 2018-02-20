@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import {getArticleUrl} from '../utils';
+
 const Link = styled.a`
   position: relative;
   display: inline-block;
@@ -8,7 +10,7 @@ const Link = styled.a`
   color: ${(props) => props.theme.colors.darkGreen};
   vertical-align: bottom;
   text-decoration: none;
-  white-space: nowrap;
+  word-break: break-all;
 
   margin: 0 4px;
   padding: 0;
@@ -58,8 +60,8 @@ const Link = styled.a`
   }
 `;
 
-const ArticleLink = ({url, title}) => (
-  <Link href={url} target="_blank">
+const ArticleLink = ({title}) => (
+  <Link href={getArticleUrl(title)} target="_blank">
     {title}
   </Link>
 );

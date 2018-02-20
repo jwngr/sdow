@@ -4,8 +4,6 @@ import Graph from './Graph';
 import PathResult from './PathResult';
 import ArticleLink from './ArticleLink';
 
-import {getArticleUrl} from '../utils';
-
 import {ResultsMessage, PathResultsWrapper} from './PathResults.styles';
 
 class PathResults extends Component {
@@ -16,9 +14,6 @@ class PathResults extends Component {
       return null;
     }
 
-    const toArticleUrl = getArticleUrl(toArticleTitle);
-    const fromArticleUrl = getArticleUrl(fromArticleTitle);
-
     // No paths found.
     if (paths.length === 0) {
       return (
@@ -26,8 +21,7 @@ class PathResults extends Component {
           <p>Welp, this is awkward...</p>
           <p>No path of Wikipedia links exists from</p>
           <p>
-            <ArticleLink title={fromArticleTitle} url={fromArticleUrl} /> to{' '}
-            <ArticleLink title={toArticleTitle} url={toArticleUrl} />.
+            <ArticleLink title={fromArticleTitle} /> to <ArticleLink title={toArticleTitle} />.
           </p>
         </ResultsMessage>
       );
@@ -91,8 +85,7 @@ class PathResults extends Component {
             of separation from
           </p>
           <p>
-            <ArticleLink title={fromArticleTitle} url={fromArticleUrl} /> to{' '}
-            <ArticleLink title={toArticleTitle} url={toArticleUrl} />!
+            <ArticleLink title={fromArticleTitle} /> to <ArticleLink title={toArticleTitle} />!
           </p>
         </ResultsMessage>
         <PathResultsWrapper>{pathResultsContent}</PathResultsWrapper>

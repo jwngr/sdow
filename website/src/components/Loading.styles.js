@@ -6,6 +6,11 @@ export const Wrapper = styled.div`
   text-align: center;
 `;
 
+export const Fact = styled.div`
+  font-size: 20px;
+  line-height: 1.5;
+`;
+
 export const LoadingIndicator = styled.div`
   margin: 40px auto;
   width: 60px;
@@ -92,9 +97,4 @@ export const LoadingIndicator = styled.div`
       opacity: 0;
     }
   }
-`;
-
-export const Fact = styled.p`
-  font-size: 20px;
-  line-height: 1.5;
 `;
