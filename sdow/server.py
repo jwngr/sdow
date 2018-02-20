@@ -114,6 +114,9 @@ def shortest_paths_route():
 
       current_page_ids_index = end_page_ids_index
 
+      # TODO: make sure I identify client
+      # 'Six Degrees of Wikipedia/1.0 (https://www.sixdegreesofwikipedia.com/; wenger.jacob@gmail.com)',
+      # See https://www.mediawiki.org/wiki/API:Main_page#Identifying_your_client
       req = requests.get(WIKIPEDIA_API_URL, params=query_params)
 
       pages_result = req.json().get('query', {}).get('pages')

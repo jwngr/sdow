@@ -203,7 +203,7 @@ class Database(object):
       degrees_count = None
       paths = None
     else:
-      degrees_count = len(search['paths'][0])
+      degrees_count = len(search['paths'][0]) - 1
       paths = str(search['paths']).replace(' ', '')
 
     # There is no need to escape the query parameters here since they are never user-defined.
