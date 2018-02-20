@@ -13,7 +13,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onChange: (toOrFrom, articleTitle) => {
+    setArticleTitle: (toOrFrom, articleTitle) => {
       if (toOrFrom === 'to') {
         dispatch(setToArticleTitle(articleTitle));
       } else {

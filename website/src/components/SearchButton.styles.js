@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const GoButton = styled.button`
   position: relative;
-  margin: auto;
+  margin: 0 auto 40px;
   display: block;
   height: 68px;
   width: 240px;

@@ -64,6 +64,8 @@ export const AutosuggestWrapper = styled.div.attrs(classNames)`
     text-align: center;
     font-size: 40px;
     background-color: ${(props) => props.theme.colors.creme};
+    padding: 12px;
+    text-overflow: ellipsis;
 
     &::-webkit-input-placeholder {
       color: ${(props) => props.theme.colors.darkGreen};

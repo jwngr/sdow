@@ -13,7 +13,12 @@ import defaultPageThumbnail from '../images/defaultPageThumbnail.png';
 
 const PathResult = ({pages}) => {
   const pagesContent = pages.map((page, i) => {
-    const {title, url, thumbnailUrl, description} = page;
+    let {description} = page;
+    const {title, url, thumbnailUrl} = page;
+
+    if (description.length > 103) {
+      description = `${description.slice(0, 100)}...`;
+    }
 
     const descriptionContent = description ? (
       <ArticleDescription>{description}</ArticleDescription>

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const ResultsMessage = styled.div`
-  margin: 40px auto 0 auto;
+  margin: 0 auto 40px auto;
   text-align: center;
   width: 1000px;
 
@@ -17,5 +17,5 @@ export const PathResultsWrapper = styled.div`
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: center;
-  margin-top: 40px;
+  margin-bottom: 40px;
 `;

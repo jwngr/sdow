@@ -11,23 +11,14 @@ import {AutosuggestWrapper} from './ArticleInput.styles';
 
 import {WIKIPEDIA_API_URL} from '../resources/constants';
 
-// When suggestion is clicked, Autosuggest needs to populate the input
-// based on the clicked suggestion. Teach Autosuggest how to calculate the
-// input value for every given suggestion.
+// Autosuggest component helpers.
 const getSuggestionValue = (suggestion) => suggestion.title;
-
-// Use your imagination to render suggestions.
 const renderSuggestion = (suggestion) => <ArticleInputSuggestion {...suggestion} />;
 
 class ArticleInput extends React.Component {
   constructor() {
     super();
 
-    // Autosuggest is a controlled component.
-    // This means that you need to provide an input value
-    // and an onChange handler that updates this value (see below).
-    // Suggestions also need to be provided to the Autosuggest,
-    // and they are initially empty because the Autosuggest is closed.
     this.state = {
       suggestions: [],
       isFetching: false,
@@ -35,22 +26,25 @@ class ArticleInput extends React.Component {
     };
 
     this.debouncedLoadSuggestions = _.debounce(this.loadSuggestions, 250);
+    this.placeholderTextInterval = setInterval(() => this.updatePlaceholderText(), 5000);
+  }
 
-    setInterval(() => {
-      this.setState((prevState) => ({
-        placeholderText: getRandomPageTitle(prevState.placeholderText),
-      }));
-    }, 5000);
+  getValue() {
+    const {toOrFrom, toArticleTitle, fromArticleTitle} = this.props;
+    return toOrFrom === 'to' ? toArticleTitle : fromArticleTitle;
+  }
+
+  updatePlaceholderText() {
+    this.setState((prevState) => ({
+      placeholderText: getRandomPageTitle(prevState.placeholderText),
+    }));
   }
 
   loadSuggestions(value) {
-    // Cancel the previous request
-    // TODO: do some work here to ensure a delayed prior request can't overwrite a later request
     this.setState({
       isFetching: true,
     });
 
-    // TODO: add link to WikiMedia API docs to README: https://www.mediawiki.org/w/api.php?action=help&modules=query
     const queryParams = {
       action: 'query',
       format: 'json',
@@ -63,8 +57,8 @@ class ArticleInput extends React.Component {
       pithumbsize: '160',
       pilimit: '30',
       wbptterms: 'description',
-      gpsnamespace: '0',
-      gpslimit: 5,
+      gpsnamespace: '0', // Only return results in Wikipedia's main namespace
+      gpslimit: 5, // Return at most five results
       origin: '*',
     };
 
@@ -74,70 +68,74 @@ class ArticleInput extends React.Component {
       url: WIKIPEDIA_API_URL,
       params: queryParams,
       headers: {
-        // TODO: make sure I send this with all requests to Wikimedia (and update / make email)
-        // See https://www.mediawiki.org/wiki/API:Main_page#Identifying_your_client
-        'Api-User-Agent': 'Six Degrees of Wikipedia/1.0 (https://sdow.xyz/; hello@sdow.xyz)',
+        'Api-User-Agent':
+          'Six Degrees of Wikipedia/1.0 (https://www.sixdegreesofwikipedia.com/; wenger.jacob@gmail.com)',
       },
-    }).then((response) => {
-      const suggestions = [];
+    })
+      .then((response) => {
+        const suggestions = [];
 
-      const pageResults = _.get(response, 'data.query.pages', {});
-      _.forEach(pageResults, ({index, title, terms, thumbnail}) => {
-        let description = _.get(terms, 'description.0');
-        if (description) {
-          description = description.charAt(0).toUpperCase() + description.slice(1);
-        }
-        suggestions[index - 1] = {
-          title,
-          description,
-          thumbnailUrl: _.get(thumbnail, 'source'),
-        };
-      });
+        const pageResults = _.get(response, 'data.query.pages', {});
+        _.forEach(pageResults, ({index, title, terms, thumbnail}) => {
+          let description = _.get(terms, 'description.0');
+          if (description) {
+            description = description.charAt(0).toUpperCase() + description.slice(1);
+          }
+          suggestions[index - 1] = {
+            title,
+            description,
+            thumbnailUrl: _.get(thumbnail, 'source'),
+          };
+        });
 
-      this.setState({
-        isFetching: false,
-        suggestions: suggestions,
+        this.setState({
+          isFetching: false,
+          suggestions: suggestions,
+        });
+      })
+      .catch((error) => {
+        // TODO: add Sentry logging here (or just Google Analytics)
+        // const defaultErrorMessage = 'Request to fetch article suggestions failed.';
+        // const errorMessage = (_.get(error, 'response.data.error', defaultErrorMessage));
+        // Don't report any user-facing error since the input is still usable without suggestions.
       });
-    });
-    // TODO: catch and handle errors.
   }
-
-  // Autosuggest will call this function every time you need to update suggestions.
-  // You already implemented this logic above, so just use it.
-  onSuggestionsFetchRequested = ({value}) => {
-    this.debouncedLoadSuggestions(value);
-  };
-
-  // Autosuggest will call this function every time you need to clear suggestions.
-  onSuggestionsClearRequested = () => {
-    this.setState({
-      suggestions: [],
-    });
-  };
 
   render() {
     const {suggestions, placeholderText} = this.state;
-    const {toOrFrom, toArticleTitle, fromArticleTitle, onChange} = this.props;
-    const value = toOrFrom === 'to' ? toArticleTitle : fromArticleTitle;
-
-    // Autosuggest will pass through all these props to the input.
-    const inputProps = {
-      placeholder: placeholderText,
-      onChange: (event, {newValue}) => {
-        onChange(toOrFrom, newValue);
-      },
-      value,
-    };
+    const {toOrFrom, setArticleTitle} = this.props;
+    const value = this.getValue();
 
     return (
       <AutosuggestWrapper>
         <Autosuggest
           suggestions={suggestions}
-          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+          onSuggestionsFetchRequested={({value}) => {
+            this.debouncedLoadSuggestions(value);
+          }}
+          onSuggestionsClearRequested={() => {
+            this.setState({
+              suggestions: [],
+            });
+          }}
           getSuggestionValue={getSuggestionValue}
           renderSuggestion={renderSuggestion}
-          inputProps={inputProps}
+          inputProps={{
+            placeholder: placeholderText,
+            onChange: (event, {newValue}) => {
+              setArticleTitle(toOrFrom, newValue);
+              if (newValue === '') {
+                this.placeholderTextInterval = setInterval(
+                  () => this.updatePlaceholderText(),
+                  5000
+                );
+              } else if (this.placeholderTextInterval !== null) {
+                clearInterval(this.placeholderTextInterval);
+                this.placeholderTextInterval = null;
+              }
+            },
+            value,
+          }}
         />
       </AutosuggestWrapper>
     );
