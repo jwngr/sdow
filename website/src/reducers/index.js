@@ -12,6 +12,7 @@ const rootReducers = {
         return state;
     }
   },
+
   isFetchingResults: (state = false, action) => {
     switch (action.type) {
       case actions.SET_IS_FETCHING_RESULTS:
@@ -23,14 +24,7 @@ const rootReducers = {
         return state;
     }
   },
-  targetPageTitle: (state = '', action) => {
-    switch (action.type) {
-      case actions.SET_TARGET_PAGE_TITLE:
-        return action.targetPageTitle;
-      default:
-        return state;
-    }
-  },
+
   sourcePageTitle: (state = '', action) => {
     switch (action.type) {
       case actions.SET_SOURCE_PAGE_TITLE:
@@ -39,6 +33,16 @@ const rootReducers = {
         return state;
     }
   },
+
+  targetPageTitle: (state = '', action) => {
+    switch (action.type) {
+      case actions.SET_TARGET_PAGE_TITLE:
+        return action.targetPageTitle;
+      default:
+        return state;
+    }
+  },
+
   errorMessage: (state = null, action) => {
     switch (action.type) {
       case actions.SET_ERROR_MESSAGE:
