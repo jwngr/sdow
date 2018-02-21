@@ -300,7 +300,7 @@ class Graph extends Component {
 
         <Instructions>
           <p>Drag to pan. Scroll to zoom.</p>
-          <p>Double click node to open Wikipedia page in new tab.</p>
+          <p>Double click node to open Wikipedia page.</p>
         </Instructions>
 
         <ResetButton onClick={this.resetGraph.bind(this)}>Reset</ResetButton>

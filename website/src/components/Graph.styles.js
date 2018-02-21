@@ -42,7 +42,7 @@ export const Legend = styled.div`
   flex-direction: column;
   padding: 6px;
   border: solid 2px ${(props) => props.theme.colors.darkGreen};
-  background-color: ${(props) => props.theme.colors.creme};
+  background-color: ${(props) => props.theme.colors.yellow};
 `;
 
 export const LegendItem = styled.div`
@@ -75,7 +75,7 @@ export const Instructions = styled.div`
   left: 8px;
   padding: 6px;
   border: solid 2px ${(props) => props.theme.colors.darkGreen};
-  background-color: ${(props) => props.theme.colors.creme};
+  background-color: ${(props) => props.theme.colors.yellow};
 
   & > p {
     font-size: 12px;
