@@ -18,7 +18,7 @@ export const GraphSvg = styled.svg`
   }
 
   .links line {
-    fill: none;
+    stroke: #000;
     stroke-width: 1px;
     stroke-opacity: 0.6;
   }
@@ -26,6 +26,11 @@ export const GraphSvg = styled.svg`
   .nodes circle {
     cursor: pointer;
     stroke-width: 2px;
+  }
+
+  .node-labels text {
+    font-size: 10px;
+    font-family: 'Quicksand';
   }
 `;
 

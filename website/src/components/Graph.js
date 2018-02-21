@@ -44,7 +44,7 @@ class Graph extends Component {
   //   });
   // }
 
-  /* Returns graph data, including a list of nodes, a list of links, and the length of each path. */
+  /* Returns a list of nodes and a list of links which make up the graph. */
   getGraphData() {
     const {paths} = this.props;
 
@@ -77,7 +77,6 @@ class Graph extends Component {
     return {
       nodesData,
       linksData,
-      pathsLength: paths[0].length,
     };
   }
 
@@ -148,7 +147,11 @@ class Graph extends Component {
   }
 
   componentDidMount() {
-    const {nodesData, linksData, pathsLength} = this.getGraphData();
+    const {paths} = this.props;
+    const pathsLength = paths[0].length;
+    const targetPageTitle = paths[0][pathsLength - 1].title;
+
+    const {nodesData, linksData} = this.getGraphData();
 
     this.zoomable = d3
       .select(this.graphRef)
@@ -159,19 +162,29 @@ class Graph extends Component {
 
     this.graph = this.zoomable.append('g');
 
-    this.graph
-      .append('defs')
-      .append('marker')
-      .attr('id', 'arrow')
-      .attr('viewBox', '0 -5 10 10')
-      .attr('refX', 20)
-      .attr('refY', 0)
-      .attr('markerWidth', 8)
-      .attr('markerHeight', 8)
-      .attr('orient', 'auto')
-      .append('svg:path')
-      .attr('d', 'M0,-5L10,0L0,5');
+    // Direction arrows.
+    const defs = this.graph.append('defs');
 
+    const markers = {
+      arrow: 18,
+      'arrow-end': 22,
+    };
+
+    _.forEach(markers, (refX, id) => {
+      defs
+        .append('marker')
+        .attr('id', id)
+        .attr('viewBox', '0 -5 10 10')
+        .attr('refX', refX)
+        .attr('refY', 0)
+        .attr('markerWidth', 8)
+        .attr('markerHeight', 8)
+        .attr('orient', 'auto')
+        .append('svg:path')
+        .attr('d', 'M0,-5L10,0L0,5');
+    });
+
+    // Links.
     this.links = this.graph
       .append('g')
       .attr('class', 'links')
@@ -179,9 +192,17 @@ class Graph extends Component {
       .data(linksData)
       .enter()
       .append('line')
-      .attr('stroke', (d) => '#000')
-      .attr('marker-end', 'url(#arrow)');
+      .attr('fill', 'none')
+      .attr('marker-end', (d) => {
+        // Use a different arrow marker for links to the target page since it has a larger radius.
+        if (d.target === targetPageTitle) {
+          return 'url(#arrow-end)';
+        } else {
+          return 'url(#arrow)';
+        }
+      });
 
+    // Nodes.
     this.nodes = this.graph
       .append('g')
       .attr('class', 'nodes')
@@ -206,17 +227,22 @@ class Graph extends Component {
           .on('end', this.dragended.bind(this))
       );
 
+    // Node labels.
     this.nodeLabels = this.graph
       .append('g')
-      .attr('class', 'labels')
-      .selectAll('g')
+      .attr('class', 'node-labels')
+      .selectAll('text')
       .data(nodesData)
       .enter()
       .append('text')
-      .attr('x', 10)
-      .attr('y', '.31em')
-      .style('font-family', 'Quicksand')
-      .style('font-size', '12px')
+      .attr('x', (d) => {
+        if (d.degree === 0 || d.degree === pathsLength - 1) {
+          return 14;
+        } else {
+          return 10;
+        }
+      })
+      .attr('y', 4)
       .text((d) => d.title);
 
     // Open Wikipedia page when node is double clicked.
