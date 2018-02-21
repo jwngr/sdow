@@ -6,6 +6,7 @@ import time
 from sets import Set
 from flask_cors import CORS
 from sdow.database import Database
+from flask_compress import Compress
 from sdow.helpers import InvalidRequest
 from flask import Flask, request, jsonify
 
@@ -29,8 +30,8 @@ database = Database(sqlite_filename)
 
 app = Flask(__name__)
 
-# TODO: do I want this setup in production
 CORS(app)
+Compress(app)
 
 
 @app.errorhandler(InvalidRequest)
@@ -76,15 +77,14 @@ def shortest_paths_route():
   # Compute the shortest paths
   paths = database.compute_shortest_paths(source_page_id, target_page_id)
 
+  # No paths found
   if len(paths) == 0:
-    # No paths found
     response = {
         'paths': [],
         'pages': [],
     }
+  # Paths found
   else:
-    # Paths found
-
     # Get a list of all IDs
     page_ids_set = Set()
     for path in paths:
