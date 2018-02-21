@@ -17,9 +17,9 @@ export default () => (
     <MainContent>
       <P>Find the shortest paths from</P>
       <InputFlexContainer>
-        <ToArticleInputContainer />
-        <P style={{margin: '20px 24px'}}>to</P>
         <FromArticleInputContainer />
+        <P style={{margin: '20px 24px'}}>to</P>
+        <ToArticleInputContainer />
       </InputFlexContainer>
 
       <SearchButtonContainer />
