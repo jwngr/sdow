@@ -3,6 +3,7 @@ Server web framework.
 """
 
 import time
+import requests
 from sets import Set
 from flask_cors import CORS
 from sdow.database import Database
@@ -10,12 +11,10 @@ from flask_compress import Compress
 from sdow.helpers import InvalidRequest
 from flask import Flask, request, jsonify
 
-import requests
 
+SQLITE_FILENAME = '../sdow.sqlite'
 WIKIPEDIA_API_URL = 'https://en.wikipedia.org/w/api.php'
 
-
-sqlite_filename = '../sdow.sqlite'
 
 # TODO: figure out how to pass CLI arguments to Flask
 # See http://flask.pocoo.org/snippets/133/
@@ -26,11 +25,16 @@ sqlite_filename = '../sdow.sqlite'
 
 # sqlite_file = sys.argv[1]
 
-database = Database(sqlite_filename)
+database = Database(SQLITE_FILENAME)
 
 app = Flask(__name__)
 
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
+
+# Add support for cross-origin requests.
 CORS(app)
+
+# Add gzip compression.
 Compress(app)
 
 
@@ -39,6 +43,15 @@ def handle_invalid_usage(error):
   response = jsonify(error.to_dict())
   response.status_code = error.status_code
   return response
+
+
+@app.route('/ok', methods=['GET'])
+def health_check():
+  """Health check endpoint."""
+  return jsonify({
+      'status': 'success',
+      'timestamp': time.time()
+  })
 
 
 @app.route('/paths', methods=['POST'])
@@ -51,7 +64,7 @@ def shortest_paths_route():
 
     Returns:
       dict: A JSON-ified dictionary containing the shortest paths (represented by a list of lists of
-            page IDs)and the corresponding pages data (represented by a dictionary of page IDs).
+            page IDs) and the corresponding pages data (represented by a dictionary of page IDs).
 
     Raises:
       InvalidRequest: If either of the provided titles correspond to pages which do not exist.
