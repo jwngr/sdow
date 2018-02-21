@@ -5,15 +5,25 @@ import React, {Component} from 'react';
 
 import {getWikipediaPageUrl} from '../utils';
 
-// TODO: update to styled-components
-import './Graph.css';
+import {
+  GraphSvg,
+  GraphWrapper,
+  Instructions,
+  Legend,
+  LegendCircle,
+  LegendItem,
+  LegendLabel,
+  ResetButton,
+} from './Graph.styles';
 
 const DEFAULT_CHART_WIDTH = 800;
 const DEFAULT_CHART_HEIGHT = 600;
 
-// TODO: move into state
+// TODO: move into state?
 let zoom;
 let graph;
+
+const color = d3.scaleOrdinal(d3.schemeCategory10);
 
 class Graph extends Component {
   // state = {
@@ -26,55 +36,64 @@ class Graph extends Component {
   //   });
   // }
 
-  componentDidMount() {
+  getGraphData() {
     const {paths} = this.props;
 
-    const nodeIdsSet = new Set();
-    const nodesList = [];
-    const linksList = [];
+    const nodes = [];
+    const links = [];
 
-    const pathsLength = paths[0].length;
-
-    _.forEach(paths, (path) => {
-      let priorNodeId;
-      _.forEach(path, (node, nodeIndex) => {
+    paths.forEach((path) => {
+      path.forEach((node, i) => {
         const currentNodeId = node.title;
 
-        if (!nodeIdsSet.has(currentNodeId)) {
-          nodesList.push({
+        // Add node if it has not yet been added by some other path.
+        if (!_.some(nodes, ['id', currentNodeId])) {
+          nodes.push({
             id: currentNodeId,
             title: node.title,
-            degree: nodeIndex,
+            degree: i,
           });
-
-          nodeIdsSet.add(currentNodeId);
         }
 
-        if (nodeIndex !== 0) {
-          linksList.push({
-            source: priorNodeId,
+        // Add link if this is not the start node.
+        if (i !== 0) {
+          links.push({
+            source: path[i - 1].title,
             target: currentNodeId,
           });
         }
-
-        priorNodeId = currentNodeId;
       });
     });
 
-    const legendData = [];
-    for (let i = 0; i < pathsLength; ++i) {
-      if (i === 0) {
-        legendData[i] = 'Start page';
-        if (pathsLength === 1) {
-          legendData[i] += ' / end page';
-        }
-      } else if (i + 1 === pathsLength) {
-        legendData[i] = 'End page';
+    return {
+      nodesData: nodes,
+      linksData: links,
+      pathsLength: paths[0].length,
+    };
+  }
+
+  getLegendLabels() {
+    const {paths} = this.props;
+    const pathsLength = paths[0].length;
+
+    return _.map(_.range(0, pathsLength), (i) => {
+      if (i === 0 && pathsLength === 1) {
+        return 'Start / end page';
+      } else if (i === 0) {
+        return 'Start page';
+      } else if (i === pathsLength - 1) {
+        return 'End page';
       } else {
         const degreeOrDegrees = i === 1 ? 'degree' : 'degrees';
-        legendData[i] = `${i} ${degreeOrDegrees} away`;
+        return `${i} ${degreeOrDegrees} away`;
       }
-    }
+    });
+  }
+
+  componentDidMount() {
+    console.log('componentDidMount() called');
+
+    const {nodesData, linksData, pathsLength} = this.getGraphData();
 
     const zoomed = () => {
       zoomableGraph.attr(
@@ -128,8 +147,6 @@ class Graph extends Component {
       d.fy = null;
     };
 
-    var color = d3.scaleOrdinal(d3.schemeCategory10);
-
     zoom = d3.zoom().on('zoom', zoomed);
 
     graph = d3
@@ -174,7 +191,7 @@ class Graph extends Component {
       .append('g')
       .attr('class', 'links')
       .selectAll('line')
-      .data(linksList)
+      .data(linksData)
       .enter()
       .append('line')
       .attr('stroke', (d) => '#000')
@@ -184,7 +201,7 @@ class Graph extends Component {
       .append('g')
       .attr('class', 'nodes')
       .selectAll('circle')
-      .data(nodesList)
+      .data(nodesData)
       .enter()
       .append('circle')
       .attr('r', (d) => {
@@ -208,7 +225,7 @@ class Graph extends Component {
       .append('g')
       .attr('class', 'labels')
       .selectAll('g')
-      .data(nodesList)
+      .data(nodesData)
       .enter()
       .append('text')
       .attr('x', 10)
@@ -217,76 +234,36 @@ class Graph extends Component {
       .style('font-size', '12px')
       .text((d) => d.title);
 
-    // Legend
-    var legend = graph
-      .append('g')
-      .attr('class', 'legend')
-      .selectAll('g')
-      .data(legendData);
-
-    // Legend color
-    legend
-      .enter()
-      .append('circle')
-      .attr('class', 'legend-color')
-      .attr('cx', 20)
-      .attr('cy', (d, i) => i * 24 + 20)
-      .attr('r', 6)
-      .attr('fill', (d, i) => color(i))
-      .attr('stroke', (d, i) => d3.rgb(color(i)).darker(2));
-
-    // Legend labels
-    legend
-      .enter()
-      .append('text')
-      .attr('class', 'legend-label')
-      .attr('x', 34)
-      .attr('y', (d, i) => i * 24 + 24)
-      .style('font-family', 'Quicksand')
-      .style('font-size', '12px')
-      .text((d) => d);
-
-    // Notes
-    var instructions = graph
-      .append('g')
-      .attr('class', 'instructions')
-      .selectAll('g')
-      .data(legendData);
-
-    instructions
-      .enter()
-      .append('text')
-      .attr('x', 10)
-      .attr('y', DEFAULT_CHART_HEIGHT - 24)
-      .style('font-family', 'Quicksand')
-      .style('font-size', '12px')
-      .text('Drag to pan. Scroll to zoom.');
-
-    instructions
-      .enter()
-      .append('text')
-      .attr('x', 10)
-      .attr('y', DEFAULT_CHART_HEIGHT - 10)
-      .style('font-family', 'Quicksand')
-      .style('font-size', '12px')
-      .text('Double click node to open Wikipedia page in new tab.');
-
     node.on('dblclick', function(d) {
       window.open(getWikipediaPageUrl(d.id), '_blank');
     });
 
     node.append('title').text((d) => d.title);
 
-    simulation.nodes(nodesList).on('tick', ticked);
+    simulation.nodes(nodesData).on('tick', ticked);
 
-    simulation.force('link').links(linksList);
+    simulation.force('link').links(linksData);
   }
 
   resetGraph() {
     graph.transition().call(zoom.transform, d3.zoomIdentity);
   }
 
+  renderLegend() {
+    const legendContent = this.getLegendLabels().map((label, i) => {
+      return (
+        <LegendItem>
+          <LegendCircle fill={color(i)} stroke={d3.rgb(color(i)).darker(2)} />
+          <LegendLabel>{label}</LegendLabel>
+        </LegendItem>
+      );
+    });
+    return <Legend>{legendContent}</Legend>;
+  }
+
   render() {
+    console.log('render() called');
+
     // const {tooltip} = this.state;
 
     // let tooltipContent;
@@ -299,14 +276,18 @@ class Graph extends Component {
     // }
 
     return (
-      <div className="results-graph">
-        <div>
-          <button className="reset-button" onClick={this.resetGraph}>
-            Reset
-          </button>
-          <svg ref={(r) => (this.graphRef = r)} />
-        </div>
-      </div>
+      <GraphWrapper>
+        {this.renderLegend()}
+
+        <Instructions>
+          <p>Drag to pan. Scroll to zoom.</p>
+          <p>Double click node to open Wikipedia page in new tab.</p>
+        </Instructions>
+
+        <ResetButton onClick={this.resetGraph}>Reset</ResetButton>
+
+        <GraphSvg innerRef={(r) => (this.graphRef = r)} />
+      </GraphWrapper>
     );
   }
 }
