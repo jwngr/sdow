@@ -91,8 +91,6 @@ class Graph extends Component {
   }
 
   componentDidMount() {
-    console.log('componentDidMount() called');
-
     const {nodesData, linksData, pathsLength} = this.getGraphData();
 
     const zoomed = () => {
@@ -252,7 +250,7 @@ class Graph extends Component {
   renderLegend() {
     const legendContent = this.getLegendLabels().map((label, i) => {
       return (
-        <LegendItem>
+        <LegendItem key={i}>
           <LegendCircle fill={color(i)} stroke={d3.rgb(color(i)).darker(2)} />
           <LegendLabel>{label}</LegendLabel>
         </LegendItem>
@@ -262,8 +260,6 @@ class Graph extends Component {
   }
 
   render() {
-    console.log('render() called');
-
     // const {tooltip} = this.state;
 
     // let tooltipContent;
