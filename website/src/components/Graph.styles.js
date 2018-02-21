@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const GraphWrapper = styled.div`
   width: 800px;
+  overflow: hidden;
   margin: 0 auto 40px auto;
   position: relative;
   background: rgba(256, 256, 256, 0.7);

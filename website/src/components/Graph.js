@@ -19,13 +19,21 @@ import {
 const DEFAULT_CHART_WIDTH = 800;
 const DEFAULT_CHART_HEIGHT = 600;
 
-// TODO: move into state?
-let zoom;
-let graph;
-
-const color = d3.scaleOrdinal(d3.schemeCategory10);
-
 class Graph extends Component {
+  constructor() {
+    super();
+
+    this.graph = null;
+    this.nodes = null;
+    this.links = null;
+    this.zoomable = null;
+    this.nodeLabels = null;
+    this.simulation = null;
+
+    this.color = d3.scaleOrdinal(d3.schemeCategory10);
+    this.zoom = d3.zoom().on('zoom', () => this.zoomed());
+  }
+
   // state = {
   //   tooltip: null,
   // };
@@ -36,19 +44,20 @@ class Graph extends Component {
   //   });
   // }
 
+  /* Returns graph data, including a list of nodes, a list of links, and the length of each path. */
   getGraphData() {
     const {paths} = this.props;
 
-    const nodes = [];
-    const links = [];
+    const nodesData = [];
+    const linksData = [];
 
     paths.forEach((path) => {
       path.forEach((node, i) => {
         const currentNodeId = node.title;
 
         // Add node if it has not yet been added by some other path.
-        if (!_.some(nodes, ['id', currentNodeId])) {
-          nodes.push({
+        if (!_.some(nodesData, ['id', currentNodeId])) {
+          nodesData.push({
             id: currentNodeId,
             title: node.title,
             degree: i,
@@ -57,7 +66,7 @@ class Graph extends Component {
 
         // Add link if this is not the start node.
         if (i !== 0) {
-          links.push({
+          linksData.push({
             source: path[i - 1].title,
             target: currentNodeId,
           });
@@ -66,12 +75,13 @@ class Graph extends Component {
     });
 
     return {
-      nodesData: nodes,
-      linksData: links,
+      nodesData,
+      linksData,
       pathsLength: paths[0].length,
     };
   }
 
+  /* Returns a list of labels for use in the legend. */
   getLegendLabels() {
     const {paths} = this.props;
     const pathsLength = paths[0].length;
@@ -90,75 +100,66 @@ class Graph extends Component {
     });
   }
 
+  /* Updates element locations on every tick of the force simulation. */
+  ticked() {
+    this.links
+      .attr('x1', (d) => d.source.x)
+      .attr('y1', (d) => d.source.y)
+      .attr('x2', (d) => d.target.x)
+      .attr('y2', (d) => d.target.y);
+
+    this.nodes.attr('cx', (d) => d.x).attr('cy', (d) => d.y);
+
+    this.nodeLabels.attr('transform', (d) => `translate(${d.x}, ${d.y})`);
+  }
+
+  /* Updates the zoom level of the graph when a zoom event occurs. */
+  zoomed() {
+    this.graph.attr(
+      `transform`,
+      `translate(${d3.event.transform.x}, ${d3.event.transform.y}) scale(${d3.event.transform.k})`
+    );
+  }
+
+  /* Drag started event. */
+  dragstarted(d) {
+    if (!d3.event.active) {
+      console.log('RESTART');
+      this.simulation.alphaTarget(0.3).restart();
+    }
+    console.log(d.x, d.y);
+    d.fx = d.x;
+    d.fy = d.y;
+  }
+
+  /* Dragged event. */
+  dragged(d) {
+    d.fx = d3.event.x;
+    d.fy = d3.event.y;
+  }
+
+  /* Drag ended event. */
+  dragended(d) {
+    if (!d3.event.active) {
+      this.simulation.alphaTarget(0);
+    }
+    d.fx = null;
+    d.fy = null;
+  }
+
   componentDidMount() {
     const {nodesData, linksData, pathsLength} = this.getGraphData();
 
-    const zoomed = () => {
-      zoomableGraph.attr(
-        'transform',
-        'translate(' +
-          d3.event.transform.x +
-          ',' +
-          d3.event.transform.y +
-          ')' +
-          ' scale(' +
-          d3.event.transform.k +
-          ')'
-      );
-    };
-
-    const ticked = () => {
-      link
-        .attr('x1', (d) => d.source.x)
-        .attr('y1', (d) => d.source.y)
-        .attr('x2', (d) => d.target.x)
-        .attr('y2', (d) => d.target.y);
-
-      node.attr('cx', (d) => d.x).attr('cy', (d) => d.y);
-
-      // const NODE_RADIUS = 10;
-      // node
-      //   .attr('cx', (d) => {
-      //     return Math.max(NODE_RADIUS, Math.min(DEFAULT_CHART_WIDTH - NODE_RADIUS, d.x));
-      //   })
-      //   .attr('cy', (d) => {
-      //     return Math.max(NODE_RADIUS, Math.min(DEFAULT_CHART_HEIGHT - NODE_RADIUS, d.y));
-      //   });
-
-      nodeLabels.attr('transform', (d) => 'translate(' + d.x + ',' + d.y + ')');
-    };
-
-    const dragstarted = (d) => {
-      if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-      d.fx = d.x;
-      d.fy = d.y;
-    };
-
-    const dragged = (d) => {
-      d.fx = d3.event.x;
-      d.fy = d3.event.y;
-    };
-
-    const dragended = (d) => {
-      if (!d3.event.active) simulation.alphaTarget(0);
-      d.fx = null;
-      d.fy = null;
-    };
-
-    zoom = d3.zoom().on('zoom', zoomed);
-
-    graph = d3
+    this.zoomable = d3
       .select(this.graphRef)
       .attr('width', DEFAULT_CHART_WIDTH)
       .attr('height', DEFAULT_CHART_HEIGHT)
-      .call(zoom)
-      .on('dblclick.zoom', null)
-      .append('g');
+      .call(this.zoom)
+      .on('dblclick.zoom', null);
 
-    // TODO: fix class name
-    const zoomableGraph = graph.append('g').attr('class', 'grAPH');
+    this.graph = this.zoomable.append('g');
 
-    zoomableGraph
+    this.graph
       .append('defs')
       .append('marker')
       .attr('id', 'arrow')
@@ -171,21 +172,7 @@ class Graph extends Component {
       .append('svg:path')
       .attr('d', 'M0,-5L10,0L0,5');
 
-    var simulation = d3
-      .forceSimulation()
-      .force('link', d3.forceLink().id((d) => d.id))
-      .force('charge', d3.forceManyBody())
-      // .force('charge', 10)
-      .force('center', d3.forceCenter(DEFAULT_CHART_WIDTH / 2, DEFAULT_CHART_HEIGHT / 2));
-
-    simulation.force('charge').strength(-500);
-
-    simulation
-      .force('link')
-      .id((d) => d.id)
-      .distance(100);
-
-    var link = zoomableGraph
+    this.links = this.graph
       .append('g')
       .attr('class', 'links')
       .selectAll('line')
@@ -195,7 +182,7 @@ class Graph extends Component {
       .attr('stroke', (d) => '#000')
       .attr('marker-end', 'url(#arrow)');
 
-    var node = zoomableGraph
+    this.nodes = this.graph
       .append('g')
       .attr('class', 'nodes')
       .selectAll('circle')
@@ -209,17 +196,17 @@ class Graph extends Component {
           return 6;
         }
       })
-      .attr('fill', (d) => color(d.degree))
-      .attr('stroke', (d) => d3.rgb(color(d.degree)).darker(2))
+      .attr('fill', (d) => this.color(d.degree))
+      .attr('stroke', (d) => d3.rgb(this.color(d.degree)).darker(2))
       .call(
         d3
           .drag()
-          .on('start', dragstarted)
-          .on('drag', dragged)
-          .on('end', dragended)
+          .on('start', this.dragstarted.bind(this))
+          .on('drag', this.dragged.bind(this))
+          .on('end', this.dragended.bind(this))
       );
 
-    var nodeLabels = zoomableGraph
+    this.nodeLabels = this.graph
       .append('g')
       .attr('class', 'labels')
       .selectAll('g')
@@ -232,26 +219,36 @@ class Graph extends Component {
       .style('font-size', '12px')
       .text((d) => d.title);
 
-    node.on('dblclick', function(d) {
+    // Open Wikipedia page when node is double clicked.
+    this.nodes.on('dblclick', (d) => {
       window.open(getWikipediaPageUrl(d.id), '_blank');
     });
 
-    node.append('title').text((d) => d.title);
+    // Force simulation.
+    this.simulation = d3
+      .forceSimulation()
+      .force('link', d3.forceLink().id((d) => d.id))
+      .force('charge', d3.forceManyBody().strength(-300))
+      .force('center', d3.forceCenter(DEFAULT_CHART_WIDTH / 2, DEFAULT_CHART_HEIGHT / 2));
 
-    simulation.nodes(nodesData).on('tick', ticked);
-
-    simulation.force('link').links(linksData);
+    this.simulation.nodes(nodesData).on('tick', () => this.ticked());
+    this.simulation.force('link').links(linksData);
   }
 
+  /* Resets the graph to its original location. */
   resetGraph() {
-    graph.transition().call(zoom.transform, d3.zoomIdentity);
+    this.zoomable
+      .transition()
+      .duration(750)
+      .call(this.zoom.transform, d3.zoomIdentity);
   }
 
+  /* Renders the legend. */
   renderLegend() {
     const legendContent = this.getLegendLabels().map((label, i) => {
       return (
         <LegendItem key={i}>
-          <LegendCircle fill={color(i)} stroke={d3.rgb(color(i)).darker(2)} />
+          <LegendCircle fill={this.color(i)} stroke={d3.rgb(this.color(i)).darker(2)} />
           <LegendLabel>{label}</LegendLabel>
         </LegendItem>
       );
@@ -280,7 +277,7 @@ class Graph extends Component {
           <p>Double click node to open Wikipedia page in new tab.</p>
         </Instructions>
 
-        <ResetButton onClick={this.resetGraph}>Reset</ResetButton>
+        <ResetButton onClick={this.resetGraph.bind(this)}>Reset</ResetButton>
 
         <GraphSvg innerRef={(r) => (this.graphRef = r)} />
       </GraphWrapper>
