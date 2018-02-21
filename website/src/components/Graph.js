@@ -123,10 +123,8 @@ class Graph extends Component {
   /* Drag started event. */
   dragstarted(d) {
     if (!d3.event.active) {
-      console.log('RESTART');
       this.simulation.alphaTarget(0.3).restart();
     }
-    console.log(d.x, d.y);
     d.fx = d.x;
     d.fy = d.y;
   }
