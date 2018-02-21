@@ -4,7 +4,7 @@
 
 Wikipedia dumps raw database tables in a gzipped SQL format for the English language Wikipedia
 (`enwiki`) approximately once a month (e.g.
-[dump from July 20, 2017](https://dumps.wikimedia.your.org/enwiki/20170620/)). The
+[dump from February 1, 2018](https://dumps.wikimedia.your.org/enwiki/20180201/)). The
 [entire database layout](https://www.mediawiki.org/wiki/Manual:Database_layout) is not required, and
 the database creation script only downloads, trims, and parses three tables:
 
@@ -28,25 +28,34 @@ SDOW only concerns itself with actual Wikipedia articles, which belong to
 ## Database Creation Process
 
 The result of running the database creation script is a single `sdow.sqlite` file which contains
-three tables:
+four tables:
 
-1. `pages` - Contains page information for all pages, including redirects.
+1. `pages` - Page information for all pages, including redirects.
    1. `id` - Page ID.
    2. `title` - Sanitized page title.
    3. `is_redirect` - Whether or not the page is a redirect (`1` means it is a redirect; `0` means
       it is not)
-2. `links` - Contains each page's outgoing and incoming links.
+2. `links` - Outgoing and incoming links for each non-redirect page.
    1. `id` - The page ID of the source page, the page that contains the link.
    2. `outgoing_links_count` - The number of pages to which this page links to.
    3. `incoming_links_count` - The number of pages which link to this page.
    4. `incoming_links` - A `|`-separated list of page IDs to which this page links.
    5. `outgoing_links` - A `|`-separated list of page IDs which link to this page.
-3. `redirects` - Contains source and target page IDs for all redirects.
-   1. `from_id` - The page ID of the source page, the page that redirects to another page.
-   2. `to_id` - The page ID of the target page, to which the redirect page redirects.
+3. `redirects` - Source and target page IDs for all redirects.
+   1. `source_id` - The page ID of the source page, the page that redirects to another page.
+   2. `target_id` - The page ID of the target page, to which the redirect page redirects.
+4. `searches` - Historical results of all past searches.
+   1. `source_id` - The page ID of the source page at which to start the search.
+   2. `target_id` - The page ID of the target page at which to end the search.
+   3. `duration` - How long the search took, in seconds.
+   4. `degrees_count` - The number of degrees between the source and target pages.
+   5. `paths_count` - The number of paths found between the source and target pages.
+   6. `paths` - Stringified JSON representation of the paths of page IDs between the source and
+      target pages.
+   7. `t` - Timestamp when the search finished.
 
-Generating the SDOW database from a dump of Wikipedia takes approximately two hours given the
-instructions below:
+Generating the SDOW database from a dump of Wikipedia takes approximately one hour given the
+following instructions:
 
 1. Create a new [Google Compute Engine instance](https://console.cloud.google.com/compute/instances?project=sdow-prod)
    from the `sdow-db-builder` instance template, which is configured with the following specs:
@@ -109,6 +118,7 @@ instructions below:
    ```
 1. Copy the latest SQLite file from the `sdow-prod` GCS bucket:
    ```bash
+   $ cd sdow/
    $ gsutil cp gs://sdow-prod/dumps/<YYYYMMDD>/sdow.sqlite .
    ```
 1. Install required dependencies:
@@ -130,6 +140,10 @@ instructions below:
    $ export FLASK_APP=server.py
    $ flask run --host=0.0.0.0
    ```
+
+## Resources
+
+* [MediaWiki API](https://www.mediawiki.org/wiki/API:Main_page)
 
 ## Edge Case Pages
 
