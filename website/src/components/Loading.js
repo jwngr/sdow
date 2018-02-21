@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 import {Fact, Wrapper, LoadingIndicator} from './Loading.styles.js';
 
-import ArticleLink from './ArticleLink';
+import WikipediaPageLink from './WikipediaPageLink';
 
 import {getRandomWikipediaFact} from '../utils';
 
@@ -36,7 +36,7 @@ class Loading extends Component {
       return null;
     }
 
-    // Replace page titles in the current fact with a link to the corresponding Wikipedia article.
+    // Replace page titles in the current fact with a link to the corresponding Wikipedia page.
     let skipCount = 0;
     const factContent = [];
     const tokens = currentFact.split('"');
@@ -50,7 +50,7 @@ class Loading extends Component {
             skipCount = 2;
             token = tokens[i] + '"' + tokens[i + 1] + '"' + tokens[i + 2];
           }
-          factContent.push(<ArticleLink title={token} key={i} />);
+          factContent.push(<WikipediaPageLink title={token} key={i} />);
         }
       } else {
         skipCount--;

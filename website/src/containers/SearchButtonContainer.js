@@ -6,8 +6,8 @@ import SearchButton from '../components/SearchButton';
 
 const mapStateToProps = (state) => {
   return {
-    toArticleTitle: state.toArticleTitle,
-    fromArticleTitle: state.fromArticleTitle,
+    sourcePageTitle: state.sourcePageTitle,
+    targetPageTitle: state.targetPageTitle,
     isFetchingResults: state.isFetchingResults,
   };
 };

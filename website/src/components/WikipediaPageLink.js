@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import {getWikipediaPageUrl} from '../utils';
 
-const Link = styled.a`
+const Wrapper = styled.a`
   position: relative;
   display: inline-block;
   outline: none;
@@ -60,10 +60,8 @@ const Link = styled.a`
   }
 `;
 
-const ArticleLink = ({title}) => (
-  <Link href={getWikipediaPageUrl(title)} target="_blank">
+export default ({title}) => (
+  <Wrapper href={getWikipediaPageUrl(title)} target="_blank">
     {title}
-  </Link>
+  </Wrapper>
 );
-
-export default ArticleLink;

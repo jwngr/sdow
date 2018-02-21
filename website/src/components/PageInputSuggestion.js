@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Description, InnerWrapper, Image, Title, Wrapper} from './ArticleInputSuggestion.styles';
+import {Description, InnerWrapper, Image, Title, Wrapper} from './PageInputSuggestion.styles';
 
 import defaultPageThumbnail from '../images/defaultPageThumbnail.png';
 

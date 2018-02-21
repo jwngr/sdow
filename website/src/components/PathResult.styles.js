@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
   border-radius: 12px;
 `;
 
-export const ArticleWrapper = styled.a`
+export const PageWrapper = styled.a`
   display: block;
   text-decoration: none;
   display: flex;
@@ -39,14 +39,14 @@ export const ArticleWrapper = styled.a`
   }
 `;
 
-export const ArticleInnerWrapper = styled.div`
+export const PageInnerWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   flex: 1;
 `;
 
-export const ArticleImage = styled.img`
+export const PageImage = styled.img`
   width: 60px;
   height: 60px;
   margin-right: 12px;
@@ -54,10 +54,10 @@ export const ArticleImage = styled.img`
   border: solid 1px ${(props) => props.theme.colors.darkGreen};
 `;
 
-export const ArticleTitle = styled.p`
+export const PageTitle = styled.p`
   font-size: 16px;
 `;
 
-export const ArticleDescription = styled.p`
+export const PageDescription = styled.p`
   font-size: 12px;
 `;

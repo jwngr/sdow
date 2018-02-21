@@ -4,8 +4,8 @@ import LoadingContainer from '../containers/LoadingContainer';
 import PathResultsContainer from '../containers/PathResultsContainer';
 import ErrorMessageContainer from '../containers/ErrorMessageContainer';
 import SearchButtonContainer from '../containers/SearchButtonContainer';
-import ToArticleInputContainer from '../containers/ToArticleInputContainer';
-import FromArticleInputContainer from '../containers/FromArticleInputContainer';
+import TargetPageInputContainer from '../containers/TargetPageInputContainer';
+import SourcePageInputContainer from '../containers/SourcePageInputContainer';
 
 import logo from '../images/logo.png';
 
@@ -17,9 +17,9 @@ export default () => (
     <MainContent>
       <P>Find the shortest paths from</P>
       <InputFlexContainer>
-        <FromArticleInputContainer />
+        <SourcePageInputContainer />
         <P style={{margin: '20px 24px'}}>to</P>
-        <ToArticleInputContainer />
+        <TargetPageInputContainer />
       </InputFlexContainer>
 
       <SearchButtonContainer />

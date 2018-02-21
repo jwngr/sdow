@@ -1,11 +1,11 @@
 import React from 'react';
 
 import {
-  ArticleDescription,
-  ArticleImage,
-  ArticleTitle,
-  ArticleWrapper,
-  ArticleInnerWrapper,
+  PageDescription,
+  PageImage,
+  PageTitle,
+  PageWrapper,
+  PageInnerWrapper,
   Wrapper,
 } from './PathResult.styles';
 
@@ -21,22 +21,22 @@ const PathResult = ({pages}) => {
       if (description.length > 103) {
         description = `${description.slice(0, 100)}...`;
       }
-      descriptionContent = <ArticleDescription>{description}</ArticleDescription>;
+      descriptionContent = <PageDescription>{description}</PageDescription>;
     }
 
     // let arrowContent;
-    // if (!isEndArticle) {
+    // if (!isEndPage) {
     //   arrowContent = <span style={{margin: '20px'}}>==></span>;
     // }
 
     return (
-      <ArticleWrapper key={i} href={url} target="_blank">
-        <ArticleImage src={thumbnailUrl || defaultPageThumbnail} />
-        <ArticleInnerWrapper>
-          <ArticleTitle>{title}</ArticleTitle>
+      <PageWrapper key={i} href={url} target="_blank">
+        <PageImage src={thumbnailUrl || defaultPageThumbnail} />
+        <PageInnerWrapper>
+          <PageTitle>{title}</PageTitle>
           {descriptionContent}
-        </ArticleInnerWrapper>
-      </ArticleWrapper>
+        </PageInnerWrapper>
+      </PageWrapper>
     );
   });
 

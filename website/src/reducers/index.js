@@ -23,18 +23,18 @@ const rootReducers = {
         return state;
     }
   },
-  toArticleTitle: (state = '', action) => {
+  targetPageTitle: (state = '', action) => {
     switch (action.type) {
-      case actions.SET_TO_ARTICLE_TITLE:
-        return action.toArticleTitle;
+      case actions.SET_TARGET_PAGE_TITLE:
+        return action.targetPageTitle;
       default:
         return state;
     }
   },
-  fromArticleTitle: (state = '', action) => {
+  sourcePageTitle: (state = '', action) => {
     switch (action.type) {
-      case actions.SET_FROM_ARTICLE_TITLE:
-        return action.fromArticleTitle;
+      case actions.SET_SOURCE_PAGE_TITLE:
+        return action.sourcePageTitle;
       default:
         return state;
     }

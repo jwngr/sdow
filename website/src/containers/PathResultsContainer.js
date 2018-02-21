@@ -11,8 +11,8 @@ const mapStateToProps = ({results}) => {
 
   return {
     paths: results.paths,
-    toArticleTitle: results.toArticleTitle,
-    fromArticleTitle: results.fromArticleTitle,
+    sourcePageTitle: results.sourcePageTitle,
+    targetPageTitle: results.targetPageTitle,
   };
 };
 

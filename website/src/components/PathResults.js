@@ -2,13 +2,13 @@ import React, {Component} from 'react';
 
 import Graph from './Graph';
 import PathResult from './PathResult';
-import ArticleLink from './ArticleLink';
+import WikipediaPageLink from './WikipediaPageLink';
 
 import {ResultsMessage, PathResultsWrapper} from './PathResults.styles';
 
 class PathResults extends Component {
   render() {
-    const {paths, toArticleTitle, fromArticleTitle} = this.props;
+    const {paths, sourcePageTitle, targetPageTitle} = this.props;
 
     if (paths === null) {
       return null;
@@ -21,7 +21,8 @@ class PathResults extends Component {
           <p>Welp, this is awkward...</p>
           <p>No path of Wikipedia links exists from</p>
           <p>
-            <ArticleLink title={fromArticleTitle} /> to <ArticleLink title={toArticleTitle} />.
+            <WikipediaPageLink title={sourcePageTitle} /> to{' '}
+            <WikipediaPageLink title={targetPageTitle} />.
           </p>
         </ResultsMessage>
       );
@@ -85,7 +86,8 @@ class PathResults extends Component {
             of separation from
           </p>
           <p>
-            <ArticleLink title={fromArticleTitle} /> to <ArticleLink title={toArticleTitle} />!
+            <WikipediaPageLink title={sourcePageTitle} /> to{' '}
+            <WikipediaPageLink title={targetPageTitle} />!
           </p>
         </ResultsMessage>
         <Graph paths={paths} />

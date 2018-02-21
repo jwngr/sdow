@@ -5,17 +5,17 @@ import Autosuggest from 'react-autosuggest';
 
 import {getRandomPageTitle} from '../utils';
 
-import ArticleInputSuggestion from './ArticleInputSuggestion';
+import PageInputSuggestion from './PageInputSuggestion';
 
-import {AutosuggestWrapper} from './ArticleInput.styles';
+import {AutosuggestWrapper} from './PageInput.styles';
 
 import {WIKIPEDIA_API_URL} from '../resources/constants';
 
 // Autosuggest component helpers.
 const getSuggestionValue = (suggestion) => suggestion.title;
-const renderSuggestion = (suggestion) => <ArticleInputSuggestion {...suggestion} />;
+const renderSuggestion = (suggestion) => <PageInputSuggestion {...suggestion} />;
 
-class ArticleInput extends React.Component {
+class PageInput extends React.Component {
   constructor() {
     super();
 
@@ -90,14 +90,14 @@ class ArticleInput extends React.Component {
       })
       .catch((error) => {
         // TODO: add Sentry logging here (or just Google Analytics)
-        // const defaultErrorMessage = 'Request to fetch article suggestions failed.';
+        // const defaultErrorMessage = 'Request to fetch page suggestions failed.';
         // const errorMessage = (_.get(error, 'response.data.error', defaultErrorMessage));
         // Don't report any user-facing error since the input is still usable without suggestions.
       });
   }
 
   render() {
-    const {value, setArticleTitle} = this.props;
+    const {value, setPageTitle} = this.props;
     const {suggestions, placeholderText} = this.state;
 
     return (
@@ -117,7 +117,7 @@ class ArticleInput extends React.Component {
           inputProps={{
             placeholder: placeholderText,
             onChange: (event, {newValue}) => {
-              setArticleTitle(newValue);
+              setPageTitle(newValue);
               if (newValue === '') {
                 this.placeholderTextInterval = setInterval(
                   () => this.updatePlaceholderText(),
@@ -136,4 +136,4 @@ class ArticleInput extends React.Component {
   }
 }
 
-export default ArticleInput;
+export default PageInput;

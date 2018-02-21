@@ -15,27 +15,27 @@ class SearchButton extends React.Component {
 
   fetchShortestPaths() {
     const {
-      toArticleTitle,
-      fromArticleTitle,
+      sourcePageTitle,
+      targetPageTitle,
       setErrorMessage,
       setIsFetchingResults,
       setShortestPathResults,
     } = this.props;
 
-    let articleValidationErrorMessage;
-    if (fromArticleTitle === '' && toArticleTitle === '') {
-      articleValidationErrorMessage =
+    let inputValidationErrorMessage;
+    if (sourcePageTitle === '' && targetPageTitle === '') {
+      inputValidationErrorMessage =
         'You might want to choose a start and end page above before you hit that.';
-    } else if (fromArticleTitle === '') {
-      articleValidationErrorMessage =
+    } else if (sourcePageTitle === '') {
+      inputValidationErrorMessage =
         'You might want to choose a start page above before you hit that.';
-    } else if (toArticleTitle === '') {
-      articleValidationErrorMessage =
+    } else if (targetPageTitle === '') {
+      inputValidationErrorMessage =
         'You might want to choose an end page above before you hit that.';
     }
 
-    if (typeof articleValidationErrorMessage !== 'undefined') {
-      setErrorMessage(articleValidationErrorMessage);
+    if (typeof inputValidationErrorMessage !== 'undefined') {
+      setErrorMessage(inputValidationErrorMessage);
     } else {
       setIsFetchingResults(true);
 
@@ -43,8 +43,8 @@ class SearchButton extends React.Component {
         url: `${SDOW_API_URL}/paths`,
         method: 'POST',
         data: {
-          source: fromArticleTitle,
-          target: toArticleTitle,
+          source: sourcePageTitle,
+          target: targetPageTitle,
         },
       })
         .then((response) => {
@@ -57,8 +57,8 @@ class SearchButton extends React.Component {
           });
 
           setShortestPathResults({
-            toArticleTitle,
-            fromArticleTitle,
+            targetPageTitle,
+            sourcePageTitle,
             paths: pathsDenormalized,
           });
 
