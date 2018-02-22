@@ -200,8 +200,8 @@ class Database(object):
     paths_count = len(search['paths'])
 
     if paths_count == 0:
-      degrees_count = None
-      paths = None
+      degrees_count = 'NULL'
+      paths = str([])
     else:
       degrees_count = len(search['paths'][0]) - 1
       paths = str(search['paths']).replace(' ', '')
