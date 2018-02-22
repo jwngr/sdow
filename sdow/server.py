@@ -79,13 +79,13 @@ def shortest_paths_route():
     source_page_id = database.fetch_page_id(source_page_title)
   except ValueError:
     raise InvalidRequest(
-        'Start page "{0}" does not exist. Please try another search.'.format(source_page_title))
+        'Start page "{0}" does not exist. Please try another search.'.format(source_page_title.encode('utf-8')))
 
   try:
     target_page_id = database.fetch_page_id(target_page_title)
   except ValueError:
     raise InvalidRequest(
-        'End page "{0}" does not exist. Please try another search.'.format(target_page_title))
+        'End page "{0}" does not exist. Please try another search.'.format(target_page_title.encode('utf-8')))
 
   # Compute the shortest paths
   paths = database.compute_shortest_paths(source_page_id, target_page_id)
