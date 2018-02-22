@@ -16,8 +16,8 @@ const getSuggestionValue = (suggestion) => suggestion.title;
 const renderSuggestion = (suggestion) => <PageInputSuggestion {...suggestion} />;
 
 class PageInput extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       suggestions: [],
@@ -26,7 +26,10 @@ class PageInput extends React.Component {
     };
 
     this.debouncedLoadSuggestions = _.debounce(this.loadSuggestions, 250);
-    this.placeholderTextInterval = setInterval(() => this.updatePlaceholderText(), 3000);
+
+    if (props.value === '') {
+      this.placeholderTextInterval = setInterval(() => this.updatePlaceholderText(), 3000);
+    }
   }
 
   updatePlaceholderText() {
