@@ -32,6 +32,8 @@ class Graph extends Component {
 
     this.color = d3.scaleOrdinal(d3.schemeCategory10);
     this.zoom = d3.zoom().on('zoom', () => this.zoomed());
+
+    this.debouncedResetGraph = _.debounce(this.resetGraph.bind(this), 350);
   }
 
   // state = {
@@ -264,7 +266,11 @@ class Graph extends Component {
     this.simulation.force('link').links(linksData);
 
     // Reset the graph on page resize.
-    window.addEventListener('resize', _.debounce(this.resetGraph.bind(this), 350));
+    window.addEventListener('resize', this.debouncedResetGraph);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.debouncedResetGraph);
   }
 
   /* Resets the graph to its original location. */
