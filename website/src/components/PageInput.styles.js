@@ -1,68 +1,15 @@
 import styled from 'styled-components';
 
-const classNames = {
-  input: 'react-autosuggest__input',
-  container: 'react-autosuggest__container',
-  suggestion: 'react-autosuggest__suggestion',
-  suggestion_highlighted: 'react-autosuggest__suggestion--highlighted',
-  suggestions_list: 'react-autosuggest__suggestions-list',
-  suggestions_container: 'react-autosuggest__suggestions-container',
-  suggestions_container_open: 'react-autosuggest__suggestions-container--open',
-  input_open: 'react-autosuggest__input--open',
-};
+export const AutosuggestWrapper = styled.div`
+  width: 500px;
+  position: relative;
 
-export const AutosuggestWrapper = styled.div.attrs(classNames)`
-  .${classNames.container} {
-    position: relative;
-    display: inline;
-  }
-
-  .${classNames.suggestion} {
-    cursor: pointer;
-    border-bottom: solid 1px ${(props) => props.theme.colors.gray};
-
-    &:last-of-type {
-      border-bottom: none;
-
-      &.${classNames.suggestion_highlighted} {
-        border-bottom-left-radius: 12px;
-        border-bottom-right-radius: 12px;
-      }
-    }
-  }
-
-  .${classNames.suggestion_highlighted} {
-    background-color: ${(props) => props.theme.colors.gray};
-  }
-
-  .${classNames.suggestions_container} {
-    display: none;
-  }
-  
-  .${classNames.suggestions_container_open} {
-    display: block;
-    position: absolute;
-    top: 38px;
-    width: 500px;
-    border: solid 3px ${(props) => props.theme.colors.darkGreen};
-    background-color: ${(props) => props.theme.colors.creme};
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
-    z-index: 2;
-  }
-
-  .${classNames.suggestions_list} {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-  }
-
-  .${classNames.input} {
-    width: 500px;
-    height: 80px;
+  .react-autosuggest__input {
+    width: 100%;
+    height: 72px;
     border: solid 3px ${(props) => props.theme.colors.darkGreen};
     text-align: center;
-    font-size: 40px;
+    font-size: 32px;
     background-color: ${(props) => props.theme.colors.creme};
     padding: 12px;
     text-overflow: ellipsis;
@@ -83,9 +30,56 @@ export const AutosuggestWrapper = styled.div.attrs(classNames)`
     }
   }
 
-  &.${classNames.input_open} {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
+  .react-autosuggest__suggestion {
+    cursor: pointer;
+    border-bottom: solid 1px ${(props) => props.theme.colors.gray};
+
+    &:last-of-type {
+      border-bottom: none;
+
+      &.react-autosuggest__suggestion--highlighted {
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+      }
+    }
   }
-}
+
+  .react-autosuggest__suggestion--highlighted {
+    background-color: ${(props) => props.theme.colors.gray};
+  }
+
+  .react-autosuggest__suggestions-container {
+    display: none;
+  }
+
+  .react-autosuggest__suggestions-container--open {
+    display: block;
+    position: absolute;
+    top: 69px;
+    width: 100%;
+    border: solid 3px ${(props) => props.theme.colors.darkGreen};
+    background-color: ${(props) => props.theme.colors.creme};
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    z-index: 2;
+  }
+
+  .react-autosuggest__suggestions-list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+  }
+
+  @media (max-width: 600px) {
+    width: 80%;
+
+    .react-autosuggest__input {
+      font-size: 24px;
+      height: 60px;
+    }
+
+    .react-autosuggest__suggestions-container--open {
+      top: 57px;
+    }
+  }
 `;

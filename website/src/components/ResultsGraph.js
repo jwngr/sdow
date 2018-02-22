@@ -16,7 +16,7 @@ import {
   ResetButton,
 } from './ResultsGraph.styles';
 
-const DEFAULT_CHART_WIDTH = 800;
+// const DEFAULT_CHART_WIDTH = 800;
 const DEFAULT_CHART_HEIGHT = 600;
 
 class Graph extends Component {
@@ -43,6 +43,10 @@ class Graph extends Component {
   //     tooltip,
   //   });
   // }
+
+  getGraphWidth() {
+    return document.querySelector('.graph-wrapper').getBoundingClientRect().width;
+  }
 
   /* Returns a list of nodes and a list of links which make up the graph. */
   getGraphData() {
@@ -151,12 +155,13 @@ class Graph extends Component {
 
     const {nodesData, linksData} = this.getGraphData();
 
+    const graphWidth = this.getGraphWidth();
+
     this.zoomable = d3
       .select(this.graphRef)
-      .attr('width', DEFAULT_CHART_WIDTH)
+      .attr('width', graphWidth)
       .attr('height', DEFAULT_CHART_HEIGHT)
-      .call(this.zoom)
-      .on('dblclick.zoom', null);
+      .call(this.zoom);
 
     this.graph = this.zoomable.append('g');
 
@@ -244,7 +249,7 @@ class Graph extends Component {
       .text((d) => d.title);
 
     // Open Wikipedia page when node is double clicked.
-    this.nodes.on('dblclick', (d) => {
+    this.nodes.on('click', (d) => {
       window.open(getWikipediaPageUrl(d.id), '_blank');
     });
 
@@ -253,14 +258,25 @@ class Graph extends Component {
       .forceSimulation()
       .force('link', d3.forceLink().id((d) => d.id))
       .force('charge', d3.forceManyBody().strength(-300))
-      .force('center', d3.forceCenter(DEFAULT_CHART_WIDTH / 2, DEFAULT_CHART_HEIGHT / 2));
+      .force('center', d3.forceCenter(graphWidth / 2, DEFAULT_CHART_HEIGHT / 2));
 
     this.simulation.nodes(nodesData).on('tick', () => this.ticked());
     this.simulation.force('link').links(linksData);
+
+    // Reset the graph on page resize.
+    window.addEventListener('resize', _.debounce(this.resetGraph.bind(this), 350));
   }
 
   /* Resets the graph to its original location. */
   resetGraph() {
+    const graphWidth = this.getGraphWidth();
+
+    // Update the center of the simulation force and restart it.
+    this.simulation.force('center', d3.forceCenter(graphWidth / 2, DEFAULT_CHART_HEIGHT / 2));
+    this.simulation.alpha(0.3).restart();
+
+    // Update the width of the SVG and reset it.
+    this.zoomable.attr('width', graphWidth);
     this.zoomable
       .transition()
       .duration(750)
@@ -293,12 +309,12 @@ class Graph extends Component {
     // }
 
     return (
-      <GraphWrapper>
+      <GraphWrapper className="graph-wrapper">
         {this.renderLegend()}
 
         <Instructions>
           <p>Drag to pan. Scroll to zoom.</p>
-          <p>Double click node to open Wikipedia page.</p>
+          <p>Click node to open Wikipedia page.</p>
         </Instructions>
 
         <ResetButton onClick={this.resetGraph.bind(this)}>Reset</ResetButton>

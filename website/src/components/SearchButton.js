@@ -8,10 +8,16 @@ import {SDOW_API_URL} from '../resources/constants';
 
 export const SearchButtonButton = Button.extend`
   width: 240px;
-  height: 68px;
+  height: 72px;
   margin: 0 auto 40px;
   font-size: 32px;
   border-radius: 8px;
+
+  @media (max-width: 600px) {
+    width: 200px;
+    height: 60px;
+    font-size: 28px;
+  }
 `;
 
 class SearchButton extends React.Component {
@@ -33,13 +39,13 @@ class SearchButton extends React.Component {
     let inputValidationErrorMessage;
     if (sourcePageTitle === '' && targetPageTitle === '') {
       inputValidationErrorMessage =
-        'You might want to choose a start and end page above before you hit that.';
+        "You'll probably want to choose the start and end pages before you hit that.";
     } else if (sourcePageTitle === '') {
       inputValidationErrorMessage =
-        'You might want to choose a start page above before you hit that.';
+        "You'll probably want to choose the start page before you hit that.";
     } else if (targetPageTitle === '') {
       inputValidationErrorMessage =
-        'You might want to choose an end page above before you hit that.';
+        "You'll probably want to choose the end page before you hit that.";
     }
 
     if (typeof inputValidationErrorMessage !== 'undefined') {

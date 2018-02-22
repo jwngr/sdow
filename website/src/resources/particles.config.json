@@ -1,7 +1,11 @@
 {
   "particles": {
     "number": {
-      "value": 80
+      "value": 20,
+      "density": {
+        "enable": true,
+        "value_area": 1000
+      }
     },
     "color": {
       "value": "#F7FFF7"
@@ -58,15 +62,13 @@
       "onclick": {
         "enable": false
       },
-      "resize": false
+      "onresize": {
+        "enable": true,
+        "density_auto": true,
+        "density_area": 40000000
+      }
     },
     "modes": {
-      "grab": {
-        "distance": 200,
-        "line_linked": {
-          "opacity": 0.8
-        }
-      },
       "bubble": {
         "distance": 200,
         "size": 4,

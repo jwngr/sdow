@@ -18,9 +18,13 @@ class PathResults extends Component {
     if (paths.length === 0) {
       return (
         <ResultsMessage>
-          <p>Welp, this is awkward...</p>
-          <p>No path of Wikipedia links exists from</p>
           <p>
+            <i>
+              <b>Welp</b>, this is awkward...
+            </i>
+          </p>
+          <p>
+            <b>No path</b> of Wikipedia links exists from{' '}
             <WikipediaPageLink title={sourcePageTitle} /> to{' '}
             <WikipediaPageLink title={targetPageTitle} />.
           </p>
@@ -33,33 +37,33 @@ class PathResults extends Component {
     const degreesOfSeparation = paths[0].length - 1;
     if (degreesOfSeparation === 0) {
       snarkyContent = (
-        <p>
-          <b>Seriously?</b> Talk about overqualified for the job...{' '}
-        </p>
+        <i>
+          <b>Seriously?</b> Talk about overqualified for the job...
+        </i>
       );
     } else if (degreesOfSeparation === 1) {
       snarkyContent = (
-        <p>
-          <b>&lt;sarcasm&gt;</b> Hmm... this was a really tough one. <b>&lt;/sarcasm&gt;</b>
-        </p>
+        <i>
+          <b>Welp...</b> thanks for making my job easy.
+        </i>
       );
     } else if (degreesOfSeparation === 5) {
       snarkyContent = (
-        <p>
-          <b>*wipes brow*</b> I really had to work hard for this one.
-        </p>
+        <i>
+          <b>*wipes brow*</b> I really had to work for this one.
+        </i>
       );
     } else if (degreesOfSeparation === 6) {
       snarkyContent = (
-        <p>
-          <b>*breathes heavily*</b> That was quite the workout.
-        </p>
+        <i>
+          <b>*breathes heavily*</b> What a workout!
+        </i>
       );
     } else if (degreesOfSeparation >= 7) {
       snarkyContent = (
-        <p>
-          <b>*picks jaw up from floor*</b> Holy moley, THAT was intense!
-        </p>
+        <i>
+          <b>*picks jaw up from floor*</b> That was intense!
+        </i>
       );
     }
 
@@ -73,7 +77,7 @@ class PathResults extends Component {
     return (
       <React.Fragment>
         <ResultsMessage>
-          {snarkyContent}
+          <p>{snarkyContent}</p>
           <p>
             Found{' '}
             <b>
@@ -83,10 +87,7 @@ class PathResults extends Component {
             <b>
               {degreesOfSeparation} {degreeOrDegrees}
             </b>{' '}
-            of separation from
-          </p>
-          <p>
-            <WikipediaPageLink title={sourcePageTitle} /> to{' '}
+            of separation from <WikipediaPageLink title={sourcePageTitle} /> to{' '}
             <WikipediaPageLink title={targetPageTitle} />!
           </p>
         </ResultsMessage>

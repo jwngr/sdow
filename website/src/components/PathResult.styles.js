@@ -3,10 +3,20 @@ import styled from 'styled-components';
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: calc(25% - 16px);
+  min-width: 300px;
   margin: 8px;
   border: solid 2px ${(props) => props.theme.colors.darkGreen};
   border-radius: 12px;
+
+  @media (max-width: 600px) {
+    width: 40%;
+    max-width: 260px;
+  }
+
+  @media (max-width: 400px) {
+    width: 90%;
+    max-width: 90%;
+  }
 `;
 
 export const PageWrapper = styled.a`
@@ -37,6 +47,10 @@ export const PageWrapper = styled.a`
   &:hover {
     background: ${(props) => props.theme.colors.gray};
   }
+
+  @media (max-width: 600px) {
+    height: 60px;
+  }
 `;
 
 export const PageInnerWrapper = styled.div`
@@ -52,10 +66,19 @@ export const PageImage = styled.img`
   margin-right: 12px;
   border-radius: 8px;
   border: solid 1px ${(props) => props.theme.colors.darkGreen};
+
+  @media (max-width: 600px) {
+    width: 40px;
+    height: 40px;
+  }
 `;
 
 export const PageTitle = styled.p`
   font-size: 16px;
+
+  @media (max-width: 600px) {
+    font-size: 16px;
+  }
 `;
 
 export const PageDescription = styled.p`

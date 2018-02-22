@@ -9,23 +9,22 @@ import SourcePageInputContainer from '../containers/SourcePageInputContainer';
 
 import logo from '../images/logo.png';
 
-import {P, Logo, InputFlexContainer, MainContent} from './Home.styles';
+import {P, Logo, InputFlexContainer} from './Home.styles';
 
 export default () => (
   <div>
     <Logo src={logo} alt="Six Degrees of Wikipedia Logo" />
-    <MainContent>
-      <P>Find the shortest paths from</P>
-      <InputFlexContainer>
-        <SourcePageInputContainer />
-        <P style={{margin: '20px 24px'}}>to</P>
-        <TargetPageInputContainer />
-      </InputFlexContainer>
 
-      <SearchButtonContainer />
-      <LoadingContainer />
-      <PathResultsContainer />
-      <ErrorMessageContainer />
-    </MainContent>
+    <P>Find the shortest paths from</P>
+    <InputFlexContainer>
+      <SourcePageInputContainer />
+      <P>to</P>
+      <TargetPageInputContainer />
+    </InputFlexContainer>
+
+    <SearchButtonContainer />
+    <LoadingContainer />
+    <PathResultsContainer />
+    <ErrorMessageContainer />
   </div>
 );

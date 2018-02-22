@@ -4,12 +4,17 @@ import Button from './Button';
 
 export const GraphWrapper = styled.div`
   width: 800px;
+  max-width: 800px;
   overflow: hidden;
   margin: 0 auto 40px auto;
   position: relative;
   background: rgba(256, 256, 256, 0.7);
   background-color: ${(props) => props.theme.colors.creme};
   border: solid 3px ${(props) => props.theme.colors.darkGreen};
+
+  @media (max-width: 1200px) {
+    width: 90%;
+  }
 `;
 
 export const GraphSvg = styled.svg`
