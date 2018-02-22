@@ -3,15 +3,14 @@ import React from 'react';
 import LoadingContainer from '../containers/LoadingContainer';
 import PathResultsContainer from '../containers/PathResultsContainer';
 import ErrorMessageContainer from '../containers/ErrorMessageContainer';
-import SearchButtonContainer from '../containers/SearchButtonContainer';
 import TargetPageInputContainer from '../containers/TargetPageInputContainer';
 import SourcePageInputContainer from '../containers/SourcePageInputContainer';
 
 import logo from '../images/logo.png';
 
-import {P, Logo, InputFlexContainer} from './Home.styles';
+import {P, Logo, InputFlexContainer, SearchButton} from './Home.styles';
 
-export default () => (
+export default ({fetchShortestPaths}) => (
   <div>
     <Logo src={logo} alt="Six Degrees of Wikipedia Logo" />
 
@@ -22,7 +21,7 @@ export default () => (
       <TargetPageInputContainer />
     </InputFlexContainer>
 
-    <SearchButtonContainer />
+    <SearchButton onClick={fetchShortestPaths}>Go!</SearchButton>
     <LoadingContainer />
     <PathResultsContainer />
     <ErrorMessageContainer />

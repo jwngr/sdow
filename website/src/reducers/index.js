@@ -6,7 +6,7 @@ const rootReducers = {
       case actions.SET_SHORTEST_PATH_RESULTS:
         return action.results;
       case actions.SET_ERROR_MESSAGE:
-      case actions.SET_IS_FETCHING_RESULTS:
+      case actions.FETCHING_RESULTS:
         return null;
       default:
         return state;
@@ -15,8 +15,8 @@ const rootReducers = {
 
   isFetchingResults: (state = false, action) => {
     switch (action.type) {
-      case actions.SET_IS_FETCHING_RESULTS:
-        return action.isFetchingResults;
+      case actions.FETCHING_RESULTS:
+        return true;
       case actions.SET_ERROR_MESSAGE:
       case actions.SET_SHORTEST_PATH_RESULTS:
         return false;
@@ -25,7 +25,7 @@ const rootReducers = {
     }
   },
 
-  sourcePageTitle: (state = '', action) => {
+  sourcePageTitle: (state = '15 (number)', action) => {
     switch (action.type) {
       case actions.SET_SOURCE_PAGE_TITLE:
         return action.sourcePageTitle;
@@ -34,7 +34,7 @@ const rootReducers = {
     }
   },
 
-  targetPageTitle: (state = '', action) => {
+  targetPageTitle: (state = '20 (number)', action) => {
     switch (action.type) {
       case actions.SET_TARGET_PAGE_TITLE:
         return action.targetPageTitle;
@@ -47,8 +47,7 @@ const rootReducers = {
     switch (action.type) {
       case actions.SET_ERROR_MESSAGE:
         return action.errorMessage;
-      case actions.SET_IS_FETCHING_RESULTS:
-        return action.isFetchingResults ? null : state;
+      case actions.FETCHING_RESULTS:
       case actions.SET_SHORTEST_PATH_RESULTS:
         return null;
       default:

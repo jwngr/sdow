@@ -1,4 +1,5 @@
 import React from 'react';
+import thunk from 'redux-thunk';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import Particles from 'react-particles-js';
@@ -8,8 +9,8 @@ import {combineReducers, compose, createStore, applyMiddleware} from 'redux';
 
 import registerServiceWorker from './registerServiceWorker';
 
-import Home from './components/Home';
 import About from './components/About';
+import HomeContainer from './containers/HomeContainer';
 
 import theme from './resources/theme.json';
 import particlesConfig from './resources/particles.config.json';
@@ -38,7 +39,7 @@ const {reducer: routerReducer, middleware: routerMiddleware, enhancer} = routerF
 });
 
 // Middleware
-const middleware = [routerMiddleware];
+const middleware = [thunk, routerMiddleware];
 if (process.env.NODE_ENV !== 'production') {
   const {logger} = require('redux-logger');
   middleware.push(logger);
@@ -69,7 +70,7 @@ ReactDOM.render(
               <About />
             </Fragment>
             <Fragment forNoMatch>
-              <Home />
+              <HomeContainer />
             </Fragment>
           </React.Fragment>
         </Fragment>

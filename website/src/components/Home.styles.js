@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import Button from './Button';
+
 export const Logo = styled.img`
   width: 460px;
   display: block;
@@ -24,6 +26,20 @@ export const P = styled.p`
   @media (max-width: 600px) {
     margin: 12px;
     font-size: 24px;
+  }
+`;
+
+export const SearchButton = Button.extend`
+  width: 240px;
+  height: 72px;
+  margin: 0 auto 40px;
+  font-size: 32px;
+  border-radius: 8px;
+
+  @media (max-width: 600px) {
+    width: 200px;
+    height: 60px;
+    font-size: 28px;
   }
 `;
 
