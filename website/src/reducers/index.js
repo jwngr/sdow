@@ -25,7 +25,7 @@ const rootReducers = {
     }
   },
 
-  sourcePageTitle: (state = '', action) => {
+  sourcePageTitle: (state = '15 (number)', action) => {
     switch (action.type) {
       case actions.SET_SOURCE_PAGE_TITLE:
         return action.sourcePageTitle;
@@ -34,7 +34,7 @@ const rootReducers = {
     }
   },
 
-  targetPageTitle: (state = '', action) => {
+  targetPageTitle: (state = '20 (number)', action) => {
     switch (action.type) {
       case actions.SET_TARGET_PAGE_TITLE:
         return action.targetPageTitle;

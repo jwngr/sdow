@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import Button from './Button';
+
 export const GraphWrapper = styled.div`
   width: 800px;
   overflow: hidden;
@@ -83,17 +85,11 @@ export const Instructions = styled.div`
   }
 `;
 
-export const ResetButton = styled.button`
+export const ResetButton = Button.extend`
   position: absolute;
-  right: 8px;
   top: 8px;
+  right: 8px;
   padding: 8px 16px;
-  cursor: pointer;
   font-size: 16px;
-  font-weight: bold;
-  font-family: 'Quicksand';
-  color: ${(props) => props.theme.colors.creme};
-  border: solid 2px ${(props) => props.theme.colors.darkGreen};
   border-radius: 4px;
-  background-color: ${(props) => props.theme.colors.red};
 `;

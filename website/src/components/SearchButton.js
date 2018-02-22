@@ -2,9 +2,17 @@ import _ from 'lodash';
 import axios from 'axios';
 import React from 'react';
 
-import {GoButton} from './SearchButton.styles';
+import Button from './Button';
 
 import {SDOW_API_URL} from '../resources/constants';
+
+export const SearchButtonButton = Button.extend`
+  width: 240px;
+  height: 68px;
+  margin: 0 auto 40px;
+  font-size: 32px;
+  border-radius: 8px;
+`;
 
 class SearchButton extends React.Component {
   constructor() {
@@ -92,7 +100,7 @@ class SearchButton extends React.Component {
       return null;
     }
 
-    return <GoButton onClick={this.fetchShortestPaths}>Go!</GoButton>;
+    return <SearchButtonButton onClick={this.fetchShortestPaths}>Go!</SearchButtonButton>;
   }
 }
 

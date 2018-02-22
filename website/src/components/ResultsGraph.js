@@ -14,7 +14,7 @@ import {
   LegendItem,
   LegendLabel,
   ResetButton,
-} from './Graph.styles';
+} from './ResultsGraph.styles';
 
 const DEFAULT_CHART_WIDTH = 800;
 const DEFAULT_CHART_HEIGHT = 600;

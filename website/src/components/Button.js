@@ -1,16 +1,11 @@
 import styled from 'styled-components';
 
-export const GoButton = styled.button`
+export default styled.button`
   position: relative;
-  margin: 0 auto 40px;
   display: block;
-  height: 68px;
-  width: 240px;
-  font-size: 32px;
   color: ${(props) => props.theme.colors.creme};
   background-color: ${(props) => props.theme.colors.red};
   border: solid 2px ${(props) => props.theme.colors.darkGreen};
-  border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
   z-index: 1;

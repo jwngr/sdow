@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import Graph from './Graph';
+import ResultsGraph from './ResultsGraph';
 import PathResult from './PathResult';
 import WikipediaPageLink from './WikipediaPageLink';
 
@@ -90,7 +90,7 @@ class PathResults extends Component {
             <WikipediaPageLink title={targetPageTitle} />!
           </p>
         </ResultsMessage>
-        <Graph paths={paths} />
+        <ResultsGraph paths={paths} />
         <PathResultsWrapper>{pathResultsContent}</PathResultsWrapper>
       </React.Fragment>
     );
