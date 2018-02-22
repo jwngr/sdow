@@ -9,22 +9,22 @@ export const getWikipediaPageUrl = (pageTitle) => {
   return `${baseUrl}${encodeURIComponent(sanitizedPageTitle)}`;
 };
 
-export const getRandomPageTitle = (previousPageTitle) => {
-  let pageTitle;
-  while (typeof pageTitle === 'undefined' || pageTitle === previousPageTitle) {
-    pageTitle = pageTitles[Math.floor(Math.random() * pageTitles.length)];
+let unusedPageTitles = [];
+export const getRandomPageTitle = () => {
+  if (unusedPageTitles.length === 0) {
+    unusedPageTitles = _.clone(pageTitles);
   }
-  return pageTitle;
+
+  const indexToRemove = Math.floor(Math.random() * unusedPageTitles.length);
+  return unusedPageTitles.splice(indexToRemove, 1)[0];
 };
 
-export const getRandomWikipediaFact = (previousFacts) => {
-  let fact;
-  while (typeof fact === 'undefined' || _.includes(previousFacts, fact)) {
-    fact = wikipediaFacts[Math.floor(Math.random() * wikipediaFacts.length)];
-
-    if (previousFacts.length >= wikipediaFacts.length) {
-      break;
-    }
+let unusedWikipediaFacts = [];
+export const getRandomWikipediaFact = () => {
+  if (unusedWikipediaFacts.length === 0) {
+    unusedWikipediaFacts = _.clone(wikipediaFacts);
   }
-  return fact;
+
+  const indexToRemove = Math.floor(Math.random() * unusedWikipediaFacts.length);
+  return unusedWikipediaFacts.splice(indexToRemove, 1)[0];
 };

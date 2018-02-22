@@ -110,8 +110,7 @@ def shortest_paths_route():
     current_page_ids_index = 0
     while current_page_ids_index < len(page_ids_list):
       # Query at most 50 pages per request (given WikiMedia API limits)
-      end_page_ids_index = min(
-          current_page_ids_index + 50, len(page_ids_list))
+      end_page_ids_index = min(current_page_ids_index + 50, len(page_ids_list))
 
       query_params = {
           'action': 'query',

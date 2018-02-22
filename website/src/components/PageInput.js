@@ -26,12 +26,12 @@ class PageInput extends React.Component {
     };
 
     this.debouncedLoadSuggestions = _.debounce(this.loadSuggestions, 250);
-    this.placeholderTextInterval = setInterval(() => this.updatePlaceholderText(), 5000);
+    this.placeholderTextInterval = setInterval(() => this.updatePlaceholderText(), 3000);
   }
 
   updatePlaceholderText() {
     this.setState((prevState) => ({
-      placeholderText: getRandomPageTitle(prevState.placeholderText),
+      placeholderText: getRandomPageTitle(),
     }));
   }
 

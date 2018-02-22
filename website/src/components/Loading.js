@@ -10,20 +10,13 @@ class Loading extends Component {
   constructor() {
     super();
 
-    let currentFact = getRandomWikipediaFact([]);
-
     this.state = {
-      currentFact,
-      previousFacts: [],
+      currentFact: getRandomWikipediaFact(),
     };
 
     setInterval(() => {
-      this.setState((prevState) => {
-        currentFact = getRandomWikipediaFact(prevState.previousFacts);
-        return {
-          currentFact,
-          previousFacts: [...prevState.previousFacts, currentFact],
-        };
+      this.setState({
+        currentFact: getRandomWikipediaFact(),
       });
     }, 7000);
   }
