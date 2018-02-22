@@ -27,13 +27,15 @@ class Graph extends Component {
     this.nodes = null;
     this.links = null;
     this.zoomable = null;
+    this.graphWidth = null;
     this.nodeLabels = null;
     this.simulation = null;
 
     this.color = d3.scaleOrdinal(d3.schemeCategory10);
     this.zoom = d3.zoom().on('zoom', () => this.zoomed());
+    this.ticksPerRender = 25;
 
-    this.debouncedResetGraph = _.debounce(this.resetGraph.bind(this), 350);
+    this.debouncedResetGraph = _.debounce(this.resetGraph.bind(this, false), 350);
   }
 
   // state = {
@@ -105,8 +107,11 @@ class Graph extends Component {
     });
   }
 
-  /* Updates element locations on every tick of the force simulation. */
-  ticked() {
+  updateElementLocations() {
+    for (var i = 0; i < this.ticksPerRender; i++) {
+      this.simulation.tick();
+    }
+
     this.links
       .attr('x1', (d) => d.source.x)
       .attr('y1', (d) => d.source.y)
@@ -116,6 +121,10 @@ class Graph extends Component {
     this.nodes.attr('cx', (d) => d.x).attr('cy', (d) => d.y);
 
     this.nodeLabels.attr('transform', (d) => `translate(${d.x}, ${d.y})`);
+
+    if (this.simulation.alpha() > 0.001) {
+      requestAnimationFrame(() => this.updateElementLocations());
+    }
   }
 
   /* Updates the zoom level of the graph when a zoom event occurs. */
@@ -130,6 +139,7 @@ class Graph extends Component {
   dragstarted(d) {
     if (!d3.event.active) {
       this.simulation.alphaTarget(0.3).restart();
+      requestAnimationFrame(() => this.updateElementLocations());
     }
     d.fx = d.x;
     d.fy = d.y;
@@ -157,11 +167,11 @@ class Graph extends Component {
 
     const {nodesData, linksData} = this.getGraphData();
 
-    const graphWidth = this.getGraphWidth();
+    this.graphWidth = this.getGraphWidth();
 
     this.zoomable = d3
       .select(this.graphRef)
-      .attr('width', graphWidth)
+      .attr('width', this.graphWidth)
       .attr('height', DEFAULT_CHART_HEIGHT)
       .call(this.zoom);
 
@@ -260,10 +270,12 @@ class Graph extends Component {
       .forceSimulation()
       .force('link', d3.forceLink().id((d) => d.id))
       .force('charge', d3.forceManyBody().strength(-300))
-      .force('center', d3.forceCenter(graphWidth / 2, DEFAULT_CHART_HEIGHT / 2));
+      .force('center', d3.forceCenter(this.graphWidth / 2, DEFAULT_CHART_HEIGHT / 2));
 
-    this.simulation.nodes(nodesData).on('tick', () => this.ticked());
+    this.simulation.nodes(nodesData);
     this.simulation.force('link').links(linksData);
+
+    requestAnimationFrame(() => this.updateElementLocations());
 
     // Reset the graph on page resize.
     window.addEventListener('resize', this.debouncedResetGraph);
@@ -274,19 +286,26 @@ class Graph extends Component {
   }
 
   /* Resets the graph to its original location. */
-  resetGraph() {
-    const graphWidth = this.getGraphWidth();
+  resetGraph(forceReset) {
+    const priorGraphWidth = this.graphWidth;
+    this.graphWidth = this.getGraphWidth();
 
-    // Update the center of the simulation force and restart it.
-    this.simulation.force('center', d3.forceCenter(graphWidth / 2, DEFAULT_CHART_HEIGHT / 2));
-    this.simulation.alpha(0.3).restart();
+    if (forceReset || priorGraphWidth !== this.graphWidth) {
+      this.simulation.force(
+        'center',
+        d3.forceCenter(this.graphWidth / 2, DEFAULT_CHART_HEIGHT / 2)
+      );
+      this.zoomable.attr('width', this.graphWidth);
 
-    // Update the width of the SVG and reset it.
-    this.zoomable.attr('width', graphWidth);
-    this.zoomable
-      .transition()
-      .duration(750)
-      .call(this.zoom.transform, d3.zoomIdentity);
+      // Update the center of the simulation force and restart it.
+      this.simulation.alpha(0.3).restart();
+
+      // Update the width of the SVG and reset it.
+      this.zoomable
+        .transition()
+        .duration(750)
+        .call(this.zoom.transform, d3.zoomIdentity);
+    }
   }
 
   /* Renders the legend. */
@@ -323,7 +342,7 @@ class Graph extends Component {
           <p>Click node to open Wikipedia page.</p>
         </Instructions>
 
-        <ResetButton onClick={this.resetGraph.bind(this)}>Reset</ResetButton>
+        <ResetButton onClick={this.resetGraph.bind(this, true)}>Reset</ResetButton>
 
         <GraphSvg innerRef={(r) => (this.graphRef = r)} />
       </GraphWrapper>
