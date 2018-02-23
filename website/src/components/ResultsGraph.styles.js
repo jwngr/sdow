@@ -5,7 +5,7 @@ import Button from './Button';
 export const GraphWrapper = styled.div`
   width: 800px;
   max-width: 800px;
-  overflow: hidden;
+  height: 600px;
   margin: 0 auto 40px auto;
   position: relative;
   background: rgba(256, 256, 256, 0.7);
@@ -94,7 +94,22 @@ export const ResetButton = Button.extend`
   position: absolute;
   top: 8px;
   right: 8px;
-  padding: 8px 16px;
+  padding: 6px;
+  width: 40px;
+  height: 40px;
   font-size: 16px;
   border-radius: 4px;
+
+  svg {
+    fill: none;
+    stroke: ${(props) => props.theme.colors.creme};
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-miterlimit: 10;
+  }
+
+  &:hover svg {
+    stroke: ${(props) => props.theme.colors.red};
+  }
 `;

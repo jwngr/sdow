@@ -16,7 +16,6 @@ import {
   ResetButton,
 } from './ResultsGraph.styles';
 
-// const DEFAULT_CHART_WIDTH = 800;
 const DEFAULT_CHART_HEIGHT = 600;
 
 class Graph extends Component {
@@ -171,8 +170,8 @@ class Graph extends Component {
 
     this.zoomable = d3
       .select(this.graphRef)
-      .attr('width', this.graphWidth)
-      .attr('height', DEFAULT_CHART_HEIGHT)
+      .attr('width', '100%')
+      .attr('height', '100%')
       .call(this.zoom);
 
     this.graph = this.zoomable.append('g');
@@ -291,20 +290,21 @@ class Graph extends Component {
     this.graphWidth = this.getGraphWidth();
 
     if (forceReset || priorGraphWidth !== this.graphWidth) {
+      // Update the center of the simulation force and restart it.
       this.simulation.force(
         'center',
         d3.forceCenter(this.graphWidth / 2, DEFAULT_CHART_HEIGHT / 2)
       );
-      this.zoomable.attr('width', this.graphWidth);
-
-      // Update the center of the simulation force and restart it.
       this.simulation.alpha(0.3).restart();
 
       // Update the width of the SVG and reset it.
+      this.zoomable.attr('width', this.graphWidth);
       this.zoomable
         .transition()
         .duration(750)
         .call(this.zoom.transform, d3.zoomIdentity);
+
+      requestAnimationFrame(() => this.updateElementLocations());
     }
   }
 
@@ -342,7 +342,12 @@ class Graph extends Component {
           <p>Click node to open Wikipedia page.</p>
         </Instructions>
 
-        <ResetButton onClick={this.resetGraph.bind(this, true)}>Reset</ResetButton>
+        <ResetButton onClick={this.resetGraph.bind(this, true)}>
+          <svg viewBox="0 0 64 64">
+            <path d="M59,18C53.9,8.8,43.2,2,32,2C15.4,2,2,15.4,2,32s13.4,30,30,30c16.2,0,29.4-12.9,30-28.9" />
+            <polyline points="43 18 59 18 59 2" />
+          </svg>
+        </ResetButton>
 
         <GraphSvg innerRef={(r) => (this.graphRef = r)} />
       </GraphWrapper>

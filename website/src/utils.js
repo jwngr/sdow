@@ -28,3 +28,7 @@ export const getRandomWikipediaFact = () => {
   const indexToRemove = Math.floor(Math.random() * unusedWikipediaFacts.length);
   return unusedWikipediaFacts.splice(indexToRemove, 1)[0];
 };
+
+export const getNumberWithCommas = (val) => {
+  return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+};

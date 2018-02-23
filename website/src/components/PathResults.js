@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 
-import ResultsGraph from './ResultsGraph';
 import PathResult from './PathResult';
+import ResultsGraph from './ResultsGraph';
 import WikipediaPageLink from './WikipediaPageLink';
 
 import {ResultsMessage, PathResultsWrapper} from './PathResults.styles';
+
+import {getNumberWithCommas} from '../utils';
 
 class PathResults extends Component {
   render() {
@@ -81,7 +83,7 @@ class PathResults extends Component {
           <p>
             Found{' '}
             <b>
-              {paths.length} {pathOrPaths}
+              {getNumberWithCommas(paths.length)} {pathOrPaths}
             </b>{' '}
             with{' '}
             <b>
