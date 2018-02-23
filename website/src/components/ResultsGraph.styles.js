@@ -101,15 +101,13 @@ export const ResetButton = Button.extend`
   border-radius: 4px;
 
   svg {
-    fill: none;
+    fill: ${(props) => props.theme.colors.creme};
     stroke: ${(props) => props.theme.colors.creme};
     stroke-width: 4;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-miterlimit: 10;
   }
 
   &:hover svg {
+    fill: ${(props) => props.theme.colors.red};
     stroke: ${(props) => props.theme.colors.red};
   }
 `;
