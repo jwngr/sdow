@@ -8,12 +8,18 @@ import TargetPageInputContainer from '../containers/TargetPageInputContainer';
 import SourcePageInputContainer from '../containers/SourcePageInputContainer';
 
 import logo from '../images/logo.png';
+import logo2x from '../images/logo@2x.png';
 
 import {P, Logo, InputFlexContainer} from './Home.styles';
 
 export default () => (
   <div>
-    <Logo src={logo} alt="Six Degrees of Wikipedia Logo" />
+    <Logo
+      srcset={`${logo} 462w, ${logo2x} 924w`}
+      sizes="(max-width: 600px) 280px, 800px"
+      src={logo2x}
+      alt="Six Degrees of Wikipedia Logo"
+    />
 
     <P>Find the shortest paths from</P>
     <InputFlexContainer>

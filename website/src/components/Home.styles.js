@@ -3,11 +3,10 @@ import styled from 'styled-components';
 export const Logo = styled.img`
   width: 460px;
   display: block;
-  margin: 40px auto 20px auto;
+  margin: 40px auto 32px auto;
 
   @media (max-width: 1200px) {
     width: 400px;
-    margin: 40px auto 20px auto;
   }
 
   @media (max-width: 600px) {
