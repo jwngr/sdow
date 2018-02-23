@@ -1,7 +1,7 @@
 import React from 'react';
 
 import LoadingContainer from '../containers/LoadingContainer';
-import PathResultsContainer from '../containers/PathResultsContainer';
+import ResultsContainer from '../containers/ResultsContainer';
 import ErrorMessageContainer from '../containers/ErrorMessageContainer';
 import SearchButtonContainer from '../containers/SearchButtonContainer';
 import TargetPageInputContainer from '../containers/TargetPageInputContainer';
@@ -30,7 +30,7 @@ export default () => (
 
     <SearchButtonContainer />
     <LoadingContainer />
-    <PathResultsContainer />
+    <ResultsContainer />
     <ErrorMessageContainer />
   </div>
 );

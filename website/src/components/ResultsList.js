@@ -1,4 +1,5 @@
 import React from 'react';
+import LazyLoad from 'react-lazyload';
 
 import {
   PageDescription,
@@ -6,12 +7,13 @@ import {
   PageTitle,
   PageWrapper,
   PageInnerWrapper,
-  Wrapper,
-} from './PathResult.styles';
+  ResultsListItemWrapper,
+  ResultsListWrapper,
+} from './ResultsList.styles';
 
 import defaultPageThumbnail from '../images/defaultPageThumbnail.png';
 
-const PathResult = ({pages}) => {
+const ResultListItem = ({pages}) => {
   const pagesContent = pages.map((page, i) => {
     let {description} = page;
     const {title, url, thumbnailUrl} = page;
@@ -31,7 +33,22 @@ const PathResult = ({pages}) => {
     );
   });
 
-  return <Wrapper>{pagesContent}</Wrapper>;
+  return <ResultsListItemWrapper>{pagesContent}</ResultsListItemWrapper>;
 };
 
-export default PathResult;
+export default ({paths}) => {
+  const resultsListItems = paths.map((path, i) => {
+    // Lazy load results beyond the first twelve.
+    if (i > 11) {
+      return (
+        <LazyLoad once={true} offset={400}>
+          <ResultListItem key={i} pages={path} />
+        </LazyLoad>
+      );
+    } else {
+      return <ResultListItem key={i} pages={path} />;
+    }
+  });
+
+  return <ResultsListWrapper>{resultsListItems}</ResultsListWrapper>;
+};

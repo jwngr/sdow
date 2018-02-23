@@ -20,11 +20,3 @@ export const ResultsMessage = styled.div`
     }
   }
 `;
-
-export const PathResultsWrapper = styled.div`
-  margin: 0 auto 40px auto;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: center;
-`;

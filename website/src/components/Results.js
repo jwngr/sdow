@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 
-import PathResult from './PathResult';
+import ResultsList from './ResultsList';
 import ResultsGraph from './ResultsGraph';
 import WikipediaPageLink from './WikipediaPageLink';
 
-import {ResultsMessage, PathResultsWrapper} from './PathResults.styles';
+import {ResultsMessage} from './Results.styles';
 
 import {getNumberWithCommas} from '../utils';
 
-class PathResults extends Component {
+class Results extends Component {
   render() {
     const {paths, sourcePageTitle, targetPageTitle, durationInSeconds} = this.props;
 
@@ -72,10 +72,6 @@ class PathResults extends Component {
     const pathOrPaths = paths.length === 1 ? 'path' : 'paths';
     const degreeOrDegrees = degreesOfSeparation === 1 ? 'degree' : 'degrees';
 
-    const pathResultsContent = paths.map((path, i) => {
-      return <PathResult key={i} pages={path} />;
-    });
-
     return (
       <React.Fragment>
         <ResultsMessage>
@@ -94,10 +90,10 @@ class PathResults extends Component {
           </p>
         </ResultsMessage>
         <ResultsGraph paths={paths} />
-        <PathResultsWrapper>{pathResultsContent}</PathResultsWrapper>
+        <ResultsList paths={paths} />
       </React.Fragment>
     );
   }
 }
 
-export default PathResults;
+export default Results;

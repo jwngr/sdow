@@ -1,6 +1,14 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.div`
+export const ResultsListWrapper = styled.div`
+  margin: 0 auto 40px auto;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+`;
+
+export const ResultsListItemWrapper = styled.div`
   margin: 8px;
   max-width: 340px;
   flex: 0 1 calc(33% - 16px);
