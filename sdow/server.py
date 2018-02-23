@@ -2,8 +2,12 @@
 Server web framework.
 """
 
+import os
 import time
+import logging
 import requests
+import google.cloud.logging
+
 from sets import Set
 from flask_cors import CORS
 from sdow.database import Database
@@ -12,21 +16,18 @@ from sdow.helpers import InvalidRequest
 from flask import Flask, request, jsonify
 
 
-SQLITE_FILENAME = '../sdow.sqlite'
 WIKIPEDIA_API_URL = 'https://en.wikipedia.org/w/api.php'
 
 
-# TODO: figure out how to pass CLI arguments to Flask
-# See http://flask.pocoo.org/snippets/133/
-# if len(sys.argv) != 2:
-#   print '[ERROR] Invalid program usage.'
-#   print '[INFO] Usage: server.py <sqlite_file>'
-#   sys.exit(1)
+# Initialize GCP logging (production only).
+if os.environ.get('SDOW_ENV') == 'prod':
+  logging_client = google.cloud.logging.Client()
+  logging_client.setup_logging()
 
-# sqlite_file = sys.argv[1]
+# Connect to the SDOW database.
+database = Database('../sdow.sqlite')
 
-database = Database(SQLITE_FILENAME)
-
+# Initialize the Flask app.
 app = Flask(__name__)
 
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
@@ -36,6 +37,12 @@ CORS(app)
 
 # Add gzip compression.
 Compress(app)
+
+
+@app.errorhandler(Exception)
+def all_exception_handler(error):
+  logging.exception(error)
+  return 'Unexpected server error', 500
 
 
 @app.errorhandler(InvalidRequest)
@@ -92,6 +99,7 @@ def shortest_paths_route():
 
   # No paths found
   if len(paths) == 0:
+    logging.warn('No paths found from {0} to {1}'.format(source_page_id, target_page_id))
     response = {
         'paths': [],
         'pages': [],

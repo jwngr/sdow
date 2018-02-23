@@ -69,10 +69,10 @@ following instructions:
    ```bash
    $ gcloud compute ssh sdow-db-builder-1
    ```
-1. Install required dependencies:
+1. Install required operating system dependencies:
    ```bash
-   $ sudo apt-get update
-   $ sudo apt-get -y install git pigz sqlite3
+   $ sudo apt-get -q update
+   $ sudo apt-get -yq install git pigz sqlite3
    ```
 1. Clone this directory via HTTPS:
    ```bash
@@ -98,7 +98,9 @@ following instructions:
    ```
 1. Delete the VM to prevent incurring large fees.
 
-## Web Server Setup Process
+## Web Server
+
+### Initial Setup
 
 1. Create a new [Google Compute Engine instance](https://console.cloud.google.com/compute/instances?project=sdow-prod)
    from the `sdow-web-server` instance template, which is configured with the following specs::
@@ -112,6 +114,16 @@ following instructions:
    ```bash
    $ gcloud compute ssh sdow-web-server-1
    ```
+1. Install required operating system dependencies:
+   ```bash
+   $ sudo apt-get -q update
+   $ sudo apt-get -yq install git pigz sqlite3 python-pip
+   $ sudo pip install --upgrade pip setuptools virtualenv
+   # OR for Python 3
+   #$ sudo apt-get -q update
+   #$ sudo apt-get -yq install git pigz sqlite3 python3-pip
+   #$ sudo pip3 install --upgrade pip setuptools virtualenv
+   ```
 1. Clone this directory via HTTPS:
    ```bash
    $ git clone https://github.com/jwngr/sdow.git
@@ -121,29 +133,42 @@ following instructions:
    $ cd sdow/
    $ gsutil cp gs://sdow-prod/dumps/<YYYYMMDD>/sdow.sqlite .
    ```
-1. Install required dependencies:
+1. Create and activate a new `virtualenv` environment:
    ```bash
-   $ sudo apt-get update
-   $ sudo apt-get install git sqlite python-pip python-dev build-essential
-   $ sudo pip install --upgrade pip virtualenv
-   $ sudo pip install flask
+   $ virtualenv -p python2 env  # OR virtualenv -p python3 env
+   $ source env/bin/activate
    ```
-1. Expose the Flask HTTP port (5000) from the VM’s firewall by running the following command from
-   your local development environment:
+1. Install the required Python libraries:
    ```bash
-   gcloud compute firewall-rules create open-flask-rule --allow tcp:5000 --source-tags=sdow-web-server --source-ranges=0.0.0.0/0
+   $ pip install -r requirements.txt
    ```
 1. Start the Flask app, making sure to bind the Flask web service to the public facing network
    interface of the VM:
    ```bash
-   $ cd sdow/sdow/
-   $ export FLASK_APP=server.py
+   $ cd sdow/
+   $ export FLASK_APP=server.py SDOW_ENV=prod
+   $ flask run --host=0.0.0.0
+   ```
+
+### Recurring Setup Upon Restart
+
+1. Activate the `virtualenv` environment:
+   ```bash
+   $ cd sdow/
+   $ source env/bin/activate
+   ```
+1. Start the Flask app, making sure to bind the Flask web service to the public facing network
+   interface of the VM:
+   ```bash
+   $ cd sdow/
+   $ export FLASK_APP=server.py SDOW_ENV=prod
    $ flask run --host=0.0.0.0
    ```
 
 ## Resources
 
 * [MediaWiki API](https://www.mediawiki.org/wiki/API:Main_page)
+* [MediaWiki Database Layout](https://www.mediawiki.org/wiki/Manual:Database_layout)
 
 ## Edge Case Pages
 
@@ -162,6 +187,12 @@ following instructions:
 | 35703467 | "A," My Name is Alex - Parts I & II          | `\"A,\"\_My_Name_is_Alex_-_Parts_I_&_II`       |
 | 54680944 | N,N,N′,N′-tetramethylethylenediamine         | `N,N,N′,N′-tetramethylethylenediamine`         |
 | 24781871 | Jack in the Green: Live in Germany 1970–1993 | `Jack_in_the_Green:_Live_in_Germany_1970–1993` |
+
+Interesting graphs:
+
+* Hargrave Military Academy -> Illiosentidae
+* Arthropod -> Haberdashers' Aske's Boys' School
+* AC power plugs and sockets -> Gymnobela abyssorum (1,311 paths!)
 
 ## Contributing
 

@@ -5,12 +5,6 @@ the shortest paths between them.
 
 from __future__ import print_function
 
-import json
-from werkzeug.contrib.cache import SimpleCache
-
-# Create a cache which holds 5000 entries which never expire.
-cache = SimpleCache(threshold=5000, default_timeout=0)
-
 
 def get_paths(page_ids, visited_dict):
   """Returns a list of paths which go from page_ids to either the start or end page."""
@@ -39,11 +33,6 @@ def breadth_first_search(start, end, database, verbose=False):
 
   TODO: finish this doc string
   """
-  # Return the result immediately if it is cached.
-  cached_result = cache.get('{0}|{1}'.format(start, end))
-  if cached_result is not None:
-    return json.loads(cached_result)
-
   # If start and end are identical, return the trivial path
   if start == end:
     return [[start]]
@@ -184,9 +173,6 @@ def breadth_first_search(start, end, database, verbose=False):
             # TODO: why am I getting duplicates in the first place?
             if current_path not in paths:
               paths.append(current_path)
-
-  # Cache the JSON-stringified paths.
-  cache.set('{0}|{1}'.format(start, end), json.dumps(paths))
 
   # Return the list of shortest paths from start to end
   return paths
