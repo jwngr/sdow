@@ -3,8 +3,9 @@ import styled from 'styled-components';
 export const Wrapper = styled.div`
   width: 100%;
   height: 80px;
-  padding: 10px;
+  padding: 0 10px;
   display: flex;
+  align-items: center;
   flex-direction: row;
   color: ${(props) => props.theme.colors.darkGreen};
 
@@ -16,7 +17,6 @@ export const Wrapper = styled.div`
 export const InnerWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
   flex: 1;
 `;
 
@@ -43,4 +43,10 @@ export const Title = styled.p`
 
 export const Description = styled.p`
   font-size: 12px;
+  max-height: 48px;
+  overflow: hidden;
+
+  @media (max-width: 600px) {
+    max-height: 32px;
+  }
 `;

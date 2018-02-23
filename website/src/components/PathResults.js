@@ -8,7 +8,7 @@ import {ResultsMessage, PathResultsWrapper} from './PathResults.styles';
 
 class PathResults extends Component {
   render() {
-    const {paths, sourcePageTitle, targetPageTitle} = this.props;
+    const {paths, sourcePageTitle, targetPageTitle, durationInSeconds} = this.props;
 
     if (paths === null) {
       return null;
@@ -88,7 +88,7 @@ class PathResults extends Component {
               {degreesOfSeparation} {degreeOrDegrees}
             </b>{' '}
             of separation from <WikipediaPageLink title={sourcePageTitle} /> to{' '}
-            <WikipediaPageLink title={targetPageTitle} />!
+            <WikipediaPageLink title={targetPageTitle} /> in <b>{durationInSeconds} seconds</b>!
           </p>
         </ResultsMessage>
         <ResultsGraph paths={paths} />

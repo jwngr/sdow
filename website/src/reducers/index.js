@@ -1,13 +1,15 @@
 import * as actions from '../actions';
 
+const defaultResults = {paths: null};
+
 const rootReducers = {
-  results: (state = null, action) => {
+  results: (state = defaultResults, action) => {
     switch (action.type) {
       case actions.SET_SHORTEST_PATH_RESULTS:
         return action.results;
       case actions.SET_ERROR_MESSAGE:
       case actions.FETCHING_RESULTS:
-        return null;
+        return defaultResults;
       default:
         return state;
     }
@@ -25,7 +27,7 @@ const rootReducers = {
     }
   },
 
-  sourcePageTitle: (state = '15 (number)', action) => {
+  sourcePageTitle: (state = '', action) => {
     switch (action.type) {
       case actions.SET_SOURCE_PAGE_TITLE:
         return action.sourcePageTitle;
@@ -34,7 +36,7 @@ const rootReducers = {
     }
   },
 
-  targetPageTitle: (state = '20 (number)', action) => {
+  targetPageTitle: (state = '', action) => {
     switch (action.type) {
       case actions.SET_TARGET_PAGE_TITLE:
         return action.targetPageTitle;

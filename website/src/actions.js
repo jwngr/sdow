@@ -64,6 +64,8 @@ export function fetchShortestPaths() {
     } else {
       dispatch(setFetchingResults());
 
+      const startTimeInMilliseconds = Date.now();
+
       return axios({
         url: `${SDOW_API_URL}/paths`,
         method: 'POST',
@@ -86,6 +88,7 @@ export function fetchShortestPaths() {
               targetPageTitle,
               sourcePageTitle,
               paths: pathsDenormalized,
+              durationInSeconds: ((Date.now() - startTimeInMilliseconds) / 1000).toFixed(2),
             })
           );
 
