@@ -188,11 +188,13 @@ following instructions:
 | 54680944 | N,N,N′,N′-tetramethylethylenediamine         | `N,N,N′,N′-tetramethylethylenediamine`         |
 | 24781871 | Jack in the Green: Live in Germany 1970–1993 | `Jack_in_the_Green:_Live_in_Germany_1970–1993` |
 
-Interesting graphs:
+## Interesting searches
 
-* Hargrave Military Academy -> Illiosentidae
-* Arthropod -> Haberdashers' Aske's Boys' School
-* AC power plugs and sockets -> Gymnobela abyssorum (1,311 paths!)
+| Source Page Title          | Target Page Title                 | Notes                    |
+| -------------------------- | --------------------------------- | ------------------------ |
+| Hargrave Military Academy  | Illiosentidae                     | Cool graph               |
+| Arthropod                  | Haberdashers' Aske's Boys' School | Cool graph               |
+| AC power plugs and sockets | Gymnobela abyssorum               | 1,311 paths of 6 degrees |
 
 ## Contributing
 
