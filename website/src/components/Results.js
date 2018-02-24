@@ -10,9 +10,10 @@ import {getNumberWithCommas} from '../utils';
 
 class Results extends Component {
   render() {
-    const {paths, sourcePageTitle, targetPageTitle, durationInSeconds} = this.props;
+    const {results, isFetchingResults} = this.props;
+    const {paths, sourcePageTitle, targetPageTitle, durationInSeconds} = results;
 
-    if (paths === null) {
+    if (paths === null || isFetchingResults) {
       return null;
     }
 
