@@ -41,8 +41,8 @@ export default ({paths}) => {
     // Lazy load results beyond the first twelve.
     if (i > 11) {
       return (
-        <LazyLoad once={true} offset={400}>
-          <ResultListItem key={i} pages={path} />
+        <LazyLoad once={true} offset={400} key={i}>
+          <ResultListItem pages={path} />
         </LazyLoad>
       );
     } else {
