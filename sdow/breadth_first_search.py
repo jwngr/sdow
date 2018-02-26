@@ -3,8 +3,6 @@ Runs a bi-directional breadth-first search between two Wikipedia articles and re
 the shortest paths between them.
 """
 
-from __future__ import print_function
-
 
 def get_paths(page_ids, visited_dict):
   """Returns a list of paths which go from the provided pages to either the source or target pages.
