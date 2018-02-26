@@ -1,5 +1,5 @@
 const SDOW_API_URL_DEV = 'http://127.0.0.1:5000';
-const SDOW_API_URL_PROD = 'https://35.226.48.89:5000';
+const SDOW_API_URL_PROD = 'https://api.sixdegreesofwikipedia.com';
 
 export const SDOW_API_URL =
   process.env.NODE_ENV === 'production' ? SDOW_API_URL_PROD : SDOW_API_URL_DEV;

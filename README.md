@@ -104,17 +104,17 @@ following instructions:
 
 1. Create a new [Google Compute Engine instance](https://console.cloud.google.com/compute/instances?project=sdow-prod)
    from the `sdow-web-server` instance template, which is configured with the following specs::
-   1. **Name:** `sdow-web-server`
+   1. **Name:** `sdow-web-server-1`
    1. **Zone:** `us-central1-c`
-   1. **Machine Type:** n1-standard-1 (1 vCPU, 3.75 GB RAM)
-   1. **Boot disk**: 64 GB HHD, Debian GNU/Linux 8 (jessie)
+   1. **Machine Type:** f1-micro (1 vCPU, 0.6 GB RAM)
+   1. **Boot disk**: 16 GB SSD, Debian GNU/Linux 8 (jessie)
    1. **Notes**: Allow default access to Cloud APIs. Do not use Debian GNU/Linux 9 (stretch) due to
       degraded performance.
 1. SSH into the machine:
    ```bash
    $ gcloud compute ssh sdow-web-server-1
    ```
-1. Install required operating system dependencies:
+1. Install required operating system dependencies to run the Flask app:
    ```bash
    $ sudo apt-get -q update
    $ sudo apt-get -yq install git pigz sqlite3 python-pip
@@ -124,14 +124,10 @@ following instructions:
    #$ sudo apt-get -yq install git pigz sqlite3 python3-pip
    #$ sudo pip3 install --upgrade pip setuptools virtualenv
    ```
-1. Clone this directory via HTTPS:
+1. Clone this directory via HTTPS and navigate into the repo:
    ```bash
    $ git clone https://github.com/jwngr/sdow.git
-   ```
-1. Copy the latest SQLite file from the `sdow-prod` GCS bucket:
-   ```bash
    $ cd sdow/
-   $ gsutil cp gs://sdow-prod/dumps/<YYYYMMDD>/sdow.sqlite .
    ```
 1. Create and activate a new `virtualenv` environment:
    ```bash
@@ -142,28 +138,70 @@ following instructions:
    ```bash
    $ pip install -r requirements.txt
    ```
-1. Start the Flask app, making sure to bind the Flask web service to the public facing network
-   interface of the VM:
+1. Copy the latest SQLite file from the `sdow-prod` GCS bucket:
    ```bash
-   $ cd sdow/
-   $ export FLASK_APP=server.py SDOW_ENV=prod
-   $ flask run --host=0.0.0.0
+   $ gsutil cp gs://sdow-prod/dumps/<YYYYMMDD>/sdow.sqlite ./sdow/sdow.sqlite
+   ```
+1. Install required operating system dependencies to generate an SSL certificate (this and the
+   following instructions are based on these
+   [blog](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-debian-8)
+   [posts](https://blog.miguelgrinberg.com/post/running-your-flask-application-over-https)):
+   ```bash
+   $ echo 'deb http://ftp.debian.org/debian jessie-backports main' | sudo tee /etc/apt/sources.list.d/backports.list
+   $ sudo apt-get update
+   $ sudo apt-get install nginx
+   $ sudo apt-get install certbot -t jessie-backports
+   ```
+1. Add this `location` block inside the `server` block in `/etc/nginx/sites-available/default`:
+   ```
+   location ~ /.well-known {
+       allow all;
+   }
+   ```
+1. Start NGINX:
+   ```bash
+   $ sudo systemctl restart nginx
+   ```
+1. Create an SSL certificate using [Let's Encrypt](https://letsencrypt.org/)'s `certbot`:
+   ```bash
+   $ sudo certbot certonly -a webroot --webroot-path=/var/www/html -d api.sixdegreesofwikipedia.com --email wenger.jacob@gmail.com
+   ```
+1. Ensure auto-renewal of the SSL certificate is configured properly:
+   ```bash
+   $ certbot renew --dry-run
+   ```
+1. Generate a strong Diffie-Hellman group to further increase security (note that this can take a
+   couple minutes):
+   ```bash
+   $ sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+   ```
+1. Copy over the NGINX configuration:
+   ```bash
+   $ sudo cp ../config/nginx.conf /etc/nginx/nginx.conf
+   ```
+1. Restart `nginx`:
+   ```bash
+   $ sudo systemctl restart nginx
    ```
 
-### Recurring Setup Upon Restart
+### Recurring Setup
 
 1. Activate the `virtualenv` environment:
    ```bash
    $ cd sdow/
    $ source env/bin/activate
    ```
-1. Start the Flask app, making sure to bind the Flask web service to the public facing network
-   interface of the VM:
+1. Set the `SDOW_ENV` environment variable to `prod`:
+   ```bash
+   $ export SDOW_ENV=prod
+   ```
+1. Start the Flask app via [Supervisor](http://supervisord.org/) which runs
+   [Gunicorn](http://gunicorn.org/):
    ```bash
    $ cd sdow/
-   $ export FLASK_APP=server.py SDOW_ENV=prod
-   $ flask run --host=0.0.0.0
+   $ supervisord
    ```
+1. Ensure the app was started successfully by running `supervisorctl`.
 
 ## Resources
 
