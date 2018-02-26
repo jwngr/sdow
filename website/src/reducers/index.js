@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import * as actions from '../actions';
 
 const defaultResults = {paths: null};
@@ -29,6 +30,8 @@ const rootReducers = {
 
   sourcePageTitle: (state = '', action) => {
     switch (action.type) {
+      case actions.ROUTER_LOCATION_CHANGED:
+        return _.get(action, 'payload.query.source', state);
       case actions.SET_SOURCE_PAGE_TITLE:
         return action.sourcePageTitle;
       default:
@@ -38,6 +41,8 @@ const rootReducers = {
 
   targetPageTitle: (state = '', action) => {
     switch (action.type) {
+      case actions.ROUTER_LOCATION_CHANGED:
+        return _.get(action, 'payload.query.target', state);
       case actions.SET_TARGET_PAGE_TITLE:
         return action.targetPageTitle;
       default:
