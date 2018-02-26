@@ -18,7 +18,6 @@ class Database(object):
     self.conn = sqlite3.connect(sqlite_filename)
     self.cursor = self.conn.cursor()
 
-    # TODO: measure the performance impact of this
     self.cursor.arraysize = 1000
 
   def fetch_page(self, page_title):
@@ -128,26 +127,20 @@ class Database(object):
         incoming ("target_id") links.
 
     Returns:
-      list(int, int): A lists of integer tuples representing links from the list of provided page
-        IDs to other pages.
+      list(int, int): A cursor of a lists of integer tuples representing links from the list of
+        provided page IDs to other pages.
     """
     # Convert the page IDs into a string surrounded by parentheses for insertion into the query
     # below. The replace() bit is some hackery to handle Python printing a trailing ',' when there
     # is only one key.
     page_ids = str(tuple(page_ids)).replace(',)', ')')
 
-    # results = []
-    # for row in self.cursor.execute(query):
-    #  results.append(row)
-
-    # TODO: measure the performance impact of this versus just appending to an array (above) or
-    # just returning the cursor (not yet implemented)
     # There is no need to escape the query parameters here since they are never user-defined.
     query = 'SELECT id, {0} FROM links WHERE id IN {1};'.format(
         outcoming_or_incoming_links, page_ids)
     self.cursor.execute(query)
 
-    return self.cursor.fetchall()
+    return self.cursor
 
   def insert_result(self, search):
     """Inserts a new search result into the searches table.
