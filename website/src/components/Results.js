@@ -62,7 +62,6 @@ class Results extends Component {
    *  Adds a warning if the source and/or target page(s) were redirects.
    */
   renderRedirectWarning(sourcePageTitle, targetPageTitle, isSourceRedirected, isTargetRedirected) {
-    console.log(isSourceRedirected, isTargetRedirected);
     let redirectContent;
     if (isSourceRedirected && isTargetRedirected) {
       redirectContent = (
