@@ -125,6 +125,10 @@ class Home extends Component {
             button, and discover just how connected Wikipedia really is.
           </p>
           <p>
+            Wikipedia is a registered trademark of the Wikimedia Foundation. This site is made by a
+            fan with no affiliation to that organization.
+          </p>
+          <p>
             A project by <a href="https://jwn.gr/">Jacob Wenger</a>.
           </p>
         </Modal>
