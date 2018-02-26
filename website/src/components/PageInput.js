@@ -92,10 +92,13 @@ class PageInput extends React.Component {
         });
       })
       .catch((error) => {
-        // TODO: add Sentry logging here (or just Google Analytics)
-        // const defaultErrorMessage = 'Request to fetch page suggestions failed.';
-        // const errorMessage = (_.get(error, 'response.data.error', defaultErrorMessage));
-        // Don't report any user-facing error since the input is still usable without suggestions.
+        // Report the error to Google Analytics, but don't report any user-facing error since the
+        // input is still usable even without suggestions.
+        const defaultErrorMessage = 'Request to fetch page suggestions from Wikipedia API failed.';
+        window.ga('send', 'exception', {
+          exDescription: _.get(error, 'response.data.error', defaultErrorMessage),
+          exFatal: false,
+        });
       });
   }
 

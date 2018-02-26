@@ -10,6 +10,7 @@
   <meta name='keywords' content='Wikipeda, shortest path, game, algorithm' />
   <meta name='description' content='Find the shortest path between any two Wikipedia articles.' />
   <meta name='author' content='Jacob Wenger' />
+
   <!-- TODO: set theme color -->
   <meta name='theme-color' content='#000000'>
 
@@ -23,6 +24,14 @@
   <link rel="shortcut icon" type="image/png" href="%PUBLIC_URL%/favicon-16x16.png" sizes="16x16">
   <link rel="shortcut icon" type="image/png" href="%PUBLIC_URL%/favicon-32x32.png" sizes="32x32">
   <link rel="shortcut icon" type="image/png" href="%PUBLIC_URL%/favicon-96x96.png" sizes="96x96">
+
+  <!-- Google Analytics -->
+  <script>
+    window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) }; ga.l = +new Date;
+    ga('create', 'UA-114715999-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <script async src='https://www.google-analytics.com/analytics.js'></script>
 </head>
 
 <body>
@@ -34,12 +43,10 @@
       }
     </style>
     <h1>Six Degrees of Wikipedia</h1>
-    <p>Sorry internet hipster, this is just a side project and requires JavaScript.</p>
+    <p>Sorry internet hipster, this little side project requires JavaScript.</p>
   </noscript>
 
   <div id="root"></div>
-
-  <!-- TODO: add analytics -->
 </body>
 
 </html>

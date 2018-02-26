@@ -61,24 +61,24 @@ class Results extends Component {
   /**
    *  Adds a warning if the source and/or target page(s) were redirects.
    */
-  renderRedirectWarning(sourcePageTitle, targetPageTitle, isSourceRedirected, isTargetRedirected) {
+  renderRedirectWarning(isSourceRedirected, isTargetRedirected) {
     let redirectContent;
     if (isSourceRedirected && isTargetRedirected) {
       redirectContent = (
         <p>
-          <b>Note:</b> Source and target pages were redirects.
+          <b>Note:</b> Provided start and end pages are redirects.
         </p>
       );
     } else if (isSourceRedirected) {
       redirectContent = (
         <p>
-          <b>Note:</b> Source page was a redirect.
+          <b>Note:</b> Provided start page is a redirect.
         </p>
       );
     } else if (isTargetRedirected) {
       redirectContent = (
         <p>
-          <b>Note:</b> Target page was a redirect.
+          <b>Note:</b> Provided end page is a redirect.
         </p>
       );
     }
@@ -145,12 +145,7 @@ class Results extends Component {
             of separation from <WikipediaPageLink title={sourcePageTitle} /> to{' '}
             <WikipediaPageLink title={targetPageTitle} /> in <b>{durationInSeconds} seconds</b>!
           </p>
-          {this.renderRedirectWarning(
-            sourcePageTitle,
-            targetPageTitle,
-            isSourceRedirected,
-            isTargetRedirected
-          )}
+          {this.renderRedirectWarning(isSourceRedirected, isTargetRedirected)}
         </ResultsMessage>
         <ResultsGraph paths={paths} />
         <ResultsList paths={paths} />

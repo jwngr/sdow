@@ -5,18 +5,14 @@ Server web framework.
 import os
 import time
 import logging
-import requests
 import google.cloud.logging
 
 from sets import Set
 from flask_cors import CORS
 from sdow.database import Database
 from flask_compress import Compress
-from sdow.helpers import InvalidRequest
 from flask import Flask, request, jsonify
-
-
-WIKIPEDIA_API_URL = 'https://en.wikipedia.org/w/api.php'
+from sdow.helpers import InvalidRequest, fetch_wikipedia_pages_info
 
 
 # Initialize GCP logging (production only).
@@ -40,9 +36,15 @@ Compress(app)
 
 
 @app.errorhandler(Exception)
-def all_exception_handler(error):
+def unhandled_exception_handler(error):
   logging.exception(error)
-  return 'Unexpected server error', 500
+  return 'Unhandled exception', 500
+
+
+@app.errorhandler(500)
+def internal_server_error(error):
+  logging.exception(error)
+  return 'Internal server error', 500
 
 
 @app.errorhandler(InvalidRequest)
@@ -116,53 +118,8 @@ def shortest_paths_route():
       for page_id in path:
         page_ids_set.add(str(page_id))
 
-    page_ids_list = list(page_ids_set)
-    pages_info = {}
-
-    current_page_ids_index = 0
-    while current_page_ids_index < len(page_ids_list):
-      # Query at most 50 pages per request (given WikiMedia API limits)
-      end_page_ids_index = min(current_page_ids_index + 50, len(page_ids_list))
-
-      query_params = {
-          'action': 'query',
-          'format': 'json',
-          'pageids': '|'.join(page_ids_list[current_page_ids_index:end_page_ids_index]),
-          'prop': 'info|pageimages|pageterms',
-          'inprop': 'url|displaytitle',
-          'piprop': 'thumbnail',
-          'pithumbsize': 160,
-          'pilimit': 50,
-          'wbptterms': 'description',
-      }
-
-      current_page_ids_index = end_page_ids_index
-
-      # TODO: make sure I identify client
-      # 'Six Degrees of Wikipedia/1.0 (https://www.sixdegreesofwikipedia.com/; wenger.jacob@gmail.com)',
-      # See https://www.mediawiki.org/wiki/API:Main_page#Identifying_your_client
-      req = requests.get(WIKIPEDIA_API_URL, params=query_params)
-
-      pages_result = req.json().get('query', {}).get('pages')
-
-      for page_id, page in pages_result.iteritems():
-        dev_page_id = int(page_id)
-
-        pages_info[dev_page_id] = {
-            'title': page['title'],
-            'url': page['fullurl']
-        }
-
-        thumbnail_url = page.get('thumbnail', {}).get('source')
-        if thumbnail_url:
-          pages_info[dev_page_id]['thumbnailUrl'] = thumbnail_url
-
-        description = page.get('terms', {}).get('description', [])
-        if description:
-          pages_info[dev_page_id]['description'] = description[0][0].upper() + description[0][1:]
-
     response['paths'] = paths
-    response['pages'] = pages_info
+    response['pages'] = fetch_wikipedia_pages_info(list(page_ids_set))
 
   database.insert_result({
       'source_id': source_page_id,

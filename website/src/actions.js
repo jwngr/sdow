@@ -100,14 +100,10 @@ export function fetchShortestPaths() {
               durationInSeconds: ((Date.now() - startTimeInMilliseconds) / 1000).toFixed(2),
             })
           );
-
-          // TODO: measure the response time
-          // See https://www.html5rocks.com/en/tutorials/webperformance/usertiming/
         },
         // Don't use catch, because that will also catch any errors in the dispatch and resulting
         // render, causing a loop of 'Unexpected batch number' errors.
         (error) => {
-          // TODO: add Sentry logging here (or just Google Analytics)
           if (error.message === 'Network Error') {
             // This can happen when the server is down, the Flask app is not running, or when the
             // FLASK_DEBUG environment variable is set to 1 and there is a 5xx server error (see

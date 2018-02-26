@@ -97,7 +97,7 @@ class Database(object):
     page IDs to other pages.
 
     Args:
-      page_ids: The page IDs whose outgoing links to fetch.
+      page_ids: A list of page IDs whose outgoing links to fetch.
 
     Returns:
       list(int, int): A lists of integer tuples representing outgoing links from the list of
@@ -110,7 +110,7 @@ class Database(object):
     page IDs to other pages.
 
     Args:
-      page_ids: The page IDs whose incoming links to fetch.
+      page_ids: A list of page IDs whose incoming links to fetch.
 
     Returns:
       list(int, int): A lists of integer tuples representing incoming links from the list of
@@ -123,7 +123,7 @@ class Database(object):
     fetch_incoming_links().
 
     Args:
-      page_ids: The page IDs whose links to fetch.
+      page_ids: A list of page IDs whose links to fetch.
       outcoming_or_incoming_links: String which indicates whether to fetch outgoing ("source_id") or
         incoming ("target_id") links.
 
@@ -131,6 +131,11 @@ class Database(object):
       list(int, int): A lists of integer tuples representing links from the list of provided page
         IDs to other pages.
     """
+    # Convert the page IDs into a string surrounded by parentheses for insertion into the query
+    # below. The replace() bit is some hackery to handle Python printing a trailing ',' when there
+    # is only one key.
+    page_ids = str(tuple(page_ids)).replace(',)', ')')
+
     # results = []
     # for row in self.cursor.execute(query):
     #  results.append(row)

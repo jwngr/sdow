@@ -16,6 +16,21 @@ const P = styled.p`
   }
 `;
 
-// TODO: make page titles in error messages bold.
+/**
+ * Place bold tags around page titles in the provided error message.
+ */
+const boldPageTitles = (errorMessage) => {
+  const errorMessageContent = [];
+  const tokens = errorMessage.split('"');
+  tokens.forEach((token, i) => {
+    if (i % 2 === 0) {
+      errorMessageContent.push(<span key={i}>{token}</span>);
+    } else {
+      errorMessageContent.push(<b key={i}>"{token}"</b>);
+    }
+  });
 
-export default ({errorMessage}) => <P>{errorMessage}</P>;
+  return errorMessageContent;
+};
+
+export default ({errorMessage}) => (errorMessage ? <P>{boldPageTitles(errorMessage)}</P> : null);
