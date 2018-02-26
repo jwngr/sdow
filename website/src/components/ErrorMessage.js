@@ -9,6 +9,7 @@ const P = styled.p`
   text-align: center;
   line-height: 1.5;
   color: ${(props) => props.theme.colors.red};
+  text-shadow: ${(props) => props.theme.colors.darkGreen} 1px 1px;
 
   @media (max-width: 1200px) {
     width: 70%;
