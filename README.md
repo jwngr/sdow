@@ -244,4 +244,4 @@ following instructions:
 
 ## Contributing
 
-See the [contribution page](./github/CONTRIBUTING.md) for details.
+See the [contribution page](./.github/CONTRIBUTING.md) for details.
