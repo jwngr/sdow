@@ -75,7 +75,14 @@ export function fetchShortestPaths() {
         },
       }).then(
         (response) => {
-          const {pages, paths} = response.data;
+          const {
+            pages,
+            paths,
+            sourcePageTitle,
+            targetPageTitle,
+            isSourceRedirected,
+            isTargetRedirected,
+          } = response.data;
 
           const pathsDenormalized = paths.map((path) => {
             return path.map((pageId) => {
@@ -85,8 +92,10 @@ export function fetchShortestPaths() {
 
           dispatch(
             setShortestPathResults({
-              targetPageTitle,
               sourcePageTitle,
+              targetPageTitle,
+              isSourceRedirected,
+              isTargetRedirected,
               paths: pathsDenormalized,
               durationInSeconds: ((Date.now() - startTimeInMilliseconds) / 1000).toFixed(2),
             })

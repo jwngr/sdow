@@ -21,22 +21,23 @@ class Database(object):
     # TODO: measure the performance impact of this
     self.cursor.arraysize = 1000
 
-  def __del__(self):
-    self.conn.close()
-
-  def fetch_page_id(self, page_title):
-    """Returns the page ID corresponding to the provided page title.
+  def fetch_page(self, page_title):
+    """Returns the ID and title of the non-redirect page corresponding to the provided title,
+    handling titles with incorrect capitalization as well as redirects.
 
     Args:
-      page_title: The title of the page whose ID to fetch.
+      page_title: The title of the page to fetch.
 
     Returns:
-      int: The page ID corresponding to the provided page title.
+      (int, str, bool): A tuple containing the page ID, title, and whether or not a redirect was
+      followed.
+      OR
+      None: If no page exists.
 
     Raises:
-      ValueError: If the provided page title is invalid or does not exist.
+      ValueError: If the provided page title is invalid.
     """
-    sanitized_page_title = helpers.get_sanitize_page_title(page_title)
+    sanitized_page_title = helpers.get_sanitized_page_title(page_title)
 
     query = 'SELECT * FROM pages WHERE title = ? COLLATE NOCASE;'
     query_bindings = (sanitized_page_title,)
@@ -50,73 +51,30 @@ class Database(object):
       raise ValueError(
           'Invalid page title {0} provided. Page title does not exist.'.format(page_title))
 
-    # First, look for an exact match with the page title.
-    for current_page_id, current_page_title, _ in results:
-      if current_page_title == sanitized_page_title:
-        return current_page_id
+    # First, look for a non-redirect page which has exact match with the page title.
+    for current_page_id, current_page_title, current_page_is_redirect in results:
+      if current_page_title == sanitized_page_title and not current_page_is_redirect:
+        return (current_page_id, helpers.get_readable_page_title(current_page_title), False)
 
     # Next, look for a match with a non-redirect page.
-    for current_page_id, _, current_page_is_redirect in results:
+    for current_page_id, current_page_title, current_page_is_redirect in results:
       if not current_page_is_redirect:
-        return current_page_id
+        return (current_page_id, helpers.get_readable_page_title(current_page_title), False)
 
-    # If all the results are redirects, just return the ID of the first result.
-    return results[0].id
-
-  def fetch_page_title(self, page_id):
-    """Returns the page title corresponding to the provided page ID.
-
-    Args:
-      page_id: The page ID whose ID to fetch.
-
-    Returns:
-      str: The page title corresponding to the provided page ID.
-
-    Raises:
-      ValueError: If the provided page ID is invalid or does not exist.
-    """
-    helpers.validate_page_id(page_id)
-
-    query = 'SELECT title FROM pages WHERE id = ?;'
-    query_bindings = (page_id,)
+    # If all the results are redirects, use the page to which the first result redirects.
+    query = 'SELECT target_id, title FROM redirects INNER JOIN pages ON pages.id = target_id WHERE source_id = ?;'
+    query_bindings = (results[0][0],)
     self.cursor.execute(query, query_bindings)
 
-    page_title = self.cursor.fetchone()
+    result = self.cursor.fetchone()
 
-    if not page_title:
-      raise ValueError(
-          'Invalid page ID "{0}" provided. Page ID does not exist.'.format(page_id))
-
-    # TODO: test this with special pages like https://en.wikipedia.org/wiki/Jos%C3%A9_Clavijo_y_Fajardo
-    return page_title[0].encode('utf-8').replace('_', ' ')
-
-  def fetch_redirected_page_id(self, source_page_id):
-    """If the provided page ID is a redirect, returns the ID of the page to which it redirects.
-    Otherwise, returns None.
-
-    Args:
-      source_page_id: The page ID whose redirected page ID to fetch.
-
-    Returns:
-      int: The ID of the page to which the provided page ID redirects.
-      OR
-      None: If the provided page ID is not a redirect.
-
-    Raises:
-      ValueError: If the provided page ID is invalid.
-    """
-    helpers.validate_page_id(source_page_id)
-
-    query = 'SELECT target_id FROM redirects WHERE source_id = ?'
-    query_bindings = (source_page_id,)
-    self.cursor.execute(query, query_bindings)
-
-    target_page_id = self.cursor.fetchone()
-
-    return target_page_id and target_page_id[0]
+    return (result[0], helpers.get_readable_page_title(result[1]), True)
 
   def compute_shortest_paths(self, source_page_id, target_page_id):
     """Returns a list of page IDs indicating the shortest path between the source and target pages.
+
+    Note: the provided page IDs must correspond to non-redirect pages, but that check is not made
+    for performance reasons.
 
     Args:
       source_page_id: The ID corresponding to the page at which to start the search.
@@ -131,8 +89,6 @@ class Database(object):
     """
     helpers.validate_page_id(source_page_id)
     helpers.validate_page_id(target_page_id)
-
-    # TODO: handle pages which are redirects
 
     return breadth_first_search(source_page_id, target_page_id, self)
 

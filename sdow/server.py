@@ -25,7 +25,7 @@ if os.environ.get('SDOW_ENV') == 'prod':
   logging_client.setup_logging()
 
 # Connect to the SDOW database.
-database = Database('../sdow.sqlite')
+database = Database('./sdow.sqlite')
 
 # Initialize the Flask app.
 app = Flask(__name__)
@@ -78,32 +78,36 @@ def shortest_paths_route():
   """
   start_time = time.time()
 
-  source_page_title = request.json['source']
-  target_page_title = request.json['target']
-
   # Look up the IDs for each page
   try:
-    source_page_id = database.fetch_page_id(source_page_title)
+    (source_page_id, source_page_title,
+     is_source_redirected) = database.fetch_page(request.json['source'])
   except ValueError:
     raise InvalidRequest(
-        'Start page "{0}" does not exist. Please try another search.'.format(source_page_title.encode('utf-8')))
+        'Start page "{0}" does not exist. Please try another search.'.format(request.json['source'].encode('utf-8')))
 
   try:
-    target_page_id = database.fetch_page_id(target_page_title)
+    (target_page_id, target_page_title,
+     is_target_redirected) = database.fetch_page(request.json['target'])
   except ValueError:
     raise InvalidRequest(
-        'End page "{0}" does not exist. Please try another search.'.format(target_page_title.encode('utf-8')))
+        'End page "{0}" does not exist. Please try another search.'.format(request.json['target'].encode('utf-8')))
 
   # Compute the shortest paths
   paths = database.compute_shortest_paths(source_page_id, target_page_id)
 
+  response = {
+      'sourcePageTitle': source_page_title,
+      'targetPageTitle': target_page_title,
+      'isSourceRedirected': is_source_redirected,
+      'isTargetRedirected': is_target_redirected,
+  }
+
   # No paths found
   if len(paths) == 0:
     logging.warn('No paths found from {0} to {1}'.format(source_page_id, target_page_id))
-    response = {
-        'paths': [],
-        'pages': [],
-    }
+    response['paths'] = []
+    response['pages'] = []
   # Paths found
   else:
     # Get a list of all IDs
@@ -157,10 +161,8 @@ def shortest_paths_route():
         if description:
           pages_info[dev_page_id]['description'] = description[0][0].upper() + description[0][1:]
 
-    response = {
-        'paths': paths,
-        'pages': pages_info
-    }
+    response['paths'] = paths
+    response['pages'] = pages_info
 
   database.insert_result({
       'source_id': source_page_id,
@@ -170,7 +172,3 @@ def shortest_paths_route():
   })
 
   return jsonify(response)
-
-
-if __name__ == '__main__':
-  app.run()

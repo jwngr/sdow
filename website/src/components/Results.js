@@ -9,9 +9,94 @@ import {ResultsMessage} from './Results.styles';
 import {getNumberWithCommas} from '../utils';
 
 class Results extends Component {
+  /**
+   * Adds some character to the results by rendering a snarky comment for certain degress of
+   * separation.
+   */
+  renderSnarkyContent(degreesOfSeparation) {
+    let snarkyContent;
+    if (degreesOfSeparation === 0) {
+      snarkyContent = (
+        <React.Fragment>
+          <b>Seriously?</b> Talk about overqualified for the job...
+        </React.Fragment>
+      );
+    } else if (degreesOfSeparation === 1) {
+      snarkyContent = (
+        <React.Fragment>
+          <b>Welp...</b> thanks for making my job easy.
+        </React.Fragment>
+      );
+    } else if (degreesOfSeparation === 5) {
+      snarkyContent = (
+        <React.Fragment>
+          <b>*wipes brow*</b> I really had to work for this one.
+        </React.Fragment>
+      );
+    } else if (degreesOfSeparation === 6) {
+      snarkyContent = (
+        <React.Fragment>
+          <b>*breathes heavily*</b> What a workout!
+        </React.Fragment>
+      );
+    } else if (degreesOfSeparation >= 7) {
+      snarkyContent = (
+        <React.Fragment>
+          <b>*picks jaw up from floor*</b> That was intense!
+        </React.Fragment>
+      );
+    }
+
+    if (snarkyContent) {
+      snarkyContent = (
+        <p>
+          <i>{snarkyContent}</i>
+        </p>
+      );
+    }
+
+    return snarkyContent;
+  }
+
+  /**
+   *  Adds a warning if the source and/or target page(s) were redirects.
+   */
+  renderRedirectWarning(sourcePageTitle, targetPageTitle, isSourceRedirected, isTargetRedirected) {
+    console.log(isSourceRedirected, isTargetRedirected);
+    let redirectContent;
+    if (isSourceRedirected && isTargetRedirected) {
+      redirectContent = (
+        <p>
+          <b>Note:</b> Source and target pages were redirects.
+        </p>
+      );
+    } else if (isSourceRedirected) {
+      redirectContent = (
+        <p>
+          <b>Note:</b> Source page was a redirect.
+        </p>
+      );
+    } else if (isTargetRedirected) {
+      redirectContent = (
+        <p>
+          <b>Note:</b> Target page was a redirect.
+        </p>
+      );
+    }
+
+    return redirectContent;
+  }
+
   render() {
     const {results, isFetchingResults} = this.props;
-    const {paths, sourcePageTitle, targetPageTitle, durationInSeconds} = results;
+    const {
+      paths,
+      sourcePageTitle,
+      targetPageTitle,
+      isSourceRedirected,
+      isTargetRedirected,
+      durationInSeconds,
+    } = results;
 
     if (paths === null || isFetchingResults) {
       return null;
@@ -31,52 +116,24 @@ class Results extends Component {
             <WikipediaPageLink title={sourcePageTitle} /> to{' '}
             <WikipediaPageLink title={targetPageTitle} />.
           </p>
+          {this.renderRedirectWarning(
+            sourcePageTitle,
+            targetPageTitle,
+            isSourceRedirected,
+            isTargetRedirected
+          )}
         </ResultsMessage>
       );
     }
 
-    // Add some character to results by writing a snarky comment for certain degress of separation.
-    let snarkyContent;
     const degreesOfSeparation = paths[0].length - 1;
-    if (degreesOfSeparation === 0) {
-      snarkyContent = (
-        <i>
-          <b>Seriously?</b> Talk about overqualified for the job...
-        </i>
-      );
-    } else if (degreesOfSeparation === 1) {
-      snarkyContent = (
-        <i>
-          <b>Welp...</b> thanks for making my job easy.
-        </i>
-      );
-    } else if (degreesOfSeparation === 5) {
-      snarkyContent = (
-        <i>
-          <b>*wipes brow*</b> I really had to work for this one.
-        </i>
-      );
-    } else if (degreesOfSeparation === 6) {
-      snarkyContent = (
-        <i>
-          <b>*breathes heavily*</b> What a workout!
-        </i>
-      );
-    } else if (degreesOfSeparation >= 7) {
-      snarkyContent = (
-        <i>
-          <b>*picks jaw up from floor*</b> That was intense!
-        </i>
-      );
-    }
-
     const pathOrPaths = paths.length === 1 ? 'path' : 'paths';
     const degreeOrDegrees = degreesOfSeparation === 1 ? 'degree' : 'degrees';
 
     return (
       <React.Fragment>
         <ResultsMessage>
-          <p>{snarkyContent}</p>
+          {this.renderSnarkyContent(degreesOfSeparation)}
           <p>
             Found{' '}
             <b>
@@ -89,6 +146,12 @@ class Results extends Component {
             of separation from <WikipediaPageLink title={sourcePageTitle} /> to{' '}
             <WikipediaPageLink title={targetPageTitle} /> in <b>{durationInSeconds} seconds</b>!
           </p>
+          {this.renderRedirectWarning(
+            sourcePageTitle,
+            targetPageTitle,
+            isSourceRedirected,
+            isTargetRedirected
+          )}
         </ResultsMessage>
         <ResultsGraph paths={paths} />
         <ResultsList paths={paths} />

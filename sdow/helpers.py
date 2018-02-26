@@ -3,7 +3,7 @@ Helper classes and methods.
 """
 
 
-def get_sanitize_page_title(page_title):
+def get_sanitized_page_title(page_title):
   """Validates and returns the sanitized version of the provided page title, transforming it into
   the same format used to store pages titles in the database.
 
@@ -24,7 +24,25 @@ def get_sanitize_page_title(page_title):
   """
   validate_page_title(page_title)
 
-  return page_title.replace(' ', '_').replace("'", "\\'").replace('"', '\\"')
+  return page_title.strip().replace(' ', '_').replace("'", "\\'").replace('"', '\\"')
+
+
+def get_readable_page_title(sanitized_page_title):
+  """Returns the human-readable page title from the sanitized page title.
+
+  Args:
+    page_title: The santized page title to make human-readable.
+
+  Returns:
+    The human-readable page title.
+
+  Examples:
+    "Notre_Dame_Fighting_Irish"   => "Notre Dame Fighting Irish"
+    "Farmers\'_market"            => "Farmers' market"
+    "3.5\"_Floppy_disk"           => "3.5" Floppy disk"
+    "Nip\\Tuck"                   => "Nip/Tuck"
+  """
+  return sanitized_page_title.strip().replace('_', ' ').replace("\\'", "'").replace('\\"', '"')
 
 
 def is_str(val):
