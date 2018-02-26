@@ -59,7 +59,7 @@ for i in range(1, 36):
   else:
     page_name = '{0}_(number)'.format(i)
 
-  is_redirect = 1 if i < 30 else 0
+  is_redirect = 0 if i < 30 else 1
 
   conn.execute('INSERT INTO pages VALUES ({0}, "{1}", {2});'.format(
       prod_page_ids[i], page_name, is_redirect))
