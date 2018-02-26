@@ -9,3 +9,7 @@
 body {
   background-color: #4ecdc4;
 }
+
+.ReactModal__Overlay {
+  z-index: 5;
+}
