@@ -31,7 +31,9 @@ export const AutosuggestWrapper = styled.div`
   }
 
   .react-autosuggest__suggestion {
+    padding: 10px;
     cursor: pointer;
+    overflow: hidden;
     border-bottom: solid 1px ${(props) => props.theme.colors.gray};
 
     &:last-of-type {

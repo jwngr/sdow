@@ -34,7 +34,7 @@ export const PageWrapper = styled.a`
   text-decoration: none;
   display: flex;
   flex-direction: row;
-  padding: 0 10px;
+  padding: 10px;
   align-items: center;
   height: 80px;
   cursor: pointer;
@@ -64,6 +64,7 @@ export const PageInnerWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  height: 68px;
   flex: 1;
 `;
 
