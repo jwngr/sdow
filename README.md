@@ -201,7 +201,7 @@ following instructions:
    $ cd sdow/
    $ supervisord -c ../config/supervisord.conf
    ```
-1. Ensure the app was started successfully by running `supervisorctl`.
+1. Ensure the app was started successfully by running `supervisorctl -c ../config/supervisord.conf`.
 
 ## Resources
 
