@@ -4,13 +4,12 @@ import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import Particles from 'react-particles-js';
 import {ThemeProvider} from 'styled-components';
-import {routerForBrowser, Fragment} from 'redux-little-router';
+import {routerForBrowser, initializeCurrentLocation} from 'redux-little-router';
 import {combineReducers, compose, createStore, applyMiddleware} from 'redux';
 
 import registerServiceWorker from './registerServiceWorker';
 
 import Home from './components/Home';
-import About from './components/About';
 
 import theme from './resources/theme.json';
 import particlesConfig from './resources/particles.config.json';
@@ -28,9 +27,6 @@ require('typeface-crimson-text');
 const routes = {
   '/': {
     title: 'Home',
-  },
-  '/about': {
-    title: 'About',
   },
 };
 
@@ -51,6 +47,12 @@ const store = createStore(
   compose(enhancer, applyMiddleware(...middleware))
 );
 
+// Initialize the current location of redux-little-router.
+const initialLocation = store.getState().router;
+if (initialLocation) {
+  store.dispatch(initializeCurrentLocation(initialLocation));
+}
+
 ReactDOM.render(
   <ThemeProvider theme={theme}>
     <React.Fragment>
@@ -64,16 +66,7 @@ ReactDOM.render(
         }}
       />
       <Provider store={store}>
-        <Fragment forRoute="/">
-          <React.Fragment>
-            <Fragment forRoute="/about">
-              <About />
-            </Fragment>
-            <Fragment forNoMatch>
-              <Home />
-            </Fragment>
-          </React.Fragment>
-        </Fragment>
+        <Home />
       </Provider>
     </React.Fragment>
   </ThemeProvider>,
