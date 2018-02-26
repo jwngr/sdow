@@ -8,6 +8,14 @@ export const ResultsListWrapper = styled.div`
   justify-content: center;
 `;
 
+export const ResultsListHeader = styled.p`
+  text-align: center;
+  margin: 32px 0;
+  font-size: 28px;
+  font-weight: bold;
+  color: ${(props) => props.theme.colors.darkGreen};
+`;
+
 export const ResultsListItemWrapper = styled.div`
   margin: 8px;
   max-width: 340px;
@@ -38,21 +46,19 @@ export const PageWrapper = styled.a`
   align-items: center;
   height: 80px;
   cursor: pointer;
-  color: ${(props) => props.theme.colors.darkGreen};
-  background-color: ${(props) => props.theme.colors.creme};
-  border-bottom: solid 1px ${(props) => props.theme.colors.gray};
-
+  color: black;
+  background-color: ${(props) => props.backgroundColor};
+  }
+  
   &:first-of-type {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    background-color: ${(props) => props.theme.colors.yellow};
   }
 
   &:last-of-type {
     border-bottom: none;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
-    background-color: ${(props) => props.theme.colors.yellow};
   }
 
   &:hover {
@@ -73,7 +79,8 @@ export const PageImage = styled.img`
   height: 60px;
   margin-right: 12px;
   border-radius: 8px;
-  border: solid 1px ${(props) => props.theme.colors.darkGreen};
+  border: solid 1px black;
+  background-color: ${(props) => props.theme.colors.gray};
 `;
 
 export const PageTitle = styled.p`

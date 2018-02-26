@@ -1,7 +1,9 @@
+import * as d3 from 'd3';
 import React from 'react';
 import LazyLoad from 'react-lazyload';
 
 import {
+  ResultsListHeader,
   PageDescription,
   PageImage,
   PageTitle,
@@ -14,6 +16,8 @@ import {
 import defaultPageThumbnail from '../images/defaultPageThumbnail.png';
 
 const ResultListItem = ({pages}) => {
+  const color = d3.scaleOrdinal(d3.schemeCategory10);
+
   const pagesContent = pages.map((page, i) => {
     let {description} = page;
     const {title, url, thumbnailUrl} = page;
@@ -22,8 +26,11 @@ const ResultListItem = ({pages}) => {
       <PageDescription>{description}</PageDescription>
     ) : null;
 
+    let backgroundColor = d3.rgb(color(i));
+    backgroundColor.opacity = 0.9;
+
     return (
-      <PageWrapper key={i} href={url} target="_blank">
+      <PageWrapper key={i} href={url} backgroundColor={backgroundColor} target="_blank">
         <PageImage src={thumbnailUrl || defaultPageThumbnail} />
         <PageInnerWrapper>
           <PageTitle>{title}</PageTitle>
@@ -50,5 +57,10 @@ export default ({paths}) => {
     }
   });
 
-  return <ResultsListWrapper>{resultsListItems}</ResultsListWrapper>;
+  return (
+    <React.Fragment>
+      <ResultsListHeader>Individual paths</ResultsListHeader>
+      <ResultsListWrapper>{resultsListItems}</ResultsListWrapper>
+    </React.Fragment>
+  );
 };
