@@ -199,7 +199,7 @@ following instructions:
    [Gunicorn](http://gunicorn.org/):
    ```bash
    $ cd sdow/
-   $ supervisord
+   $ supervisord -c ../config/supervisord.conf
    ```
 1. Ensure the app was started successfully by running `supervisorctl`.
 
