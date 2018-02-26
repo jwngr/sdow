@@ -22,20 +22,18 @@ class PageInput extends React.Component {
     this.state = {
       suggestions: [],
       isFetching: false,
-      placeholderText: getRandomPageTitle(),
     };
+
+    props.updateInputPlaceholderText(getRandomPageTitle());
 
     this.debouncedLoadSuggestions = _.debounce(this.loadSuggestions, 250);
 
     if (props.value === '') {
-      this.placeholderTextInterval = setInterval(() => this.updatePlaceholderText(), 3000);
+      this.placeholderTextInterval = setInterval(
+        () => props.updateInputPlaceholderText(getRandomPageTitle()),
+        3000
+      );
     }
-  }
-
-  updatePlaceholderText() {
-    this.setState((prevState) => ({
-      placeholderText: getRandomPageTitle(),
-    }));
   }
 
   loadSuggestions(value) {
@@ -103,8 +101,8 @@ class PageInput extends React.Component {
   }
 
   render() {
-    const {value, setPageTitle} = this.props;
-    const {suggestions, placeholderText} = this.state;
+    const {value, setPageTitle, placeholderText, updateInputPlaceholderText} = this.props;
+    const {suggestions} = this.state;
 
     return (
       <AutosuggestWrapper>
@@ -126,7 +124,7 @@ class PageInput extends React.Component {
               setPageTitle(newValue);
               if (newValue === '') {
                 this.placeholderTextInterval = setInterval(
-                  () => this.updatePlaceholderText(),
+                  () => updateInputPlaceholderText(getRandomPageTitle()),
                   5000
                 );
               } else if (this.placeholderTextInterval !== null) {

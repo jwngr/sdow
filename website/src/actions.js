@@ -31,6 +31,22 @@ export function setShortestPathResults(results) {
   };
 }
 
+export const SET_SOURCE_PAGE_PLACEHOLDER_TEXT = 'SET_SOURCE_PAGE_PLACEHOLDER_TEXT';
+export function setSourcePagePlaceholderText(sourcePagePlaceholderText) {
+  return {
+    type: SET_SOURCE_PAGE_PLACEHOLDER_TEXT,
+    sourcePagePlaceholderText,
+  };
+}
+
+export const SET_TARGET_PAGE_PLACEHOLDER_TEXT = 'SET_TARGET_PAGE_PLACEHOLDER_TEXT';
+export function setTargetPagePlaceholderText(targetPagePlaceholderText) {
+  return {
+    type: SET_TARGET_PAGE_PLACEHOLDER_TEXT,
+    targetPagePlaceholderText,
+  };
+}
+
 export const SET_SOURCE_PAGE_TITLE = 'SET_SOURCE_PAGE_TITLE';
 export function setSourcePageTitle(sourcePageTitle) {
   return {
@@ -49,18 +65,31 @@ export function setTargetPageTitle(targetPageTitle) {
 
 export function fetchShortestPaths() {
   return (dispatch, getState) => {
-    const {sourcePageTitle, targetPageTitle} = getState();
+    let {
+      sourcePageTitle,
+      targetPageTitle,
+      sourcePagePlaceholderText,
+      targetPagePlaceholderText,
+    } = getState();
 
     let inputValidationErrorMessage;
     if (sourcePageTitle === '' && targetPageTitle === '') {
-      inputValidationErrorMessage =
-        "You'll probably want to choose the start and end pages before you hit that.";
+      dispatch(setSourcePageTitle(sourcePagePlaceholderText));
+      dispatch(setTargetPageTitle(targetPagePlaceholderText));
+      sourcePageTitle = sourcePagePlaceholderText;
+      targetPageTitle = targetPagePlaceholderText;
+      // inputValidationErrorMessage =
+      // "You'll probably want to choose the start and end pages before you hit that.";
     } else if (sourcePageTitle === '') {
-      inputValidationErrorMessage =
-        "You'll probably want to choose the start page before you hit that.";
+      dispatch(setSourcePageTitle(sourcePagePlaceholderText));
+      sourcePageTitle = sourcePagePlaceholderText;
+      // inputValidationErrorMessage =
+      // "You'll probably want to choose the start page before you hit that.";
     } else if (targetPageTitle === '') {
-      inputValidationErrorMessage =
-        "You'll probably want to choose the end page before you hit that.";
+      dispatch(setTargetPageTitle(targetPagePlaceholderText));
+      targetPageTitle = targetPagePlaceholderText;
+      // inputValidationErrorMessage =
+      // "You'll probably want to choose the end page before you hit that.";
     }
 
     if (typeof inputValidationErrorMessage !== 'undefined') {

@@ -39,6 +39,24 @@ const rootReducers = {
     }
   },
 
+  sourcePagePlaceholderText: (state = '', action) => {
+    switch (action.type) {
+      case actions.SET_SOURCE_PAGE_PLACEHOLDER_TEXT:
+        return action.sourcePagePlaceholderText;
+      default:
+        return state;
+    }
+  },
+
+  targetPagePlaceholderText: (state = '', action) => {
+    switch (action.type) {
+      case actions.SET_TARGET_PAGE_PLACEHOLDER_TEXT:
+        return action.targetPagePlaceholderText;
+      default:
+        return state;
+    }
+  },
+
   targetPageTitle: (state = '', action) => {
     switch (action.type) {
       case actions.ROUTER_LOCATION_CHANGED:
