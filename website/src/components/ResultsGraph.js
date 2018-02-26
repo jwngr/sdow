@@ -29,10 +29,10 @@ class Graph extends Component {
     this.graphWidth = null;
     this.nodeLabels = null;
     this.simulation = null;
+    this.ticksPerRender = null;
 
     this.color = d3.scaleOrdinal(d3.schemeCategory10);
     this.zoom = d3.zoom().on('zoom', () => this.zoomed());
-    this.ticksPerRender = 25;
 
     this.debouncedResetGraph = _.debounce(this.resetGraph.bind(this, false), 350);
   }
@@ -166,6 +166,10 @@ class Graph extends Component {
 
     const {nodesData, linksData} = this.getGraphData();
 
+    // Update the nubmer of ticks of the force simulation to run for each render according to how
+    // many nodes will be rendered.
+    this.ticksPerRender = 3 + Math.floor(nodesData.length / 20);
+
     this.graphWidth = this.getGraphWidth();
 
     this.zoomable = d3
@@ -268,7 +272,13 @@ class Graph extends Component {
     this.simulation = d3
       .forceSimulation()
       .force('link', d3.forceLink().id((d) => d.id))
-      .force('charge', d3.forceManyBody().strength(-300))
+      .force(
+        'charge',
+        d3
+          .forceManyBody()
+          .strength(-300)
+          .distanceMax(500)
+      )
       .force('center', d3.forceCenter(this.graphWidth / 2, DEFAULT_CHART_HEIGHT / 2));
 
     this.simulation.nodes(nodesData);
