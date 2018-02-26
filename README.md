@@ -148,9 +148,9 @@ following instructions:
    [posts](https://blog.miguelgrinberg.com/post/running-your-flask-application-over-https)):
    ```bash
    $ echo 'deb http://ftp.debian.org/debian jessie-backports main' | sudo tee /etc/apt/sources.list.d/backports.list
-   $ sudo apt-get update
-   $ sudo apt-get install nginx
-   $ sudo apt-get install certbot -t jessie-backports
+   $ sudo apt-get -q update
+   $ sudo apt-get -yq install nginx
+   $ sudo apt-get -yq install certbot -t jessie-backports
    ```
 1. Add this `location` block inside the `server` block in `/etc/nginx/sites-available/default`:
    ```
@@ -162,6 +162,9 @@ following instructions:
    ```bash
    $ sudo systemctl restart nginx
    ```
+1. Ensure the server has the proper static IP address (`sdow-web-server-static-ip`) by editing it on
+   the [GCP console](https://console.cloud.google.com/compute/instances?project=sdow-prod) if
+   necessary.
 1. Create an SSL certificate using [Let's Encrypt](https://letsencrypt.org/)'s `certbot`:
    ```bash
    $ sudo certbot certonly -a webroot --webroot-path=/var/www/html -d api.sixdegreesofwikipedia.com --email wenger.jacob@gmail.com
@@ -170,14 +173,19 @@ following instructions:
    ```bash
    $ certbot renew --dry-run
    ```
+1. Run `crontab -e` and add the following cron job to that file to auto-renew the SSL certificate:
+   ```
+   0 0,12 * * * python -c 'import random; import time; time.sleep(random.random() * 3600)' && /usr/bin/certbot renew
+   ```
 1. Generate a strong Diffie-Hellman group to further increase security (note that this can take a
    couple minutes):
    ```bash
    $ sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
    ```
-1. Copy over the NGINX configuration:
+1. Copy over the NGINX configuration, making sure to back up the original configuration:
    ```bash
-   $ sudo cp ../config/nginx.conf /etc/nginx/nginx.conf
+   $ sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.backup
+   $ sudo cp ./config/nginx.conf /etc/nginx/nginx.conf
    ```
 1. Restart `nginx`:
    ```bash
