@@ -203,13 +203,20 @@ following instructions:
    ```bash
    $ export SDOW_ENV=prod
    ```
-1. Start the Flask app via [Supervisor](http://supervisord.org/) which runs
+1. Start the Flask web server via [Supervisor](http://supervisord.org/) which runs
    [Gunicorn](http://gunicorn.org/):
    ```bash
-   $ cd sdow/
-   $ supervisord -c ../config/supervisord.conf
+   $ cd config/
+   $ supervisord
    ```
-1. Ensure the app was started successfully by running `supervisorctl -c ../config/supervisord.conf`.
+1. Use [`supervisorctl`](http://supervisord.org/running.html#supervisorctl-command-line-options) to
+   manage the running web server:
+   ```bash
+   $ supervisorctl status             # Get status of running processes
+   $ supervisorctl stop gunicorn      # Stop web server
+   $ supervisorctl start gunicorn     # Start web server
+   $ supervisorctl restart gunicorn   # Restart web server
+   ```
 
 ## Resources
 
@@ -236,12 +243,17 @@ following instructions:
 
 ## Interesting searches
 
-| Source Page Title          | Target Page Title                 | Notes                    |
-| -------------------------- | --------------------------------- | ------------------------ |
-| Hargrave Military Academy  | Illiosentidae                     | Cool graph               |
-| Arthropod                  | Haberdashers' Aske's Boys' School | Cool graph               |
-| AC power plugs and sockets | Gymnobela abyssorum               | 1,311 paths of 6 degrees |
+| Source Page Title             | Target Page Title                 | Notes                          |
+| ----------------------------- | --------------------------------- | ------------------------------ |
+| Hargrave Military Academy     | Illiosentidae                     | Cool graph                     |
+| Arthropod                     | Haberdashers' Aske's Boys' School | Cool graph                     |
+| AC power plugs and sockets    | Gymnobela abyssorum               | 1,311 paths of 6 degrees       |
+| Nyctipolus                    | Philemon Quaye                    | 2,331 paths of 6 degrees       |
+| Six Degrees of Kevin Bacon    | Phinney                           | Only 6 paths, but of 6 degrees |
+| Erlang (programming language) | Barbra Streisand                  | 2,274 paths of 4 degrees       |
+| Lion Express                  | Phinney                           | 1,246 paths of 9 degrees       |
+| 2016 French Open              | Brachmia melicephala              | 11 paths of 6 degrees          |
 
 ## Contributing
 
-See the [contribution page](./github/CONTRIBUTING.md) for details.
+See the [contribution page](./.github/CONTRIBUTING.md) for details.
