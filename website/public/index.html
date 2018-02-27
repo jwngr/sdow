@@ -1,24 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
 
 <head>
   <title>Six Degrees of Wikipedia</title>
 
   <meta http-equiv='X-UA-Compatible' content='IE=edge' />
   <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name='keywords' content='Wikipeda, shortest path, game, algorithm' />
-  <meta name='description' content='Find the shortest path between any two Wikipedia articles.' />
+  <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
+  <meta name='keywords' content='Wikipeda, six degrees of separation, shortest path, game, algorithm, links' />
+  <meta name='description' content='Find the shortest hyperlinked paths between any two pages on Wikipedia.' />
   <meta name='author' content='Jacob Wenger' />
 
   <meta name='theme-color' content='#68ceff'>
 
   <!-- TODO: Update manifest icon sizes -->
-  <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+  <link rel='manifest' href='%PUBLIC_URL%/manifest.json'>
 
-  <link rel="shortcut icon" type="image/png" href="%PUBLIC_URL%/favicon-16x16.png" sizes="16x16">
-  <link rel="shortcut icon" type="image/png" href="%PUBLIC_URL%/favicon-32x32.png" sizes="32x32">
-  <link rel="shortcut icon" type="image/png" href="%PUBLIC_URL%/favicon-96x96.png" sizes="96x96">
+  <link rel='shortcut icon' type='image/png' href='%PUBLIC_URL%/favicon-16x16.png' sizes='16x16'>
+  <link rel='shortcut icon' type='image/png' href='%PUBLIC_URL%/favicon-32x32.png' sizes='32x32'>
+  <link rel='shortcut icon' type='image/png' href='%PUBLIC_URL%/favicon-96x96.png' sizes='96x96'>
+
+  <!-- Open Graph -->
+  <meta property='og:type' content='website' />
+  <meta property='og:title' content='Six Degrees of Wikipedia' />
+  <meta property='og:description' content='Find the shortest hyperlinked paths between any two pages on Wikipedia.' />
+  <meta property='og:url' content='https://www.sixdegreesofwikipedia.com/' />
+  <meta property='og:image' content='https://www.sixdegreesofwikipedia.com/static/media/sdowSquareLogo.png' />
+  <meta property='og:image:width' content='400' />
+  <meta property='og:image:height' content='400' />
+  <meta property='og:image:alt' content='Six Degrees of Wikipedia Logo' />
+
+  <!-- Twitter -->
+  <meta name='twitter:card' value='summary'>
+  <meta name='twitter:creator' value='@_jwngr'>
+  <meta name='twitter:title' content='Six Degrees of Wikipedia'>
+  <meta name='twitter:description' content='Find the shortest hyperlinked paths between any two pages on Wikipedia.'>
+  <meta name='twitter:image:src' content='https://www.sixdegreesofwikipedia.com/static/media/sdowSquareLogo.png'>
+  <meta name='twitter:image:alt' content='Six Degrees of Wikipedia Logo'>
 
   <!-- Google Analytics -->
   <script>
@@ -41,7 +59,7 @@
     <p>Sorry internet hipster, this little side project requires JavaScript.</p>
   </noscript>
 
-  <div id="root"></div>
+  <div id='root'></div>
 </body>
 
 </html>
