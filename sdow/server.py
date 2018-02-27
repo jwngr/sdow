@@ -37,13 +37,23 @@ Compress(app)
 
 @app.errorhandler(Exception)
 def unhandled_exception_handler(error):
-  logging.exception(error)
+  logging.exception({
+      'error': error,
+      'handler': 'exception',
+      'source': request.json.get('source'),
+      'target': request.json.get('target'),
+  })
   return 'Unhandled exception', 500
 
 
 @app.errorhandler(500)
 def internal_server_error(error):
-  logging.exception(error)
+  logging.exception({
+      'error': error,
+      'handler': '500',
+      'source': request.json.get('source'),
+      'target': request.json.get('target'),
+  })
   return 'Internal server error', 500
 
 
