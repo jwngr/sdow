@@ -7,10 +7,14 @@ export LC_ALL=C
 
 # By default, the latest Wikipedia dump will be downloaded. If a download date in the format
 # YYYYMMDD is provided as the first argument, it will be used instead.
-if [ ${#1} -ne 8 ]; then
+if [ $# -eq 0 ]; then
   DOWNLOAD_DATE="latest"
 else
-  DOWNLOAD_DATE=$1
+  if [ ${#1} -ne 8 ]; then
+    DOWNLOAD_DATE="latest"
+  else
+    DOWNLOAD_DATE=$1
+  fi
 fi
 
 ROOT_DIR=`pwd`
