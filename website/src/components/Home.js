@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Link} from 'redux-little-router';
 
 import LoadingContainer from '../containers/LoadingContainer';
 import ResultsContainer from '../containers/ResultsContainer';
@@ -35,12 +36,14 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <Logo
-          srcset={`${logo} 462w, ${logo2x} 924w`}
-          sizes="(max-width: 600px) 280px, 800px"
-          src={logo2x}
-          alt="Six Degrees of Wikipedia Logo"
-        />
+        <Link href="/">
+          <Logo
+            srcset={`${logo} 462w, ${logo2x} 924w`}
+            sizes="(max-width: 600px) 280px, 800px"
+            src={logo2x}
+            alt="Six Degrees of Wikipedia Logo"
+          />
+        </Link>
 
         <IconLinks>
           <InfoIcon
