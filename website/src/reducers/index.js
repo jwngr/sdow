@@ -28,17 +28,6 @@ const rootReducers = {
     }
   },
 
-  sourcePageTitle: (state = '', action) => {
-    switch (action.type) {
-      case actions.ROUTER_LOCATION_CHANGED:
-        return _.get(action, 'payload.query.source', state);
-      case actions.SET_SOURCE_PAGE_TITLE:
-        return action.sourcePageTitle;
-      default:
-        return state;
-    }
-  },
-
   sourcePagePlaceholderText: (state = '', action) => {
     switch (action.type) {
       case actions.SET_SOURCE_PAGE_PLACEHOLDER_TEXT:
@@ -57,10 +46,21 @@ const rootReducers = {
     }
   },
 
+  sourcePageTitle: (state = '', action) => {
+    switch (action.type) {
+      case actions.ROUTER_LOCATION_CHANGED:
+        return _.get(action, 'payload.query.source', '');
+      case actions.SET_SOURCE_PAGE_TITLE:
+        return action.sourcePageTitle;
+      default:
+        return state;
+    }
+  },
+
   targetPageTitle: (state = '', action) => {
     switch (action.type) {
       case actions.ROUTER_LOCATION_CHANGED:
-        return _.get(action, 'payload.query.target', state);
+        return _.get(action, 'payload.query.target', '');
       case actions.SET_TARGET_PAGE_TITLE:
         return action.targetPageTitle;
       default:
