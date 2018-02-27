@@ -7,7 +7,7 @@ import requests
 WIKIPEDIA_API_URL = 'https://en.wikipedia.org/w/api.php'
 
 
-def fetch_wikipedia_pages_info(page_ids):
+def fetch_wikipedia_pages_info(page_ids, database):
   """Fetched page information such as title, URL, and image thumbnail URL for the provided page IDs.
 
   Args:
@@ -51,20 +51,29 @@ def fetch_wikipedia_pages_info(page_ids):
     pages_result = req.json().get('query', {}).get('pages')
 
     for page_id, page in pages_result.iteritems():
-      dev_page_id = int(page_id)
+      page_id = int(page_id)
 
-      pages_info[dev_page_id] = {
-          'title': page['title'],
-          'url': page['fullurl']
-      }
+      if 'missing' in page:
+        # If the page has been deleted since the current Wikipedia database dump, fetch the page
+        # title from the SDOW database and create the (albeit broken) URL.
+        page_title = database.fetch_page_title(page_id)
+        pages_info[page_id] = {
+            'title': page_title,
+            'url': 'https://en.wikipedia.org/wiki/{0}'.format(page_title)
+        }
+      else:
+        pages_info[page_id] = {
+            'title': page['title'],
+            'url': page['fullurl']
+        }
 
-      thumbnail_url = page.get('thumbnail', {}).get('source')
-      if thumbnail_url:
-        pages_info[dev_page_id]['thumbnailUrl'] = thumbnail_url
+        thumbnail_url = page.get('thumbnail', {}).get('source')
+        if thumbnail_url:
+          pages_info[page_id]['thumbnailUrl'] = thumbnail_url
 
-      description = page.get('terms', {}).get('description', [])
-      if description:
-        pages_info[dev_page_id]['description'] = description[0][0].upper() + description[0][1:]
+        description = page.get('terms', {}).get('description', [])
+        if description:
+          pages_info[page_id]['description'] = description[0][0].upper() + description[0][1:]
 
   return pages_info
 

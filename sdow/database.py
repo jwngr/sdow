@@ -69,6 +69,32 @@ class Database(object):
 
     return (result[0], helpers.get_readable_page_title(result[1]), True)
 
+  def fetch_page_title(self, page_id):
+    """Returns the page title corresponding to the provided page ID.
+
+    Args:
+      page_id: The page ID whose ID to fetch.
+
+    Returns:
+      str: The page title corresponding to the provided page ID.
+
+    Raises:
+      ValueError: If the provided page ID is invalid or does not exist.
+    """
+    helpers.validate_page_id(page_id)
+
+    query = 'SELECT title FROM pages WHERE id = ?;'
+    query_bindings = (page_id,)
+    self.cursor.execute(query, query_bindings)
+
+    page_title = self.cursor.fetchone()
+
+    if not page_title:
+      raise ValueError(
+          'Invalid page ID "{0}" provided. Page ID does not exist.'.format(page_id))
+
+    return page_title[0].encode('utf-8').replace('_', ' ')
+
   def compute_shortest_paths(self, source_page_id, target_page_id):
     """Returns a list of page IDs indicating the shortest path between the source and target pages.
 

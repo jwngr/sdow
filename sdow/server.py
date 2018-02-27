@@ -129,7 +129,7 @@ def shortest_paths_route():
         page_ids_set.add(str(page_id))
 
     response['paths'] = paths
-    response['pages'] = fetch_wikipedia_pages_info(list(page_ids_set))
+    response['pages'] = fetch_wikipedia_pages_info(list(page_ids_set), database)
 
   database.insert_result({
       'source_id': source_page_id,
