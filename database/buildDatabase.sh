@@ -21,8 +21,9 @@ ROOT_DIR=`pwd`
 OUT_DIR="dump"
 
 DOWNLOAD_URL="https://dumps.wikimedia.your.org/enwiki/$DOWNLOAD_DATE"
+TORRENT_URL="https://tools.wmflabs.org/dump-torrents/enwiki/$DOWNLOAD_DATE"
 
-MD5SUM_FILENAME="enwiki-$DOWNLOAD_DATE-md5sums.txt"
+SHA1SUM_FILENAME="enwiki-$DOWNLOAD_DATE-sha1sums.txt"
 REDIRECTS_FILENAME="enwiki-$DOWNLOAD_DATE-redirect.sql.gz"
 PAGES_FILENAME="enwiki-$DOWNLOAD_DATE-page.sql.gz"
 LINKS_FILENAME="enwiki-$DOWNLOAD_DATE-pagelinks.sql.gz"
@@ -36,69 +37,39 @@ pushd $OUT_DIR
 echo "[INFO] Download URL: $DOWNLOAD_URL"
 echo "[INFO] Output directory: $OUT_DIR"
 
-
 ##############################
 #  DOWNLOAD WIKIPEDIA DUMPS  #
 ##############################
-if [ ! -f $MD5SUM_FILENAME ]; then
-  echo
-  echo "[INFO] Downloading md5sums file"
-  time wget -nv "$DOWNLOAD_URL/$MD5SUM_FILENAME"
-else
-  echo "[WARN] Already downloaded md5sums file"
-fi
 
-if [ ! -f $REDIRECTS_FILENAME ]; then
-  echo
-  echo "[INFO] Downloading redirects file"
-  time wget -nv "$DOWNLOAD_URL/$REDIRECTS_FILENAME"
-
-  echo
-  echo "[INFO] Verifying md5sum for redirects file"
-  time md5sum $REDIRECTS_FILENAME | sed "s/\s.*$//" | grep --quiet --file - $MD5SUM_FILENAME
-  if [ $? -ne 0 ]; then
+function grab() {
+  if [ ! -f $2 ]; then
     echo
-    echo "[ERROR] Downloaded redirects file has incorrect md5sum"
-    exit 1
+    echo "[INFO] Downloading $1 file"
+    if [ $1 != sha1sums ] && command -v aria2c > /dev/null; then
+      # we can download using torrents!
+      aria2c --summary-interval=0 --console-log-level=warn --seed-time=0 \
+        "$TORRENT_URL/$2.torrent"
+    else
+      wget --progress=dot:giga "$DOWNLOAD_URL/$2"
+    fi
+    if [ $1 != sha1sums ]; then
+      grep "$2" "$SHA1SUM_FILENAME" | time sha1sum -c
+      if [ $? -ne 0 ]; then
+        echo
+        echo "[ERROR] Downloaded $1 file has incorrect sha1sum"
+        rm $2
+        exit 1
+      fi
+    fi
+  else
+    echo "[WARN] already downloaded $1 file"
   fi
-else
-  echo "[WARN] Already downloaded redirects file"
-fi
+}
 
-if [ ! -f $PAGES_FILENAME ]; then
-  echo
-  echo "[INFO] Downloading pages file"
-  time wget -nv "$DOWNLOAD_URL/$PAGES_FILENAME"
-
-  echo
-  echo "[INFO] Verifying md5sum for pages file"
-  time md5sum $PAGES_FILENAME | sed "s/\s.*$//" | grep --quiet --file - $MD5SUM_FILENAME
-  if [ $? -ne 0 ]; then
-    echo
-    echo "[ERROR] Downloaded pages file has incorrect md5sum"
-    exit 1
-  fi
-else
-  echo "[WARN] Already downloaded pages file"
-fi
-
-if [ ! -f $LINKS_FILENAME ]; then
-  echo
-  echo "[INFO] Downloading links file"
-  time wget -nv "$DOWNLOAD_URL/$LINKS_FILENAME"
-
-  echo
-  echo "[INFO] Verifying md5sum for links file"
-  time md5sum $LINKS_FILENAME | sed "s/\s.*$//" | grep --quiet --file - $MD5SUM_FILENAME
-  if [ $? -ne 0 ]; then
-    echo
-    echo "[ERROR] Downloaded links file has incorrect md5sum"
-    exit 1
-  fi
-else
-  echo "[WARN] Already downloaded links file"
-fi
-
+grab sha1sums $SHA1SUM_FILENAME
+grab redirects $REDIRECTS_FILENAME
+grab pages $PAGES_FILENAME
+grab links $LINKS_FILENAME
 
 ##########################
 #  TRIM WIKIPEDIA DUMPS  #
