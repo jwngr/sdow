@@ -26,7 +26,8 @@ TORRENT_URL="https://tools.wmflabs.org/dump-torrents/enwiki/$DOWNLOAD_DATE"
 SHA1SUM_FILENAME="enwiki-$DOWNLOAD_DATE-sha1sums.txt"
 REDIRECTS_FILENAME="enwiki-$DOWNLOAD_DATE-redirect.sql.gz"
 PAGES_FILENAME="enwiki-$DOWNLOAD_DATE-page.sql.gz"
-LINKS_FILENAME="enwiki-$DOWNLOAD_DATE-pagelinks.sql.gz"
+PAGES_MULTISTREAM="enwiki-$DOWNLOAD_DATE-pages-articles-multistream.xml.bz2"
+PAGES_MULTISTREAM_INDEX="enwiki-$DOWNLOAD_DATE-pages-articles-multistream-index.txt.bz2"
 
 
 # Make the output directory if it doesn't already exist and move to it
@@ -68,8 +69,9 @@ function grab() {
 
 grab sha1sums $SHA1SUM_FILENAME
 grab redirects $REDIRECTS_FILENAME
-grab pages $PAGES_FILENAME
-grab links $LINKS_FILENAME
+grab pageIDs $PAGES_FILENAME
+grab pages $PAGES_MULTISTREAM
+grab "pages index" $PAGES_MULTISTREAM_INDEX
 
 ##########################
 #  TRIM WIKIPEDIA DUMPS  #
@@ -120,30 +122,6 @@ else
   echo "[WARN] Already trimmed pages file"
 fi
 
-if [ ! -f links.txt.gz ]; then
-  echo
-  echo "[INFO] Trimming links file"
-
-  # Unzip
-  # Remove all lines that don't start with INSERT INTO...
-  # Split into individual records
-  # Only keep records in namespace 0
-  # Replace namespace with a tab
-  # Remove everything starting at the to page name's closing apostrophe
-  # Zip into output file
-  time pigz -dc $LINKS_FILENAME \
-    | sed -n 's/^INSERT INTO `pagelinks` VALUES (//p' \
-    | sed -e 's/),(/\'$'\n/g' \
-    | egrep "^[0-9]+,0,.*,0$" \
-    | sed -e $"s/,0,'/\t/g" \
-    | sed -e "s/',0//g" \
-    | pigz -1 > links.txt.gz.tmp
-  mv links.txt.gz.tmp links.txt.gz
-else
-  echo "[WARN] Already trimmed links file"
-fi
-
-
 ###########################################
 #  REPLACE TITLES AND REDIRECTS IN FILES  #
 ###########################################
@@ -158,82 +136,28 @@ else
   echo "[WARN] Already replaced titles in redirects file"
 fi
 
-if [ ! -f links.with_ids.txt.gz ]; then
+#######################
+#  CREATE LINKS FILE  #
+#######################
+if [ ! -f links.forward.txt.gz ]; then
   echo
-  echo "[INFO] Replacing titles and redirects in links file"
-  time python "$ROOT_DIR/replace_titles_and_redirects_in_links_file.py" pages.txt.gz redirects.with_ids.txt.gz links.txt.gz \
-    | pigz -1 > links.with_ids.txt.gz.tmp
-  mv links.with_ids.txt.gz.tmp links.with_ids.txt.gz
+  echo "[INFO] Extracting forward links from multistream database dump"
+  time go run "$ROOT_DIR/generate_links.go" pages.txt.gz redirects.with_ids.txt.gz $PAGES_MULTISTREAM $PAGES_MULTISTREAM_INDEX \
+    | pigz -1 > links.forward.txt.gz.tmp
+  mv links.forward.txt.gz.tmp links.forward.txt.gz
 else
-  echo "[WARN] Already replaced titles and redirects in links file"
+  echo "[WARN] Already extracted forward links"
 fi
 
-#####################
-#  SORT LINKS FILE  #
-#####################
-if [ ! -f links.sorted_by_source_id.txt.gz ]; then
-  echo
-  echo "[INFO] Sorting links file by source page ID"
-  time pigz -dc links.with_ids.txt.gz \
-    | sort -S 80% -t $'\t' -k 1n,1n \
-    | uniq \
-    | pigz -1 > links.sorted_by_source_id.txt.gz.tmp
-  mv links.sorted_by_source_id.txt.gz.tmp links.sorted_by_source_id.txt.gz
-else
-  echo "[WARN] Already sorted links file by source page ID"
-fi
-
-if [ ! -f links.sorted_by_target_id.txt.gz ]; then
-  echo
-  echo "[INFO] Sorting links file by target page ID"
-  time pigz -dc links.with_ids.txt.gz \
-    | sort -S 80% -t $'\t' -k 2n,2n \
-    | uniq \
-    | pigz -1 > links.sorted_by_target_id.txt.gz.tmp
-  mv links.sorted_by_target_id.txt.gz.tmp links.sorted_by_target_id.txt.gz
-else
-  echo "[WARN] Already sorted links file by target page ID"
-fi
-
-
-#############################
-#  GROUP SORTED LINKS FILE  #
-#############################
-if [ ! -f links.grouped_by_source_id.txt.gz ]; then
-  echo
-  echo "[INFO] Grouping source links file by source page ID"
-  time pigz -dc links.sorted_by_source_id.txt.gz \
-   | awk -F '\t' '$1==last {printf "|%s",$2; next} NR>1 {print "";} {last=$1; printf "%s\t%s",$1,$2;} END{print "";}' \
-   | pigz -1 > links.grouped_by_source_id.txt.gz.tmp
-  mv links.grouped_by_source_id.txt.gz.tmp links.grouped_by_source_id.txt.gz
-else
-  echo "[WARN] Already grouped source links file by source page ID"
-fi
-
-if [ ! -f links.grouped_by_target_id.txt.gz ]; then
-  echo
-  echo "[INFO] Grouping target links file by target page ID"
-  time pigz -dc links.sorted_by_target_id.txt.gz \
-    | awk -F '\t' '$2==last {printf "|%s",$1; next} NR>1 {print "";} {last=$2; printf "%s\t%s",$2,$1;} END{print "";}' \
-    | gzip > links.grouped_by_target_id.txt.gz
-else
-  echo "[WARN] Already grouped target links file by target page ID"
-fi
-
-
-################################
-# COMBINE GROUPED LINKS FILES  #
-################################
 if [ ! -f links.with_counts.txt.gz ]; then
   echo
-  echo "[INFO] Combining grouped links files"
-  time python "$ROOT_DIR/combine_grouped_links_files.py" links.grouped_by_source_id.txt.gz links.grouped_by_target_id.txt.gz \
+  echo "[INFO] Creating backwards links for DB import"
+  time go run "$ROOT_DIR/make_reverse_links_and_counts.go" links.forward.txt.gz \
     | pigz -1 > links.with_counts.txt.gz.tmp
   mv links.with_counts.txt.gz.tmp links.with_counts.txt.gz
 else
-  echo "[WARN] Already combined grouped links files"
+  echo "[WARN] Already created backwards links for DB import"
 fi
-
 
 ############################
 #  CREATE SQLITE DATABASE  #
