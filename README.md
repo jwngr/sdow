@@ -39,8 +39,8 @@ four tables:
    1. `id` - The page ID of the source page, the page that contains the link.
    2. `outgoing_links_count` - The number of pages to which this page links to.
    3. `incoming_links_count` - The number of pages which link to this page.
-   4. `incoming_links` - A `|`-separated list of page IDs to which this page links.
-   5. `outgoing_links` - A `|`-separated list of page IDs which link to this page.
+   4. `outgoing_links` - A `|`-separated list of page IDs to which this page links.
+   5. `incoming_links` - A `|`-separated list of page IDs which link to this page.
 3. `redirects` - Source and target page IDs for all redirects.
    1. `source_id` - The page ID of the source page, the page that redirects to another page.
    2. `target_id` - The page ID of the target page, to which the redirect page redirects.
