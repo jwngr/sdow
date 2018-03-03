@@ -245,14 +245,14 @@ following instructions:
 
 | Source Page Title             | Target Page Title                 | Notes                          |
 | ----------------------------- | --------------------------------- | ------------------------------ |
-| Hargrave Military Academy     | Illiosentidae                     | Cool graph                     |
-| Arthropod                     | Haberdashers' Aske's Boys' School | Cool graph                     |
-| AC power plugs and sockets    | Gymnobela abyssorum               | 1,311 paths of 6 degrees       |
-| Nyctipolus                    | Philemon Quaye                    | 2,331 paths of 6 degrees       |
-| Six Degrees of Kevin Bacon    | Phinney                           | Only 6 paths, but of 6 degrees |
-| Erlang (programming language) | Barbra Streisand                  | 2,274 paths of 4 degrees       |
-| Lion Express                  | Phinney                           | 1,246 paths of 9 degrees       |
-| 2016 French Open              | Brachmia melicephala              | 11 paths of 6 degrees          |
+| Hargrave Military Academy     | Illiosentidae                     | [Cool graph](https://www.sixdegreesofwikipedia.com/?source=Hargrave%20Military%20Academy&target=Illiosentidae)                     |
+| Arthropod                     | Haberdashers' Aske's Boys' School | [Cool graph](https://www.sixdegreesofwikipedia.com/?source=Arthropod&target=Haberdashers%27%20Aske%27s%20Boys%27%20School)                     |
+| AC power plugs and sockets    | Gymnobela abyssorum               | [1,311 paths of 6 degrees](https://www.sixdegreesofwikipedia.com/?source=AC%20power%20plugs%20and%20sockets&target=Gymnobela%20abyssorum)       |
+| Nyctipolus                    | Philemon Quaye                    | [2,331 paths of 6 degrees](https://www.sixdegreesofwikipedia.com/?source=Nyctipolus&target=Philemon%20Quaye)       |
+| Six Degrees of Kevin Bacon    | Phinney                           | [Only 6 paths, but of 6 degrees](https://www.sixdegreesofwikipedia.com/?source=Six%20Degrees%20of%20Kevin%20Bacon&target=Phinney) |
+| Erlang (programming language) | Barbra Streisand                  | [2,274 paths of 4 degrees](https://www.sixdegreesofwikipedia.com/?source=Erlang%20%28programming%20language%29&target=Barbra%20Streisand)       |
+| Lion Express                  | Phinney                           | [1,246 paths of 9 degrees](https://www.sixdegreesofwikipedia.com/?source=Lion%20Express&target=Phinney)       |
+| 2016 French Open              | Brachmia melicephala              | [11 paths of 6 degrees](https://www.sixdegreesofwikipedia.com/?source=2016%20French%20Open&target=Brachmia%20melicephala)          |
 
 ## Contributing
 
