@@ -72,7 +72,7 @@ following instructions:
 1. Install required operating system dependencies:
    ```bash
    $ sudo apt-get -q update
-   $ sudo apt-get -yq install git pigz sqlite3
+   $ sudo apt-get -yq install git pigz sqlite3 golang
    ```
 1. Clone this directory via HTTPS:
    ```bash
