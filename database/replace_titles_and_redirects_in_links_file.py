@@ -60,6 +60,6 @@ for line in io.BufferedReader(gzip.open(LINKS_FILE, 'r')):
 
     target_page_id = PAGE_TITLES_TO_IDS.get(target_page_title)
 
-    if target_page_id is not None:
+    if target_page_id is not None and source_page_id != target_page_id:
       target_page_id = REDIRECTS.get(target_page_id, target_page_id)
       print('\t'.join([source_page_id, target_page_id]))
