@@ -224,10 +224,6 @@ following instructions:
    $ cd sdow/
    $ source env/bin/activate
    ```
-1. Set the `SDOW_ENV` environment variable to `prod`:
-   ```bash
-   $ export SDOW_ENV=prod
-   ```
 1. Start the Flask web server via [Supervisor](http://supervisord.org/) which runs
    [Gunicorn](http://gunicorn.org/):
    ```bash
