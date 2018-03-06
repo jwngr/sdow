@@ -266,10 +266,6 @@ if [ ! -f sdow.sqlite ]; then
   echo
   echo "[INFO] Creating links table"
   time pigz -dc links.with_counts.txt.gz | sqlite3 sdow.sqlite ".read $ROOT_DIR/createLinksTable.sql"
-
-  echo
-  echo "[INFO] Creating searches table"
-  time sqlite3 sdow.sqlite ".read $ROOT_DIR/createSearchesTable.sql"
 else
   echo "[WARN] Already created SQLite database"
 fi
