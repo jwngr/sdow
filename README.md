@@ -152,9 +152,10 @@ following instructions:
    ```bash
    $ pip install -r requirements.txt
    ```
-1. Copy the latest SQLite file from the `sdow-prod` GCS bucket:
+1. Copy the latest SQLite files from the `sdow-prod` GCS bucket:
    ```bash
-   $ gsutil -u sdow-prod cp gs://sdow-prod/dumps/<YYYYMMDD>/sdow.sqlite ./sdow/sdow.sqlite
+   $ gsutil -u sdow-prod cp gs://sdow-prod/dumps/<YYYYMMDD>/sdow.sqlite ./sdow/
+   $ gsutil -u sdow-prod cp gs://sdow-prod/backups/<YYYYMMDD>/searches.sqlite ./sdow/
    ```
 1. Ensure the VM has been [assigned SDOW's static external IP address](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address#IP_assign).
 1. Install required operating system dependencies to generate an SSL certificate (this and the
@@ -188,11 +189,13 @@ following instructions:
    ```bash
    $ sudo certbot renew --dry-run
    ```
-1. Run `crontab -e` and add the following cron jobs to that file to auto-renew the SSL certificate
-   and restart the web server regularly (to ensure it stays responsive):
+1. Run `crontab -e` and add the following cron jobs to that file to auto-renew the SSL certificate,
+   regularly restart the web server (to ensure it stays responsive), and backup the searches
+   database weekly:
    ```
    0 0,12 * * * python -c 'import random; import time; time.sleep(random.random() * 3600)' && /usr/bin/certbot renew
    */10 * * * * /home/jwngr/sdow/env/bin/supervisorctl -c /home/jwngr/sdow/config/supervisord.conf restart gunicorn
+   0 0 * * 0 /home/jwngr/sdow/database/backupSearchesDatabase.sh
    ```
 1. Generate a strong Diffie-Hellman group to further increase security (note that this can take a
    couple minutes):
