@@ -2,6 +2,8 @@
 
 ## Data Source
 
+### Overview
+
 Wikipedia dumps raw database tables in a gzipped SQL format for the English language Wikipedia
 (`enwiki`) approximately once a month (e.g.
 [dump from February 1, 2018](https://dumps.wikimedia.your.org/enwiki/20180201/)). The
@@ -25,10 +27,30 @@ the first argument.
 SDOW only concerns itself with actual Wikipedia articles, which belong to
 [namespace](https://en.wikipedia.org/wiki/Wikipedia:Namespace) 0 in the Wikipedia data.
 
+### Get the Data Yourself!
+
+The `sdow.sqlite` files generated below for use in this project are available for download from
+["requester pays"](https://cloud.google.com/storage/docs/requester-pays) Google Cloud Storage
+buckets. Check the [pricing page](https://cloud.google.com/storage/pricing) for the full details. In
+general, copying should be free within Google Cloud Platform (e.g., to another Google Cloud Storage
+bucket or to a Google Cloud Engine VM) and $0.25 per SQLite file otherwise.
+
+Use the following command to download a file, making sure to replace `<GCP_PROJECT_ID>` with your
+Google Cloud Platform project ID and `<YYYYMMDD>` with the date of the database dump:
+
+```bash
+$ gsutil -u <GCP_PROJECT_ID> cp gs://sdow-prod/dumps/<YYYYMMDD>/sdow.sqlite .
+```
+
+Here is a list of historical files currently available for download:
+
+* gs://sdow-prod/dumps/20180201/sdow.sqlite (8.30 GB)
+* gs://sdow-prod/dumps/20180301/sdow.sqlite (8.35 GB)
+
 ## Database Creation Process
 
 The result of running the database creation script is a single `sdow.sqlite` file which contains
-four tables:
+the following three tables:
 
 1. `pages` - Page information for all pages, including redirects.
    1. `id` - Page ID.
@@ -44,15 +66,6 @@ four tables:
 3. `redirects` - Source and target page IDs for all redirects.
    1. `source_id` - The page ID of the source page, the page that redirects to another page.
    2. `target_id` - The page ID of the target page, to which the redirect page redirects.
-4. `searches` - Historical results of all past searches.
-   1. `source_id` - The page ID of the source page at which to start the search.
-   2. `target_id` - The page ID of the target page at which to end the search.
-   3. `duration` - How long the search took, in seconds.
-   4. `degrees_count` - The number of degrees between the source and target pages.
-   5. `paths_count` - The number of paths found between the source and target pages.
-   6. `paths` - Stringified JSON representation of the paths of page IDs between the source and
-      target pages.
-   7. `t` - Timestamp when the search finished.
 
 Generating the SDOW database from a dump of Wikipedia takes approximately one hour given the
 following instructions:
@@ -64,7 +77,7 @@ following instructions:
    1. **Machine Type:** n1-highmem-8 (8 vCPUs, 52 GB RAM)
    1. **Boot disk**: 256 GB SSD, Debian GNU/Linux 8 (jessie)
    1. **Notes**: Allow full access to all Cloud APIs. Do not use Debian GNU/Linux 9 (stretch) due to
-      degraded performance.
+      [degraded performance](https://lists.debian.org/debian-kernel/2017/12/msg00265.html).
 1. SSH into the machine:
    ```bash
    $ gcloud compute ssh sdow-db-builder-1
@@ -93,8 +106,8 @@ following instructions:
    resumed!
 1. Copy the script output and the resulting SQLite file to the `sdow-prod` GCS bucket:
    ```
-   $ gsutil cp output.txt gs://sdow-prod/dumps/<YYYYMMDD>/
-   $ gsutil cp dump/sdow.sqlite gs://sdow-prod/dumps/<YYYYMMDD>/
+   $ gsutil -u sdow-prod cp output.txt gs://sdow-prod/dumps/<YYYYMMDD>/
+   $ gsutil -u sdow-prod cp dump/sdow.sqlite gs://sdow-prod/dumps/<YYYYMMDD>/
    ```
 1. Delete the VM to prevent incurring large fees.
 
@@ -108,8 +121,9 @@ following instructions:
    1. **Zone:** `us-central1-c`
    1. **Machine Type:** f1-micro (1 vCPU, 0.6 GB RAM)
    1. **Boot disk**: 16 GB SSD, Debian GNU/Linux 8 (jessie)
-   1. **Notes**: Allow default access to Cloud APIs. Do not use Debian GNU/Linux 9 (stretch) due to
-      degraded performance.
+   1. **Notes**: Click "Set access for each API" and use default values for all APIs except set
+      Storage to "Read Write". Do not use Debian GNU/Linux 9 (stretch) due to
+      [degraded performance](https://lists.debian.org/debian-kernel/2017/12/msg00265.html).
 1. SSH into the machine:
    ```bash
    $ gcloud compute ssh sdow-web-server-1
@@ -140,8 +154,9 @@ following instructions:
    ```
 1. Copy the latest SQLite file from the `sdow-prod` GCS bucket:
    ```bash
-   $ gsutil cp gs://sdow-prod/dumps/<YYYYMMDD>/sdow.sqlite ./sdow/sdow.sqlite
+   $ gsutil -u sdow-prod cp gs://sdow-prod/dumps/<YYYYMMDD>/sdow.sqlite ./sdow/sdow.sqlite
    ```
+1. Ensure the VM has been [assigned SDOW's static external IP address](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address#IP_assign).
 1. Install required operating system dependencies to generate an SSL certificate (this and the
    following instructions are based on these
    [blog](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-debian-8)
@@ -173,9 +188,11 @@ following instructions:
    ```bash
    $ certbot renew --dry-run
    ```
-1. Run `crontab -e` and add the following cron job to that file to auto-renew the SSL certificate:
+1. Run `crontab -e` and add the following cron jobs to that file to auto-renew the SSL certificate
+   and restart the web server regularly (to ensure it stays responsive):
    ```
    0 0,12 * * * python -c 'import random; import time; time.sleep(random.random() * 3600)' && /usr/bin/certbot renew
+   */10 * * * * /home/jwngr/sdow/env/bin/supervisorctl -c /home/jwngr/sdow/config/supervisord.conf restart gunicorn
    ```
 1. Generate a strong Diffie-Hellman group to further increase security (note that this can take a
    couple minutes):
@@ -190,6 +207,11 @@ following instructions:
 1. Restart `nginx`:
    ```bash
    $ sudo systemctl restart nginx
+   ```
+1. Install the Stackdriver monitoring agent:
+   ```bash
+   $ curl -sSO https://repo.stackdriver.com/stack-install.sh
+   $ sudo bash stack-install.sh --write-gcm
    ```
 
 ### Recurring Setup
@@ -217,11 +239,31 @@ following instructions:
    $ supervisorctl start gunicorn     # Start web server
    $ supervisorctl restart gunicorn   # Restart web server
    ```
+   **Note:** `supervisord` and `supervisorctl` must be run from the `config/` directory or specify
+   the configuration file via the `-c` argument or else they will return an obscure
+   `"http://localhost:9001 refused connection"` error message.
+
+## Historical Search Results
+
+Historical search results are stored in a separate `searches.sqlite` database which contains a
+single `searches` table with the following schema:
+
+1. `source_id` - The page ID of the source page at which to start the search.
+2. `target_id` - The page ID of the target page at which to end the search.
+3. `duration` - How long the search took, in seconds.
+4. `degrees_count` - The number of degrees between the source and target pages.
+5. `paths_count` - The number of paths found between the source and target pages.
+6. `paths` - Stringified JSON representation of the paths of page IDs between the source and
+   target pages.
+7. `t` - Timestamp when the search finished.
+
+Search results are kept in a separate SQLite file to avoid locking the `sdow.sqlite` database as
+well as to make it easy to update the `sdow.sqlite` database to a more recent Wikipedia dump.
 
 ## Resources
 
 * [MediaWiki API](https://www.mediawiki.org/wiki/API:Main_page)
-* [MediaWiki Database Layout](https://www.mediawiki.org/wiki/Manual:Database_layout)
+* [MediaWiki database layout](https://www.mediawiki.org/wiki/Manual:Database_layout)
 
 ## Edge Case Pages
 
@@ -253,6 +295,14 @@ following instructions:
 | Erlang (programming language) | Barbra Streisand                  | 2,274 paths of 4 degrees       |
 | Lion Express                  | Phinney                           | 1,246 paths of 9 degrees       |
 | 2016 French Open              | Brachmia melicephala              | 11 paths of 6 degrees          |
+
+## Inspiration
+
+* [Six Degrees of Wikipedia](http://mu.netsoc.ie/wiki/) by Stephen Dolan.
+* The general concept of [six degrees of separation](https://en.wikipedia.org/wiki/Six_degrees_of_separation).
+* [Wikiracing](https://en.wikipedia.org/wiki/Wikiracing) and its implementations in apps and website such as
+  [The Wiki Game](https://itunes.apple.com/us/app/the-wiki-game-a-wikipedia-game-of-racing-and-exploring/id459318432?mt=8)
+  by Alex Clemesha and [WikiRace](http://2pages.net/wikirace.php) by 2pages.
 
 ## Contributing
 
