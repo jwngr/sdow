@@ -35,8 +35,9 @@ buckets. Check the [pricing page](https://cloud.google.com/storage/pricing) for 
 general, copying should be free within Google Cloud Platform (e.g., to another Google Cloud Storage
 bucket or to a Google Cloud Engine VM) and $0.25 per SQLite file otherwise.
 
-Use the following command to download a file, making sure to replace `<GCP_PROJECT_ID>` with your
-Google Cloud Platform project ID and `<YYYYMMDD>` with the date of the database dump:
+Use the following [`gsutil`](https://cloud.google.com/storage/docs/gsutil) command to download a
+file, making sure to replace `<GCP_PROJECT_ID>` with your Google Cloud Platform project ID and
+`<YYYYMMDD>` with the date of the database dump:
 
 ```bash
 $ gsutil -u <GCP_PROJECT_ID> cp gs://sdow-prod/dumps/<YYYYMMDD>/sdow.sqlite .
