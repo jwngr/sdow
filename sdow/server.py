@@ -21,7 +21,7 @@ if os.environ.get('SDOW_ENV') == 'prod':
   logging_client.setup_logging()
 
 # Connect to the SDOW database.
-database = Database('./sdow.sqlite')
+database = Database(sdow_database='./sdow.sqlite', searches_database='./searches.sqlite')
 
 # Initialize the Flask app.
 app = Flask(__name__)
