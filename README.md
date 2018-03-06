@@ -186,7 +186,7 @@ following instructions:
    ```
 1. Ensure auto-renewal of the SSL certificate is configured properly:
    ```bash
-   $ certbot renew --dry-run
+   $ sudo certbot renew --dry-run
    ```
 1. Run `crontab -e` and add the following cron jobs to that file to auto-renew the SSL certificate
    and restart the web server regularly (to ensure it stays responsive):
