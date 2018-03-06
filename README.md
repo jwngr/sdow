@@ -245,6 +245,9 @@ following instructions:
    **Note:** `supervisord` and `supervisorctl` must be run from the `config/` directory or specify
    the configuration file via the `-c` argument or else they will return an obscure
    `"http://localhost:9001 refused connection"` error message.
+   **Note:** Log output from `supervisord` is written to `/tmp/supervisord.log` and log output from
+   `gunicorn` is written to `/tmp/gunicorn-stdout---supervisor-<HASH>.log`. Logs are also written to
+   Stackdriver Logging.
 
 ## Historical Search Results
 
