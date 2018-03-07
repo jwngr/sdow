@@ -157,15 +157,20 @@ following instructions:
    ```bash
    $ pip install -r requirements.txt
    ```
-1. Copy the latest compressed SQLite files from the `sdow-prod` GCS bucket:
+1. Copy the latest compressed SQLite file from the `sdow-prod` GCS bucket:
    ```bash
    $ gsutil -u sdow-prod cp gs://sdow-prod/dumps/<YYYYMMDD>/sdow.sqlite.gz sdow/
-   $ gsutil -u sdow-prod cp gs://sdow-prod/backups/<YYYYMMDD>/searches.sqlite.gz sdow/
    ```
 1. Decompress the SQLite files:
    ```bash
-   $ pigz -d sdow/*.sqlite.gz
+   $ pigz -d sdow/sdow.sqlite.gz
    ```
+1. Create the `searches.sqlite` file:
+   ```bash
+   $ sqlite3 sdow/searches.sqlite ".read database/createSearchesTable.sql"
+   ```
+   **Note:** Alternatively, copy a backed-up version of `searches.sqlite` from the `sdow-prod` GCS
+   bucket at `gs://sdow-prod/backups/<YYYYMMDD>/searches.sql.gz`.
 1. Ensure the VM has been [assigned SDOW's static external IP address](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address#IP_assign).
 1. Install required operating system dependencies to generate an SSL certificate (this and the
    following instructions are based on these

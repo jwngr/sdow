@@ -192,6 +192,15 @@ else
   echo "[WARN] Already replaced titles and redirects in links file"
 fi
 
+if [ ! -f pages.pruned.txt.gz ]; then
+  echo
+  echo "[INFO] Pruning pages which are marked as redirects but with no redirect"
+  time python "$ROOT_DIR/prune_pages_file.py" pages.txt.gz redirects.with_ids.txt.gz \
+    | pigz --fast > pages.pruned.txt.gz
+else
+  echo "[WARN] Already pruned pages which are marked as redirects but with no redirect"
+fi
+
 #####################
 #  SORT LINKS FILE  #
 #####################
@@ -265,7 +274,7 @@ if [ ! -f sdow.sqlite ]; then
 
   echo
   echo "[INFO] Creating pages table"
-  time pigz -dc pages.txt.gz | sqlite3 sdow.sqlite ".read $ROOT_DIR/createPagesTable.sql"
+  time pigz -dc pages.pruned.txt.gz | sqlite3 sdow.sqlite ".read $ROOT_DIR/createPagesTable.sql"
 
   echo
   echo "[INFO] Creating links table"

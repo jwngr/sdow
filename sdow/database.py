@@ -74,6 +74,12 @@ class Database(object):
 
     result = self.sdow_cursor.fetchone()
 
+    # TODO: This will no longer be required once the April 2018 database dump occurs since this
+    # scenario is prevented by the prune_pages_file.py Python script during the database creation.
+    if not result:
+      raise ValueError(
+          'Invalid page title {0} provided. Page title does not exist.'.format(page_title))
+
     return (result[0], helpers.get_readable_page_title(result[1]), True)
 
   def fetch_page_title(self, page_id):
