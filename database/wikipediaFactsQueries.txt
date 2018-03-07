@@ -19,13 +19,14 @@ SELECT title FROM pages WHERE is_redirect = 0 ORDER BY title ASC LIMIT 10;
 # Last articles, sorted alphabetically
 SELECT title FROM pages WHERE is_redirect = 0 ORDER BY title DESC LIMIT 10;
 
-# Pages with no outgoing links (SUM OF THESE TWO QUERIES)
-SELECT COUNT(*) FROM links WHERE outgoing_links_count = 0;
+# Pages with no incoming or outgoing links (ALSO USED IN THE FOLLOWING TWO QUERIES)
 SELECT COUNT(*) FROM pages LEFT JOIN links ON pages.id = links.id WHERE is_redirect = 0 AND links.id IS NULL;
 
-# Pages with no incoming links
+# Pages with no outgoing links (ADD TO THE QUERY ABOVE)
+SELECT COUNT(*) FROM links WHERE outgoing_links_count = 0;
+
+# Pages with no incoming links (ADD TO THE QUERY TWO ABOVE)
 SELECT COUNT(*) FROM links WHERE incoming_links_count = 0;
-SELECT COUNT(*) FROM pages LEFT JOIN links ON pages.id = links.id WHERE is_redirect = 0 AND links.id IS NULL;
 
 # Pages with longest titles
 SELECT title, LENGTH(title) FROM pages WHERE is_redirect = 0 ORDER BY LENGTH(title) DESC LIMIT 10;

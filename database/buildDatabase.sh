@@ -120,7 +120,7 @@ if [ ! -f redirects.txt.gz ]; then
     | egrep "^[0-9]+,0," \
     | sed -e $"s/,0,'/\t/g" \
     | sed -e "s/','.*//g" \
-    | pigz -1 > redirects.txt.gz
+    | pigz --fast > redirects.txt.gz
 else
   echo "[WARN] Already trimmed redirects file"
 fi
@@ -142,7 +142,7 @@ if [ ! -f pages.txt.gz ]; then
     | egrep "^[0-9]+,0," \
     | sed -e $"s/,0,'/\t/" \
     | sed -e $"s/','[^,]*,[^,]*,\([01]\).*/\t\1/" \
-    | pigz -1 > pages.txt.gz
+    | pigz --fast > pages.txt.gz
 else
   echo "[WARN] Already trimmed pages file"
 fi
@@ -164,7 +164,7 @@ if [ ! -f links.txt.gz ]; then
     | egrep "^[0-9]+,0,.*,0$" \
     | sed -e $"s/,0,'/\t/g" \
     | sed -e "s/',0//g" \
-    | pigz -1 > links.txt.gz
+    | pigz --fast > links.txt.gz
 else
   echo "[WARN] Already trimmed links file"
 fi
@@ -178,7 +178,7 @@ if [ ! -f redirects.with_ids.txt.gz ]; then
   echo "[INFO] Replacing titles in redirects file"
   time python "$ROOT_DIR/replace_titles_in_redirects_file.py" pages.txt.gz redirects.txt.gz \
     | sort -S 100% -t $'\t' -k 1n,1n \
-    | pigz -1 > redirects.with_ids.txt.gz
+    | pigz --fast > redirects.with_ids.txt.gz
 else
   echo "[WARN] Already replaced titles in redirects file"
 fi
@@ -187,7 +187,7 @@ if [ ! -f links.with_ids.txt.gz ]; then
   echo
   echo "[INFO] Replacing titles and redirects in links file"
   time python "$ROOT_DIR/replace_titles_and_redirects_in_links_file.py" pages.txt.gz redirects.with_ids.txt.gz links.txt.gz \
-    | pigz -1 > links.with_ids.txt.gz
+    | pigz --fast > links.with_ids.txt.gz
 else
   echo "[WARN] Already replaced titles and redirects in links file"
 fi
@@ -201,7 +201,7 @@ if [ ! -f links.sorted_by_source_id.txt.gz ]; then
   time pigz -dc links.with_ids.txt.gz \
     | sort -S 100% -t $'\t' -k 1n,1n \
     | uniq \
-    | pigz -1 > links.sorted_by_source_id.txt.gz
+    | pigz --fast > links.sorted_by_source_id.txt.gz
 else
   echo "[WARN] Already sorted links file by source page ID"
 fi
@@ -212,7 +212,7 @@ if [ ! -f links.sorted_by_target_id.txt.gz ]; then
   time pigz -dc links.with_ids.txt.gz \
     | sort -S 100% -t $'\t' -k 2n,2n \
     | uniq \
-    | pigz -1 > links.sorted_by_target_id.txt.gz
+    | pigz --fast > links.sorted_by_target_id.txt.gz
 else
   echo "[WARN] Already sorted links file by target page ID"
 fi
@@ -226,7 +226,7 @@ if [ ! -f links.grouped_by_source_id.txt.gz ]; then
   echo "[INFO] Grouping source links file by source page ID"
   time pigz -dc links.sorted_by_source_id.txt.gz \
    | awk -F '\t' '$1==last {printf "|%s",$2; next} NR>1 {print "";} {last=$1; printf "%s\t%s",$1,$2;} END{print "";}' \
-   | pigz -1 > links.grouped_by_source_id.txt.gz
+   | pigz --fast > links.grouped_by_source_id.txt.gz
 else
   echo "[WARN] Already grouped source links file by source page ID"
 fi
@@ -249,7 +249,7 @@ if [ ! -f links.with_counts.txt.gz ]; then
   echo
   echo "[INFO] Combining grouped links files"
   time python "$ROOT_DIR/combine_grouped_links_files.py" links.grouped_by_source_id.txt.gz links.grouped_by_target_id.txt.gz \
-    | pigz -1 > links.with_counts.txt.gz
+    | pigz --fast > links.with_counts.txt.gz
 else
   echo "[WARN] Already combined grouped links files"
 fi
@@ -270,6 +270,10 @@ if [ ! -f sdow.sqlite ]; then
   echo
   echo "[INFO] Creating links table"
   time pigz -dc links.with_counts.txt.gz | sqlite3 sdow.sqlite ".read $ROOT_DIR/createLinksTable.sql"
+
+  echo
+  echo "[INFO] Compress SQLite file"
+  time pigz --best sdow.sqlite
 else
   echo "[WARN] Already created SQLite database"
 fi

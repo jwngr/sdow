@@ -29,24 +29,26 @@ SDOW only concerns itself with actual Wikipedia articles, which belong to
 
 ### Get the Data Yourself!
 
-The `sdow.sqlite` files generated below for use in this project are available for download from
-["requester pays"](https://cloud.google.com/storage/docs/requester-pays) Google Cloud Storage
+The compressed `sdow.sqlite.gz` files generated for use in this project are available for download
+from ["requester pays"](https://cloud.google.com/storage/docs/requester-pays) Google Cloud Storage
 buckets. Check the [pricing page](https://cloud.google.com/storage/pricing) for the full details. In
 general, copying should be free within Google Cloud Platform (e.g., to another Google Cloud Storage
-bucket or to a Google Cloud Engine VM) and $0.25 per SQLite file otherwise.
+bucket or to a Google Cloud Engine VM) and around $0.05 per compressed SQLite file otherwise.
 
-Use the following [`gsutil`](https://cloud.google.com/storage/docs/gsutil) command to download a
-file, making sure to replace `<GCP_PROJECT_ID>` with your Google Cloud Platform project ID and
-`<YYYYMMDD>` with the date of the database dump:
+Use the following [`gsutil`](https://cloud.google.com/storage/docs/gsutil) and
+[pigz](https://zlib.net/pigz/) commands to download a file, making sure to replace
+`<GCP_PROJECT_ID>` with your Google Cloud Platform project ID and `<YYYYMMDD>` with the date of the
+database dump:
 
 ```bash
-$ gsutil -u <GCP_PROJECT_ID> cp gs://sdow-prod/dumps/<YYYYMMDD>/sdow.sqlite .
+$ gsutil -u <GCP_PROJECT_ID> cp gs://sdow-prod/dumps/<YYYYMMDD>/sdow.sqlite.gz .
+$ pigz -d sdow.sqlite.gz
 ```
 
 Here is a list of historical files currently available for download:
 
-* `gs://sdow-prod/dumps/20180201/sdow.sqlite` (8.30 GB)
-* `gs://sdow-prod/dumps/20180301/sdow.sqlite` (8.35 GB)
+* `gs://sdow-prod/dumps/20180201/sdow.sqlite.gz` (2.99 GB)
+* `gs://sdow-prod/dumps/20180301/sdow.sqlite.gz` (3.01 GB)
 
 ## Database Creation Process
 
@@ -108,8 +110,10 @@ following instructions:
 1. Copy the script output and the resulting SQLite file to the `sdow-prod` GCS bucket:
    ```
    $ gsutil -u sdow-prod cp output.txt gs://sdow-prod/dumps/<YYYYMMDD>/
-   $ gsutil -u sdow-prod cp dump/sdow.sqlite gs://sdow-prod/dumps/<YYYYMMDD>/
+   $ gsutil -u sdow-prod cp dump/sdow.sqlite.gz gs://sdow-prod/dumps/<YYYYMMDD>/
    ```
+1. Run the [Wikipedia facts queries](./database/wikipediaFactsQueries.txt) and update the
+   [corresponding JSON file](./website/src/resources/wikipediaFacts.json).
 1. Delete the VM to prevent incurring large fees.
 
 ## Web Server
@@ -153,10 +157,14 @@ following instructions:
    ```bash
    $ pip install -r requirements.txt
    ```
-1. Copy the latest SQLite files from the `sdow-prod` GCS bucket:
+1. Copy the latest compressed SQLite files from the `sdow-prod` GCS bucket:
    ```bash
-   $ gsutil -u sdow-prod cp gs://sdow-prod/dumps/<YYYYMMDD>/sdow.sqlite ./sdow/
-   $ gsutil -u sdow-prod cp gs://sdow-prod/backups/<YYYYMMDD>/searches.sqlite ./sdow/
+   $ gsutil -u sdow-prod cp gs://sdow-prod/dumps/<YYYYMMDD>/sdow.sqlite.gz sdow/
+   $ gsutil -u sdow-prod cp gs://sdow-prod/backups/<YYYYMMDD>/searches.sqlite.gz sdow/
+   ```
+1. Decompress the SQLite files:
+   ```bash
+   $ pigz -d sdow/*.sqlite.gz
    ```
 1. Ensure the VM has been [assigned SDOW's static external IP address](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address#IP_assign).
 1. Install required operating system dependencies to generate an SSL certificate (this and the
