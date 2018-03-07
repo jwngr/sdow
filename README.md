@@ -202,9 +202,9 @@ following instructions:
    regularly restart the web server (to ensure it stays responsive), and backup the searches
    database weekly:
    ```
-   0 0,12 * * * python -c 'import random; import time; time.sleep(random.random() * 3600)' && /usr/bin/certbot renew
+   0 4 * * * /usr/bin/certbot renew --noninteractive --renew-hook "/bin/systemctl reload nginx" >> /var/log/le-renew.log
    */10 * * * * /home/jwngr/sdow/env/bin/supervisorctl -c /home/jwngr/sdow/config/supervisord.conf restart gunicorn
-   0 0 * * 0 /home/jwngr/sdow/database/backupSearchesDatabase.sh
+   0 6 * * 0 /home/jwngr/sdow/database/backupSearchesDatabase.sh
    ```
 1. Generate a strong Diffie-Hellman group to further increase security (note that this can take a
    couple minutes):
