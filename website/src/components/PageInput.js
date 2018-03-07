@@ -53,7 +53,7 @@ class PageInput extends React.Component {
       pithumbsize: '160',
       pilimit: '30',
       wbptterms: 'description',
-      gpsnamespace: '0', // Only return results in Wikipedia's main namespace
+      gpsnamespace: 0, // Only return results in Wikipedia's main namespace
       gpslimit: 5, // Return at most five results
       origin: '*',
     };
@@ -72,21 +72,28 @@ class PageInput extends React.Component {
         const suggestions = [];
 
         const pageResults = _.get(response, 'data.query.pages', {});
-        _.forEach(pageResults, ({index, title, terms, thumbnail}) => {
-          let description = _.get(terms, 'description.0');
-          if (description) {
-            description = description.charAt(0).toUpperCase() + description.slice(1);
+        _.forEach(pageResults, ({ns, index, title, terms, thumbnail}) => {
+          // Due to https://phabricator.wikimedia.org/T189139, results will not always be limited
+          // to the main namespace (0), so ignore all results which have a different namespace.
+          if (ns === 0) {
+            let description = _.get(terms, 'description.0');
+            if (description) {
+              description = description.charAt(0).toUpperCase() + description.slice(1);
+            }
+
+            suggestions[index - 1] = {
+              title,
+              description,
+              thumbnailUrl: _.get(thumbnail, 'source'),
+            };
           }
-          suggestions[index - 1] = {
-            title,
-            description,
-            thumbnailUrl: _.get(thumbnail, 'source'),
-          };
         });
 
+        // Due to ignoring non-main namespaces above, the suggestions array may have some missing
+        // items, so remove them via _.filter().
         this.setState({
           isFetching: false,
-          suggestions: suggestions,
+          suggestions: _.filter(suggestions),
         });
       })
       .catch((error) => {
