@@ -7,6 +7,7 @@ import LoadingContainer from '../containers/LoadingContainer';
 import ResultsContainer from '../containers/ResultsContainer';
 import ErrorMessageContainer from '../containers/ErrorMessageContainer';
 import SearchButtonContainer from '../containers/SearchButtonContainer';
+import SwapInputValuesButton from '../containers/SwapInputValuesButton';
 import TargetPageInputContainer from '../containers/TargetPageInputContainer';
 import SourcePageInputContainer from '../containers/SourcePageInputContainer';
 
@@ -74,7 +75,7 @@ class Home extends Component {
         <P>Find the shortest paths from</P>
         <InputFlexContainer>
           <SourcePageInputContainer />
-          <P>to</P>
+          <SwapInputValuesButton />
           <TargetPageInputContainer />
         </InputFlexContainer>
 
