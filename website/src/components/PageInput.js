@@ -27,12 +27,21 @@ class PageInput extends React.Component {
     props.updateInputPlaceholderText(getRandomPageTitle());
 
     this.debouncedLoadSuggestions = _.debounce(this.loadSuggestions, 250);
+  }
 
-    if (props.value === '') {
-      this.placeholderTextInterval = setInterval(
-        () => props.updateInputPlaceholderText(getRandomPageTitle()),
-        3000
-      );
+  componentWillReceiveProps(nextProps) {
+    if (
+      typeof this.placeholderTextInterval === 'undefined' ||
+      this.props.value !== nextProps.value
+    ) {
+      clearInterval(this.placeholderTextInterval);
+
+      if (nextProps.value === '') {
+        this.placeholderTextInterval = setInterval(
+          () => this.props.updateInputPlaceholderText(getRandomPageTitle()),
+          5000
+        );
+      }
     }
   }
 
@@ -108,7 +117,7 @@ class PageInput extends React.Component {
   }
 
   render() {
-    const {value, setPageTitle, placeholderText, updateInputPlaceholderText} = this.props;
+    const {value, setPageTitle, placeholderText} = this.props;
     const {suggestions} = this.state;
 
     return (
@@ -129,15 +138,6 @@ class PageInput extends React.Component {
             placeholder: placeholderText,
             onChange: (event, {newValue}) => {
               setPageTitle(newValue);
-              if (newValue === '') {
-                this.placeholderTextInterval = setInterval(
-                  () => updateInputPlaceholderText(getRandomPageTitle()),
-                  5000
-                );
-              } else if (this.placeholderTextInterval !== null) {
-                clearInterval(this.placeholderTextInterval);
-                this.placeholderTextInterval = null;
-              }
             },
             value,
           }}

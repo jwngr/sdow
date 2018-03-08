@@ -72,101 +72,81 @@ export function fetchShortestPaths() {
       targetPagePlaceholderText,
     } = getState();
 
-    let inputValidationErrorMessage;
-    if (sourcePageTitle === '' && targetPageTitle === '') {
-      dispatch(setSourcePageTitle(sourcePagePlaceholderText));
-      dispatch(setTargetPageTitle(targetPagePlaceholderText));
-      sourcePageTitle = sourcePagePlaceholderText;
-      targetPageTitle = targetPagePlaceholderText;
-      // inputValidationErrorMessage =
-      // "You'll probably want to choose the start and end pages before you hit that.";
-    } else if (sourcePageTitle === '') {
-      dispatch(setSourcePageTitle(sourcePagePlaceholderText));
-      sourcePageTitle = sourcePagePlaceholderText;
-      // inputValidationErrorMessage =
-      // "You'll probably want to choose the start page before you hit that.";
-    } else if (targetPageTitle === '') {
-      dispatch(setTargetPageTitle(targetPagePlaceholderText));
-      targetPageTitle = targetPagePlaceholderText;
-      // inputValidationErrorMessage =
-      // "You'll probably want to choose the end page before you hit that.";
-    }
+    // Use the placeholder text if the inputs are empty.
+    sourcePageTitle = sourcePageTitle || sourcePagePlaceholderText;
+    targetPageTitle = targetPageTitle || targetPagePlaceholderText;
 
-    if (typeof inputValidationErrorMessage !== 'undefined') {
-      dispatch(setErrorMessage(inputValidationErrorMessage));
-    } else {
-      dispatch(setFetchingResults());
-
-      const startTimeInMilliseconds = Date.now();
-
-      return axios({
-        url: `${SDOW_API_URL}/paths`,
-        method: 'POST',
-        data: {
+    // Update the page URL, which will update the soure and target page inputs if needed.
+    dispatch(
+      replace({
+        pathname: '/',
+        query: {
           source: sourcePageTitle,
           target: targetPageTitle,
         },
-      }).then(
-        (response) => {
-          const {
-            pages,
-            paths,
+      })
+    );
+
+    dispatch(setFetchingResults());
+
+    const startTimeInMilliseconds = Date.now();
+
+    return axios({
+      url: `${SDOW_API_URL}/paths`,
+      method: 'POST',
+      data: {
+        source: sourcePageTitle,
+        target: targetPageTitle,
+      },
+    }).then(
+      (response) => {
+        const {
+          pages,
+          paths,
+          sourcePageTitle,
+          targetPageTitle,
+          isSourceRedirected,
+          isTargetRedirected,
+        } = response.data;
+
+        const pathsDenormalized = paths.map((path) => {
+          return path.map((pageId) => {
+            return pages[pageId];
+          });
+        });
+
+        // Update the path results.
+        dispatch(
+          setShortestPathResults({
             sourcePageTitle,
             targetPageTitle,
             isSourceRedirected,
             isTargetRedirected,
-          } = response.data;
-
-          const pathsDenormalized = paths.map((path) => {
-            return path.map((pageId) => {
-              return pages[pageId];
-            });
-          });
-
-          // Update the page URL.
+            paths: pathsDenormalized,
+            durationInSeconds: ((Date.now() - startTimeInMilliseconds) / 1000).toFixed(2),
+          })
+        );
+      },
+      // Don't use catch, because that will also catch any errors in the dispatch and resulting
+      // render, causing a loop of 'Unexpected batch number' errors.
+      (error) => {
+        if (error.message === 'Network Error') {
+          // This can happen when the server is down, the Flask app is not running, or when the
+          // FLASK_DEBUG environment variable is set to 1 and there is a 5xx server error (see
+          // https://github.com/corydolphin/flask-cors/issues/67 for details).
           dispatch(
-            replace({
-              pathname: '/',
-              query: {
-                source: sourcePageTitle,
-                target: targetPageTitle,
-              },
-            })
+            setErrorMessage(
+              'Whoops... Six Degrees of Wikipedia is temporarily unavailable. Please try again in a few seconds.'
+            )
           );
-
-          // Update the path results.
-          dispatch(
-            setShortestPathResults({
-              sourcePageTitle,
-              targetPageTitle,
-              isSourceRedirected,
-              isTargetRedirected,
-              paths: pathsDenormalized,
-              durationInSeconds: ((Date.now() - startTimeInMilliseconds) / 1000).toFixed(2),
-            })
-          );
-        },
-        // Don't use catch, because that will also catch any errors in the dispatch and resulting
-        // render, causing a loop of 'Unexpected batch number' errors.
-        (error) => {
-          if (error.message === 'Network Error') {
-            // This can happen when the server is down, the Flask app is not running, or when the
-            // FLASK_DEBUG environment variable is set to 1 and there is a 5xx server error (see
-            // https://github.com/corydolphin/flask-cors/issues/67 for details).
-            dispatch(
-              setErrorMessage(
-                'Whoops... Six Degrees of Wikipedia is temporarily unavailable. Please try again in a few seconds.'
-              )
-            );
-          } else {
-            // This can happen when there is a 4xx or 5xx error (except for the case noted in the
-            // comment above).
-            const defaultErrorMessage =
-              'Whoops... something is broken and has been reported. In the mean time, please try a different search.';
-            dispatch(setErrorMessage(_.get(error, 'response.data.error', defaultErrorMessage)));
-          }
+        } else {
+          // This can happen when there is a 4xx or 5xx error (except for the case noted in the
+          // comment above).
+          const defaultErrorMessage =
+            'Whoops... something is broken and has been reported. In the mean time, please try a different search.';
+          dispatch(setErrorMessage(_.get(error, 'response.data.error', defaultErrorMessage)));
         }
-      );
-    }
+      }
+    );
   };
 }
