@@ -2,6 +2,8 @@
 Server web framework.
 """
 
+from __future__ import print_function
+
 import os
 import time
 import logging
@@ -15,13 +17,8 @@ from flask import Flask, request, jsonify
 from helpers import InvalidRequest, fetch_wikipedia_pages_info
 
 
-# Initialize GCP logging (production only).
-if os.environ.get('SDOW_ENV') == 'prod':
-  logging_client = google.cloud.logging.Client()
-  logging_client.setup_logging()
-
 # Connect to the SDOW database.
-database = Database('./sdow.sqlite')
+database = Database(sdow_database='./sdow.sqlite', searches_database='./searches.sqlite')
 
 # Initialize the Flask app.
 app = Flask(__name__)
@@ -33,6 +30,17 @@ CORS(app)
 
 # Add gzip compression.
 Compress(app)
+
+
+# Gunicorn entry point.
+def load_app(environment='dev'):
+  # Initialize GCP logging (production only).
+  if environment == 'prod':
+    print('[INFO] Starting app in production mode with remote logging enabled...')
+    logging_client = google.cloud.logging.Client()
+    logging_client.setup_logging()
+
+  return app
 
 
 @app.errorhandler(Exception)

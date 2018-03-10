@@ -1,13 +1,16 @@
 from __future__ import print_function
 
+import os
 import sqlite3
 from collections import defaultdict
 
-mock_database_filename = 'sdow.sqlite'
+cwd = os.path.dirname(__file__)
+mock_sdow_database_filename = os.path.join(cwd, '../sdow/sdow.sqlite')
+mock_searches_database_filename = os.path.join(cwd, '../sdow/searches.sqlite')
 
-print('[INFO] Creating mock database: {0}'.format(mock_database_filename))
+print('[INFO] Creating mock SDOW database: {0}'.format(mock_sdow_database_filename))
 
-conn = sqlite3.connect(mock_database_filename)
+conn = sqlite3.connect(mock_sdow_database_filename)
 
 
 # Create pages table.
@@ -123,11 +126,18 @@ for page_id, outgoing_links in forward_links:
   conn.execute('INSERT INTO links VALUES ({0}, {1}, {2}, "{3}", "{4}");'.format(
       prod_page_ids[page_id], outgoing_links_count, incoming_links_count, outgoing_links, incoming_links))
 
+conn.commit()
+
+print('[INFO] Successfully created mock SDOW database: {0}'.format(mock_sdow_database_filename))
+
+
+print('[INFO] Creating mock searches database: {0}'.format(mock_searches_database_filename))
+
+conn = sqlite3.connect(mock_searches_database_filename)
 
 # Create searches table.
 conn.execute('DROP TABLE IF EXISTS searches')
 conn.execute('CREATE TABLE IF NOT EXISTS searches(source_id INTEGER NOT NULL, target_id INTEGER NOT NULL, duration REAL NOT NULL, degrees_count INTEGER, paths_count INTEGER NOT NULL, paths TEXT, t TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL);')
 
-conn.commit()
-
-print('[INFO] Successfully created mock database: {0}'.format(mock_database_filename))
+print('[INFO] Successfully created mock searches database: {0}'.format(
+    mock_searches_database_filename))

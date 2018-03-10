@@ -2,7 +2,9 @@
 Helper classes and methods.
 """
 
+import logging
 import requests
+
 
 WIKIPEDIA_API_URL = 'https://en.wikipedia.org/w/api.php'
 
@@ -48,7 +50,16 @@ def fetch_wikipedia_pages_info(page_ids, database):
 
     req = requests.get(WIKIPEDIA_API_URL, params=query_params, headers=headers)
 
-    pages_result = req.json().get('query', {}).get('pages')
+    try:
+      pages_result = req.json().get('query', {}).get('pages')
+    except ValueError as error:
+      # Log and re-raise the exception.
+      logging.exception({
+          'error': 'Failed to decode MediaWiki API response: "{0}"'.format(error),
+          'status_code': req.status_code,
+          'response_text': req.text,
+      })
+      raise error
 
     for page_id, page in pages_result.iteritems():
       page_id = int(page_id)

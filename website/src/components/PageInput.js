@@ -27,12 +27,21 @@ class PageInput extends React.Component {
     props.updateInputPlaceholderText(getRandomPageTitle());
 
     this.debouncedLoadSuggestions = _.debounce(this.loadSuggestions, 250);
+  }
 
-    if (props.value === '') {
-      this.placeholderTextInterval = setInterval(
-        () => props.updateInputPlaceholderText(getRandomPageTitle()),
-        3000
-      );
+  componentWillReceiveProps(nextProps) {
+    if (
+      typeof this.placeholderTextInterval === 'undefined' ||
+      this.props.value !== nextProps.value
+    ) {
+      clearInterval(this.placeholderTextInterval);
+
+      if (nextProps.value === '') {
+        this.placeholderTextInterval = setInterval(
+          () => this.props.updateInputPlaceholderText(getRandomPageTitle()),
+          5000
+        );
+      }
     }
   }
 
@@ -53,7 +62,7 @@ class PageInput extends React.Component {
       pithumbsize: '160',
       pilimit: '30',
       wbptterms: 'description',
-      gpsnamespace: '0', // Only return results in Wikipedia's main namespace
+      gpsnamespace: 0, // Only return results in Wikipedia's main namespace
       gpslimit: 5, // Return at most five results
       origin: '*',
     };
@@ -72,21 +81,28 @@ class PageInput extends React.Component {
         const suggestions = [];
 
         const pageResults = _.get(response, 'data.query.pages', {});
-        _.forEach(pageResults, ({index, title, terms, thumbnail}) => {
-          let description = _.get(terms, 'description.0');
-          if (description) {
-            description = description.charAt(0).toUpperCase() + description.slice(1);
+        _.forEach(pageResults, ({ns, index, title, terms, thumbnail}) => {
+          // Due to https://phabricator.wikimedia.org/T189139, results will not always be limited
+          // to the main namespace (0), so ignore all results which have a different namespace.
+          if (ns === 0) {
+            let description = _.get(terms, 'description.0');
+            if (description) {
+              description = description.charAt(0).toUpperCase() + description.slice(1);
+            }
+
+            suggestions[index - 1] = {
+              title,
+              description,
+              thumbnailUrl: _.get(thumbnail, 'source'),
+            };
           }
-          suggestions[index - 1] = {
-            title,
-            description,
-            thumbnailUrl: _.get(thumbnail, 'source'),
-          };
         });
 
+        // Due to ignoring non-main namespaces above, the suggestions array may have some missing
+        // items, so remove them via _.filter().
         this.setState({
           isFetching: false,
-          suggestions: suggestions,
+          suggestions: _.filter(suggestions),
         });
       })
       .catch((error) => {
@@ -101,7 +117,7 @@ class PageInput extends React.Component {
   }
 
   render() {
-    const {value, setPageTitle, placeholderText, updateInputPlaceholderText} = this.props;
+    const {value, setPageTitle, placeholderText} = this.props;
     const {suggestions} = this.state;
 
     return (
@@ -122,15 +138,6 @@ class PageInput extends React.Component {
             placeholder: placeholderText,
             onChange: (event, {newValue}) => {
               setPageTitle(newValue);
-              if (newValue === '') {
-                this.placeholderTextInterval = setInterval(
-                  () => updateInputPlaceholderText(getRandomPageTitle()),
-                  5000
-                );
-              } else if (this.placeholderTextInterval !== null) {
-                clearInterval(this.placeholderTextInterval);
-                this.placeholderTextInterval = null;
-              }
             },
             value,
           }}
