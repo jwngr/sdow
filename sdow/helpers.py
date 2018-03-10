@@ -52,7 +52,7 @@ def fetch_wikipedia_pages_info(page_ids, database):
 
     try:
       pages_result = req.json().get('query', {}).get('pages')
-    except Exception as error:
+    except ValueError as error:
       # Log and re-raise the exception.
       logging.exception({
           'error': 'Failed to decode MediaWiki API response: "{0}"'.format(error),
