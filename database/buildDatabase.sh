@@ -11,7 +11,8 @@ if [[ $# -eq 0 ]]; then
   DOWNLOAD_DATE=$(wget -q -O- https://dumps.wikimedia.your.org/enwiki/ | grep -Po '\d{8}' | sort | tail -n1)
 else
   if [ ${#1} -ne 8 ]; then
-    DOWNLOAD_DATE="latest"
+    echo "[ERROR] Invalid download date provided: $1"
+    exit 1
   else
     DOWNLOAD_DATE=$1
   fi
@@ -31,45 +32,50 @@ LINKS_FILENAME="enwiki-$DOWNLOAD_DATE-pagelinks.sql.gz"
 
 # Make the output directory if it doesn't already exist and move to it
 mkdir -p $OUT_DIR
-pushd $OUT_DIR
+pushd $OUT_DIR > /dev/null
 
 
+echo "[INFO] Download date: $DOWNLOAD_DATE"
 echo "[INFO] Download URL: $DOWNLOAD_URL"
 echo "[INFO] Output directory: $OUT_DIR"
+echo
 
 ##############################
 #  DOWNLOAD WIKIPEDIA DUMPS  #
 ##############################
 
-function grab() {
+function download_file() {
   if [ ! -f $2 ]; then
     echo
-    echo "[INFO] Downloading $1 file"
     if [ $1 != sha1sums ] && command -v aria2c > /dev/null; then
-      # we can download using torrents!
-      aria2c --summary-interval=0 --console-log-level=warn --seed-time=0 \
+      echo "[INFO] Downloading $1 file via torrent"
+      time aria2c --summary-interval=0 --console-log-level=warn --seed-time=0 \
         "$TORRENT_URL/$2.torrent"
     else
-      wget --progress=dot:giga "$DOWNLOAD_URL/$2"
+      echo "[INFO] Downloading $1 file via wget"
+      time wget --progress=dot:giga "$DOWNLOAD_URL/$2"
     fi
+
     if [ $1 != sha1sums ]; then
-      grep "$2" "$SHA1SUM_FILENAME" | time sha1sum -c
+      echo
+      echo "[INFO] Verifying SHA-1 hash for $1 file"
+      time grep "$2" "$SHA1SUM_FILENAME" | sha1sum -c
       if [ $? -ne 0 ]; then
         echo
-        echo "[ERROR] Downloaded $1 file has incorrect sha1sum"
+        echo "[ERROR] Downloaded $1 file has incorrect SHA-1 hash"
         rm $2
         exit 1
       fi
     fi
   else
-    echo "[WARN] already downloaded $1 file"
+    echo "[WARN] Already downloaded $1 file"
   fi
 }
 
-grab sha1sums $SHA1SUM_FILENAME
-grab redirects $REDIRECTS_FILENAME
-grab pages $PAGES_FILENAME
-grab links $LINKS_FILENAME
+download_file "sha1sums" $SHA1SUM_FILENAME
+download_file "redirects" $REDIRECTS_FILENAME
+download_file "pages" $PAGES_FILENAME
+download_file "links" $LINKS_FILENAME
 
 ##########################
 #  TRIM WIKIPEDIA DUMPS  #
