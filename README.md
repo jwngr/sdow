@@ -169,8 +169,12 @@ following instructions:
    ```bash
    $ sqlite3 sdow/searches.sqlite ".read database/createSearchesTable.sql"
    ```
-   **Note:** Alternatively, copy a backed-up version of `searches.sqlite` from the `sdow-prod` GCS
-   bucket at `gs://sdow-prod/backups/<YYYYMMDD>/searches.sql.gz`.
+   **Note:** Alternatively, copy a backed-up version of `searches.sqlite`:
+   ```bash
+   $ gsutil -u sdow-prod cp gs://sdow-prod/backups/<YYYYMMDD>/searches-<YYYYMMDD>.sql.gz .
+   $ pigz -d searches-<YYYYMMDD>.sql.gz
+   $ sqlite3 searches.sqlite ".read searches-<YYYYMMDD>.sql"
+   ```
 1. Ensure the VM has been [assigned SDOW's static external IP address](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address#IP_assign).
 1. Install required operating system dependencies to generate an SSL certificate (this and the
    following instructions are based on these
