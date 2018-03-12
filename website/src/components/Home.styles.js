@@ -3,21 +3,6 @@ import styled from 'styled-components';
 
 ReactModal.setAppElement('#root');
 
-export const Logo = styled.img`
-  width: 460px;
-  display: block;
-  margin: 40px auto 32px auto;
-
-  @media (max-width: 1200px) {
-    width: 400px;
-  }
-
-  @media (max-width: 600px) {
-    width: 70%;
-    margin-bottom: 20px;
-  }
-`;
-
 export const Modal = styled(ReactModal)`
   position: absolute;
   top: 80px;

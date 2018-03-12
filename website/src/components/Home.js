@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {Link} from 'redux-little-router';
 
+import Logo from '../components/common/Logo';
 import IconLinks from '../components/IconLinks';
 
 import LoadingContainer from '../containers/LoadingContainer';
@@ -11,10 +11,7 @@ import SwapInputValuesButton from '../containers/SwapInputValuesButton';
 import TargetPageInputContainer from '../containers/TargetPageInputContainer';
 import SourcePageInputContainer from '../containers/SourcePageInputContainer';
 
-import logo from '../images/logo.png';
-import logo2x from '../images/logo@2x.png';
-
-import {P, Logo, Modal, InputFlexContainer} from './Home.styles';
+import {P, Modal, InputFlexContainer} from './Home.styles';
 
 class Home extends Component {
   constructor() {
@@ -39,14 +36,7 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <Link href="/">
-          <Logo
-            srcset={`${logo} 462w, ${logo2x} 924w`}
-            sizes="(max-width: 600px) 280px, 800px"
-            src={logo2x}
-            alt="Six Degrees of Wikipedia Logo"
-          />
-        </Link>
+        <Logo />
 
         <IconLinks handleOpenModal={this.handleOpenModal.bind(this)} />
 

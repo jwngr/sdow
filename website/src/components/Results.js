@@ -2,11 +2,11 @@ import React, {Component} from 'react';
 
 import ResultsList from './ResultsList';
 import ResultsGraph from './ResultsGraph';
-import WikipediaPageLink from './WikipediaPageLink';
+import StyledLink from './common/StyledLink';
 
 import {ResultsMessage} from './Results.styles';
 
-import {getNumberWithCommas} from '../utils';
+import {getNumberWithCommas, getWikipediaPageUrl} from '../utils';
 
 class Results extends Component {
   /**
@@ -101,6 +101,17 @@ class Results extends Component {
       return null;
     }
 
+    const sourcePageLink = (
+      <StyledLink href={getWikipediaPageUrl(sourcePageTitle)} target="_blank">
+        {sourcePageTitle}
+      </StyledLink>
+    );
+    const targetPageLink = (
+      <StyledLink href={getWikipediaPageUrl(targetPageTitle)} target="_blank">
+        {targetPageTitle}
+      </StyledLink>
+    );
+
     // No paths found.
     if (paths.length === 0) {
       return (
@@ -111,9 +122,7 @@ class Results extends Component {
             </i>
           </p>
           <p>
-            <b>No path</b> of Wikipedia links exists from{' '}
-            <WikipediaPageLink title={sourcePageTitle} /> to{' '}
-            <WikipediaPageLink title={targetPageTitle} />.
+            <b>No path</b> of Wikipedia links exists from {sourcePageLink} to {targetPageLink}.
           </p>
           {this.renderRedirectWarning(
             sourcePageTitle,
@@ -142,8 +151,8 @@ class Results extends Component {
             <b>
               {degreesOfSeparation} {degreeOrDegrees}
             </b>{' '}
-            of separation from <WikipediaPageLink title={sourcePageTitle} /> to{' '}
-            <WikipediaPageLink title={targetPageTitle} /> in <b>{durationInSeconds} seconds</b>!
+            of separation from {sourcePageLink} to {targetPageLink} in{' '}
+            <b>{durationInSeconds} seconds</b>!
           </p>
           {this.renderRedirectWarning(isSourceRedirected, isTargetRedirected)}
         </ResultsMessage>

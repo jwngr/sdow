@@ -1,28 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import {getWikipediaPageUrl} from '../utils';
-
-const Wrapper = styled.a`
+const StyledLinkWrapper = styled.a`
   position: relative;
   display: inline-block;
   outline: none;
   color: ${(props) => props.theme.colors.darkGreen};
   vertical-align: bottom;
   text-decoration: none;
-  word-break: break-all;
-
+  word-break: ${(props) => props.wordBreak || 'normal'};
+  cursor: pointer;
   margin: 0 4px;
   padding: 0;
   font-weight: bold;
-  transition: color 0.2s;
-
-  & {
-    font-weight: 500;
-    transition: color 0.3s;
-    perspective: 600px;
-    perspective-origin: 50% 100%;
-  }
+  transition: 0.3s;
+  perspective: 600px;
+  perspective-origin: 50% 100%;
 
   &:hover,
   &:focus {
@@ -44,7 +37,7 @@ const Wrapper = styled.a`
 
   &::before {
     background-color: ${(props) => props.theme.colors.yellow};
-    transition: transform 0.2s;
+    transition: transform 0.3s;
     transition-timing-function: cubic-bezier(0.7, 0, 0.3, 1);
     transform: rotateX(90deg);
     transform-origin: 50% 100%;
@@ -60,8 +53,17 @@ const Wrapper = styled.a`
   }
 `;
 
-export default ({title}) => (
-  <Wrapper href={getWikipediaPageUrl(title)} target="_blank">
-    {title}
-  </Wrapper>
-);
+export default ({children, ...props}) => {
+  // Change the word break behavior for long article names with no space (to avoid them trailing
+  // off the page).
+  let wordBreak;
+  if (children.indexOf(' ') === -1 && children.length >= 50) {
+    wordBreak = 'break-all';
+  }
+
+  return (
+    <StyledLinkWrapper wordBreak={wordBreak} {...props}>
+      {children}
+    </StyledLinkWrapper>
+  );
+};

@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 
 import {Fact, Wrapper, LoadingIndicator} from './Loading.styles.js';
 
-import WikipediaPageLink from './WikipediaPageLink';
+import StyledLink from './common/StyledLink';
 
-import {getRandomWikipediaFact} from '../utils';
+import {getWikipediaPageUrl, getRandomWikipediaFact} from '../utils';
 
 class Loading extends Component {
   constructor() {
@@ -43,7 +43,11 @@ class Loading extends Component {
             skipCount = 2;
             token = tokens[i] + '"' + tokens[i + 1] + '"' + tokens[i + 2];
           }
-          factContent.push(<WikipediaPageLink title={token} key={i} />);
+          factContent.push(
+            <StyledLink href={getWikipediaPageUrl(token)} target="_blank" key={i}>
+              {token}
+            </StyledLink>
+          );
         }
       } else {
         skipCount--;
