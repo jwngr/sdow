@@ -1,0 +1,155 @@
+# Attach SDOW database
+ATTACH DATABASE './sdow.sqlite' AS sdow;
+
+# Total number of searches
+SELECT COUNT(*)
+FROM searches;
+
+# Unique searches
+SELECT COUNT(*)
+FROM
+  (SELECT DISTINCT source_id, target_id
+   FROM searches);
+
+# Searches with no results paths found
+SELECT COUNT(*)
+FROM searches
+WHERE degrees_count IS NULL;
+
+# Searches with the highest degrees of separation (unique searches only)
+SELECT p1.title,
+       p2.title,
+       MAX(degrees_count)
+FROM (SELECT DISTINCT source_id, target_id, degrees_count)
+JOIN sdow.pages AS p1 ON source_id = p1.id
+JOIN sdow.pages AS p2 ON target_id = p2.id
+LIMIT 10;
+
+# Search which took the longest to complete
+SELECT p1.title,
+       p2.title,
+       MAX(duration)
+FROM searches AS s
+JOIN sdow.pages AS p1 ON s.source_id = p1.id
+JOIN sdow.pages AS p2 ON s.target_id = p2.id;
+
+# Average degrees of separation (unique searches only, ignore identity searches)
+SELECT AVG(degrees_count)
+FROM
+  (SELECT DISTINCT source_id, target_id, degrees_count
+   FROM searches WHERE degrees_count != 0);
+
+# Average search duration
+SELECT AVG(duration)
+FROM searches;
+
+# Most popular searches
+SELECT p1.title,
+       p2.title,
+       COUNT(*) AS search_count
+FROM searches AS s
+JOIN sdow.pages AS p1 ON s.source_id = p1.id
+JOIN sdow.pages AS p2 ON s.target_id = p2.id
+GROUP BY s.source_id,
+         s.target_id
+ORDER BY search_count DESC
+LIMIT 10;
+
+
+# Most popular pages (all searches)
+SELECT p.title,
+       COUNT(*) AS search_count
+FROM searches AS s
+JOIN sdow.pages AS p ON s.source_id = p.id OR s.target_id = p.id
+GROUP BY p.id
+ORDER BY search_count DESC
+LIMIT 10;
+
+# Most popular pages (unique searches only)
+SELECT p.title,
+       COUNT(*) AS search_count
+FROM (SELECT DISTINCT source_id, target_id, degrees_count
+   FROM searches)
+JOIN sdow.pages AS p ON source_id = p.id OR target_id = p.id
+GROUP BY p.id
+ORDER BY search_count DESC
+LIMIT 10;
+
+# Most popular source pages (unique searches only)
+SELECT p.title,
+       COUNT(*) AS search_count
+FROM (SELECT DISTINCT source_id, target_id, degrees_count
+   FROM searches)
+JOIN sdow.pages AS p ON source_id = p.id
+GROUP BY p.id
+ORDER BY search_count DESC
+LIMIT 10;
+
+# Most popular target pages (unique searches only)
+SELECT p.title,
+       COUNT(*) AS search_count
+FROM (SELECT DISTINCT source_id, target_id, degrees_count
+   FROM searches)
+JOIN sdow.pages AS p ON target_id = p.id
+GROUP BY p.id
+ORDER BY search_count DESC
+LIMIT 10;
+
+# Degrees of separation histogram (all searches)
+SELECT degrees_count,
+       COUNT(*)
+FROM searches
+GROUP BY degrees_count
+ORDER BY degrees_count;
+
+# Degrees of separation histogram (unique searches only)
+SELECT degrees_count,
+       COUNT(*)
+FROM
+  (SELECT DISTINCT source_id, target_id, degrees_count
+   FROM searches)
+GROUP BY degrees_count
+ORDER BY degrees_count;
+
+# Most result paths for each degree of separation
+SELECT p1.title,
+       p2.title,
+       degrees_count,
+       MAX(paths_count)
+FROM
+  (SELECT DISTINCT source_id, target_id, degrees_count, paths_count
+   FROM searches WHERE degrees_count > 1)
+JOIN sdow.pages AS p1 ON source_id = p1.id
+JOIN sdow.pages AS p2 ON target_id = p2.id
+GROUP BY degrees_count
+ORDER BY degrees_count;
+
+# Histogram of searches per day
+SELECT DATE(t) as date, COUNT(*) FROM searches GROUP BY date;
+
+# Search duration (50th percentile)
+SELECT duration
+FROM searches
+ORDER BY duration ASC
+LIMIT 1
+OFFSET
+  (SELECT COUNT(*)
+   FROM searches) * 50 / 100 - 1;
+
+# Search duration (95th percentile)
+SELECT duration
+FROM searches
+ORDER BY duration ASC
+LIMIT 1
+OFFSET
+  (SELECT COUNT(*)
+   FROM searches) * 95 / 100 - 1;
+
+# Search duration (99th percentile)
+SELECT duration
+FROM searches
+ORDER BY duration ASC
+LIMIT 1
+OFFSET
+  (SELECT COUNT(*)
+   FROM searches) * 99 / 100 - 1;
