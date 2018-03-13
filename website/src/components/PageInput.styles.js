@@ -14,18 +14,17 @@ export const AutosuggestWrapper = styled.div`
     padding: 12px;
     text-overflow: ellipsis;
 
-    &::-webkit-input-placeholder {
+    &::placeholder {
       color: ${(props) => props.theme.colors.darkGreen};
       opacity: 0.5;
-      -webkit-transition: opacity 0.35s ease-in-out;
       transition: opacity 0.35s ease-in-out;
     }
 
-    &:hover::-webkit-input-placeholder {
+    &:hover::placeholder {
       opacity: 0.75;
     }
 
-    &:focus::-webkit-input-placeholder {
+    &:focus::placeholder {
       opacity: 0;
     }
   }

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Button from '../components/Button';
+import Button from './common/Button';
 
 const SearchButton = Button.extend`
   width: 240px;

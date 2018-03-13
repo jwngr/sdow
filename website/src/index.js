@@ -4,12 +4,14 @@ import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import Particles from 'react-particles-js';
 import {ThemeProvider} from 'styled-components';
-import {routerForBrowser, initializeCurrentLocation} from 'redux-little-router';
 import {combineReducers, compose, createStore, applyMiddleware} from 'redux';
+import {Fragment, routerForBrowser, initializeCurrentLocation} from 'redux-little-router';
 
 import registerServiceWorker from './registerServiceWorker';
 
 import Home from './components/Home';
+import Blog from './components/blog/Blog';
+import BlogPost from './components/blog/BlogPost';
 
 import theme from './resources/theme.json';
 import particlesConfig from './resources/particles.config.json';
@@ -26,7 +28,9 @@ require('typeface-crimson-text');
 // Router
 const routes = {
   '/': {
-    title: 'Home',
+    '/blog': {
+      '/:postId': true,
+    },
   },
 };
 
@@ -66,7 +70,19 @@ ReactDOM.render(
         }}
       />
       <Provider store={store}>
-        <Home />
+        <Fragment forRoute="/">
+          <div>
+            <Fragment forRoute="/blog/:postId">
+              <BlogPost />
+            </Fragment>
+            <Fragment forRoute="/blog">
+              <Blog />
+            </Fragment>
+            <Fragment forRoute="/" forNoMatch>
+              <Home />
+            </Fragment>
+          </div>
+        </Fragment>
       </Provider>
     </React.Fragment>
   </ThemeProvider>,

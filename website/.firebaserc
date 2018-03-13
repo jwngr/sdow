@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "sdow-prod"
+    "default": "sdow-prod",
+    "staging": "sdow-staging"
   }
 }
