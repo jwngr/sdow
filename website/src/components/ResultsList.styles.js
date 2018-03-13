@@ -46,10 +46,11 @@ export const PageWrapper = styled.a`
   align-items: center;
   height: 80px;
   cursor: pointer;
-  color: black;
-  background-color: ${(props) => props.backgroundColor};
-  }
-  
+  color: ${(props) => props.theme.colors.darkGreen};
+  border-bottom: solid 1px ${(props) => props.theme.colors.darkGreen};
+  border-left: solid 12px ${(props) => props.backgroundColor};
+  background-color: ${(props) => props.theme.colors.creme};
+
   &:first-of-type {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
@@ -79,7 +80,7 @@ export const PageImage = styled.img`
   height: 60px;
   margin-right: 12px;
   border-radius: 8px;
-  border: solid 1px black;
+  border: solid 1px ${(props) => props.theme.colors.darkGreen};
   background-color: ${(props) => props.theme.colors.gray};
 `;
 
