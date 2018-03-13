@@ -21,7 +21,7 @@ export const Title = styled.h1`
   font-size: 36px;
   font-weight: bold;
   font-family: 'Quicksand', serif;
-  color: ${(props) => props.theme.colors.darkGreen};
+  color: ${(props) => props.theme.colors.red};
 `;
 
 export const Subtitle = styled.p`
@@ -37,7 +37,7 @@ export const SectionTitle = styled.h2`
   font-size: 28px;
   font-weight: bold;
   font-family: 'Quicksand', serif;
-  color: ${(props) => props.theme.colors.darkGreen};
+  color: ${(props) => props.theme.colors.red};
 `;
 
 export const P = styled.p`

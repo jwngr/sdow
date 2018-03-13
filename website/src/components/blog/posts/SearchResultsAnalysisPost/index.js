@@ -25,7 +25,7 @@ import * as data from './data';
 
 export default () => (
   <Wrapper>
-    <Title>Analyzing Half a Million Searches on Six Degrees of Wikipedia</Title>
+    <Title>Insights From The First 500,000 Searches</Title>
     <Subtitle>
       <StyledLink href="https://jwn.gr">Jacob Wenger</StyledLink> | March 14, 2018
     </Subtitle>
@@ -172,7 +172,7 @@ export default () => (
       for keeping me honest.
     </P>
 
-    <SectionTitle>Searches With Most Paths</SectionTitle>
+    <SectionTitle>Searches With The Most Paths</SectionTitle>
 
     <P>
       It is not only surprising how few clicks it takes to get from one page to another, but also
@@ -198,7 +198,7 @@ export default () => (
       </Stat>
     </StatsWrapper>
 
-    <SectionTitle>Response Times</SectionTitle>
+    <SectionTitle>Server Response Times</SectionTitle>
 
     <P>
       One of the most difficult parts of making <b>Six Degrees of Wikipedia</b> &mdash; and the one
@@ -260,6 +260,17 @@ export default () => (
     </StatsWrapper>
 
     <P>Sometimes you gotta love the internet...</P>
+
+    <SectionTitle>Show Me The SQL</SectionTitle>
+
+    <P>
+      For those fellow developers out there who are interested in the SQL queries used to generate
+      these stats, you can find them all on{' '}
+      <StyledLink href="https://github.com/jwngr/sdow/tree/master/website/src/components/blog/posts/SearchResultsAnalysisPost/queries.txt">
+        this project's GitHub
+      </StyledLink>. I will likely go into more detail on my server and database setup in a future
+      post.
+    </P>
 
     <SectionTitle>Wrapping Up</SectionTitle>
 
