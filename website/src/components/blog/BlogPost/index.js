@@ -1,14 +1,19 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import Loadable from 'react-loadable';
 import {push} from 'redux-little-router';
 
 import Logo from '../../common/Logo';
-import SearchResultsAnalysisPost from '../posts/SearchResultsAnalysisPost';
+
+const AsyncSearchResultsAnalysisPost = Loadable({
+  loader: () => import('../posts/SearchResultsAnalysisPost'),
+  loading: () => null,
+});
 
 const getBlogPostContent = (postId, redirectToBlog) => {
   switch (postId) {
     case 'search-results-analysis':
-      return <SearchResultsAnalysisPost />;
+      return <AsyncSearchResultsAnalysisPost />;
     default:
       redirectToBlog();
       return;

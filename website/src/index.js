@@ -2,6 +2,7 @@ import React from 'react';
 import thunk from 'redux-thunk';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
+import Loadable from 'react-loadable';
 import Particles from 'react-particles-js';
 import {ThemeProvider} from 'styled-components';
 import {combineReducers, compose, createStore, applyMiddleware} from 'redux';
@@ -10,8 +11,6 @@ import {Fragment, routerForBrowser, initializeCurrentLocation} from 'redux-littl
 import registerServiceWorker from './registerServiceWorker';
 
 import Home from './components/Home';
-import Blog from './components/blog/Blog';
-import BlogPost from './components/blog/BlogPost';
 
 import theme from './resources/theme.json';
 import particlesConfig from './resources/particles.config.json';
@@ -24,6 +23,17 @@ import rootReducers from './reducers/index.js';
 // Load fonts
 require('typeface-quicksand');
 require('typeface-crimson-text');
+
+// Async components
+const AsyncBlog = Loadable({
+  loader: () => import('./components/blog/Blog'),
+  loading: () => null,
+});
+
+const AsyncBlogPost = Loadable({
+  loader: () => import('./components/blog/BlogPost'),
+  loading: () => null,
+});
 
 // Router
 const routes = {
@@ -73,10 +83,10 @@ ReactDOM.render(
         <Fragment forRoute="/">
           <div>
             <Fragment forRoute="/blog/:postId">
-              <BlogPost />
+              <AsyncBlogPost />
             </Fragment>
             <Fragment forRoute="/blog">
-              <Blog />
+              <AsyncBlog />
             </Fragment>
             <Fragment forRoute="/" forNoMatch>
               <Home />
