@@ -25,7 +25,7 @@ import * as data from './data';
 
 export default () => (
   <Wrapper>
-    <Title>Insights From The First 500,000 Searches</Title>
+    <Title>Insights On Hitler And More From The First 500,000 Searches</Title>
     <Subtitle>
       <StyledLink href="https://jwn.gr">Jacob Wenger</StyledLink> | March 14, 2018
     </Subtitle>
