@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Button from './Button';
+import Button from './common/Button';
 
 export const ResultsMessage = styled.div`
   width: 800px;
