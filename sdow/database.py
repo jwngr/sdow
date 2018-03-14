@@ -130,6 +130,46 @@ class Database(object):
 
     return breadth_first_search(source_page_id, target_page_id, self)
 
+  def fetch_outgoing_links_count(self, page_ids):
+    """Returns the sum of outgoing links of the provided page IDs.
+
+    Args:
+      page_ids: A list of page IDs whose outgoing links to count.
+
+    Returns:
+      int: The count of outgoing links.
+    """
+    return self.fetch_links_count_helper(page_ids, 'outgoing_links_count')
+
+  def fetch_incoming_links_count(self, page_ids):
+    """Returns the sum of incoming links for the provided page IDs.
+
+    Args:
+      page_ids: A list of page IDs whose incoming links to count.
+
+    Returns:
+      int: The count of incoming links.
+    """
+    return self.fetch_links_count_helper(page_ids, 'incoming_links_count')
+
+  def fetch_links_count(self, page_ids, incoming_or_outgoing_links_count):
+    """Returns the sum of outgoing or incoming links for the provided page IDs.
+
+    Args:
+      page_ids: A list of page IDs whose outgoing or incoming links to count.
+
+    Returns:
+      int: The count of outgoing or incoming links.
+    """
+    page_ids = str(tuple(page_ids)).replace(',)', ')')
+
+    # There is no need to escape the query parameters here since they are never user-defined.
+    query = 'SELECT SUM({0}) FROM links WHERE id IN {1};'.format(
+        incoming_or_outgoing_links_count, page_ids)
+    self.sdow_cursor.execute(query)
+
+    return self.sdow_cursor.fetchone()[0]
+
   def fetch_outgoing_links(self, page_ids):
     """Returns a list of tuples of page IDs representing outgoing links from the list of provided
     page IDs to other pages.
