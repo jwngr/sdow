@@ -23,24 +23,19 @@ export const ResultsMessage = styled.div`
 `;
 
 export const TwitterButtonWrapper = styled.a`
+  width: 200px;
+  display: block;
+  margin: 32px auto;
   text-decoration: none;
 `;
 
 export const TwitterButton = Button.extend`
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 32px auto;
   padding: 8px 12px;
   font-size: 20px;
-
-  @media (max-width: 1200px) {
-    width: 70%;
-
-    & > p {
-      font-size: 24px;
-    }
-  }
 `;
 
 export const TwitterBirdSvg = styled.svg`
