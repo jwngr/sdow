@@ -36,15 +36,15 @@ export default () => (
       the shortest hyperlinked paths between any two pages on the world's largest free online
       encyclopedia. Since then, it has handled nearly 500,000 searches! With that decent sample
       size, I dove into the data and found some interesting &mdash; and sometimes comical &mdash;
-      insights which I'll share in this post.
+      insights.
     </P>
 
     <SectionTitle>Most Popular Searches</SectionTitle>
 
     <P>
-      Despite Wikipedia comprising almost six million pages, many of the searches were not unique.
-      In fact, of all searches so far, only <b>{data.percentUniqueSearches}%</b> have been unique,
-      meaning one out of every four searches is for something that has already been searched:
+      Despite Wikipedia comprising almost six million pages, only{' '}
+      <b>{data.percentUniqueSearches}%</b> of the searches have been unique, meaning one out of
+      every four searches is for something that has already been searched:
     </P>
 
     <StatsWrapper>
@@ -60,28 +60,24 @@ export default () => (
     </StatsWrapper>
 
     <P>
-      The main reason for this is that some of the searches were <i>really</i> popular. While
-      unexpected, this actually makes a lot of sense. Each of the top searches can be traced back to
-      an online forum or website where someone posted a search they thought was funny or intriguing,
-      leading others to click the link and try the same query. Here are the top ten by search count,
-      including the source where the search was shared:
+      The main reason for this is that some searches were <i>really</i> popular. Each of the top
+      searches can be traced back to an online forum or website where someone posted a search they
+      thought was funny or intriguing, leading others to click the link and try the same query. Here
+      are the top ten by search count, including the source where the search was shared:
     </P>
 
     <Table headers={data.mostPopularSearchesHeaders} rows={data.mostPopularSearchesRows} />
 
     <P>
-      Surprisingly enough, the ability to share searches via URLs was one of those last-minute
-      features added the day before releasing the project. The numbers above make me glad I added
-      it.
+      The ability to share searches via URLs was a last-minute feature added the day before
+      releasing the project. These numbers make me glad I added it.
     </P>
 
     <SectionTitle>Most Popular Pages</SectionTitle>
 
     <P>
-      Analyzing the data, it became obvious that the popular searches above skew the data
-      considerably. Instead of looking at all searches, it is much more interesting to look at
-      unique searches. Filtering out duplicates and looking at the total count of searches which
-      include a page as the start or end page, the following pages are the most popular:
+      Filtering out duplicates and looking at the total count of searches which include a page as
+      the start or end, the following pages are the most popular:
     </P>
 
     <Table headers={data.mostPopularPagesHeaders} rows={data.mostPopularPagesRows} />
@@ -107,10 +103,10 @@ export default () => (
         another Wikipedia game variant
       </StyledLink>
       , some favorite topics from the Hacker News community, and... an experimental hip hop group
-      from Sacramento, CA called{' '}
-      <StyledLink href="https://en.wikipedia.org/wiki/Death_Grips">Death Grips</StyledLink>. I'll be
-      honest, that last one caught me by surprise. After some online searching, all I could come up
-      with to explain it was an r/deathgrips thread from last month called{' '}
+      from Sacramento called{' '}
+      <StyledLink href="https://en.wikipedia.org/wiki/Death_Grips">Death Grips</StyledLink>. That
+      last one caught me by surprise. After some online searching, all I could come up with to
+      explain it was an r/deathgrips thread from last month called{' '}
       <StyledLink href="https://www.reddit.com/r/deathgrips/comments/7q9l51/six_degrees_of_death_grips/">
         Six Degrees of Death Grips
       </StyledLink>. But if you have any more information, please let me know.
@@ -144,7 +140,7 @@ export default () => (
       This number is not intended to be scientific and probably does not extrapolate to the entire
       graph. I expect if you pick any two pages at random, they will on average have more degrees of
       separation than the number above. But this is probably a decent proxy and clearly shows that
-      my site should more accurately be called <b>Three Degrees of Separation</b>.
+      my site should more accurately be called <b>Three Degrees of Wikipedia</b>.
     </P>
 
     <SectionTitle>Most Degrees of Separation</SectionTitle>
@@ -161,8 +157,8 @@ export default () => (
     <Image src={elevenDegreesOfSeparationSearchImage} />
 
     <P>
-      If we create a histogram from the searches according to their degrees of separation, we
-      clearly see how rare it is for a search to have 6 or more degrees of separation:
+      Looking at a histogram of searches according to their degrees of separation, it becomes clear
+      how rare it is for them to have 6 or more degrees of separation:
     </P>
 
     <BarChart />
@@ -278,8 +274,8 @@ export default () => (
       <StyledLink href="/">Six Degrees of Wikipedia</StyledLink> captured the attention and
       excitement of so many people for the same reasons I decided to build it in the first place: it
       is entertaining to explore the concept and see the unexpected connections between seemingly
-      random topics. It apparently is also intriguing to dive into the stats behind the project like
-      we just did.
+      random topics. It is also intriguing to dive into the stats behind the project like we just
+      did.
     </P>
 
     <P>
