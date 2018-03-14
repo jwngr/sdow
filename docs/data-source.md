@@ -106,7 +106,7 @@ By default, it uses the most recent Wikipedia dump available, but it can downloa
 by passing the date of the dump in the format `YYYYMMDD` as a command line argument:
 
 ```bash
-^ ./buildDatabase.sh <YYYYMMDD>
+$ ./buildDatabase.sh <YYYYMMDD>
 ```
 
 ## Database Creation Process

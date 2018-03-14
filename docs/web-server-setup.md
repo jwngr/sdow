@@ -62,7 +62,7 @@
     $ pigz -d sdow/searches-<YYYYMMDD>.sql.gz
     $ sqlite3 sdow/searches.sqlite ".read sdow/searches-<YYYYMMDD>.sql"
     ```
-1.  Ensure the VM has been [assigned SDOW's static external IP address](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address#IP_assign).
+1.  Ensure the VM has been [assigned Six Degrees of Wikipedia's static external IP address](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address#IP_assign).
 1.  Install required operating system dependencies to generate an SSL certificate (this and the
     following instructions are based on these
     [blog](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-debian-8)
@@ -137,15 +137,18 @@
     ```
 1.  Use [`supervisorctl`](http://supervisord.org/running.html#supervisorctl-command-line-options) to
     manage the running web server:
+
     ```bash
     $ supervisorctl status             # Get status of running processes
     $ supervisorctl stop gunicorn      # Stop web server
     $ supervisorctl start gunicorn     # Start web server
     $ supervisorctl restart gunicorn   # Restart web server
     ```
+
     **Note:** `supervisord` and `supervisorctl` must be run from the `config/` directory or specify
     the configuration file via the `-c` argument or else they will return an obscure
     `"http://localhost:9001 refused connection"` error message.
+
     **Note:** Log output from `supervisord` is written to `/tmp/supervisord.log` and log output from
     `gunicorn` is written to `/tmp/gunicorn-stdout---supervisor-<HASH>.log`. Logs are also written to
     Stackdriver Logging.

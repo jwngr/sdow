@@ -22,7 +22,7 @@ nearly six million pages on the world's largest free online encyclopedia.
   version of the Six Degrees of Wikipedia website.
 * [Local Setup](.github/CONTRIBUTING.md) - How to set up your local machine to run your own version
   of Six Degrees of Wikipedia.
-* [Miscellaneous](./docs/interesting-pages) - A collection of interesting searches and edge case
+* [Miscellaneous](./docs/miscellaneous.md) - A collection of interesting searches and edge case
   page titles.
 
 ## Blog Posts
