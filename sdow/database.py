@@ -194,19 +194,16 @@ class Database(object):
 
     if paths_count == 0:
       degrees_count = 'NULL'
-      paths = str([])
     else:
       degrees_count = len(search['paths'][0]) - 1
-      paths = str(search['paths']).replace(' ', '')
 
     # There is no need to escape the query parameters here since they are never user-defined.
-    query = 'INSERT INTO searches VALUES ({source_id}, {target_id}, {duration}, {degrees_count}, {paths_count}, "{paths}", CURRENT_TIMESTAMP);'.format(
+    query = 'INSERT INTO searches VALUES ({source_id}, {target_id}, {duration}, {degrees_count}, {paths_count}, CURRENT_TIMESTAMP);'.format(
         source_id=search['source_id'],
         target_id=search['target_id'],
         duration=search['duration'],
         degrees_count=degrees_count,
         paths_count=paths_count,
-        paths=paths
     )
     self.searches_conn.execute(query)
     self.searches_conn.commit()
