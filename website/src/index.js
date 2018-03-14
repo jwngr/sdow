@@ -2,10 +2,11 @@ import React from 'react';
 import thunk from 'redux-thunk';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
+import Loadable from 'react-loadable';
 import Particles from 'react-particles-js';
 import {ThemeProvider} from 'styled-components';
-import {routerForBrowser, initializeCurrentLocation} from 'redux-little-router';
 import {combineReducers, compose, createStore, applyMiddleware} from 'redux';
+import {Fragment, routerForBrowser, initializeCurrentLocation} from 'redux-little-router';
 
 import registerServiceWorker from './registerServiceWorker';
 
@@ -23,10 +24,23 @@ import rootReducers from './reducers/index.js';
 require('typeface-quicksand');
 require('typeface-crimson-text');
 
+// Async components
+const AsyncBlog = Loadable({
+  loader: () => import('./components/blog/Blog'),
+  loading: () => null,
+});
+
+const AsyncBlogPost = Loadable({
+  loader: () => import('./components/blog/BlogPost'),
+  loading: () => null,
+});
+
 // Router
 const routes = {
   '/': {
-    title: 'Home',
+    '/blog': {
+      '/:postId': true,
+    },
   },
 };
 
@@ -66,7 +80,19 @@ ReactDOM.render(
         }}
       />
       <Provider store={store}>
-        <Home />
+        <Fragment forRoute="/">
+          <div>
+            <Fragment forRoute="/blog/:postId">
+              <AsyncBlogPost />
+            </Fragment>
+            <Fragment forRoute="/blog">
+              <AsyncBlog />
+            </Fragment>
+            <Fragment forRoute="/" forNoMatch>
+              <Home />
+            </Fragment>
+          </div>
+        </Fragment>
       </Provider>
     </React.Fragment>
   </ThemeProvider>,

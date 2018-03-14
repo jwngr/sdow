@@ -8,7 +8,7 @@ FROM searches;
 # Unique searches
 SELECT COUNT(*)
 FROM
-  (SELECT DISTINCT source_id, target_id
+  (SELECT DISTINCT *
    FROM searches);
 
 # Searches with no results paths found
@@ -20,7 +20,9 @@ WHERE degrees_count IS NULL;
 SELECT p1.title,
        p2.title,
        MAX(degrees_count)
-FROM (SELECT DISTINCT source_id, target_id, degrees_count)
+FROM
+  (SELECT DISTINCT *
+   FROM searches)
 JOIN sdow.pages AS p1 ON source_id = p1.id
 JOIN sdow.pages AS p2 ON target_id = p2.id
 LIMIT 10;
@@ -36,8 +38,9 @@ JOIN sdow.pages AS p2 ON s.target_id = p2.id;
 # Average degrees of separation (unique searches only, ignore identity searches)
 SELECT AVG(degrees_count)
 FROM
-  (SELECT DISTINCT source_id, target_id, degrees_count
-   FROM searches WHERE degrees_count != 0);
+  (SELECT DISTINCT *
+   FROM searches
+   WHERE degrees_count != 0);
 
 # Average search duration
 SELECT AVG(duration)
@@ -68,7 +71,8 @@ LIMIT 10;
 # Most popular pages (unique searches only)
 SELECT p.title,
        COUNT(*) AS search_count
-FROM (SELECT DISTINCT source_id, target_id, degrees_count
+FROM
+  (SELECT DISTINCT *
    FROM searches)
 JOIN sdow.pages AS p ON source_id = p.id OR target_id = p.id
 GROUP BY p.id
@@ -78,7 +82,8 @@ LIMIT 10;
 # Most popular source pages (unique searches only)
 SELECT p.title,
        COUNT(*) AS search_count
-FROM (SELECT DISTINCT source_id, target_id, degrees_count
+FROM
+  (SELECT DISTINCT *
    FROM searches)
 JOIN sdow.pages AS p ON source_id = p.id
 GROUP BY p.id
@@ -88,7 +93,8 @@ LIMIT 10;
 # Most popular target pages (unique searches only)
 SELECT p.title,
        COUNT(*) AS search_count
-FROM (SELECT DISTINCT source_id, target_id, degrees_count
+FROM
+  (SELECT DISTINCT *
    FROM searches)
 JOIN sdow.pages AS p ON target_id = p.id
 GROUP BY p.id
@@ -106,7 +112,7 @@ ORDER BY degrees_count;
 SELECT degrees_count,
        COUNT(*)
 FROM
-  (SELECT DISTINCT source_id, target_id, degrees_count
+  (SELECT DISTINCT *
    FROM searches)
 GROUP BY degrees_count
 ORDER BY degrees_count;
@@ -117,15 +123,12 @@ SELECT p1.title,
        degrees_count,
        MAX(paths_count)
 FROM
-  (SELECT DISTINCT source_id, target_id, degrees_count, paths_count
+  (SELECT DISTINCT *
    FROM searches WHERE degrees_count > 1)
 JOIN sdow.pages AS p1 ON source_id = p1.id
 JOIN sdow.pages AS p2 ON target_id = p2.id
 GROUP BY degrees_count
 ORDER BY degrees_count;
-
-# Histogram of searches per day
-SELECT DATE(t) as date, COUNT(*) FROM searches GROUP BY date;
 
 # Search duration (50th percentile)
 SELECT duration
@@ -153,3 +156,6 @@ LIMIT 1
 OFFSET
   (SELECT COUNT(*)
    FROM searches) * 99 / 100 - 1;
+
+# Histogram of searches per day
+SELECT DATE(t) as date, COUNT(*) FROM searches GROUP BY date;

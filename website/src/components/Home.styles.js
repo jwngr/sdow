@@ -5,7 +5,7 @@ ReactModal.setAppElement('#root');
 
 export const Modal = styled(ReactModal)`
   position: absolute;
-  top: 80px;
+  top: 60px;
   right: 20px;
   width: 300px;
   padding: 12px;

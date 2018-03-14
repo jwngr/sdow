@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 import Logo from '../components/common/Logo';
-import IconLinks from '../components/IconLinks';
+import NavLinks from '../components/NavLinks';
 
 import LoadingContainer from '../containers/LoadingContainer';
 import ResultsContainer from '../containers/ResultsContainer';
@@ -38,7 +38,7 @@ class Home extends Component {
       <div>
         <Logo />
 
-        <IconLinks handleOpenModal={this.handleOpenModal.bind(this)} />
+        <NavLinks handleOpenModal={this.handleOpenModal.bind(this)} />
 
         <Modal isOpen={this.state.showModal} onRequestClose={this.handleCloseModal}>
           <p>

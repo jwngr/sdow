@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import Button from './Button';
+import Button from './common/Button';
 
 export const GraphWrapper = styled.div`
   width: 800px;
@@ -8,7 +8,6 @@ export const GraphWrapper = styled.div`
   height: 600px;
   margin: 0 auto 40px auto;
   position: relative;
-  background: rgba(256, 256, 256, 0.7);
   background-color: ${(props) => props.theme.colors.creme};
   border: solid 3px ${(props) => props.theme.colors.darkGreen};
 

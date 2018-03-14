@@ -8,7 +8,8 @@ import logo2x from '../../../images/logo@2x.png';
 const LogoImg = styled.img`
   width: 460px;
   display: block;
-  margin: 40px auto 32px auto;
+  padding: 20px;
+  margin: 20px auto 12px auto;
 
   @media (max-width: 1200px) {
     width: 400px;
@@ -16,7 +17,7 @@ const LogoImg = styled.img`
 
   @media (max-width: 600px) {
     width: 70%;
-    margin-bottom: 20px;
+    margin-bottom: 0;
   }
 `;
 
