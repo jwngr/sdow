@@ -169,7 +169,7 @@ class Results extends Component {
         <TwitterButtonWrapper
           href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
             tweetText
-          )}&url=${encodeURIComponent(tweetUrl)}&via=jwngr`}
+          )}&url=${encodeURIComponent(tweetUrl)}&via=_jwngr`}
           target="_blank"
         >
           <TwitterButton>
