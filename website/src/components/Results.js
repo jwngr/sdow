@@ -145,7 +145,7 @@ class Results extends Component {
 
     const tweetText = `Found ${getNumberWithCommas(
       paths.length
-    )} ${pathOrPaths} of ${degreesOfSeparation} ${degreeOrDegrees} of separation from "${sourcePageTitle}" to "${targetPageTitle}" on Six Degrees of Wikipedia!`;
+    )} ${pathOrPaths} with ${degreesOfSeparation} ${degreeOrDegrees} of separation from "${sourcePageTitle}" to "${targetPageTitle}" on Six Degrees of Wikipedia!`;
     const tweetUrl = 'https://www.sixdegreesofwikipedia.com';
 
     return (
