@@ -152,7 +152,7 @@ class Database(object):
     """
     return self.fetch_links_count_helper(page_ids, 'incoming_links_count')
 
-  def fetch_links_count(self, page_ids, incoming_or_outgoing_links_count):
+  def fetch_links_count_helper(self, page_ids, incoming_or_outgoing_links_count):
     """Returns the sum of outgoing or incoming links for the provided page IDs.
 
     Args:
