@@ -7,6 +7,7 @@ export const TableWrapper = styled.div`
   table {
     margin: auto;
     width: 100%;
+    color: ${(props) => props.theme.colors.darkGreen};
     border: solid 3px ${(props) => props.theme.colors.darkGreen};
     border-collapse: collapse;
 
