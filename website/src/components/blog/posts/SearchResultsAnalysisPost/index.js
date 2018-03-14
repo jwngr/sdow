@@ -162,11 +162,11 @@ export default () => (
       how rare it is for searches to have 6 or more degrees of separation:
     </P>
 
-    <BarChart />
+    <BarChart data={data.degreesOfSeparationHistogramData} />
 
     <P>
-      Big shout out to the 502 people who tried searches with the same start and end pages. Thanks
-      for keeping me honest.
+      Big shout out to the {getNumberWithCommas(data.degreesOfSeparationHistogramData[0])} people
+      who tried searches with the same start and end pages. Thanks for keeping me honest.
     </P>
 
     <SectionTitle>Searches With The Most Paths</SectionTitle>

@@ -3,16 +3,30 @@ import StyledLink from '../../../common/StyledLink';
 
 import {getNumberWithCommas, getWikipediaPageUrl} from '../../../../utils';
 
-export const totalSearches = 489136;
-export const uniqueSearches = 366332;
+export const totalSearches = 503498;
+export const uniqueSearches = 377135;
 export const percentUniqueSearches = (uniqueSearches / totalSearches * 100).toFixed(2);
-export const searchesWithNoPaths = 7262;
+export const searchesWithNoPaths = 4018;
 export const percentNoPathsSearches = (searchesWithNoPaths / uniqueSearches * 100).toFixed(2);
-export const averageDegreesOfSeparation = 3.017;
+export const averageDegreesOfSeparation = 3.019;
+export const degreesOfSeparationHistogramData = [
+  524,
+  10216,
+  90068,
+  183172,
+  67754,
+  16317,
+  3738,
+  1228,
+  141,
+  27,
+  1,
+  1,
+];
 export const averageDuration = 0.76;
 export const medianDuration = 0.38;
-export const percentile95Duration = 2.64;
-export const percentile99Duration = 4.96;
+export const percentile95Duration = 2.66;
+export const percentile99Duration = 4.99;
 
 export const mostPopularSearchesHeaders = [
   'Search',
@@ -26,70 +40,74 @@ const mostPopularSearches = [
     'Anime',
     'Obesity',
     3,
-    2810,
+    2813,
     <StyledLink href="https://news.ycombinator.com/item?id=16468749">Hacker News</StyledLink>,
   ],
   [
     'Age of Enlightenment',
     'Consumption of Tide Pods',
     2,
-    2609,
+    2611,
     <StyledLink href="https://news.ycombinator.com/item?id=16468523">Hacker News</StyledLink>,
   ],
   [
     'Anime',
     'Alt-right',
     2,
-    1556,
+    1557,
     <StyledLink href="https://news.ycombinator.com/item?id=16469486">Hacker News</StyledLink>,
   ],
   [
     'Lion Express',
     'Phinney',
     7,
-    1366,
+    1380,
     <StyledLink href="https://news.ycombinator.com/item?id=16469620">Hacker News</StyledLink>,
   ],
   [
     'Spud gun',
     'Sputnik-1 EMC/EMI lab model',
     'No path',
-    1271,
+    1274,
     <StyledLink href="https://news.ycombinator.com/item?id=16468643">Hacker News</StyledLink>,
   ],
   [
     'Consumption of Tide Pods',
     'Age of Enlightenment',
     3,
-    1159,
+    1160,
     <StyledLink href="https://news.ycombinator.com/item?id=16468945">Hacker News</StyledLink>,
   ],
   [
     'Hargrave Military Academy',
     'Illiosentidae',
     6,
-    746,
-    <StyledLink href="https://github.com/jwngr/sdow#interesting-searches">GitHub</StyledLink>,
+    763,
+    <StyledLink href="https://github.com/jwngr/sdow/blob/master/docs/miscellaneous.md#noteworthy-searches">
+      GitHub
+    </StyledLink>,
   ],
   [
     'Six Degrees of Kevin Bacon',
     'Phinney',
     6,
-    682,
-    <StyledLink href="https://github.com/jwngr/sdow#interesting-searches">GitHub</StyledLink>,
+    692,
+    <StyledLink href="https://github.com/jwngr/sdow/blob/master/docs/miscellaneous.md#noteworthy-searches">
+      GitHub
+    </StyledLink>,
   ],
   [
     'John F. Kennedy',
     'Mikko Hyppönen',
     3,
-    638,
+    642,
     <StyledLink href="https://twitter.com/mikko/status/968407596347641856">Twitter</StyledLink>,
   ],
   [
     'CT scan',
     'MetaFilter',
     3,
-    546,
+    548,
     <StyledLink href="https://www.metafilter.com/172674/CT-Scan-Laser-Public-Domain-Metafilter">
       MetaFilter
     </StyledLink>,
@@ -107,16 +125,16 @@ export const mostPopularSearchesRows = mostPopularSearches.map((searchInfo) => {
 export const mostPopularPagesHeaders = ['Page Title', 'Number of Searches'];
 
 const mostPopularPages = [
-  ['Adolf Hitler', 11950],
-  ['Donald Trump', 4871],
-  ['Barack Obama', 2349],
-  ['Jesus', 2330],
-  ['Kevin Bacon', 1937],
-  ['Philosophy', 1887],
-  ['Elon Musk', 1739],
-  ['Bitcoin', 1433],
-  ['Albert Einstein', 1328],
-  ['Death Grips', 1239],
+  ['Adolf Hitler', 12166],
+  ['Donald Trump', 4984],
+  ['Barack Obama', 2398],
+  ['Jesus', 2397],
+  ['Kevin Bacon', 1967],
+  ['Philosophy', 1925],
+  ['Elon Musk', 1790],
+  ['Bitcoin', 1448],
+  ['Albert Einstein', 1349],
+  ['Death Grips', 1242],
 ];
 
 export const mostPopularPagesRows = mostPopularPages.map((pageInfo) => {
@@ -128,9 +146,9 @@ export const mostPathSearchesHeaders = ['Search', 'Degrees of Separation', 'Resu
 
 const mostPathSearches = [
   ['List of shipwrecks in 1842', 'Geographic coordinate system', 2, 1229],
-  ['List of 20th-century writers', 'List of sovereign states', 3, 7103],
-  ['Alpaca', 'Czech phonology', 4, 9699],
-  ['Berchtesgaden', 'Wrestle Kingdom 10', 5, 9737],
+  ['List of 20th-century writers', 'List of sovereign states', 3, 7145],
+  ['Alpaca', 'Czech phonology', 4, 9705],
+  ['Berchtesgaden', 'Wrestle Kingdom 10', 5, 10277],
   ['Data monitoring switch', 'Pirpainti (Vidhan Sabha constituency)', 6, 13131],
   ['112th Ohio General Assembly', 'Gunnar Knudsenfjella', 7, 7288],
   ['Generalized Tobit', 'Phinney', 8, 6248],

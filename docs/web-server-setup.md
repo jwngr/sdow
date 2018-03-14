@@ -60,7 +60,7 @@
     $ gsutil -u sdow-prod cp gs://sdow-prod/dumps/<YYYYMMDD>/sdow.sqlite.gz sdow/
     ```
 
-1.  Decompress the SQLite files:
+1.  Decompress the SQLite file:
 
     ```bash
     $ pigz -d sdow/sdow.sqlite.gz
@@ -75,9 +75,10 @@
     **Note:** Alternatively, copy a backed-up version of `searches.sqlite`:
 
     ```bash
-    $ gsutil -u sdow-prod cp gs://sdow-prod/backups/<YYYYMMDD>/searches-<YYYYMMDD>.sql.gz sdow/
-    $ pigz -d sdow/searches-<YYYYMMDD>.sql.gz
-    $ sqlite3 sdow/searches.sqlite ".read sdow/searches-<YYYYMMDD>.sql"
+    $ gsutil -u sdow-prod cp gs://sdow-prod/backups/<YYYYMMDD>/searches-<YYYYMMDD>.sql.gz sdow/searches.sql.gz
+    $ pigz -d sdow/searches.sql.gz
+    $ sqlite3 sdow/searches.sqlite ".read sdow/searches.sql"
+    $ rm sdow/searches.sql
     ```
 
 1.  Ensure the VM has been [assigned Six Degrees of Wikipedia's static external IP address](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address#IP_assign).

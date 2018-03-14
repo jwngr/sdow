@@ -16,9 +16,7 @@ class BarChart extends Component {
   }
 
   componentDidMount() {
-    // const {data} = this.props;
-
-    const data = [502, 9844, 87507, 178357, 65733, 15648, 3562, 1198, 139, 26, 1, 1];
+    const {data} = this.props;
 
     const formatCount = d3.format(',.0f');
 
