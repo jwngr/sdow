@@ -45,9 +45,9 @@ class Home extends Component {
             Inspired by the concept of{' '}
             <a href="https://en.wikipedia.org/wiki/Six_degrees_of_separation">
               six degrees of separation
-            </a>, <b>Six Degrees of Wikipedia</b> traverses links on Wikipedia to find the least
-            number of clicks it takes to travel between any of the nearly six million pages on the
-            free online encyclopedia.
+            </a>, <b>Six Degrees of Wikipedia</b> traverses hyperlinks on Wikipedia to find the
+            least number of clicks it takes to navigate between any of the nearly six million pages
+            on the world's largest free online encyclopedia.
           </p>
           <p>
             Enter the titles of two Wikipedia pages in the boxes on this site, click the "Go!"

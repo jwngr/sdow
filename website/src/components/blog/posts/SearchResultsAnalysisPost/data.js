@@ -140,9 +140,15 @@ const mostPathSearches = [
 ];
 
 export const mostPathSearchesRow = mostPathSearches.map((searchInfo) => {
-  const searchUrl = `/?source=${encodeURIComponent(searchInfo[0])}&target=${encodeURIComponent(
-    searchInfo[1]
-  )}`;
-  const link = <StyledLink href={searchUrl}>{`${searchInfo[0]} → ${searchInfo[1]}`}</StyledLink>;
-  return [link, searchInfo[2], getNumberWithCommas(searchInfo[3])];
+  // const searchUrl = `/?source=${encodeURIComponent(searchInfo[0])}&target=${encodeURIComponent(
+  //   searchInfo[1]
+  // )}`;
+  // const link = <StyledLink href={searchUrl}>{`${searchInfo[0]} → ${searchInfo[1]}`}</StyledLink>;
+  return [
+    <b>
+      {searchInfo[0]} → {searchInfo[1]}
+    </b>,
+    searchInfo[2],
+    getNumberWithCommas(searchInfo[3]),
+  ];
 });
