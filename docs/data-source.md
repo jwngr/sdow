@@ -123,36 +123,48 @@ hour given the following instructions:
     1.  **Notes**: Allow full access to all Cloud APIs. Do not use Debian GNU/Linux 9 (stretch) due to
         [degraded performance](https://lists.debian.org/debian-kernel/2017/12/msg00265.html).
 1.  SSH into the machine:
+
     ```bash
     $ gcloud compute ssh sdow-db-builder-1
     ```
+
 1.  Install required operating system dependencies:
+
     ```bash
     $ sudo apt-get -q update
     $ sudo apt-get -yq install git pigz sqlite3
     ```
+
 1.  Clone this directory via HTTPS:
+
     ```bash
     $ git clone https://github.com/jwngr/sdow.git
     ```
+
 1.  Move to the proper directory and create a new screen in case the VM connection is lost:
+
     ```bash
     $ cd sdow/database/
     $ screen  # And then press <ENTER> on the screen that pops up
     ```
+
 1.  Run the database creation script, providing
     [an optional date](https://dumps.wikimedia.your.org/enwiki/) for the backup:
+
     ```bash
     $ (time ./buildDatabase.sh [<YYYYMMDD>]) &> output.txt
     ```
+
 1.  Detach from the current screen session by pressing `<CTRL> + <a>` and then `<d>`. To reattach to
     the screen, run `screen -r`. Make sure to always detach from the screen cleanly so it can be
     resumed!
 1.  Copy the script output and the resulting SQLite file to the `sdow-prod` GCS bucket:
+
     ```
     $ gsutil -u sdow-prod cp output.txt gs://sdow-prod/dumps/<YYYYMMDD>/
     $ gsutil -u sdow-prod cp dump/sdow.sqlite.gz gs://sdow-prod/dumps/<YYYYMMDD>/
     ```
+
 1.  Run the [Wikipedia facts queries](../database/wikipediaFactsQueries.txt) and update the
     [corresponding JSON file](../website/src/resources/wikipediaFacts.json).
 1.  Delete the VM to prevent incurring large fees.
