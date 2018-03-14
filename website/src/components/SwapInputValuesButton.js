@@ -19,12 +19,16 @@ const SwapButton = styled.svg`
   cursor: pointer;
   fill: ${(props) => props.theme.colors.darkGreen};
   stroke: ${(props) => props.theme.colors.darkGreen};
-  transition: fill 0.5s, stroke 0.5s;
+  transition: fill 0.5s, stroke 0.5s, transform 0.5s;
 
   &:hover {
     opacity: 1;
     fill: ${(props) => props.theme.colors.red};
     stroke: ${(props) => props.theme.colors.red};
+  }
+
+  @media (max-width: 1200px) {
+    transform: rotate(90deg);
   }
 `;
 
