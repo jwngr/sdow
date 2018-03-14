@@ -4,8 +4,11 @@ export default styled.button`
   position: relative;
   display: block;
   color: ${(props) => props.theme.colors.creme};
+  fill: ${(props) => props.theme.colors.creme};
+  stroke: ${(props) => props.theme.colors.creme};
   background-color: ${(props) => props.theme.colors.red};
   border: solid 2px ${(props) => props.theme.colors.darkGreen};
+  border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
   z-index: 1;
@@ -29,6 +32,8 @@ export default styled.button`
 
   &:hover {
     color: ${(props) => props.theme.colors.red};
+    fill: ${(props) => props.theme.colors.red};
+    stroke: ${(props) => props.theme.colors.red};
   }
 
   &:hover::before {

@@ -1,8 +1,9 @@
 import styled from 'styled-components';
+import Button from './common/Button';
 
 export const ResultsMessage = styled.div`
   width: 800px;
-  margin: 40px auto 48px auto;
+  margin: 32px auto 20px auto;
   text-align: center;
 
   & > p {
@@ -19,4 +20,26 @@ export const ResultsMessage = styled.div`
       font-size: 24px;
     }
   }
+`;
+
+export const TwitterButtonWrapper = styled.a`
+  width: 200px;
+  display: block;
+  margin: 20px auto 32px auto;
+  text-decoration: none;
+`;
+
+export const TwitterButton = Button.extend`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 12px;
+  font-size: 20px;
+`;
+
+export const TwitterBirdSvg = styled.svg`
+  width: 40px;
+  height: 40px;
+  margin-right: 4px;
 `;
