@@ -5,7 +5,6 @@ CREATE TABLE IF NOT EXISTS searches
   duration REAL NOT NULL,
   degrees_count INTEGER,
   paths_count INTEGER NOT NULL,
-  paths TEXT NOT NULL,
   t TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 

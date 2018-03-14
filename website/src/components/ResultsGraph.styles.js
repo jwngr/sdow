@@ -100,13 +100,6 @@ export const ResetButton = Button.extend`
   border-radius: 4px;
 
   svg {
-    fill: ${(props) => props.theme.colors.creme};
-    stroke: ${(props) => props.theme.colors.creme};
     stroke-width: 4;
-  }
-
-  &:hover svg {
-    fill: ${(props) => props.theme.colors.red};
-    stroke: ${(props) => props.theme.colors.red};
   }
 `;
