@@ -34,9 +34,8 @@ export default () => (
       A little over two weeks ago, I released{' '}
       <StyledLink href="/">Six Degrees of Wikipedia</StyledLink>, a website which allows you to find
       the shortest hyperlinked paths between any two pages on the world's largest free online
-      encyclopedia. Since then, it has handled nearly 500,000 searches! With that decent sample
-      size, I dove into the data and found some interesting &mdash; and sometimes comical &mdash;
-      insights.
+      encyclopedia. This morning, it surpassed 500,000 searches! With that decent sample size, I
+      dove into the data and found some interesting &mdash; and sometimes comical &mdash; insights.
     </P>
 
     <SectionTitle>Most Popular Searches</SectionTitle>
@@ -62,8 +61,8 @@ export default () => (
     <P>
       The main reason for this is that some searches were <i>really</i> popular. Each of the top
       searches can be traced back to an online forum or website where someone posted a search they
-      thought was funny or intriguing, leading others to click the link and try the same query. Here
-      are the top ten by search count, including the source where the search was shared:
+      thought was funny or intriguing, leading others to click the link and try it themselves. Here
+      are the top ten by search count, including the source where each was shared:
     </P>
 
     <Table headers={data.mostPopularSearchesHeaders} rows={data.mostPopularSearchesRows} />
@@ -77,39 +76,40 @@ export default () => (
 
     <P>
       Filtering out duplicates and looking at the total count of searches which include a page as
-      the start or end, the following pages are the most popular:
+      either the start or end of the search, the following pages were most popular:
     </P>
 
     <Table headers={data.mostPopularPagesHeaders} rows={data.mostPopularPagesRows} />
 
     <P>
-      Quite a lineup right there! Hitler running away with the top spot is not unexpected because
-      internet and because of the somewhat popular{' '}
+      Quite a lineup right there! Hitler runs away with the top spot, which is not too surprising
+      because internet and because of the somewhat popular{' '}
       <StyledLink href="https://en.wikipedia.org/wiki/Wikipedia:Wiki_Game#Variations">
         Clicks to Hitler
       </StyledLink>{' '}
-      game in which you try to navigate to Hitler's Wikipedia page from another random Wikipedia
-      page. On a related note, my apologies to the{' '}
+      game in which you try to navigate to Hitler's Wikipedia page from other Wikipedia pages. On a
+      related note, my apologies to the{' '}
       <StyledLink href="https://www.reddit.com/r/degreestohitler/">r/degreestohitler</StyledLink>{' '}
       subreddit for possibly spoiling all their fun.
     </P>
 
     <P>
-      After Hitler, we've got the last two US Presidents, the son of God (to many), Mr.{' '}
+      After Hitler, you've got the last two United States Presidents, the son of God (to many),
+      Kevin Bacon of{' '}
       <StyledLink href="https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon">
-        "Six Degrees of Kevin Bacon"
-      </StyledLink>,{' '}
+        Six Degrees of Kevin Bacon
+      </StyledLink>{' '}
+      fame, another{' '}
       <StyledLink href="https://en.wikipedia.org/wiki/Wikipedia:Getting_to_Philosophy">
-        another Wikipedia game variant
+        Wikipedia game variant
       </StyledLink>
-      , some favorite topics from the Hacker News community, and... an experimental hip hop group
-      from Sacramento called{' '}
-      <StyledLink href="https://en.wikipedia.org/wiki/Death_Grips">Death Grips</StyledLink>. That
-      last one caught me by surprise. After some online searching, all I could come up with to
+      , some favorite topics from Hacker News, and... an experimental hip hop group from Sacramento
+      called <StyledLink href="https://en.wikipedia.org/wiki/Death_Grips">Death Grips</StyledLink>.
+      That last one caught me by surprise. After some online searching, all I could come up with to
       explain it was an r/deathgrips thread from last month called{' '}
       <StyledLink href="https://www.reddit.com/r/deathgrips/comments/7q9l51/six_degrees_of_death_grips/">
         Six Degrees of Death Grips
-      </StyledLink>. But if you have any more information, please let me know.
+      </StyledLink>. If you have any more information to explain this, please let me know.
     </P>
 
     <SectionTitle>Average Degrees of Separation</SectionTitle>
@@ -117,7 +117,7 @@ export default () => (
     <P>
       People seem to be consistently surprised about how few clicks it takes to get from one
       Wikipedia page to another. It actually takes some time and effort to find pages which are
-      separated by four or more links. Across all unique searches, here is the average degrees of
+      separated by four or more degrees. Across all unique searches, here is the average degrees of
       separation:
     </P>
 
@@ -137,28 +137,29 @@ export default () => (
     </P>
 
     <P>
-      This number is not intended to be scientific and probably does not extrapolate to the entire
-      graph. I expect if you pick any two pages at random, they will on average have more degrees of
-      separation than the number above. But this is probably a decent proxy and clearly shows that
-      my site should more accurately be called <b>Three Degrees of Wikipedia</b>.
+      This number is far from scientific and probably does not extrapolate to the entire graph since
+      the pages people think to search for are likely more connected than most. I expect if you pick
+      any two pages at random, they will on average have more degrees of separation than the number
+      above. But this does make me wonder if my my site should more accurately be called{' '}
+      <b>Three Degrees of Wikipedia</b>.
     </P>
 
     <SectionTitle>Most Degrees of Separation</SectionTitle>
 
     <P>
-      Averages can be useful, but it is often much more interesting to look at the outliers. And
-      when I did, I came across some searches with degrees of separation that were much higher than
-      I was expecting. The longest path found to date has an incredible <b>11 degrees</b> of
-      separation from{' '}
-      <StyledLink href="/?source=Embleton&target=McCombie">Embleton → McCombie</StyledLink>, thanks
-      to a long tail in the search path:
+      Averages can be useful, but it is often much more interesting to look at outliers. And when I
+      did, I came across some searches with degrees of separation that were much higher than
+      expected. The longest path found to date is{' '}
+      <StyledLink href="/?source=Embleton&target=McCombie">Embleton → McCombie</StyledLink> which
+      has an incredible <b>11 degrees</b> of separation thanks to a long tail at the end of the
+      search path:
     </P>
 
     <Image src={elevenDegreesOfSeparationSearchImage} />
 
     <P>
       Looking at a histogram of searches according to their degrees of separation, it becomes clear
-      how rare it is for them to have 6 or more degrees of separation:
+      how rare it is for searches to have 6 or more degrees of separation:
     </P>
 
     <BarChart />
@@ -172,8 +173,8 @@ export default () => (
 
     <P>
       It is not only surprising how few clicks it takes to get from one page to another, but also
-      how many different paths you can take to get there. Here are the most results for each degree
-      of separation:
+      how many different paths you can take to get there. Here are the searches with the most result
+      paths for each degree of separation:
     </P>
 
     <Table headers={data.mostPathSearchesHeaders} rows={data.mostPathSearchesRow} />
@@ -181,7 +182,7 @@ export default () => (
     <SectionTitle>Searches With No Paths</SectionTitle>
 
     <P>
-      It turns out you cannot reach every page from any other page. Some pages are dead-ends or part
+      It turns out you cannot reach every page from any other page. Some pages are dead ends or part
       of their own small islands with few incoming and outgoing links. In fact,{' '}
       <b>{data.percentNoPathsSearches}%</b> of all unique searches have no path from the start to
       end pages:
@@ -225,24 +226,24 @@ export default () => (
     <P>
       <i>
         <b>Note:</b> The times above represent time taken on the server and do not include the
-        entire response time, which varies depending on where in the world the user was who made the
+        entire response time, which varies depending on the location of the user who made the
         request and their network speed.
       </i>
     </P>
 
     <P>
       <i>
-        <b>Another note:</b> The search itself runs much faster than the times above and most of the
-        time is actually spent querying the MediaWiki API to fetching page information like its
-        image URL and description which I do not store in my database.
+        <b>Another note:</b> The search itself runs much faster than the times above. Most of the
+        time is actually spent querying the Wikipedia API to fetch page information like image URLs
+        and descriptions which are not stored in my database.
       </i>
     </P>
 
     <P>
-      Because I was curious, I decided to see what search took the longest to respond to. The search
-      itself has little to do with how long it took to respond. This search just happened to be made
-      during a time of high traffic in which my server was slowed down. But, boy oh boy, was I
-      rewarded when I discovered what the actual search was:
+      Because I was curious, I decided to see what search had the longest response time. The search
+      itself has little to do with how long it took to respond. It just happened to be made during a
+      time of high traffic in which my server was responding slowly. But, boy oh boy, was I rewarded
+      when I discovered what the actual search was:
     </P>
 
     <StatsWrapper>
