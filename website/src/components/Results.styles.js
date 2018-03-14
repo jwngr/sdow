@@ -3,7 +3,7 @@ import Button from './Button';
 
 export const ResultsMessage = styled.div`
   width: 800px;
-  margin: 32px auto;
+  margin: 32px auto 20px auto;
   text-align: center;
 
   & > p {
@@ -25,7 +25,7 @@ export const ResultsMessage = styled.div`
 export const TwitterButtonWrapper = styled.a`
   width: 200px;
   display: block;
-  margin: 32px auto;
+  margin: 20px auto 32px auto;
   text-decoration: none;
 `;
 
