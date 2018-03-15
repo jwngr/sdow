@@ -1,4 +1,5 @@
 import React from 'react';
+import {Helmet} from 'react-helmet';
 
 import Table from '../../../charts/Table';
 import BarChart from '../../../charts/BarChart';
@@ -23,9 +24,15 @@ import elevenDegreesOfSeparationSearchImage from './elevenDegreesOfSeparationSea
 
 import * as data from './data';
 
+const title = 'Insights On Hitler And More From The First 500,000 Searches';
+
 export default () => (
   <Wrapper>
-    <Title>Insights On Hitler And More From The First 500,000 Searches</Title>
+    <Helmet>
+      <title>{`${title} | Blog | Six Degrees of Wikipedia`}</title>
+    </Helmet>
+
+    <Title>{title}</Title>
     <Subtitle>
       <StyledLink href="https://jwn.gr">Jacob Wenger</StyledLink> | March 14, 2018
     </Subtitle>
