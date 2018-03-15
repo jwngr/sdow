@@ -10,3 +10,6 @@ CREATE TABLE IF NOT EXISTS links
 .mode csv
 .separator "\t"
 .import /dev/stdin links
+
+CREATE INDEX links_outgoing_links_count_index ON links(outgoing_links_count);
+CREATE INDEX links_incoming_links_count_index ON links(incoming_links_count);
