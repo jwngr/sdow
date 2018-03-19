@@ -2,11 +2,13 @@ from __future__ import print_function
 
 import os
 import sqlite3
+import subprocess
 from collections import defaultdict
 
 cwd = os.path.dirname(__file__)
 mock_sdow_database_filename = os.path.join(cwd, '../sdow/sdow.sqlite')
 mock_searches_database_filename = os.path.join(cwd, '../sdow/searches.sqlite')
+searches_database_sql_filename = os.path.join(cwd, '../database/createSearchesTable.sql')
 
 print('[INFO] Creating mock SDOW database: {0}'.format(mock_sdow_database_filename))
 
@@ -136,8 +138,10 @@ print('[INFO] Creating mock searches database: {0}'.format(mock_searches_databas
 conn = sqlite3.connect(mock_searches_database_filename)
 
 # Create searches table.
-conn.execute('DROP TABLE IF EXISTS searches')
-conn.execute('CREATE TABLE IF NOT EXISTS searches(source_id INTEGER NOT NULL, target_id INTEGER NOT NULL, duration REAL NOT NULL, degrees_count INTEGER, paths_count INTEGER NOT NULL, paths TEXT, t TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL);')
+subprocess.call('sqlite3 {0} ".read {1}"'.format(
+    mock_searches_database_filename, searches_database_sql_filename), shell=True)
+# conn.execute('DROP TABLE IF EXISTS searches')
+# conn.execute('CREATE TABLE IF NOT EXISTS searches(source_id INTEGER NOT NULL, target_id INTEGER NOT NULL, duration REAL NOT NULL, degrees_count INTEGER, paths_count INTEGER NOT NULL, t TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL);')
 
 print('[INFO] Successfully created mock searches database: {0}'.format(
     mock_searches_database_filename))
