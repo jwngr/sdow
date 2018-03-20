@@ -43,7 +43,7 @@ everything set up:
 $ virtualenv env
 $ source env/bin/activate
 $ pip install -r requirements.txt
-$ python scripts/create_mock_database.py
+$ python scripts/create_mock_databases.py
 $ cp sdow.sqlite sdow/
 $ cd website/
 $ npm install
