@@ -162,7 +162,10 @@ export default () => (
       search path:
     </P>
 
-    <Image src={elevenDegreesOfSeparationSearchImage} />
+    <Image
+      src={elevenDegreesOfSeparationSearchImage}
+      alt="Six Degrees of Wikipedia results graph from 'Embleton' to 'McCombie'"
+    />
 
     <P>
       Looking at a histogram of searches according to their degrees of separation, it becomes clear
