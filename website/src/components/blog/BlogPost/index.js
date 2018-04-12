@@ -10,17 +10,10 @@ const AsyncSearchResultsAnalysisPost = Loadable({
   loading: () => null,
 });
 
-const AsyncBuildingSdowPost = Loadable({
-  loader: () => import('../posts/BuildingSdow'),
-  loading: () => null,
-});
-
 const getBlogPostContent = (postId, redirectToBlog) => {
   switch (postId) {
     case 'search-results-analysis':
       return <AsyncSearchResultsAnalysisPost />;
-    case 'building-six-degrees-of-wikipedia':
-      return <AsyncBuildingSdowPost />;
     default:
       redirectToBlog();
       return;
