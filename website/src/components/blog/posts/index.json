@@ -6,5 +6,13 @@
     "author": "Jacob Wenger",
     "description":
       "Delightful, curious, and amusing insights from the first 500,000 searches on Six Degrees of Wikipedia."
+  },
+  {
+    "id": "building-six-degrees-of-wikipedia",
+    "title": "Building Six Degrees of Wikipedia",
+    "date": "March 26, 2018",
+    "author": "Jacob Wenger",
+    "description":
+      "A look at the tech stack powering Six Degrees of Wikipedia and what it took to create the project."
   }
 ]

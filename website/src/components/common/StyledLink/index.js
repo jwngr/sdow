@@ -57,7 +57,7 @@ export default ({children, ...props}) => {
   // Change the word break behavior for long article names with no space (to avoid them trailing
   // off the page).
   let wordBreak;
-  if (children.indexOf(' ') === -1 && children.length >= 50) {
+  if (typeof children === 'string' && children.indexOf(' ') === -1 && children.length >= 50) {
     wordBreak = 'break-all';
   }
 

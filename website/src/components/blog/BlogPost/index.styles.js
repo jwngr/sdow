@@ -113,3 +113,20 @@ export const Divider = styled.div`
     content: '';
   }
 `;
+
+export const UL = styled.ul`
+  margin: 20px;
+  font-size: 20px;
+  line-height: 1.5;
+  font-family: 'Quicksand', serif;
+  text-align: justify;
+  color: ${(props) => props.theme.colors.darkGreen};
+`;
+
+export const Code = styled.span`
+  padding: 2px 6px;
+  margin-right: 4px;
+  border-radius: 4px;
+  font-family: monospace;
+  background-color: ${(props) => props.theme.colors.gray};
+`;
