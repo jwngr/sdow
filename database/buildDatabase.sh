@@ -267,7 +267,7 @@ if [ ! -f sdow.sqlite ]; then
   time pigz -dc links.with_counts.txt.gz | sqlite3 sdow.sqlite ".read $ROOT_DIR/createLinksTable.sql"
 
   echo
-  echo "[INFO] Compress SQLite file"
+  echo "[INFO] Compressing SQLite file"
   time pigz --best sdow.sqlite
 else
   echo "[WARN] Already created SQLite database"

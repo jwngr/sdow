@@ -105,7 +105,7 @@ FROM pages
 WHERE is_redirect = 0
   AND INSTR(title, '_') = 0;
 
-# Number of page titles containing either a single or double apostrophe
+# Number of page titles containing either a single or double quotation mark
 SELECT COUNT(*)
 FROM pages
 WHERE is_redirect = 0
