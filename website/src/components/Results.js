@@ -146,7 +146,9 @@ class Results extends Component {
     const tweetText = `Found ${getNumberWithCommas(
       paths.length
     )} ${pathOrPaths} with ${degreesOfSeparation} ${degreeOrDegrees} of separation from "${sourcePageTitle}" to "${targetPageTitle}" on Six Degrees of Wikipedia!`;
-    const tweetUrl = 'https://www.sixdegreesofwikipedia.com';
+    const tweetUrl = `https://www.sixdegreesofwikipedia.com/?source=${encodeURIComponent(
+      sourcePageTitle
+    )}&target=${encodeURIComponent(targetPageTitle)}`;
 
     return (
       <React.Fragment>

@@ -6,9 +6,9 @@ Thank you for contributing to Six Degrees of Wikipedia!
 
 There are three main pieces you'll need to get set up running locally:
 
-1. Mock SQLite database of Wikipedia links.
-2. Backend Python Flask web server.
-3. [Create React App](https://github.com/facebook/create-react-app)-based frontend website.
+1.  Mock SQLite database of Wikipedia links.
+2.  Backend Python Flask web server.
+3.  [Create React App](https://github.com/facebook/create-react-app)-based frontend website.
 
 There is some larger set up you'll need to run initially as well as some recurring set up every time
 you want to run the service.
@@ -27,14 +27,14 @@ $ cd sdow/
 Several global dependencies are required to run the service. Since installation instructions vary
 and are decently documented for each project, please refer to the links below on how to install them.
 
-1. [Python](https://www.python.org/downloads/) - macOS comes with an older `2.x` version of Python,
-   but I recommend using [`pyenv`](https://github.com/pyenv/pyenv) to install the latest `2.x`
-   release.
-1. [`pip`](https://pip.pypa.io/en/stable/installing/) - Most recent versions of Python ship with
-   `pip`
-1. [`sqlite3`](https://docs.python.org/3/library/sqlite3.html) - Can be installed via `brew install sqlite3`.
-1. [`virtualenv`](https://virtualenv.pypa.io/en/stable/installation/) - Helps avoid polluting your
-   global environment.
+1.  [Python](https://www.python.org/downloads/) - macOS comes with an older `2.x` version of Python,
+    but I recommend using [`pyenv`](https://github.com/pyenv/pyenv) to install the latest `2.x`
+    release.
+1.  [`pip`](https://pip.pypa.io/en/stable/installing/) - Most recent versions of Python ship with
+    `pip`
+1.  [`sqlite3`](https://docs.python.org/3/library/sqlite3.html) - Can be installed via `brew install sqlite3`.
+1.  [`virtualenv`](https://virtualenv.pypa.io/en/stable/installation/) - Helps avoid polluting your
+    global environment.
 
 Once all the required global dependencies above are installed, run the following commands to get
 everything set up:
@@ -43,7 +43,7 @@ everything set up:
 $ virtualenv env
 $ source env/bin/activate
 $ pip install -r requirements.txt
-$ python scripts/create_mock_database.py
+$ python scripts/create_mock_databases.py
 $ cp sdow.sqlite sdow/
 $ cd website/
 $ npm install
