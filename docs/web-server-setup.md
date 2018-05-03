@@ -12,7 +12,7 @@
     1.  **Name:** `sdow-web-server-1`
     1.  **Zone:** `us-central1-c`
     1.  **Machine Type:** f1-micro (1 vCPU, 0.6 GB RAM)
-    1.  **Boot disk**: 16 GB SSD, Debian GNU/Linux 8 (jessie)
+    1.  **Boot disk**: 32 GB SSD, Debian GNU/Linux 8 (jessie)
     1.  **Notes**: Click "Set access for each API" and use default values for all APIs except set
         Storage to "Read Write". Do not use Debian GNU/Linux 9 (stretch) due to
         [degraded performance](https://lists.debian.org/debian-kernel/2017/12/msg00265.html).
