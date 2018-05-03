@@ -36,13 +36,13 @@ class Loading extends Component {
     tokens.forEach((token, i) => {
       if (skipCount === 0) {
         if (i % 2 === 0) {
+          // Regular text
           factContent.push(<span key={i}>{token}</span>);
         } else {
-          if (token === 'Suzukake no Ki no Michi de ') {
-            // Special-case stupid long page title which contains a double quotation mark.
-            skipCount = 2;
-            token = tokens[i] + '"' + tokens[i + 1] + '"' + tokens[i + 2];
-          }
+          // Wikipedia link
+          // Single apostrophe is used for Wikipedia links which themselves have a double apostrophe
+          // in them.
+          token = token.replace(/'/g, `"`);
           factContent.push(
             <StyledLink href={getWikipediaPageUrl(token)} target="_blank" key={i}>
               {token}
