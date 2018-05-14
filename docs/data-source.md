@@ -39,7 +39,7 @@ Cloud Storage bucket or to a Google Cloud Engine VM) and around $0.05 per compre
 otherwise.
 
 Use the following [`gsutil`](https://cloud.google.com/storage/docs/gsutil) and
-[pigz](https://zlib.net/pigz/) commands to download a file, making sure to replace
+[`pigz`](https://zlib.net/pigz/) commands to download a file, making sure to replace
 `<GCP_PROJECT_ID>` with your Google Cloud Platform project ID and `<YYYYMMDD>` with the date of the
 database dump:
 
