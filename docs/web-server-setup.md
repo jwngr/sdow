@@ -128,7 +128,7 @@
     database weekly:
 
     ```
-    0 4 * * * /usr/bin/certbot renew --noninteractive --renew-hook "/bin/systemctl reload nginx" >> /var/log/le-renew.log
+    0 4 * * * /usr/bin/certbot renew --noninteractive --renew-hook "/bin/systemctl reload nginx" | sudo tee -a /var/log/le-renew.log
     */10 * * * * /home/jwngr/sdow/env/bin/supervisorctl -c /home/jwngr/sdow/config/supervisord.conf restart gunicorn
     0 6 * * 0 /home/jwngr/sdow/database/backupSearchesDatabase.sh
     ```
