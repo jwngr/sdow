@@ -268,7 +268,7 @@ if [ ! -f sdow.sqlite ]; then
 
   echo
   echo "[INFO] Compressing SQLite file"
-  time pigz --best sdow.sqlite
+  time pigz --best --keep sdow.sqlite
 else
   echo "[WARN] Already created SQLite database"
 fi

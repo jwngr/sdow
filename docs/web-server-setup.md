@@ -81,7 +81,6 @@
     $ rm sdow/searches.sql
     ```
 
-1.  Ensure the VM has been [assigned Six Degrees of Wikipedia's static external IP address](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address#IP_assign).
 1.  Install required operating system dependencies to generate an SSL certificate (this and the
     following instructions are based on these
     [blog](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-debian-8)
@@ -108,9 +107,11 @@
     $ sudo systemctl restart nginx
     ```
 
-1.  Ensure the server has the proper static IP address (`sdow-web-server-static-ip`) by editing it on
-    the [GCP console](https://console.cloud.google.com/compute/instances?project=sdow-prod) if
-    necessary.
+1.  Ensure the VM has been [assigned the proper static IP
+    address]((https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address#IP_assign)
+    (`sdow-web-server-static-ip`) by editing it on
+    the [GCP console](https://console.cloud.google.com/compute/instances?project=sdow-prod).
+
 1.  Create an SSL certificate using [Let's Encrypt](https://letsencrypt.org/)'s `certbot`:
 
     ```bash
