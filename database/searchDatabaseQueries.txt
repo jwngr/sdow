@@ -1,0 +1,10 @@
+# Number of searches
+SELECT COUNT(*) from searches;
+
+# Last 10 searches
+SELECT p1.title, p2.title, duration
+FROM searches
+INNER JOIN pages p1 ON p1.id == source_id
+INNER JOIN pages p2 ON p2.id == target_id
+ORDER BY searches.rowid DESC
+LIMIT 10;

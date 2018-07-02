@@ -56,6 +56,7 @@ download:
 * `gs://sdow-prod/dumps/20180401/sdow.sqlite.gz` (3.04 GB)
 * `gs://sdow-prod/dumps/20180501/sdow.sqlite.gz` (3.06 GB)
 * `gs://sdow-prod/dumps/20180601/sdow.sqlite.gz` (3.08 GB)
+* `gs://sdow-prod/dumps/20180701/sdow.sqlite.gz` (3.10 GB)
 
 ## Database Schema
 
@@ -163,11 +164,16 @@ hour given the following instructions:
     resumed!
 1.  Copy the script output and the resulting SQLite file to the `sdow-prod` GCS bucket:
 
-    ```
+    ```bash
     $ gsutil -u sdow-prod cp output.txt gs://sdow-prod/dumps/<YYYYMMDD>/
     $ gsutil -u sdow-prod cp dump/sdow.sqlite.gz gs://sdow-prod/dumps/<YYYYMMDD>/
     ```
 
-1.  Run the [Wikipedia facts queries](../database/wikipediaFactsQueries.txt) and update the
-    [corresponding JSON file](../website/src/resources/wikipediaFacts.json).
+1.  Run the Wikipedia facts queries and update the
+    [corresponding JSON file](../website/src/resources/wikipediaFacts.json):
+
+    ```bash
+    $ python runWikipediaFactsQueries.py
+    ```
+
 1.  Delete the VM to prevent incurring large fees.
