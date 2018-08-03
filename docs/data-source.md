@@ -2,12 +2,12 @@
 
 ## Table of Contents
 
-* [Data Source](#data-source)
-* [Get the Data Yourself](#get-the-data-yourself)
-* [Database Schema](#database-schema)
-* [Database Creation Script](#database-creation-script)
-* [Historical Search Results](#historical-search-results)
-* [Database Creation Process](#database-creation-process)
+- [Data Source](#data-source)
+- [Get the Data Yourself](#get-the-data-yourself)
+- [Database Schema](#database-schema)
+- [Database Creation Script](#database-creation-script)
+- [Historical Search Results](#historical-search-results)
+- [Database Creation Process](#database-creation-process)
 
 ## Data Source
 
@@ -51,12 +51,13 @@ $ pigz -d sdow.sqlite.gz
 Here is a list of historical Six Degrees of Wikipedia SQLite databases currently available for
 download:
 
-* `gs://sdow-prod/dumps/20180201/sdow.sqlite.gz` (2.99 GB)
-* `gs://sdow-prod/dumps/20180301/sdow.sqlite.gz` (3.01 GB)
-* `gs://sdow-prod/dumps/20180401/sdow.sqlite.gz` (3.04 GB)
-* `gs://sdow-prod/dumps/20180501/sdow.sqlite.gz` (3.06 GB)
-* `gs://sdow-prod/dumps/20180601/sdow.sqlite.gz` (3.08 GB)
-* `gs://sdow-prod/dumps/20180701/sdow.sqlite.gz` (3.10 GB)
+- `gs://sdow-prod/dumps/20180201/sdow.sqlite.gz` (2.99 GB)
+- `gs://sdow-prod/dumps/20180301/sdow.sqlite.gz` (3.01 GB)
+- `gs://sdow-prod/dumps/20180401/sdow.sqlite.gz` (3.04 GB)
+- `gs://sdow-prod/dumps/20180501/sdow.sqlite.gz` (3.06 GB)
+- `gs://sdow-prod/dumps/20180601/sdow.sqlite.gz` (3.08 GB)
+- `gs://sdow-prod/dumps/20180701/sdow.sqlite.gz` (3.10 GB)
+- `gs://sdow-prod/dumps/20180801/sdow.sqlite.gz` (3.12 GB)
 
 ## Database Schema
 
