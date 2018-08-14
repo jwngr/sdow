@@ -108,7 +108,7 @@
     ```
 
 1.  Ensure the VM has been [assigned the proper static IP
-    address]((https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address#IP_assign)
+    address](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address#IP_assign)
     (`sdow-web-server-static-ip`) by editing it on
     the [GCP console](https://console.cloud.google.com/compute/instances?project=sdow-prod).
 
