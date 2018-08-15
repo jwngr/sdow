@@ -8,7 +8,7 @@
 ## Initial Setup
 
 1.  Create a new [Google Compute Engine instance](https://console.cloud.google.com/compute/instances?project=sdow-prod)
-    from the `sdow-web-server` instance template, which is configured with the following specs::
+    from the `sdow-web-server` instance template, which is configured with the following specs:
     1.  **Name:** `sdow-web-server-1`
     1.  **Zone:** `us-central1-c`
     1.  **Machine Type:** f1-micro (1 vCPU, 0.6 GB RAM)
