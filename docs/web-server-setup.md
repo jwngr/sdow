@@ -159,6 +159,7 @@
     ```bash
     $ curl -sSO https://repo.stackdriver.com/stack-install.sh
     $ sudo bash stack-install.sh --write-gcm
+    $ rm stack-install.sh
     ```
 
 ## Recurring Setup
