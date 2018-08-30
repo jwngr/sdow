@@ -16,6 +16,7 @@
     1.  **Notes**: Click "Set access for each API" and use default values for all APIs except set
         Storage to "Read Write". Do not use Debian GNU/Linux 9 (stretch) due to
         [degraded performance](https://lists.debian.org/debian-kernel/2017/12/msg00265.html).
+
 1.  SSH into the machine:
 
     ```bash
