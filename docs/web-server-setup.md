@@ -2,13 +2,15 @@
 
 ## Table of Contents
 
-* [Initial Setup](#initial-setup)
-* [Recurring Setup](#recurring-setup)
+- [Initial Setup](#initial-setup)
+- [Recurring Setup](#recurring-setup)
+- [Updating Data Source](#updating-data-source)
 
 ## Initial Setup
 
 1.  Create a new [Google Compute Engine instance](https://console.cloud.google.com/compute/instances?project=sdow-prod)
     from the `sdow-web-server` instance template, which is configured with the following specs:
+
     1.  **Name:** `sdow-web-server-1`
     1.  **Zone:** `us-central1-c`
     1.  **Machine Type:** f1-micro (1 vCPU, 0.6 GB RAM)
@@ -197,3 +199,18 @@
     **Note:** Log output from `supervisord` is written to `/tmp/supervisord.log` and log output from
     `gunicorn` is written to `/tmp/gunicorn-stdout---supervisor-<HASH>.log`. Logs are also written to
     Stackdriver Logging.
+
+## Updating Data Source
+
+To update the web server to a more recent `sdow.sqlite` file with minimal downtime, run the
+following commands after SSHing into the web server:
+
+```bash
+$ cd sdow/
+$ source env/bin/activate
+$ gsutil -u sdow-prod cp gs://sdow-prod/dumps/YYYYMMDD/sdow.sqlite.gz sdow/sdow_new.sqlite.gz
+$ pigz -d sdow/sdow_new.sqlite.gz  # This takes ~5 minutes and causes search to be non-responsive.
+$ mv sdow/sdow_new.sqlite.gz sdow/sdow.sqlite.gz
+$ cd config/
+$ supervisorctl restart gunicorn
+```
