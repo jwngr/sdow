@@ -58,6 +58,7 @@ download:
 - `gs://sdow-prod/dumps/20180601/sdow.sqlite.gz` (3.08 GB)
 - `gs://sdow-prod/dumps/20180701/sdow.sqlite.gz` (3.10 GB)
 - `gs://sdow-prod/dumps/20180801/sdow.sqlite.gz` (3.12 GB)
+- `gs://sdow-prod/dumps/20180901/sdow.sqlite.gz` (3.14 GB)
 
 ## Database Schema
 
