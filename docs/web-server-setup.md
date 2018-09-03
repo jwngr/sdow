@@ -8,7 +8,7 @@
 ## Initial Setup
 
 1.  Create a new [Google Compute Engine instance](https://console.cloud.google.com/compute/instances?project=sdow-prod)
-    from the `sdow-web-server` instance template, which is configured with the following specs::
+    from the `sdow-web-server` instance template, which is configured with the following specs:
     1.  **Name:** `sdow-web-server-1`
     1.  **Zone:** `us-central1-c`
     1.  **Machine Type:** f1-micro (1 vCPU, 0.6 GB RAM)
@@ -16,6 +16,7 @@
     1.  **Notes**: Click "Set access for each API" and use default values for all APIs except set
         Storage to "Read Write". Do not use Debian GNU/Linux 9 (stretch) due to
         [degraded performance](https://lists.debian.org/debian-kernel/2017/12/msg00265.html).
+
 1.  SSH into the machine:
 
     ```bash
@@ -108,7 +109,7 @@
     ```
 
 1.  Ensure the VM has been [assigned the proper static IP
-    address]((https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address#IP_assign)
+    address](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address#IP_assign)
     (`sdow-web-server-static-ip`) by editing it on
     the [GCP console](https://console.cloud.google.com/compute/instances?project=sdow-prod).
 
@@ -159,6 +160,7 @@
     ```bash
     $ curl -sSO https://repo.stackdriver.com/stack-install.sh
     $ sudo bash stack-install.sh --write-gcm
+    $ rm stack-install.sh
     ```
 
 ## Recurring Setup
