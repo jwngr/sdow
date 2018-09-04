@@ -210,7 +210,7 @@ $ cd sdow/
 $ source env/bin/activate
 $ gsutil -u sdow-prod cp gs://sdow-prod/dumps/YYYYMMDD/sdow.sqlite.gz sdow/sdow_new.sqlite.gz
 $ pigz -d sdow/sdow_new.sqlite.gz  # This takes ~5 minutes and causes search to be non-responsive.
-$ mv sdow/sdow_new.sqlite.gz sdow/sdow.sqlite.gz
+$ mv sdow/sdow_new.sqlite sdow/sdow.sqlite
 $ cd config/
 $ supervisorctl restart gunicorn
 ```
