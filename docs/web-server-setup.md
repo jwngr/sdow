@@ -19,10 +19,25 @@
         Storage to "Read Write". Do not use Debian GNU/Linux 9 (stretch) due to
         [degraded performance](https://lists.debian.org/debian-kernel/2017/12/msg00265.html).
 
+1.  [Install, initialize, and authenticate to the `gcloud` CLI](https://cloud.google.com/sdk/docs/#install_the_latest_cloud_tools_version_cloudsdk_current_version).
+
+1.  Set the default region and zone for the `gcloud` CLI:
+
+    ```
+    $ gcloud config set compute/region us-central1
+    $ gcloud config set compute/zone us-central1-c
+    ```
+
+1.  Ensure the `gcloud` CLI is configured to point to the correct project:
+
+    ```bash
+    $ gcloud config set project sdow-prod
+    ```
+
 1.  SSH into the machine:
 
     ```bash
-    $ gcloud compute ssh sdow-web-server-1
+    $ gcloud compute ssh sdow-web-server-#
     ```
 
 1.  Install required operating system dependencies to run the Flask app:
