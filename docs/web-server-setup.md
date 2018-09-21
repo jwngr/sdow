@@ -132,9 +132,20 @@
     database weekly:
 
     ```
-    0 4 * * * /usr/bin/certbot renew --noninteractive --renew-hook "/bin/systemctl reload nginx" | sudo tee -a /var/log/le-renew.log
+    0 4 * * * sudo /usr/bin/certbot renew --noninteractive --renew-hook "sudo /bin/systemctl reload nginx"
     */10 * * * * /home/jwngr/sdow/env/bin/supervisorctl -c /home/jwngr/sdow/config/supervisord.conf restart gunicorn
     0 6 * * 0 /home/jwngr/sdow/database/backupSearchesDatabase.sh
+    ```
+
+    **Note:** Let's Encrypt debug logs can be found at `/var/log/letsencrypt/letsencrypt.log`.
+    
+    **Note:** Supervisor debug logs can be found at `/tmp/supervisord.log`.
+
+1.  Install a mail service in order to read errors from cron jobs:
+
+    ```bash
+    $ sudo apt-get install postfix
+    # Choose local and use the default email address.
     ```
 
 1.  Generate a strong Diffie-Hellman group to further increase security (note that this can take a
