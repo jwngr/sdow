@@ -156,12 +156,14 @@
     
     **Note:** Supervisor debug logs can be found at `/tmp/supervisord.log`.
 
-1.  Install a mail service in order to read errors from cron jobs:
+1.  Install a mail service in order to read logs from cron jobs:
 
     ```bash
-    $ sudo apt-get install postfix
-    # Choose local and use the default email address.
+    $ sudo apt-get -yq install postfix
+    # Choose "Local only" and use the default email address.
     ```
+
+    **Note:** Cron job logs will be written to `/var/mail/jwngr`.
 
 1.  Generate a strong Diffie-Hellman group to further increase security (note that this can take a
     couple minutes):
