@@ -28,16 +28,10 @@
     $ gcloud config set compute/zone us-central1-c
     ```
 
-1.  Ensure the `gcloud` CLI is configured to point to the correct project:
-
-    ```bash
-    $ gcloud config set project sdow-prod
-    ```
-
 1.  SSH into the machine:
 
     ```bash
-    $ gcloud compute ssh sdow-web-server-#
+    $ gcloud compute ssh sdow-web-server-# --project=sdow-prod
     ```
 
 1.  Install required operating system dependencies to run the Flask app:
@@ -153,7 +147,7 @@
     ```
 
     **Note:** Let's Encrypt debug logs can be found at `/var/log/letsencrypt/letsencrypt.log`.
-    
+
     **Note:** Supervisor debug logs can be found at `/tmp/supervisord.log`.
 
 1.  Install a mail service in order to read logs from cron jobs:

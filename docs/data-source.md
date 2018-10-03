@@ -59,6 +59,7 @@ download:
 - `gs://sdow-prod/dumps/20180701/sdow.sqlite.gz` (3.10 GB)
 - `gs://sdow-prod/dumps/20180801/sdow.sqlite.gz` (3.12 GB)
 - `gs://sdow-prod/dumps/20180901/sdow.sqlite.gz` (3.14 GB)
+- `gs://sdow-prod/dumps/20181001/sdow.sqlite.gz` (3.15 GB)
 
 ## Database Schema
 
@@ -122,16 +123,25 @@ hour given the following instructions:
 
 1.  Create a new [Google Compute Engine instance](https://console.cloud.google.com/compute/instances?project=sdow-prod)
     from the `sdow-db-builder` instance template, which is configured with the following specs:
+
     1.  **Name:** `sdow-db-builder-1`
     1.  **Zone:** `us-central1-c`
     1.  **Machine Type:** n1-highmem-8 (8 vCPUs, 52 GB RAM)
     1.  **Boot disk**: 256 GB SSD, Debian GNU/Linux 8 (jessie)
     1.  **Notes**: Allow full access to all Cloud APIs. Do not use Debian GNU/Linux 9 (stretch) due to
         [degraded performance](https://lists.debian.org/debian-kernel/2017/12/msg00265.html).
+
+1.  Set the default region and zone for the `gcloud` CLI:
+
+    ```
+    $ gcloud config set compute/region us-central1
+    $ gcloud config set compute/zone us-central1-c
+    ```
+
 1.  SSH into the machine:
 
     ```bash
-    $ gcloud compute ssh sdow-db-builder-1
+    $ gcloud compute ssh sdow-db-builder-1 --project=sdow-prod
     ```
 
 1.  Install required operating system dependencies:
