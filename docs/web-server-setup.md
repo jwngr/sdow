@@ -5,6 +5,7 @@
 - [Initial Setup](#initial-setup)
 - [Recurring Setup](#recurring-setup)
 - [Updating Data Source](#updating-data-source)
+- [Updating Server Code](#updating-server-code)
 
 ## Initial Setup
 
@@ -233,6 +234,20 @@ $ source env/bin/activate
 $ gsutil -u sdow-prod cp gs://sdow-prod/dumps/YYYYMMDD/sdow.sqlite.gz sdow/sdow_new.sqlite.gz
 $ pigz -d sdow/sdow_new.sqlite.gz  # This takes ~5 minutes and causes search to be non-responsive.
 $ mv sdow/sdow_new.sqlite sdow/sdow.sqlite
+$ cd config/
+$ supervisorctl restart gunicorn
+```
+
+## Updating Server Code
+
+To update the Python server code which powers the SDOW backend, run the following commands after
+SSHing into the web server:
+
+```bash
+$ cd sdow/
+$ source env/bin/activate
+$ git pull
+$ pip install -r requirements.txt
 $ cd config/
 $ supervisorctl restart gunicorn
 ```
