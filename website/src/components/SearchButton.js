@@ -1,8 +1,9 @@
 import React from 'react';
+import styled from 'styled-components';
 
 import Button from './common/Button';
 
-const SearchButton = Button.extend`
+const SearchButton = styled(Button)`
   width: 240px;
   height: 72px;
   margin: 0 auto 40px;

@@ -24,7 +24,7 @@ const LogoImg = styled.img`
 export default () => (
   <Link href="/">
     <LogoImg
-      srcset={`${logo} 462w, ${logo2x} 924w`}
+      srcSet={`${logo} 462w, ${logo2x} 924w`}
       sizes="(max-width: 600px) 280px, 800px"
       src={logo2x}
       alt="Six Degrees of Wikipedia Logo"

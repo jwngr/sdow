@@ -123,7 +123,7 @@ class BarChart extends Component {
   render() {
     return (
       <BarChartWrapper className="bar-chart-wrapper">
-        <BarChartSvg innerRef={(r) => (this.barChartRef = r)} />
+        <BarChartSvg ref={(r) => (this.barChartRef = r)} />
       </BarChartWrapper>
     );
   }

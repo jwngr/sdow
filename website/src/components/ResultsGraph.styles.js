@@ -89,7 +89,7 @@ export const Instructions = styled.div`
   }
 `;
 
-export const ResetButton = Button.extend`
+export const ResetButton = styled(Button)`
   position: absolute;
   top: 8px;
   right: 8px;

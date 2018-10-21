@@ -29,7 +29,7 @@ export const TwitterButtonWrapper = styled.a`
   text-decoration: none;
 `;
 
-export const TwitterButton = Button.extend`
+export const TwitterButton = styled(Button)`
   width: 100%;
   display: flex;
   justify-content: center;

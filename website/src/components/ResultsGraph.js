@@ -358,7 +358,7 @@ class Graph extends Component {
           </svg>
         </ResetButton>
 
-        <GraphSvg innerRef={(r) => (this.graphRef = r)} />
+        <GraphSvg ref={(r) => (this.graphRef = r)} />
       </GraphWrapper>
     );
   }

@@ -73,7 +73,7 @@ export const FormInput = styled.input`
   }
 `;
 
-export const SubscribeButton = Button.extend`
+export const SubscribeButton = styled(Button)`
   width: 200px;
   height: 60px;
   margin: auto;
