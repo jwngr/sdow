@@ -52,12 +52,16 @@ for line in io.BufferedReader(gzip.open(REDIRECTS_FILE, 'r')):
 # writing the remaining redirects to stdout.
 for source_page_id, target_page_id in REDIRECTS.iteritems():
   start_target_page_id = target_page_id
+
+  redirected_count = 0
   while target_page_id in REDIRECTS:
     target_page_id = REDIRECTS[target_page_id]
 
+    redirected_count += 1
+
     # Break out if there is a circular path, meaning the redirects only point to other redirects,
     # not an acutal page.
-    if target_page_id == start_target_page_id:
+    if target_page_id == start_target_page_id or redirected_count > 100:
       target_page_id = None
 
   if target_page_id is not None:
