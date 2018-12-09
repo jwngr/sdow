@@ -35,7 +35,7 @@ Compressed versions of the Six Degrees of Wikipedia SQLite database (`sdow.sqlit
 for download from ["requester pays"](https://cloud.google.com/storage/docs/requester-pays) Google
 Cloud Storage buckets. Check the [pricing page](https://cloud.google.com/storage/pricing) for the
 full details. In general, copying is free from within Google Cloud Platform (e.g., to another Google
-Cloud Storage bucket or to a Google Cloud Engine VM) and around $0.05 per compressed SQLite file
+Cloud Storage bucket or to a Google Cloud Engine VM) and around \$0.05 per compressed SQLite file
 otherwise.
 
 Use the following [`gsutil`](https://cloud.google.com/storage/docs/gsutil) and
@@ -61,6 +61,7 @@ download:
 - `gs://sdow-prod/dumps/20180901/sdow.sqlite.gz` (3.14 GB)
 - `gs://sdow-prod/dumps/20181001/sdow.sqlite.gz` (3.15 GB)
 - `gs://sdow-prod/dumps/20181101/sdow.sqlite.gz` (3.17 GB)
+- `gs://sdow-prod/dumps/20181201/sdow.sqlite.gz` (3.19 GB)
 
 ## Database Schema
 
