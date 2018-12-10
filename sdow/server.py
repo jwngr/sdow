@@ -51,8 +51,16 @@ def unhandled_exception_handler(error):
       'source': request.json.get('source'),
       'target': request.json.get('target'),
   })
-  return 'Unhandled exception', 500
+  return jsonify({
+      'error': 'Unhandled exception.'
+  }), 500
 
+@app.errorhandler(404)
+def route_not_found(error):
+  logging.warning('Route not found: {0} {1}'.format(request.method, request.path))
+  return jsonify({
+      'error': 'Route not found.'
+  }), 404
 
 @app.errorhandler(500)
 def internal_server_error(error):
@@ -62,7 +70,9 @@ def internal_server_error(error):
       'source': request.json.get('source'),
       'target': request.json.get('target'),
   })
-  return 'Internal server error', 500
+  return jsonify({
+      'error': 'Internal server error.'
+  }), 500
 
 
 @app.errorhandler(InvalidRequest)
