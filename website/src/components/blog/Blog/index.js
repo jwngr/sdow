@@ -37,7 +37,7 @@ export default () => (
 
       <Divider />
       {posts.map((postInfo) => (
-        <React.Fragment>
+        <React.Fragment key={postInfo.id}>
           <BlogPostCard {...postInfo} />
           <Divider />
         </React.Fragment>
