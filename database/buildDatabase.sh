@@ -119,7 +119,7 @@ if [ ! -f pages.txt.gz ]; then
     | sed -e 's/),(/\'$'\n/g' \
     | egrep "^[0-9]+,0," \
     | sed -e $"s/,0,'/\t/" \
-    | sed -e $"s/','[^,]*,[^,]*,\([01]\).*/\t\1/" \
+    | sed -e $"s/',[^,]*,\([01]\).*/\t\1/" \
     | pigz --fast > pages.txt.gz.tmp
   mv pages.txt.gz.tmp pages.txt.gz
 else
