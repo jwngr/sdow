@@ -38,7 +38,7 @@ if not LINKS_FILE.endswith('.gz'):
 ALL_PAGE_IDS = Set()
 PAGE_TITLES_TO_IDS = {}
 for line in io.BufferedReader(gzip.open(PAGES_FILE, 'r')):
-  [page_id, page_title, is_redirect] = line.rstrip('\n').split('\t')
+  [page_id, page_title, _] = line.rstrip('\n').split('\t')
   ALL_PAGE_IDS.add(page_id)
   PAGE_TITLES_TO_IDS[page_title] = page_id
 
