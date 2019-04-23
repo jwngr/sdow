@@ -65,6 +65,7 @@ download:
 - `gs://sdow-prod/dumps/20190101/sdow.sqlite.gz` (3.21 GB)
 - `gs://sdow-prod/dumps/20190201/sdow.sqlite.gz` (3.23 GB)
 - `gs://sdow-prod/dumps/20190301/sdow.sqlite.gz` (3.24 GB)
+- `gs://sdow-prod/dumps/20190401/sdow.sqlite.gz` (3.21 GB)
 
 ## Database Schema
 
@@ -123,8 +124,8 @@ $ ./buildDatabase.sh <YYYYMMDD>
 
 ## Database Creation Process
 
-Generating the Six Degrees of Wikipedia database from a dump of Wikipedia takes approximately one
-hour given the following instructions:
+Generating the Six Degrees of Wikipedia database from a dump of Wikipedia takes approximately two
+hours given the following instructions:
 
 1.  Create a new [Google Compute Engine instance](https://console.cloud.google.com/compute/instances?project=sdow-prod)
     from the `sdow-db-builder` instance template, which is configured with the following specs:
@@ -132,9 +133,8 @@ hour given the following instructions:
     1.  **Name:** `sdow-db-builder-1`
     1.  **Zone:** `us-central1-c`
     1.  **Machine Type:** n1-highmem-8 (8 vCPUs, 52 GB RAM)
-    1.  **Boot disk**: 256 GB SSD, Debian GNU/Linux 8 (jessie)
-    1.  **Notes**: Allow full access to all Cloud APIs. Do not use Debian GNU/Linux 9 (stretch) due to
-        [degraded performance](https://lists.debian.org/debian-kernel/2017/12/msg00265.html).
+    1.  **Boot disk**: 256 GB SSD, Debian GNU/Linux 9 (stretch)
+    1.  **Notes**: Allow full access to all Cloud APIs.
 
 1.  Set the default region and zone for the `gcloud` CLI:
 

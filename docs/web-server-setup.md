@@ -15,10 +15,9 @@
     1.  **Name:** `sdow-web-server-1`
     1.  **Zone:** `us-central1-c`
     1.  **Machine Type:** f1-micro (1 vCPU, 0.6 GB RAM)
-    1.  **Boot disk**: 32 GB SSD, Debian GNU/Linux 8 (jessie)
+    1.  **Boot disk**: 32 GB SSD, Debian GNU/Linux 9 (stretch)
     1.  **Notes**: Click "Set access for each API" and use default values for all APIs except set
-        Storage to "Read Write". Do not use Debian GNU/Linux 9 (stretch) due to
-        [degraded performance](https://lists.debian.org/debian-kernel/2017/12/msg00265.html).
+        Storage to "Read Write".
 
 1.  [Install, initialize, and authenticate to the `gcloud` CLI](https://cloud.google.com/sdk/docs/#install_the_latest_cloud_tools_version_cloudsdk_current_version).
 
@@ -100,10 +99,10 @@
     [posts](https://blog.miguelgrinberg.com/post/running-your-flask-application-over-https)):
 
     ```bash
-    $ echo 'deb http://ftp.debian.org/debian jessie-backports main' | sudo tee /etc/apt/sources.list.d/backports.list
+    $ echo 'deb http://ftp.debian.org/debian stretch-backports main' | sudo tee /etc/apt/sources.list.d/backports.list
     $ sudo apt-get -q update
     $ sudo apt-get -yq install nginx
-    $ sudo apt-get -yq install certbot -t jessie-backports
+    $ sudo apt-get -yq install certbot -t stretch-backports
     ```
 
 1.  Add this `location` block inside the `server` block in `/etc/nginx/sites-available/default`:
@@ -153,8 +152,6 @@
 
     # Backup the searches database weekly.
     0 6 * * 0 /home/jwngr/sdow/database/backupSearchesDatabase.sh
-
-
     ```
 
     **Note:** Let's Encrypt debug logs can be found at `/var/log/letsencrypt/letsencrypt.log`.
