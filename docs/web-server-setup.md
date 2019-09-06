@@ -158,6 +158,21 @@
 
     **Note:** Supervisor debug logs can be found at `/tmp/supervisord.log`.
 
+1.  Replace the `ExecStart` line in `/lib/systemd/system/certbot.service` with the following to
+    ensure NGINX restarts every time a new certificate is generated:
+
+    ```
+    ExecStart=/usr/bin/certbot -q renew --noninteractive --renew-hook "sudo /bin/systemctl reload nginx"
+    ```
+
+1.  Run the following commands to restart `certbot` and ensure the new timer is enabled:
+
+    ```
+    $ sudo systemctl daemon-reload
+    $ sudo systemctl restart certbot.service
+    $ sudo systemctl restart certbot.timer
+    ```
+
 1.  Install a mail service in order to read logs from cron jobs:
 
     ```bash
