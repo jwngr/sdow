@@ -1,4 +1,4 @@
-flask == 0.12.4
+flask == 1.0
 flask-compress == 1.4.0
 flask-cors == 3.0.6
 litecli == 1.0.0
