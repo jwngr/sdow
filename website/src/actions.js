@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import axios from 'axios';
-import {replace} from 'redux-little-router';
+import {replace} from 'connected-react-router';
 
 import {SDOW_API_URL} from './resources/constants';
 
-// Router location changed action from redux-little-router.
-export const ROUTER_LOCATION_CHANGED = 'ROUTER_LOCATION_CHANGED';
+// Router location changed action from redux-router-dom.
+export const ROUTER_LOCATION_CHANGED = '@@router/LOCATION_CHANGE';
 
 export const SET_ERROR_MESSAGE = 'SET_ERROR_MESSAGE';
 export function setErrorMessage(errorMessage) {
@@ -80,10 +80,7 @@ export function fetchShortestPaths() {
     dispatch(
       replace({
         pathname: '/',
-        query: {
-          source: sourcePageTitle,
-          target: targetPageTitle,
-        },
+        search: `?source=${sourcePageTitle}&target=${targetPageTitle}`,
       })
     );
 

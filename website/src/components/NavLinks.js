@@ -7,7 +7,7 @@ export default ({handleOpenModal}) => (
     <TextLink href="#" onClick={() => handleOpenModal()}>
       About
     </TextLink>
-    <TextLinkInternal href="/blog">Blog</TextLinkInternal>
+    <TextLinkInternal to="/blog">Blog</TextLinkInternal>
     <TextLink href="https://github.com/jwngr/sdow">GitHub</TextLink>
   </Wrapper>
 );

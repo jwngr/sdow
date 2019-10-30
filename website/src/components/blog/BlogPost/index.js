@@ -1,7 +1,6 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import Loadable from 'react-loadable';
-import {push} from 'redux-little-router';
+import {useParams, Redirect} from 'react-router-dom';
 
 import Logo from '../../common/Logo';
 
@@ -10,26 +9,24 @@ const AsyncSearchResultsAnalysisPost = Loadable({
   loading: () => null,
 });
 
-const getBlogPostContent = (postId, redirectToBlog) => {
+const getBlogPostContent = (postId) => {
   switch (postId) {
     case 'search-results-analysis':
       return <AsyncSearchResultsAnalysisPost />;
     default:
-      redirectToBlog();
-      return;
+      return <Redirect to="/blog" />;
   }
 };
 
-const BlogPost = ({postId, redirectToBlog}) => (
-  <React.Fragment>
-    <Logo />
-    {getBlogPostContent(postId, redirectToBlog)}
-  </React.Fragment>
-);
+const BlogPost = () => {
+  let {postId} = useParams();
 
-const mapStateToProps = ({router}) => ({postId: router.params.postId});
-const mapDispatchToProps = (dispatch) => ({
-  redirectToBlog: () => dispatch(push('/blog')),
-});
+  return (
+    <React.Fragment>
+      <Logo />
+      {getBlogPostContent(postId)}
+    </React.Fragment>
+  );
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(BlogPost);
+export default BlogPost;

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {Link} from 'redux-little-router';
+import {Link} from 'react-router-dom';
 
 export const Wrapper = styled.div`
   position: absolute;

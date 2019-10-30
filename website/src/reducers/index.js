@@ -1,4 +1,8 @@
 import _ from 'lodash';
+import queryString from 'query-string';
+import {combineReducers} from 'redux';
+import {connectRouter} from 'connected-react-router';
+
 import * as actions from '../actions';
 
 const defaultResults = {paths: null};
@@ -49,7 +53,8 @@ const rootReducers = {
   sourcePageTitle: (state = '', action) => {
     switch (action.type) {
       case actions.ROUTER_LOCATION_CHANGED:
-        return _.get(action, 'payload.query.source', '');
+        const {source} = queryString.parse(_.get(action, 'payload.location.search', {}));
+        return source || '';
       case actions.SET_SOURCE_PAGE_TITLE:
         return action.sourcePageTitle;
       default:
@@ -60,7 +65,8 @@ const rootReducers = {
   targetPageTitle: (state = '', action) => {
     switch (action.type) {
       case actions.ROUTER_LOCATION_CHANGED:
-        return _.get(action, 'payload.query.target', '');
+        const {target} = queryString.parse(_.get(action, 'payload.location.search', {}));
+        return target || '';
       case actions.SET_TARGET_PAGE_TITLE:
         return action.targetPageTitle;
       default:
@@ -81,4 +87,10 @@ const rootReducers = {
   },
 };
 
-export default rootReducers;
+const createRootReducer = (history) =>
+  combineReducers({
+    router: connectRouter(history),
+    ...rootReducers,
+  });
+
+export default createRootReducer;

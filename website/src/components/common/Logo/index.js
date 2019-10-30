@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Link} from 'redux-little-router';
+import {Link} from 'react-router-dom';
 
 import logo from '../../../images/logo.png';
 import logo2x from '../../../images/logo@2x.png';
@@ -22,7 +22,7 @@ const LogoImg = styled.img`
 `;
 
 export default () => (
-  <Link href="/">
+  <Link to="/">
     <LogoImg
       srcSet={`${logo} 462w, ${logo2x} 924w`}
       sizes="(max-width: 600px) 280px, 800px"
