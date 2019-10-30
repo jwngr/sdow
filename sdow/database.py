@@ -18,8 +18,8 @@ class Database(object):
     if not os.path.isfile(searches_database):
       raise IOError('Specified SQLite file "{0}" does not exist.'.format(searches_database))
 
-    self.sdow_conn = sqlite3.connect(sdow_database)
-    self.searches_conn = sqlite3.connect(searches_database)
+    self.sdow_conn = sqlite3.connect(sdow_database, check_same_thread=False)
+    self.searches_conn = sqlite3.connect(searches_database, check_same_thread=False)
 
     self.sdow_cursor = self.sdow_conn.cursor()
     self.searches_cursor = self.searches_conn.cursor()
