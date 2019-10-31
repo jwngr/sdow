@@ -4,7 +4,7 @@ import {replace} from 'connected-react-router';
 
 import {SDOW_API_URL} from './resources/constants';
 
-// Router location changed action from redux-router-dom.
+// Router location changed action from react-router-dom.
 export const ROUTER_LOCATION_CHANGED = '@@router/LOCATION_CHANGE';
 
 export const SET_ERROR_MESSAGE = 'SET_ERROR_MESSAGE';
