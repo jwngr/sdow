@@ -151,7 +151,7 @@
     */10 * * * * /home/jwngr/sdow/env/bin/supervisorctl -c /home/jwngr/sdow/config/supervisord.conf restart gunicorn
 
     # Backup the searches database weekly.
-    0 6 * * 0 /home/jwngr/sdow/database/backupSearchesDatabase.sh
+    0 6 * * SUN /home/jwngr/sdow/database/backupSearchesDatabase.sh
     ```
 
     **Note:** Let's Encrypt debug logs can be found at `/var/log/letsencrypt/letsencrypt.log`.
