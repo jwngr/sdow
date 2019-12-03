@@ -73,6 +73,7 @@ download:
 - `gs://sdow-prod/dumps/20190901/sdow.sqlite.gz` (3.31 GB)
 - `gs://sdow-prod/dumps/20191001/sdow.sqlite.gz` (3.33 GB)
 - `gs://sdow-prod/dumps/20191101/sdow.sqlite.gz` (3.35 GB)
+- `gs://sdow-prod/dumps/20191201/sdow.sqlite.gz` (3.36 GB)
 
 ## Database Schema
 
@@ -186,6 +187,7 @@ hours given the following instructions:
 1.  Detach from the current screen session by pressing `<CTRL> + <a>` and then `<d>`. To reattach to
     the screen, run `screen -r`. Make sure to always detach from the screen cleanly so it can be
     resumed!
+
 1.  Copy the script output and the resulting SQLite file to the `sdow-prod` GCS bucket:
 
     ```bash
@@ -193,11 +195,11 @@ hours given the following instructions:
     $ gsutil -u sdow-prod cp dump/sdow.sqlite.gz gs://sdow-prod/dumps/<YYYYMMDD>/
     ```
 
-1.  Run the Wikipedia facts queries and update the
+1.  Generate updated Wikipedia facts and copy them into the
     [corresponding JSON file](../website/src/resources/wikipediaFacts.json):
 
     ```bash
-    $ python runWikipediaFactsQueries.py
+    $ python generate_updated_wikipedia_facts.py
     ```
 
 1.  Delete the VM to prevent incurring large fees.
