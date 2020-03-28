@@ -19,19 +19,18 @@ def with_commas(val):
 
 def get_percent_of_pages(val, decimal_places_count=2):
   """Returns the percentage of all pages the provided value represents."""
-      query_results["non_redirect_pages_count"]))
   return round(float(val) / float(query_results["non_redirect_pages_count"]) * 100, decimal_places_count)
 
 
-sdow_database='./dump/sdow.sqlite'
+sdow_database = './dump/sdow.sqlite'
 if not os.path.isfile(sdow_database):
   raise IOError('Specified SQLite file "{0}" does not exist.'.format(sdow_database))
 
-conn=sqlite3.connect(sdow_database)
-cursor=conn.cursor()
-cursor.arraysize=1000
+conn = sqlite3.connect(sdow_database)
+cursor = conn.cursor()
+cursor.arraysize = 1000
 
-queries={
+queries = {
     'non_redirect_pages_count': '''
     SELECT COUNT(*)
     FROM pages
@@ -157,16 +156,16 @@ queries={
 }
 
 # Execute and store the result of each query.
-query_results={}
+query_results = {}
 for key, query in queries.items():
   cursor.execute(query)
 
-  current_query_results=[]
+  current_query_results = []
   for i, result in enumerate(cursor.fetchall()):
-    tokens=[]
+    tokens = []
     for token in result:
       if not isinstance(token, (int, long)):
-        token=token.encode('utf-8').replace('_', ' ')
+        token = token.encode('utf-8').replace('_', ' ')
       tokens.append(token)
 
     if (len(tokens) == 1):
@@ -174,10 +173,10 @@ for key, query in queries.items():
     else:
       current_query_results.append(tokens)
 
-  query_results[key]=current_query_results[0] if len(
+  query_results[key] = current_query_results[0] if len(
       current_query_results) == 1 else current_query_results
 
-facts=[
+facts = [
     "Wikipedia contains {0} pages.".format(with_commas(query_results["non_redirect_pages_count"])),
     "There are a total of {0} links between Wikipedia pages.".format(
         with_commas(query_results["links_count"])),
@@ -232,7 +231,7 @@ facts=[
     "An \"Illegal prime\" is a prime number that represents information whose possession or distribution is forbidden in some legal jurisdictions."
 ]
 
-ordinals=['', 'second ', 'third ', 'fourth ', 'fifth ']
+ordinals = ['', 'second ', 'third ', 'fourth ', 'fifth ']
 
 for i, (title, outgoing_links_count) in enumerate(query_results["pages_with_most_outgoing_links"]):
   facts.append("\"{0}\" is the Wikipedia page with the {1}highest number of outgoing links ({2}).".format(
@@ -242,4 +241,4 @@ for i, (title, incoming_links_count) in enumerate(query_results["pages_with_most
   facts.append("\"{0}\" is the {1}most linked to page on Wikipedia ({2} incoming links).".format(
       title, ordinals[i], with_commas(incoming_links_count)))
 
-print(json.dumps(facts, indent = 2, ensure_ascii = False))
+print(json.dumps(facts, indent=2, ensure_ascii=False))
