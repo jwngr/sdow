@@ -15,7 +15,7 @@
     1.  **Name:** `sdow-web-server-1`
     1.  **Zone:** `us-central1-c`
     1.  **Machine Type:** f1-micro (1 vCPU, 0.6 GB RAM)
-    1.  **Boot disk**: 32 GB SSD, Debian GNU/Linux 9 (stretch)
+    1.  **Boot disk**: 32 GB SSD, Debian GNU/Linux 10 (buster)
     1.  **Notes**: Click "Set access for each API" and use default values for all APIs except set
         Storage to "Read Write".
 
@@ -87,22 +87,20 @@
     **Note:** Alternatively, copy a backed-up version of `searches.sqlite`:
 
     ```bash
-    $ gsutil -u sdow-prod cp gs://sdow-prod/backups/<YYYYMMDD>/searches-<YYYYMMDD>.sql.gz sdow/searches.sql.gz
+    $ gsutil -u sdow-prod cp gs://sdow-prod/backups/<YYYYMMDD>/searches.sql.gz sdow/searches.sql.gz
     $ pigz -d sdow/searches.sql.gz
     $ sqlite3 sdow/searches.sqlite ".read sdow/searches.sql"
     $ rm sdow/searches.sql
     ```
 
 1.  Install required operating system dependencies to generate an SSL certificate (this and the
-    following instructions are based on these
+    following instructions are based on [these](https://certbot.eff.org/lets-encrypt/debianbuster-nginx)
     [blog](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-debian-8)
     [posts](https://blog.miguelgrinberg.com/post/running-your-flask-application-over-https)):
 
     ```bash
-    $ echo 'deb http://ftp.debian.org/debian stretch-backports main' | sudo tee /etc/apt/sources.list.d/backports.list
     $ sudo apt-get -q update
-    $ sudo apt-get -yq install nginx
-    $ sudo apt-get -yq install certbot -t stretch-backports
+    $ sudo apt-get -yq install nginx certbot python-certbot-nginx
     ```
 
 1.  Add this `location` block inside the `server` block in `/etc/nginx/sites-available/default`:
@@ -151,7 +149,7 @@
     */10 * * * * /home/jwngr/sdow/env/bin/supervisorctl -c /home/jwngr/sdow/config/supervisord.conf restart gunicorn
 
     # Backup the searches database weekly.
-    0 6 * * SUN /home/jwngr/sdow/database/backupSearchesDatabase.sh
+    0 6 * * 0 /home/jwngr/sdow/database/backupSearchesDatabase.sh
     ```
 
     **Note:** Let's Encrypt debug logs can be found at `/var/log/letsencrypt/letsencrypt.log`.
@@ -202,12 +200,15 @@
     $ sudo systemctl restart nginx
     ```
 
-1.  Install the Stackdriver monitoring agent:
+1.  Install the [Stackdriver monitoring agent](https://cloud.google.com/monitoring/agent/install-agent):
 
     ```bash
-    $ curl -sSO https://repo.stackdriver.com/stack-install.sh
-    $ sudo bash stack-install.sh --write-gcm
-    $ rm stack-install.sh
+    $ curl -sSO https://dl.google.com/cloudagents/add-monitoring-agent-repo.sh
+    $ sudo bash add-monitoring-agent-repo.sh
+    $ sudo apt-get update
+    $ rm add-monitoring-agent-repo.sh
+    $ sudo apt-get -yq install stackdriver-agent
+    $ sudo service stackdriver-agent start
     ```
 
 ## Recurring Setup
