@@ -30,22 +30,26 @@
     "typeface-crimson-text": "0.0.72",
     "typeface-quicksand": "1.1.4"
   },
-  "dev-dependencies": {
-    "husky": "^0.14.3",
-    "lint-staged": "^6.0.0",
-    "prettier": "^1.10.2",
+  "devDependencies": {
+    "husky": "^4.2.3",
+    "lint-staged": "^10.1.1",
+    "prettier": "^2.0.2",
     "puppeteer": "^0.13.0",
     "redux-logger": "^3.0.6",
-    "source-map-explorer": "^1.5.0"
+    "source-map-explorer": "^2.1.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "lint-staged": {
     "{src}/**/*.{js,css}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   },
   "scripts": {
-    "analyze": "source-map-explorer build/static/js/main.*",
+    "analyze": "source-map-explorer build/static/js/*",
     "precommit": "lint-staged",
     "start": "react-scripts start",
     "build": "react-scripts build",
