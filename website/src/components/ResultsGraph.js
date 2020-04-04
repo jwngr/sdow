@@ -271,14 +271,11 @@ class Graph extends Component {
     // Force simulation.
     this.simulation = d3
       .forceSimulation()
-      .force('link', d3.forceLink().id((d) => d.id))
       .force(
-        'charge',
-        d3
-          .forceManyBody()
-          .strength(-300)
-          .distanceMax(500)
+        'link',
+        d3.forceLink().id((d) => d.id)
       )
+      .force('charge', d3.forceManyBody().strength(-300).distanceMax(500))
       .force('center', d3.forceCenter(this.graphWidth / 2, DEFAULT_CHART_HEIGHT / 2));
 
     this.simulation.nodes(nodesData);
@@ -309,10 +306,7 @@ class Graph extends Component {
 
       // Update the width of the SVG and reset it.
       this.zoomable.attr('width', this.graphWidth);
-      this.zoomable
-        .transition()
-        .duration(750)
-        .call(this.zoom.transform, d3.zoomIdentity);
+      this.zoomable.transition().duration(750).call(this.zoom.transform, d3.zoomIdentity);
 
       requestAnimationFrame(() => this.updateElementLocations());
     }

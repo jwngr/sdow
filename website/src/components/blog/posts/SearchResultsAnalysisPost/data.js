@@ -5,9 +5,9 @@ import {getNumberWithCommas, getWikipediaPageUrl} from '../../../../utils';
 
 export const totalSearches = 503498;
 export const uniqueSearches = 377135;
-export const percentUniqueSearches = (uniqueSearches / totalSearches * 100).toFixed(2);
+export const percentUniqueSearches = ((uniqueSearches / totalSearches) * 100).toFixed(2);
 export const searchesWithNoPaths = 4018;
-export const percentNoPathsSearches = (searchesWithNoPaths / uniqueSearches * 100).toFixed(2);
+export const percentNoPathsSearches = ((searchesWithNoPaths / uniqueSearches) * 100).toFixed(2);
 export const averageDegreesOfSeparation = 3.019;
 export const degreesOfSeparationHistogramData = [
   524,

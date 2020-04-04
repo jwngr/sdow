@@ -116,7 +116,8 @@ export default () => (
       explain it was an r/deathgrips thread from last month called{' '}
       <StyledLink href="https://www.reddit.com/r/deathgrips/comments/7q9l51/six_degrees_of_death_grips/">
         Six Degrees of Death Grips
-      </StyledLink>. If you have any more information to explain this, please let me know.
+      </StyledLink>
+      . If you have any more information to explain this, please let me know.
     </P>
 
     <SectionTitle>Average Degrees of Separation</SectionTitle>
@@ -275,8 +276,8 @@ export default () => (
       these stats, you can find them all on{' '}
       <StyledLink href="https://github.com/jwngr/sdow/tree/master/website/src/components/blog/posts/SearchResultsAnalysisPost/queries.txt">
         this project's GitHub
-      </StyledLink>. I will likely go into more detail on my server and database setup in a future
-      post.
+      </StyledLink>
+      . I will likely go into more detail on my server and database setup in a future post.
     </P>
 
     <SectionTitle>Wrapping Up</SectionTitle>
