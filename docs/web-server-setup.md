@@ -81,7 +81,7 @@
 1.  Create the `searches.sqlite` file:
 
     ```bash
-    $ sqlite3 sdow/searches.sqlite ".read database/createSearchesTable.sql"
+    $ sqlite3 sdow/searches.sqlite ".read database/sql/createSearchesTable.sql"
     ```
 
     **Note:** Alternatively, copy a backed-up version of `searches.sqlite`:

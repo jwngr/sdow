@@ -177,7 +177,7 @@ hours given the following instructions:
 1.  Move to the proper directory and create a new screen in case the VM connection is lost:
 
     ```bash
-    $ cd sdow/database/
+    $ cd sdow/scripts/
     $ screen  # And then press <ENTER> on the screen that pops up
     ```
 
@@ -192,11 +192,24 @@ hours given the following instructions:
     the screen, run `screen -r`. Make sure to always detach from the screen cleanly so it can be
     resumed!
 
+1.  Wait about two hours _as the crow flies_.
+
+1.  SSH back into the machine if necessary:
+
+    ```bash
+    $ gcloud compute ssh sdow-db-builder-1 --project=sdow-prod
+    ```
+
+1.  Re-attach to the screen session:
+
+    ```bash
+    $ screen -r
+    ```
+
 1.  Copy the script output and the resulting SQLite file to the `sdow-prod` GCS bucket:
 
     ```bash
-    $ gsutil -u sdow-prod cp output.txt gs://sdow-prod/dumps/<YYYYMMDD>/
-    $ gsutil -u sdow-prod cp dump/sdow.sqlite.gz gs://sdow-prod/dumps/<YYYYMMDD>/
+    $ ./uploadToGcs.sh YYYYMMDD
     ```
 
 1.  Generate updated Wikipedia facts and copy them into the
