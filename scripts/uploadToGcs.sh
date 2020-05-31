@@ -26,8 +26,7 @@ fi
 echo
 echo "[INFO] Uploading files to GCS"
 
-files=('output.txt' 'dump/sdow.sqlite.gz');
-for file in $files; do
+for file in 'output.txt' 'dump/sdow.sqlite.gz'; do
   if [ -f $file ]; then
     gsutil -u sdow-prod cp $file gs://sdow-prod/dumps/$DOWNLOAD_DATE/
     echo "[INFO] $file uploaded to GCS"
