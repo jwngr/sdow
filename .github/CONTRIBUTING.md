@@ -77,18 +77,18 @@ The service should be running at http://localhost:3000.
 
 Here are some highlights of the directory structure and notable source files
 
-* `.github/` - Contribution instructions as well as issue and pull request templates.
-* `config/` - Configuration files for services like NGINX, Gunicorn, and Supervisord.
-* `database/` - Script to generate a new dump of the SDOW database.
-* `scripts/` - Helper scripts to do things like create a mock SDOW database or lookup Wikipedia page
-  info.
-* `sdow/` - The Python Flask web server.
-  * `server.py` - Main entry point which initializes the Flask web server.
-  * `database.py` - Defines a `Database` class which simplifies querying the SDOW SQLite database.
-  * `breadth_first_search.py` - The main search algorithm which finds the shortest path between pages.
-  * `helpers.py` - Miscellaneous helper functions and classes.
-* `sketch/` - Sketch logo files.
-* `website/` - The frontend website, based on [Create React App](https://github.com/facebook/create-react-app).
-* `.pylintrc` - Default configuration for `pylint`.
-* `requirements.txt` - Requirements specification for installing project dependencies via `pip`.
-* `setup.cfg` - Python PEP 8 autoformatting rules.
+- `.github/` - Contribution instructions as well as issue and pull request templates.
+- `config/` - Configuration files for services like NGINX, Gunicorn, and Supervisord.
+- `docs/` - Documentation.
+- `scripts/` - Scripts to do things like create a new version of the SDOW database, create a mock
+- `sdow/` - The Python Flask web server.
+  - `server.py` - Main entry point which initializes the Flask web server.
+  - `database.py` - Defines a `Database` class which simplifies querying the SDOW SQLite database.
+  - `breadth_first_search.py` - The main search algorithm which finds the shortest path between pages.
+  - `helpers.py` - Miscellaneous helper functions and classes.
+- `sketch/` - Sketch logo files.
+- `sql/` - SQLite table schemas.
+- `website/` - The frontend website, based on [Create React App](https://github.com/facebook/create-react-app).
+- `.pylintrc` - Default configuration for `pylint`.
+- `requirements.txt` - Requirements specification for installing project dependencies via `pip`.
+- `setup.cfg` - Python PEP 8 autoformatting rules.

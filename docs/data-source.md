@@ -78,6 +78,8 @@ download:
 - `gs://sdow-prod/dumps/20200201/sdow.sqlite.gz` (3.40 GB)
 - `gs://sdow-prod/dumps/20200301/sdow.sqlite.gz` (3.41 GB)
 - `gs://sdow-prod/dumps/20200401/sdow.sqlite.gz` (3.44 GB)
+- `gs://sdow-prod/dumps/20200501/sdow.sqlite.gz` (3.?? GB)
+- `gs://sdow-prod/dumps/20200601/sdow.sqlite.gz` (3.?? GB)
 
 ## Database Schema
 
@@ -121,7 +123,7 @@ this project yourself.
 ## Database Creation Script
 
 A new build of the Six Degrees of Wikipedia database is created using the [database creation shell
-script](../database/buildDatabase.sh):
+script](../scripts/buildDatabase.sh):
 
 ```bash
 $ ./buildDatabase.sh

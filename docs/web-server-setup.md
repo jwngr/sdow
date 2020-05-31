@@ -81,7 +81,7 @@
 1.  Create the `searches.sqlite` file:
 
     ```bash
-    $ sqlite3 sdow/searches.sqlite ".read database/sql/createSearchesTable.sql"
+    $ sqlite3 sdow/searches.sqlite ".read sql/createSearchesTable.sql"
     ```
 
     **Note:** Alternatively, copy a backed-up version of `searches.sqlite`:
@@ -142,14 +142,11 @@
     # Renew the cert daily.
     0 4 * * * sudo /usr/bin/certbot renew --noninteractive --renew-hook "sudo /bin/systemctl reload nginx"
 
-    # Reload Nginx daily (temporary hack until I can get certbot renewal to not fail before this step)
-    10 4 * * * /home/jwngr/sdow/database/backupSearchesDatabase.sh
-
     # Restart the server every ten minutes.
     */10 * * * * /home/jwngr/sdow/env/bin/supervisorctl -c /home/jwngr/sdow/config/supervisord.conf restart gunicorn
 
     # Backup the searches database weekly.
-    0 6 * * 0 /home/jwngr/sdow/database/backupSearchesDatabase.sh
+    0 6 * * 0 /home/jwngr/sdow/scripts/backupSearchesDatabase.sh
     ```
 
     **Note:** Let's Encrypt debug logs can be found at `/var/log/letsencrypt/letsencrypt.log`.

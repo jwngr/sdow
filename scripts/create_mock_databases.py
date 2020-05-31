@@ -8,7 +8,7 @@ from collections import defaultdict
 cwd = os.path.dirname(__file__)
 mock_sdow_database_filename = os.path.join(cwd, '../sdow/sdow.sqlite')
 mock_searches_database_filename = os.path.join(cwd, '../sdow/searches.sqlite')
-searches_database_sql_filename = os.path.join(cwd, '../database/sql/createSearchesTable.sql')
+searches_database_sql_filename = os.path.join(cwd, '../sql/createSearchesTable.sql')
 
 print('[INFO] Creating mock SDOW database: {0}'.format(mock_sdow_database_filename))
 
