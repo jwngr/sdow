@@ -78,8 +78,8 @@ download:
 - `gs://sdow-prod/dumps/20200201/sdow.sqlite.gz` (3.40 GB)
 - `gs://sdow-prod/dumps/20200301/sdow.sqlite.gz` (3.41 GB)
 - `gs://sdow-prod/dumps/20200401/sdow.sqlite.gz` (3.44 GB)
-- `gs://sdow-prod/dumps/20200501/sdow.sqlite.gz` (3.?? GB)
-- `gs://sdow-prod/dumps/20200601/sdow.sqlite.gz` (3.?? GB)
+- `gs://sdow-prod/dumps/20200501/sdow.sqlite.gz` (3.47 GB)
+- `gs://sdow-prod/dumps/20200601/sdow.sqlite.gz` (3.50 GB)
 
 ## Database Schema
 
@@ -194,7 +194,7 @@ hours given the following instructions:
     the screen, run `screen -r`. Make sure to always detach from the screen cleanly so it can be
     resumed!
 
-1.  Wait about two hours _as the crow flies_.
+1.  Wait about two hours.
 
 1.  SSH back into the machine if necessary:
 
