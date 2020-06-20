@@ -1,11 +1,16 @@
 import styled from 'styled-components';
 
 export const ResultsListWrapper = styled.div`
-  margin: 0 auto 40px auto;
+  margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: center;
+`;
+
+export const ResultsListOtherPathsText = styled.p`
+  margin: 16px auto 40px auto;
+  text-align: center;
 `;
 
 export const ResultsListHeader = styled.p`

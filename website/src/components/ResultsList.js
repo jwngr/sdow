@@ -11,6 +11,7 @@ import {
   PageInnerWrapper,
   ResultsListItemWrapper,
   ResultsListWrapper,
+  ResultsListOtherPathsText,
 } from './ResultsList.styles';
 
 import defaultPageThumbnail from '../images/defaultPageThumbnail.png';
@@ -44,23 +45,25 @@ const ResultListItem = ({pages}) => {
 };
 
 export default ({paths}) => {
-  const resultsListItems = paths.map((path, i) => {
-    // Lazy load results beyond the first twelve.
-    if (i > 11) {
-      return (
-        <LazyLoad once={true} offset={400} key={i}>
-          <ResultListItem pages={path} />
-        </LazyLoad>
-      );
-    } else {
-      return <ResultListItem key={i} pages={path} />;
-    }
-  });
+  const maxResultsToDisplay = 50;
+  const numHiddenPaths = paths.length - maxResultsToDisplay;
+
+  // Only display a limited number of results, lazily loading all of them.
+  const resultsListItems = paths.slice(0, maxResultsToDisplay).map((path, i) => (
+    <LazyLoad once={true} offset={200} key={i}>
+      <ResultListItem pages={path} />
+    </LazyLoad>
+  ));
 
   return (
     <React.Fragment>
       <ResultsListHeader>Individual paths</ResultsListHeader>
       <ResultsListWrapper>{resultsListItems}</ResultsListWrapper>
+      {numHiddenPaths > 0 && (
+        <ResultsListOtherPathsText>
+          Not showing {numHiddenPaths} more path{numHiddenPaths !== 1 && 's'}
+        </ResultsListOtherPathsText>
+      )}
     </React.Fragment>
   );
 };
