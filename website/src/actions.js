@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import get from 'lodash/get';
 import axios from 'axios';
 import {replace} from 'connected-react-router';
 
@@ -141,7 +141,7 @@ export function fetchShortestPaths() {
           // comment above).
           const defaultErrorMessage =
             'Whoops... something is broken and has been reported. In the mean time, please try a different search.';
-          dispatch(setErrorMessage(_.get(error, 'response.data.error', defaultErrorMessage)));
+          dispatch(setErrorMessage(get(error, 'response.data.error', defaultErrorMessage)));
         }
       }
     );

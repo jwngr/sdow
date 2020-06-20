@@ -1,4 +1,8 @@
-import _ from 'lodash';
+import map from 'lodash/map';
+import some from 'lodash/some';
+import range from 'lodash/range';
+import forEach from 'lodash/forEach';
+import debounce from 'lodash/debounce';
 import * as d3 from 'd3';
 // import {findDOMNode} from 'react-dom';
 import React, {Component} from 'react';
@@ -34,7 +38,7 @@ class Graph extends Component {
     this.color = d3.scaleOrdinal(d3.schemeCategory10);
     this.zoom = d3.zoom().on('zoom', () => this.zoomed());
 
-    this.debouncedResetGraph = _.debounce(this.resetGraph.bind(this, false), 350);
+    this.debouncedResetGraph = debounce(this.resetGraph.bind(this, false), 350);
   }
 
   // state = {
@@ -63,7 +67,7 @@ class Graph extends Component {
         const currentNodeId = node.title;
 
         // Add node if it has not yet been added by some other path.
-        if (!_.some(nodesData, ['id', currentNodeId])) {
+        if (!some(nodesData, ['id', currentNodeId])) {
           nodesData.push({
             id: currentNodeId,
             title: node.title,
@@ -92,7 +96,7 @@ class Graph extends Component {
     const {paths} = this.props;
     const pathsLength = paths[0].length;
 
-    return _.map(_.range(0, pathsLength), (i) => {
+    return map(range(0, pathsLength), (i) => {
       if (i === 0 && pathsLength === 1) {
         return 'Start / end page';
       } else if (i === 0) {
@@ -188,7 +192,7 @@ class Graph extends Component {
       'arrow-end': 22,
     };
 
-    _.forEach(markers, (refX, id) => {
+    forEach(markers, (refX, id) => {
       defs
         .append('marker')
         .attr('id', id)

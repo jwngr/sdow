@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import debounce from 'lodash/debounce';
 import * as d3 from 'd3';
 import React, {Component} from 'react';
 
@@ -12,7 +12,7 @@ class BarChart extends Component {
 
     this.barChart = null;
 
-    this.debouncedResizeBarChart = _.debounce(this.resizeBarChart.bind(this), 350);
+    this.debouncedResizeBarChart = debounce(this.resizeBarChart.bind(this), 350);
   }
 
   componentDidMount() {

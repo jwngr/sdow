@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import get from 'lodash/get';
 import queryString from 'query-string';
 import {combineReducers} from 'redux';
 import {connectRouter} from 'connected-react-router';
@@ -53,7 +53,7 @@ const rootReducers = {
   sourcePageTitle: (state = '', action) => {
     switch (action.type) {
       case actions.ROUTER_LOCATION_CHANGED:
-        const {source} = queryString.parse(_.get(action, 'payload.location.search', {}));
+        const {source} = queryString.parse(get(action, 'payload.location.search', {}));
         return source || '';
       case actions.SET_SOURCE_PAGE_TITLE:
         return action.sourcePageTitle;
@@ -65,7 +65,7 @@ const rootReducers = {
   targetPageTitle: (state = '', action) => {
     switch (action.type) {
       case actions.ROUTER_LOCATION_CHANGED:
-        const {target} = queryString.parse(_.get(action, 'payload.location.search', {}));
+        const {target} = queryString.parse(get(action, 'payload.location.search', {}));
         return target || '';
       case actions.SET_TARGET_PAGE_TITLE:
         return action.targetPageTitle;

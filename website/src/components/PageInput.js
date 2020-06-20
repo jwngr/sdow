@@ -1,4 +1,7 @@
-import _ from 'lodash';
+import get from 'lodash/get';
+import filter from 'lodash/filter';
+import forEach from 'lodash/forEach';
+import debounce from 'lodash/debounce';
 import axios from 'axios';
 import React from 'react';
 import Autosuggest from 'react-autosuggest';
@@ -26,7 +29,7 @@ class PageInput extends React.Component {
 
     props.updateInputPlaceholderText(getRandomPageTitle());
 
-    this.debouncedLoadSuggestions = _.debounce(this.loadSuggestions, 250);
+    this.debouncedLoadSuggestions = debounce(this.loadSuggestions, 250);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -80,12 +83,12 @@ class PageInput extends React.Component {
       .then((response) => {
         const suggestions = [];
 
-        const pageResults = _.get(response, 'data.query.pages', {});
-        _.forEach(pageResults, ({ns, index, title, terms, thumbnail}) => {
+        const pageResults = get(response, 'data.query.pages', {});
+        forEach(pageResults, ({ns, index, title, terms, thumbnail}) => {
           // Due to https://phabricator.wikimedia.org/T189139, results will not always be limited
           // to the main namespace (0), so ignore all results which have a different namespace.
           if (ns === 0) {
-            let description = _.get(terms, 'description.0');
+            let description = get(terms, 'description.0');
             if (description) {
               description = description.charAt(0).toUpperCase() + description.slice(1);
             }
@@ -93,16 +96,16 @@ class PageInput extends React.Component {
             suggestions[index - 1] = {
               title,
               description,
-              thumbnailUrl: _.get(thumbnail, 'source'),
+              thumbnailUrl: get(thumbnail, 'source'),
             };
           }
         });
 
         // Due to ignoring non-main namespaces above, the suggestions array may have some missing
-        // items, so remove them via _.filter().
+        // items, so remove them via filter().
         this.setState({
           isFetching: false,
-          suggestions: _.filter(suggestions),
+          suggestions: filter(suggestions),
         });
       })
       .catch((error) => {
@@ -110,7 +113,7 @@ class PageInput extends React.Component {
         // input is still usable even without suggestions.
         const defaultErrorMessage = 'Request to fetch page suggestions from Wikipedia API failed.';
         window.ga('send', 'exception', {
-          exDescription: _.get(error, 'response.data.error', defaultErrorMessage),
+          exDescription: get(error, 'response.data.error', defaultErrorMessage),
           exFatal: false,
         });
       });

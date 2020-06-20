@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import clone from 'lodash/clone';
 
 import pageTitles from './resources/pageTitles.json';
 import wikipediaFacts from './resources/wikipediaFacts.json';
@@ -12,7 +12,7 @@ export const getWikipediaPageUrl = (pageTitle) => {
 let unusedPageTitles = [];
 export const getRandomPageTitle = () => {
   if (unusedPageTitles.length === 0) {
-    unusedPageTitles = _.clone(pageTitles);
+    unusedPageTitles = clone(pageTitles);
   }
 
   const indexToRemove = Math.floor(Math.random() * unusedPageTitles.length);
@@ -22,7 +22,7 @@ export const getRandomPageTitle = () => {
 let unusedWikipediaFacts = [];
 export const getRandomWikipediaFact = () => {
   if (unusedWikipediaFacts.length === 0) {
-    unusedWikipediaFacts = _.clone(wikipediaFacts);
+    unusedWikipediaFacts = clone(wikipediaFacts);
   }
 
   const indexToRemove = Math.floor(Math.random() * unusedWikipediaFacts.length);
