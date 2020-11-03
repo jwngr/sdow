@@ -87,6 +87,7 @@ export const PageImage = styled.img`
   border-radius: 8px;
   border: solid 1px ${(props) => props.theme.colors.darkGreen};
   background-color: ${(props) => props.theme.colors.gray};
+  object-fit: cover;
 `;
 
 export const PageTitle = styled.p`
