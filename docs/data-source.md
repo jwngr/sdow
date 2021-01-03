@@ -89,6 +89,8 @@ $ pigz -d sdow.sqlite.gz
 - `gs://sdow-prod/dumps/20200901/sdow.sqlite.gz` (3.6 GB)
 - `gs://sdow-prod/dumps/20201001/sdow.sqlite.gz` (3.6 GB)
 - `gs://sdow-prod/dumps/20201101/sdow.sqlite.gz` (3.6 GB)
+- `gs://sdow-prod/dumps/20201201/sdow.sqlite.gz` (3.6 GB)
+- `gs://sdow-prod/dumps/20210101/sdow.sqlite.gz` (3.6 GB)
 </details>
 
 ## Database Schema
