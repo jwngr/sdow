@@ -48,8 +48,11 @@ $ gsutil -u <GCP_PROJECT_ID> cp gs://sdow-prod/dumps/<YYYYMMDD>/sdow.sqlite.gz .
 $ pigz -d sdow.sqlite.gz
 ```
 
-Here is a list of historical Six Degrees of Wikipedia SQLite databases currently available for
-download:
+<details>
+  <summary>
+    Here is a list of historical Six Degrees of Wikipedia SQLite databases currently
+    available for download:
+  </summary>
 
 - `gs://sdow-prod/dumps/20180201/sdow.sqlite.gz` (2.99 GB)
 - `gs://sdow-prod/dumps/20180301/sdow.sqlite.gz` (3.01 GB)
@@ -86,6 +89,7 @@ download:
 - `gs://sdow-prod/dumps/20200901/sdow.sqlite.gz` (3.6 GB)
 - `gs://sdow-prod/dumps/20201001/sdow.sqlite.gz` (3.6 GB)
 - `gs://sdow-prod/dumps/20201101/sdow.sqlite.gz` (3.6 GB)
+</details>
 
 ## Database Schema
 
