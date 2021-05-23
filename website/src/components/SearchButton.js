@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import Button from './common/Button';
 
-const SearchButton = styled(Button)`
+const SearchButtonWrapper = styled(Button)`
   width: 240px;
   height: 72px;
   margin: 0 auto 40px;
@@ -17,10 +17,12 @@ const SearchButton = styled(Button)`
   }
 `;
 
-export default ({isFetchingResults, fetchShortestPaths}) => {
+const SearchButton = ({isFetchingResults, fetchShortestPaths}) => {
   if (isFetchingResults) {
     return null;
   }
 
-  return <SearchButton onClick={fetchShortestPaths}>Go!</SearchButton>;
+  return <SearchButtonWrapper onClick={fetchShortestPaths}>Go!</SearchButtonWrapper>;
 };
+
+export default SearchButton;

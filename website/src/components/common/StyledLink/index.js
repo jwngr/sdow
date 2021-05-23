@@ -53,7 +53,7 @@ const StyledLinkWrapper = styled.a`
   }
 `;
 
-export default ({children, ...props}) => {
+const StyledLink = ({children, ...props}) => {
   // Change the word break behavior for long article names with no space (to avoid them trailing
   // off the page).
   let wordBreak;
@@ -67,3 +67,5 @@ export default ({children, ...props}) => {
     </StyledLinkWrapper>
   );
 };
+
+export default StyledLink;

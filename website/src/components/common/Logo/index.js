@@ -21,7 +21,7 @@ const LogoImg = styled.img`
   }
 `;
 
-export default () => (
+const Logo = () => (
   <Link to="/">
     <LogoImg
       srcSet={`${logo} 462w, ${logo2x} 924w`}
@@ -31,3 +31,5 @@ export default () => (
     />
   </Link>
 );
+
+export default Logo;

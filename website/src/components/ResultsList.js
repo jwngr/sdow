@@ -44,7 +44,7 @@ const ResultListItem = ({pages}) => {
   return <ResultsListItemWrapper>{pagesContent}</ResultsListItemWrapper>;
 };
 
-export default ({paths}) => {
+const ResultsList = ({paths}) => {
   const maxResultsToDisplay = 50;
   const numHiddenPaths = paths.length - maxResultsToDisplay;
 
@@ -67,3 +67,5 @@ export default ({paths}) => {
     </React.Fragment>
   );
 };
+
+export default ResultsList;

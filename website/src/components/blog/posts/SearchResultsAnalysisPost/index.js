@@ -26,7 +26,7 @@ import * as data from './data';
 
 const title = 'Insights On Hitler And More From The First 500,000 Searches';
 
-export default () => (
+const SearchResultsAnalysisPost = () => (
   <Wrapper>
     <Helmet>
       <title>{`${title} | Blog | Six Degrees of Wikipedia`}</title>
@@ -302,3 +302,5 @@ export default () => (
     <NewsletterSignupForm />
   </Wrapper>
 );
+
+export default SearchResultsAnalysisPost;

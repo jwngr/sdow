@@ -24,7 +24,7 @@ const BlogPostCard = ({id, date, title, description}) => (
   </BlogPostCardWrapper>
 );
 
-export default () => (
+const Blog = () => (
   <React.Fragment>
     <Helmet>
       <title>Blog | Six Degrees of Wikipedia</title>
@@ -47,3 +47,5 @@ export default () => (
     </Wrapper>
   </React.Fragment>
 );
+
+export default Blog;

@@ -34,4 +34,6 @@ const boldPageTitles = (errorMessage) => {
   return errorMessageContent;
 };
 
-export default ({errorMessage}) => (errorMessage ? <P>{boldPageTitles(errorMessage)}</P> : null);
+const ErrorMessage =  ({errorMessage}) => (errorMessage ? <P>{boldPageTitles(errorMessage)}</P> : null);
+
+export default ErrorMessage;

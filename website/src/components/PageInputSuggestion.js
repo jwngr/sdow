@@ -4,7 +4,7 @@ import {Description, InnerWrapper, Image, Title, Wrapper} from './PageInputSugge
 
 import defaultPageThumbnail from '../images/defaultPageThumbnail.png';
 
-export default ({title, description, thumbnailUrl}) => {
+const PageInputSuggestion = ({title, description, thumbnailUrl}) => {
   const descriptionContent = description ? <Description>{description}</Description> : null;
 
   return (
@@ -17,3 +17,5 @@ export default ({title, description, thumbnailUrl}) => {
     </Wrapper>
   );
 };
+
+export default PageInputSuggestion;

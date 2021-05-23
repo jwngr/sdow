@@ -32,7 +32,7 @@ const SwapButton = styled.svg`
   }
 `;
 
-export default ({sourcePageTitle, targetPageTitle, swapPageTitles}) => {
+const SwapInputValuesButton = ({sourcePageTitle, targetPageTitle, swapPageTitles}) => {
   if (sourcePageTitle === '' || targetPageTitle === '') {
     return <P>to</P>;
   } else {
@@ -46,3 +46,5 @@ export default ({sourcePageTitle, targetPageTitle, swapPageTitles}) => {
     );
   }
 };
+
+export default SwapInputValuesButton;

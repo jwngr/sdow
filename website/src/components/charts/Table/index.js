@@ -2,7 +2,7 @@ import React from 'react';
 
 import {TableWrapper} from './index.styles';
 
-export default ({headers, rows}) => {
+const Table = ({headers, rows}) => {
   const headerRow = (
     <tr key="table-header-row">
       {headers.map((header, i) => {
@@ -38,3 +38,5 @@ export default ({headers, rows}) => {
     </TableWrapper>
   );
 };
+
+export default Table;
