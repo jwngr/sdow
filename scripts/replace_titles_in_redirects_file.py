@@ -4,17 +4,16 @@ Replaces page titles in the redirects file with their corresponding IDs.
 Output is written to stdout.
 """
 
-from __future__ import print_function
+
 
 import io
 import sys
 import gzip
-from sets import Set
 
 # Validate input arguments.
 if len(sys.argv) < 3:
   print('[ERROR] Not enough arguments provided!')
-  print('[INFO] Usage: {0} <pages_file> <redirects_file>'.format(sys.argv[0]))
+  print(('[INFO] Usage: {0} <pages_file> <redirects_file>'.format(sys.argv[0])))
   sys.exit()
 
 PAGES_FILE = sys.argv[1]
@@ -29,10 +28,10 @@ if not REDIRECTS_FILE.endswith('.gz'):
   sys.exit()
 
 # Create a set of all page IDs and a dictionary of page titles to their corresponding IDs.
-ALL_PAGE_IDS = Set()
+ALL_PAGE_IDS = set()
 PAGE_TITLES_TO_IDS = {}
 for line in io.BufferedReader(gzip.open(PAGES_FILE, 'r')):
-  [page_id, page_title, _] = line.rstrip('\n').split('\t')
+  [page_id, page_title, _] = line.decode('UTF-8').rstrip('\n').split('\t')
   ALL_PAGE_IDS.add(page_id)
   PAGE_TITLES_TO_IDS[page_title] = page_id
 
@@ -40,7 +39,7 @@ for line in io.BufferedReader(gzip.open(PAGES_FILE, 'r')):
 # corresponding IDs and ignoring pages which do not exist.
 REDIRECTS = {}
 for line in io.BufferedReader(gzip.open(REDIRECTS_FILE, 'r')):
-  [source_page_id, target_page_title] = line.rstrip('\n').split('\t')
+  [source_page_id, target_page_title] = line.decode('UTF-8').rstrip('\n').split('\t')
 
   source_page_exists = source_page_id in ALL_PAGE_IDS
   target_page_id = PAGE_TITLES_TO_IDS.get(target_page_title)
@@ -50,7 +49,7 @@ for line in io.BufferedReader(gzip.open(REDIRECTS_FILE, 'r')):
 
 # Loop through the redirects dictionary and remove redirects which redirect to another redirect,
 # writing the remaining redirects to stdout.
-for source_page_id, target_page_id in REDIRECTS.iteritems():
+for source_page_id, target_page_id in list(REDIRECTS.items()):
   start_target_page_id = target_page_id
 
   redirected_count = 0
@@ -65,4 +64,4 @@ for source_page_id, target_page_id in REDIRECTS.iteritems():
       target_page_id = None
 
   if target_page_id is not None:
-    print('\t'.join([source_page_id, target_page_id]))
+    print(('\t'.join([source_page_id, target_page_id])))
