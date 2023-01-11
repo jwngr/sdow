@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component, useState } from 'react';
 
 import {Fact, Wrapper, LoadingIndicator} from './Loading.styles.js';
 
@@ -6,66 +6,56 @@ import StyledLink from './common/StyledLink';
 
 import {getWikipediaPageUrl, getRandomWikipediaFact} from '../utils';
 
-class Loading extends Component {
-  constructor() {
-    super();
+const Loading = props => {
+  const [currentFact, setCurrentFact] = useState(getRandomWikipediaFact());
 
-    this.state = {
-      currentFact: getRandomWikipediaFact(),
-    };
+  const {
+    isFetchingResults
+  } = props;
 
-    setInterval(() => {
-      this.setState({
-        currentFact: getRandomWikipediaFact(),
-      });
-    }, 7000);
+  let {currentFact} = stateHandler;
+
+  if (!isFetchingResults) {
+    return null;
   }
 
-  render() {
-    let {currentFact} = this.state;
-    const {isFetchingResults} = this.props;
+  // Replace page titles in the current fact with a link to the corresponding Wikipedia page.
+  let skipCount = 0;
+  const factContent = [];
+  const tokens = currentFact.split('"');
 
-    if (!isFetchingResults) {
-      return null;
-    }
-
-    // Replace page titles in the current fact with a link to the corresponding Wikipedia page.
-    let skipCount = 0;
-    const factContent = [];
-    const tokens = currentFact.split('"');
-    tokens.forEach((token, i) => {
-      if (skipCount === 0) {
-        if (i % 2 === 0) {
-          // Regular text
-          factContent.push(<span key={i}>{token}</span>);
-        } else {
-          // Wikipedia link
-          // Single apostrophe is used for Wikipedia links which themselves have a double apostrophe
-          // in them.
-          token = token.replace(/'/g, `"`);
-          factContent.push(
-            <StyledLink href={getWikipediaPageUrl(token)} target="_blank" key={i}>
-              {token}
-            </StyledLink>
-          );
-        }
+  tokens.forEach((token, i) => {
+    if (skipCount === 0) {
+      if (i % 2 === 0) {
+        // Regular text
+        factContent.push(<span key={i}>{token}</span>);
       } else {
-        skipCount--;
+        // Wikipedia link
+        // Single apostrophe is used for Wikipedia links which themselves have a double apostrophe
+        // in them.
+        token = token.replace(/'/g, `"`);
+        factContent.push(
+          <StyledLink href={getWikipediaPageUrl(token)} target="_blank" key={i}>
+            {token}
+          </StyledLink>
+        );
       }
-    });
+    } else {
+      skipCount--;
+    }
+  });
 
-    return (
-      <Wrapper>
-        <LoadingIndicator>
-          <div />
-          <div />
-          <div />
-          <div />
-        </LoadingIndicator>
-        <Fact>{factContent}</Fact>
-      </Wrapper>
-    );
-  }
-}
+  return (
+    <Wrapper>
+      <LoadingIndicator>
+        <div />
+        <div />
+        <div />
+        <div />
+      </LoadingIndicator>
+      <Fact>{factContent}</Fact>
+    </Wrapper>
+  );
+};
 
 export default Loading;

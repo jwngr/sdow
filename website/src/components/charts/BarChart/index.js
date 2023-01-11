@@ -1,33 +1,27 @@
 import debounce from 'lodash/debounce';
 import * as d3 from 'd3';
-import React, {Component} from 'react';
+import React, { Component, useEffect, useCallback } from 'react';
 
 import {BarChartWrapper, BarChartSvg} from './index.styles';
 
 const DEFAULT_CHART_HEIGHT = 300;
 
-class BarChart extends Component {
-  constructor() {
-    super();
+const BarChart = props => {
+  const {
+    data
+  } = props;
 
-    this.barChart = null;
-
-    this.debouncedResizeBarChart = debounce(this.resizeBarChart.bind(this), 350);
-  }
-
-  componentDidMount() {
-    const {data} = this.props;
-
+  useEffect(() => {
     const formatCount = d3.format(',.0f');
 
-    const width = this.getBarChartWidth();
+    const width = getBarChartWidthHandler();
     let margins = {top: 40, right: 20, bottom: 60, left: 100};
     if (width < 600) {
       margins = {top: 20, right: 20, bottom: 50, left: 80};
     }
 
-    this.barChart = d3
-      .select(this.barChartRef)
+    barChartHandler = d3
+      .select(barChartRefHandler)
       .attr('width', width)
       .attr('height', DEFAULT_CHART_HEIGHT + margins.top + margins.bottom);
 
@@ -43,7 +37,7 @@ class BarChart extends Component {
       .domain([0, d3.max(data)])
       .range([DEFAULT_CHART_HEIGHT, 0]);
 
-    const bars = this.barChart
+    const bars = barChartHandler
       .selectAll('.bar')
       .data(data)
       .enter()
@@ -60,14 +54,14 @@ class BarChart extends Component {
       .attr('height', (d) => DEFAULT_CHART_HEIGHT - yScale(d));
 
     // add the x-axis
-    this.barChart
+    barChartHandler
       .append('g')
       .attr('class', 'x-axis')
       .attr('transform', `translate(${margins.left}, ${DEFAULT_CHART_HEIGHT + margins.top})`)
       .call(d3.axisBottom(xScale).tickFormat((d) => d + '°'));
 
     // add the y-axis
-    this.barChart
+    barChartHandler
       .append('g')
       .attr('class', 'y-axis')
       .call(d3.axisLeft(yScale))
@@ -81,7 +75,7 @@ class BarChart extends Component {
       .text((d) => formatCount(d));
 
     // X-axis label
-    this.barChart
+    barChartHandler
       .append('text')
       .attr('class', 'x-axis-label')
       .attr(
@@ -93,7 +87,7 @@ class BarChart extends Component {
       .text('Degrees of Separation');
 
     // Y-axis label
-    this.barChart
+    barChartHandler
       .append('text')
       .attr('class', 'y-axis-label')
       .attr('transform', 'rotate(-90)')
@@ -102,29 +96,29 @@ class BarChart extends Component {
       .text('Number of Searches');
 
     // Resize the bar chart on page resize.
-    window.addEventListener('resize', this.debouncedResizeBarChart);
-  }
+    window.addEventListener('resize', debouncedResizeBarChartHandler);
+  }, []);
 
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.debouncedResizeBarChart);
-  }
+  useEffect(() => {
+    return () => {
+      window.removeEventListener('resize', debouncedResizeBarChartHandler);
+    };
+  });
 
-  getBarChartWidth() {
+  const getBarChartWidthHandler = useCallback(() => {
     // Return width of wrapper element, minus border.
     return document.querySelector('.bar-chart-wrapper').getBoundingClientRect().width - 6;
-  }
+  }, []);
 
-  resizeBarChart() {
-    this.barChart.attr('width', this.getBarChartWidth());
-  }
+  const resizeBarChartHandler = useCallback(() => {
+    barChartHandler.attr('width', getBarChartWidthHandler());
+  }, []);
 
-  render() {
-    return (
-      <BarChartWrapper className="bar-chart-wrapper">
-        <BarChartSvg ref={(r) => (this.barChartRef = r)} />
-      </BarChartWrapper>
-    );
-  }
-}
+  return (
+    <BarChartWrapper className="bar-chart-wrapper">
+      <BarChartSvg ref={(r) => (barChartRefHandler = r)} />
+    </BarChartWrapper>
+  );
+};
 
 export default BarChart;
