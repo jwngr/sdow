@@ -91,6 +91,8 @@ $ pigz -d sdow.sqlite.gz
 - `gs://sdow-prod/dumps/20201101/sdow.sqlite.gz` (3.6 GB)
 - `gs://sdow-prod/dumps/20201201/sdow.sqlite.gz` (3.6 GB)
 - `gs://sdow-prod/dumps/20210101/sdow.sqlite.gz` (3.6 GB)
+- Data missing from Feb 2021 - Nov 2023
+- `gs://sdow-prod/dumps/20231220/sdow.sqlite.gz` (4.3 GB)
 </details>
 
 ## Database Schema
