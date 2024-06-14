@@ -11,5 +11,8 @@ jobs:
         with:
           node-version: '22'
       - run: pwd
+      - run: ls
       - run: cd website
+      - run: pwd
+      - run: ls
       - run: npm install
