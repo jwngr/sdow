@@ -10,5 +10,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - run: pwd
       - run: cd website
       - run: npm install
