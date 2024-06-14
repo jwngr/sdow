@@ -1,7 +1,7 @@
 name: frontend-ci
 on: [push]
 jobs:
-  ci:
+  frontend-ci:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -12,4 +12,7 @@ jobs:
           node-version: '22'
       - name: Install dependencies
         run: npm install
+        working-directory: website
+      - name: Lint
+        run: npm run lint
         working-directory: website

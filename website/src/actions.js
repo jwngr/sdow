@@ -65,12 +65,8 @@ export function setTargetPageTitle(targetPageTitle) {
 
 export function fetchShortestPaths() {
   return (dispatch, getState) => {
-    let {
-      sourcePageTitle,
-      targetPageTitle,
-      sourcePagePlaceholderText,
-      targetPagePlaceholderText,
-    } = getState();
+    let {sourcePageTitle, targetPageTitle, sourcePagePlaceholderText, targetPagePlaceholderText} =
+      getState();
 
     // Use the placeholder text if the inputs are empty.
     sourcePageTitle = sourcePageTitle || sourcePagePlaceholderText;

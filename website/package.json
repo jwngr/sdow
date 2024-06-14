@@ -29,25 +29,14 @@
     "typeface-quicksand": "1.1.13"
   },
   "devDependencies": {
-    "husky": "^4.2.3",
-    "lint-staged": "^10.1.1",
     "prettier": "^3.3.2",
     "redux-logger": "^3.0.6",
     "source-map-explorer": "^2.1.0"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "{src}/**/*.{js,css}": [
-      "prettier --write"
-    ]
-  },
   "scripts": {
     "analyze": "source-map-explorer build/static/js/*",
-    "precommit": "lint-staged",
+    "lint": "prettier --check 'src/**/*.{js,css}'",
+    "format": "prettier --write 'src/**/*.{js,css}'",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
