@@ -1,11 +1,11 @@
 # Miscellaneous | Six Degrees of Wikipedia
 
-## Table of Contents
+## Table of contents
 
 * [Noteworthy Searches](#noteworthy-searches)
 * [Edge Case Page Titles](#edge-case-page-titles)
 
-## Noteworthy Searches
+## Noteworthy searches
 
 The following is a list of noteworthy searches:
 
@@ -19,7 +19,7 @@ The following is a list of noteworthy searches:
 | [Lion Express → Phinney](https://www.sixdegreesofwikipedia.com/?source=Lion%20Express&target=Phinney)                                                             | 9 degrees of separation!         |
 | [2016 French Open → Brachmia melicephala](https://www.sixdegreesofwikipedia.com/?source=2016%20French%20Open&target=Brachmia%20melicephala)                       | Sparse graph of 6 degrees        |
 
-## Edge Case Page Titles
+## Edge case page titles
 
 The following is a collection of edge page titles, mainly used to ensure the project works given a
 wide variety of inputs:

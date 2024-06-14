@@ -4,12 +4,9 @@ Replaces page titles in the redirects file with their corresponding IDs.
 Output is written to stdout.
 """
 
-from __future__ import print_function
-
 import io
 import sys
 import gzip
-from sets import Set
 
 # Validate input arguments.
 if len(sys.argv) < 3:
@@ -29,7 +26,7 @@ if not REDIRECTS_FILE.endswith('.gz'):
   sys.exit()
 
 # Create a set of all page IDs and a dictionary of page titles to their corresponding IDs.
-ALL_PAGE_IDS = Set()
+ALL_PAGE_IDS = set()
 PAGE_TITLES_TO_IDS = {}
 for line in io.BufferedReader(gzip.open(PAGES_FILE, 'r')):
   [page_id, page_title, _] = line.rstrip('\n').split('\t')

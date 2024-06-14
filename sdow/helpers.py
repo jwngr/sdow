@@ -53,15 +53,14 @@ def fetch_wikipedia_pages_info(page_ids, database):
     try:
       pages_result = req.json().get('query', {}).get('pages')
     except ValueError as error:
-      # Log and re-raise the exception.
-      logging.exception({
-          'error': 'Failed to decode MediaWiki API response: "{0}"'.format(error),
-          'status_code': req.status_code,
-          'response_text': req.text,
-      })
-      raise error
+      # Wrap error message and re-raise exception.
+      error_message = f"Failed to decode MediaWiki API response: {error}"
+      raise ValueError(error_message) from error
+    
+    if (pages_result is None):
+      raise ValueError('Empty MediaWiki API response')
 
-    for page_id, page in pages_result.iteritems():
+    for page_id, page in pages_result.items():
       page_id = int(page_id)
 
       if 'missing' in page:
@@ -140,10 +139,7 @@ def is_str(val):
   Returns:
     bool: Whether or not the provided value is a string type.
   """
-  try:
-    return isinstance(val, basestring)
-  except NameError:
-    return isinstance(val, str)
+  return isinstance(val, str)
 
 
 def is_positive_int(val):

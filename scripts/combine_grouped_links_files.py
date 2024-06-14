@@ -4,8 +4,6 @@ Combines the incoming and outgoing links (as well as their counts) for each page
 Output is written to stdout.
 """
 
-from __future__ import print_function
-
 import io
 import sys
 import gzip

@@ -5,8 +5,6 @@
 Generates an updated Wikipedia facts JSON file.
 """
 
-from __future__ import print_function
-
 import os
 import json
 import sqlite3

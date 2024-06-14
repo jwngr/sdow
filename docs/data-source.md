@@ -1,6 +1,6 @@
 # Data Source | Six Degrees of Wikipedia
 
-## Table of Contents
+## Table of contents
 
 - [Data Source](#data-source)
 - [Get the Data Yourself](#get-the-data-yourself)
@@ -9,7 +9,7 @@
 - [Historical Search Results](#historical-search-results)
 - [Database Creation Process](#database-creation-process)
 
-## Data Source
+## Data source
 
 Data for this project comes from Wikimedia, which creates [gzipped SQL dumps of the English language
 Wikipedia database](https://dumps.wikimedia.your.org/enwiki) twice monthly. The Six Degrees of
@@ -29,7 +29,7 @@ For performance reasons, files are downloaded from the
 Six Degrees of Wikipedia only deals with actual Wikipedia pages, which in Wikipedia parlance means
 pages which belong to [namespace](https://en.wikipedia.org/wiki/Wikipedia:Namespace) `0`.
 
-## Get the Data Yourself
+## Get the data yourself
 
 Compressed versions of the Six Degrees of Wikipedia SQLite database (`sdow.sqlite.gz`) are available
 for download from ["requester pays"](https://cloud.google.com/storage/docs/requester-pays) Google
@@ -95,7 +95,7 @@ $ pigz -d sdow.sqlite.gz
 - `gs://sdow-prod/dumps/20231220/sdow.sqlite.gz` (4.3 GB)
 </details>
 
-## Database Schema
+## Database schema
 
 The Six Degrees of Wikipedia database is a single SQLite file containing the following three tables:
 
@@ -114,7 +114,7 @@ The Six Degrees of Wikipedia database is a single SQLite file containing the fol
     1.  `source_id` - The page ID of the source page, the page that redirects to another page.
     2.  `target_id` - The page ID of the target page, to which the redirect page redirects.
 
-## Historical Search Results
+## Historical search results
 
 Historical search results are stored in a separate SQLite database (`searches.sqlite`) which
 contains a single `searches` table with the following schema:
@@ -134,7 +134,7 @@ as well as to make it easy to update the `sdow.sqlite` database to a more recent
 Historical search results are not available for public download, but they are not required to run
 this project yourself.
 
-## Database Creation Script
+## Database creation script
 
 A new build of the Six Degrees of Wikipedia database is created using the [database creation shell
 script](../scripts/buildDatabase.sh):
@@ -150,7 +150,7 @@ by passing the date of the dump in the format `YYYYMMDD` as a command line argum
 $ ./buildDatabase.sh <YYYYMMDD>
 ```
 
-## Database Creation Process
+## Database creation process
 
 Generating the Six Degrees of Wikipedia database from a dump of Wikipedia takes approximately two
 hours given the following instructions:

@@ -5,12 +5,9 @@ non-existing pages, and replaces redirects with the pages to which they redirect
 Output is written to stdout.
 """
 
-from __future__ import print_function
-
 import io
 import sys
 import gzip
-from sets import Set
 
 # Validate inputs
 if len(sys.argv) < 4:
@@ -35,7 +32,7 @@ if not LINKS_FILE.endswith('.gz'):
   sys.exit()
 
 # Create a set of all page IDs and a dictionary of page titles to their corresponding IDs.
-ALL_PAGE_IDS = Set()
+ALL_PAGE_IDS = set()
 PAGE_TITLES_TO_IDS = {}
 for line in io.BufferedReader(gzip.open(PAGES_FILE, 'r')):
   [page_id, page_title, _] = line.rstrip('\n').split('\t')

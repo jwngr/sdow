@@ -1,13 +1,13 @@
-# Web Server Setup | Six Degrees of Wikipedia
+# Web erver Setup | Six Degrees of Wikipedia
 
-## Table of Contents
+## Table of contents
 
 - [Initial Setup](#initial-setup)
 - [Recurring Setup](#recurring-setup)
 - [Updating Data Source](#updating-data-source)
 - [Updating Server Code](#updating-server-code)
 
-## Initial Setup
+## Initial setup
 
 1.  Create a new [Google Compute Engine instance](https://console.cloud.google.com/compute/instances?project=sdow-prod)
     from the `sdow-web-server` instance template, which is configured with the following specs:
@@ -208,7 +208,7 @@
     $ sudo service stackdriver-agent start
     ```
 
-## Recurring Setup
+## Recurring setup
 
 1.  Activate the `virtualenv` environment:
 
@@ -243,7 +243,7 @@
     `gunicorn` is written to `/tmp/gunicorn-stdout---supervisor-<HASH>.log`. Logs are also written to
     Stackdriver Logging.
 
-## Updating Data Source
+## Updating data source
 
 To update the web server to a more recent `sdow.sqlite` file with minimal downtime, run the
 following commands after SSHing into the web server:
@@ -258,7 +258,7 @@ $ cd config/
 $ supervisorctl restart gunicorn
 ```
 
-## Updating Server Code
+## Updating server code
 
 To update the Python server code which powers the SDOW backend, run the following commands after
 SSHing into the web server:

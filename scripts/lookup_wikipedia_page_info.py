@@ -5,8 +5,6 @@
 Looks up Wikipedia page information via the official Wikipedia API given a list of page IDs.
 """
 
-from __future__ import print_function
-
 import requests
 
 WIKIPEDIA_API_URL = 'https://en.wikipedia.org/w/api.php'
