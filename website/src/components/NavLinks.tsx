@@ -1,5 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
+import {Link} from 'react-router-dom';
+import styled, {css} from 'styled-components';
 
 const Wrapper = styled.div`
   position: absolute;
@@ -21,7 +22,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const TextLink = styled.a`
+const linkStyles = css`
   padding: 0 12px;
   text-decoration: none;
   font-size: 24px;
@@ -61,8 +62,13 @@ const TextLink = styled.a`
   }
 `;
 
-// const TextLinkInternal = styled(TextLink).attrs({as: Link});
-// const TextLinkInternal = styled(TextLink);
+const TextLink = styled.a`
+  ${linkStyles}
+`;
+
+const TextLinkInternal = styled(Link)`
+  ${linkStyles}
+`;
 
 export const NavLinks: React.FC<{
   readonly handleOpenModal: () => void;
@@ -72,7 +78,7 @@ export const NavLinks: React.FC<{
       <TextLink href="#" onClick={() => handleOpenModal()}>
         About
       </TextLink>
-      {/* <TextLinkInternal to="/blog">Blog</TextLinkInternal> */}
+      <TextLinkInternal to="/blog">Blog</TextLinkInternal>
       <TextLink href="https://github.com/jwngr/sdow">GitHub</TextLink>
     </Wrapper>
   );

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 
 import {getRandomWikipediaFact, getWikipediaPageUrl} from '../utils';
-import {StyledLink} from './common/StyledLink.tsx';
+import {StyledTextLink} from './common/StyledTextLink.tsx';
 
 const Wrapper = styled.div`
   width: 700px;
@@ -124,9 +124,7 @@ const Loading: React.FC = () => {
         // in them.
         token = token.replace(/'/g, `"`);
         factContent.push(
-          <StyledLink href={getWikipediaPageUrl(token)} target="_blank" key={i}>
-            {token}
-          </StyledLink>
+          <StyledTextLink key={i} text={token} href={getWikipediaPageUrl(token)} target="_blank" />
         );
       }
     } else {

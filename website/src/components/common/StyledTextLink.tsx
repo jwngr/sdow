@@ -1,18 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 
-interface StyledLinkWrapperProps {
-  readonly wordBreak: string;
+interface StyledTextLinkWrapperProps {
+  readonly $wordBreak?: string;
 }
 
-const StyledLinkWrapper = styled.a<StyledLinkWrapperProps>`
+const StyledTextLinkWrapper = styled.a<StyledTextLinkWrapperProps>`
   position: relative;
   display: inline-block;
   outline: none;
   color: ${({theme}) => theme.colors.darkGreen};
   vertical-align: bottom;
   text-decoration: none;
-  word-break: ${({wordBreak}) => wordBreak || 'normal'};
+  word-break: ${({$wordBreak}) => $wordBreak || 'normal'};
   cursor: pointer;
   margin: 0 4px;
   padding: 0;
@@ -57,17 +57,20 @@ const StyledLinkWrapper = styled.a<StyledLinkWrapperProps>`
   }
 `;
 
-export const StyledLink: React.FC = ({children, ...props}) => {
-  // Change the word break behavior for long article names with no space (to avoid them trailing
-  // off the page).
-  let wordBreak: string | undefined;
-  if (children.indexOf(' ') === -1 && children.length >= 50) {
-    wordBreak = 'break-all';
-  }
+interface StyledTextLinkProps
+  extends Pick<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href' | 'target'> {
+  readonly text: string;
+}
 
+export const StyledTextLink: React.FC<StyledTextLinkProps> = ({text, href, target}) => {
   return (
-    <StyledLinkWrapper wordBreak={wordBreak} {...props}>
-      {children}
-    </StyledLinkWrapper>
+    <StyledTextLinkWrapper
+      href={href}
+      target={target}
+      // Prevent long article names with no spaces from trailing off the page.
+      $wordBreak={text.length < 50 || text.includes(' ') ? undefined : 'break-all'}
+    >
+      {text}
+    </StyledTextLinkWrapper>
   );
 };

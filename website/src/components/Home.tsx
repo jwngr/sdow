@@ -6,7 +6,7 @@ import {WikipediaPage, WikipediaPageId} from '../types.ts';
 import {getRandomPageTitle} from '../utils.js';
 import Logo from './common/Logo';
 import {ErrorMessage} from './ErrorMessage.tsx';
-import {InputFlexContainer, P} from './Home.styles.ts';
+import {InputFlexContainer, Modal, P} from './Home.styles.ts';
 import Loading from './Loading.tsx';
 import {NavLinks} from './NavLinks.tsx';
 import {PageInput} from './PageInput.tsx';
@@ -92,9 +92,9 @@ export const Home: React.FC = () => {
     <div>
       <Logo />
 
-      {/* <NavLinks handleOpenModal={handleOpenModal} /> */}
+      <NavLinks handleOpenModal={handleOpenModal} />
 
-      {/* <Modal isOpen={showModal} onRequestClose={handleCloseModal}>
+      <Modal isOpen={showModal} onRequestClose={handleCloseModal}>
         <p>
           Inspired by the concept of{' '}
           <a href="https://en.wikipedia.org/wiki/Six_degrees_of_separation">
@@ -115,7 +115,7 @@ export const Home: React.FC = () => {
         <p>
           A project by <a href="https://jwn.gr/">Jacob Wenger</a>.
         </p>
-      </Modal> */}
+      </Modal>
 
       <P>Find the shortest paths from</P>
       <InputFlexContainer>
@@ -161,9 +161,7 @@ export const Home: React.FC = () => {
           isTargetRedirected={shortestPathsState.isTargetRedirected}
           durationInSeconds={shortestPathsState.durationInSeconds}
         />
-      ) : (
-        <ErrorMessage text="Something went wrong — no shortest paths found." />
-      )}
+      ) : null}
     </div>
   );
 };

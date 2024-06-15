@@ -2,7 +2,7 @@ import React from 'react';
 import {Helmet} from 'react-helmet';
 
 import Logo from '../../common/Logo';
-import {StyledLink} from '../../common/StyledLink.tsx';
+import {StyledTextLink} from '../../common/StyledTextLink.tsx';
 import NewsletterSignupForm from '../NewsletterSignupForm';
 import posts from '../posts/index.json';
 import {
@@ -16,7 +16,7 @@ import {
 
 const BlogPostCard = ({id, date, title, description}) => (
   <BlogPostCardWrapper>
-    <StyledLink href={`/blog/${id}`}>{title}</StyledLink>
+    <StyledTextLink text={title} href={`/blog/${id}`} />
     <BlogPostDate>{date}</BlogPostDate>
     <BlogPostDescription>{description}</BlogPostDescription>
   </BlogPostCardWrapper>

@@ -48,7 +48,7 @@ const ResultsListItemWrapper = styled.div`
 `;
 
 interface PageWrapperProps {
-  readonly backgroundColor: string;
+  readonly $highlightColor: string;
 }
 
 const PageWrapper = styled.a<PageWrapperProps>`
@@ -63,7 +63,7 @@ const PageWrapper = styled.a<PageWrapperProps>`
   cursor: pointer;
   color: ${({theme}) => theme.colors.darkGreen};
   border-bottom: solid 1px ${({theme}) => theme.colors.darkGreen};
-  border-left: solid 12px ${({backgroundColor}) => backgroundColor};
+  border-left: solid 12px ${({$highlightColor}) => $highlightColor};
   background-color: ${({theme}) => theme.colors.creme};
 
   &:first-of-type {
@@ -125,11 +125,11 @@ const ResultListItem: React.FC<{
       <PageDescription>{description}</PageDescription>
     ) : null;
 
-    let backgroundColor = d3.rgb(color(i));
-    backgroundColor.opacity = 0.9;
+    let highlightColor = d3.rgb(color(i.toString()));
+    highlightColor.opacity = 0.9;
 
     return (
-      <PageWrapper key={i} href={url} backgroundColor={backgroundColor} target="_blank">
+      <PageWrapper key={i} href={url} $highlightColor={highlightColor.toString()} target="_blank">
         <PageImage src={thumbnailUrl || defaultPageThumbnail} />
         <PageInnerWrapper>
           <PageTitle>{title}</PageTitle>

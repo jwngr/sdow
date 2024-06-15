@@ -3,44 +3,44 @@ import styled from 'styled-components';
 
 ReactModal.setAppElement('#root');
 
-// export const Modal = styled(ReactModal)`
-//   position: absolute;
-//   top: 60px;
-//   right: 20px;
-//   width: 300px;
-//   padding: 12px;
-//   z-index: 10;
-//   text-align: justify;
-//   border: solid 3px ${({theme}) => theme.colors.darkGreen};
-//   background: ${({theme}) => theme.colors.creme};
+export const Modal = styled(ReactModal)`
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  width: 300px;
+  padding: 12px;
+  z-index: 10;
+  text-align: justify;
+  border: solid 3px ${({theme}) => theme.colors.darkGreen};
+  background: ${({theme}) => theme.colors.creme};
 
-//   p {
-//     font-size: 16px;
-//     font-family: 'Quicksand';
-//     line-height: 1.5;
-//     margin-bottom: 12px;
-//   }
+  p {
+    font-size: 16px;
+    font-family: 'Quicksand';
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
 
-//   p:last-of-type {
-//     margin-bottom: 0;
-//   }
+  p:last-of-type {
+    margin-bottom: 0;
+  }
 
-//   a,
-//   a:visited {
-//     color: ${({theme}) => theme.colors.darkGreen};
-//     transition: color 0.5s;
-//   }
+  a,
+  a:visited {
+    color: ${({theme}) => theme.colors.darkGreen};
+    transition: color 0.5s;
+  }
 
-//   a:hover {
-//     color: ${({theme}) => theme.colors.red};
-//   }
+  a:hover {
+    color: ${({theme}) => theme.colors.red};
+  }
 
-//   @media (max-width: 600px) {
-//     width: 80%;
-//     top: 104px;
-//     left: 10%;
-//   }
-// `;
+  @media (max-width: 600px) {
+    width: 80%;
+    top: 104px;
+    left: 10%;
+  }
+`;
 
 export const P = styled.p`
   margin: 16px;

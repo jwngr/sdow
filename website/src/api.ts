@@ -30,9 +30,17 @@ export async function fetchShortestPaths({
 
   const data = (await response.json()) as ShortestPathsApiResponse;
 
+  const newPagesByNumberId: Record<number, WikipediaPage> = Object.entries(data.pages).reduce(
+    (acc, [pageId, page]) => {
+      acc[Number(pageId)] = page;
+      return acc;
+    },
+    {}
+  );
+
   return {
     paths: data.paths,
-    pagesById: data.pages,
+    pagesById: newPagesByNumberId,
     sourcePageTitle: data.sourcePageTitle,
     targetPageTitle: data.targetPageTitle,
     isSourceRedirected: data.isSourceRedirected,

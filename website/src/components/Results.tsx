@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import {WikipediaPage, WikipediaPageId} from '../types';
 import {getNumberWithCommas, getWikipediaPageUrl} from '../utils';
 import Button from './common/Button.tsx';
-import {StyledLink} from './common/StyledLink.tsx';
-import ResultsGraph from './ResultsGraph';
+import {StyledTextLink} from './common/StyledTextLink.tsx';
+import ResultsGraph from './ResultsGraph.tsx';
 import {ResultsList} from './ResultsList.tsx';
 
 const ResultsMessage = styled.div`
@@ -147,15 +147,19 @@ export const Results: React.FC<{
   durationInSeconds,
 }) => {
   const sourcePageLink = (
-    <StyledLink href={getWikipediaPageUrl(sourcePageTitle)} target="_blank">
-      {sourcePageTitle}
-    </StyledLink>
+    <StyledTextLink
+      text={sourcePageTitle}
+      href={getWikipediaPageUrl(sourcePageTitle)}
+      target="_blank"
+    />
   );
 
   const targetPageLink = (
-    <StyledLink href={getWikipediaPageUrl(targetPageTitle)} target="_blank">
-      {targetPageTitle}
-    </StyledLink>
+    <StyledTextLink
+      text={targetPageTitle}
+      href={getWikipediaPageUrl(targetPageTitle)}
+      target="_blank"
+    />
   );
 
   // No paths found.
@@ -218,7 +222,7 @@ export const Results: React.FC<{
           <p>Tweet result</p>
         </TwitterButton>
       </TwitterButtonWrapper>
-      {/* <ResultsGraph paths={paths} pagesById={pagesById} /> */}
+      <ResultsGraph paths={paths} pagesById={pagesById} />
       <ResultsList paths={paths} pagesById={pagesById} />
     </>
   );

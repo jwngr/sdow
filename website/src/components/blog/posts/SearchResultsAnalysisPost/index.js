@@ -4,7 +4,7 @@ import {Helmet} from 'react-helmet';
 import {getNumberWithCommas} from '../../../../utils';
 import BarChart from '../../../charts/BarChart';
 import Table from '../../../charts/Table';
-import {StyledLink} from '../../../common/StyledLink.tsx';
+import {StyledTextLink} from '../../../common/StyledTextLink.tsx';
 import {
   Divider,
   Image,
@@ -30,13 +30,13 @@ const SearchResultsAnalysisPost = () => (
 
     <Title>{title}</Title>
     <Subtitle>
-      <StyledLink href="https://jwn.gr">Jacob Wenger</StyledLink> | March 14, 2018
+      <StyledTextLink text="Jacob Wenger" href="https://jwn.gr" /> | March 14, 2018
     </Subtitle>
 
     <P>
       A little over two weeks ago, I released{' '}
-      <StyledLink href="/">Six Degrees of Wikipedia</StyledLink>, a website which allows you to find
-      the shortest hyperlinked paths between any two pages on the world's largest free online
+      <StyledTextLink text="Six Degrees of Wikipedia" href="/" />, a website which allows you to
+      find the shortest hyperlinked paths between any two pages on the world's largest free online
       encyclopedia. This morning, it surpassed 500,000 searches! With that decent sample size, I
       dove into the data and found some interesting &mdash; and sometimes comical &mdash; insights.
     </P>
@@ -87,32 +87,36 @@ const SearchResultsAnalysisPost = () => (
     <P>
       Quite a lineup right there! Hitler runs away with the top spot, which is not too surprising
       because internet and because of the somewhat popular{' '}
-      <StyledLink href="https://en.wikipedia.org/wiki/Wikipedia:Wiki_Game#Variations">
-        Clicks to Hitler
-      </StyledLink>{' '}
+      <StyledTextLink
+        text="Clicks to Hitler"
+        href="https://en.wikipedia.org/wiki/Wikipedia:Wiki_Game#Variations"
+      />{' '}
       game in which you try to navigate to Hitler's Wikipedia page from other Wikipedia pages. On a
       related note, my apologies to the{' '}
-      <StyledLink href="https://www.reddit.com/r/degreestohitler/">r/degreestohitler</StyledLink>{' '}
+      <StyledTextLink text="r/degreestohitler" href="https://www.reddit.com/r/degreestohitler/" />{' '}
       subreddit for possibly spoiling all their fun.
     </P>
 
     <P>
       After Hitler, you've got the last two United States Presidents, the son of God (to many),
       Kevin Bacon of{' '}
-      <StyledLink href="https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon">
-        Six Degrees of Kevin Bacon
-      </StyledLink>{' '}
+      <StyledTextLink
+        text="Six Degrees of Kevin Bacon"
+        href="https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon"
+      />{' '}
       fame, another{' '}
-      <StyledLink href="https://en.wikipedia.org/wiki/Wikipedia:Getting_to_Philosophy">
-        Wikipedia game variant
-      </StyledLink>
+      <StyledTextLink
+        text="Wikipedia game variant"
+        href="https://en.wikipedia.org/wiki/Wikipedia:Getting_to_Philosophy"
+      />
       , some favorite topics from Hacker News, and... an experimental hip hop group from Sacramento
-      called <StyledLink href="https://en.wikipedia.org/wiki/Death_Grips">Death Grips</StyledLink>.
+      called <StyledTextLink text="Death Grips" href="https://en.wikipedia.org/wiki/Death_Grips" />.
       That last one caught me by surprise. After some online searching, all I could come up with to
       explain it was an r/deathgrips thread from last month called{' '}
-      <StyledLink href="https://www.reddit.com/r/deathgrips/comments/7q9l51/six_degrees_of_death_grips/">
-        Six Degrees of Death Grips
-      </StyledLink>
+      <StyledTextLink
+        text="Six Degrees of Death Grips"
+        href="https://www.reddit.com/r/deathgrips/comments/7q9l51/six_degrees_of_death_grips/"
+      />
       . If you have any more information to explain this, please let me know.
     </P>
 
@@ -154,7 +158,7 @@ const SearchResultsAnalysisPost = () => (
       Averages can be useful, but it is often much more interesting to look at outliers. And when I
       did, I came across some searches with degrees of separation that were much higher than
       expected. The longest path found to date is{' '}
-      <StyledLink href="/?source=Embleton&target=McCombie">Embleton → McCombie</StyledLink> which
+      <StyledTextLink text="Embleton → McCombie" href="/?source=Embleton&target=McCombie" /> which
       has an incredible <b>11 degrees</b> of separation thanks to a long tail at the end of the
       search path:
     </P>
@@ -256,9 +260,10 @@ const SearchResultsAnalysisPost = () => (
     <StatsWrapper>
       <Stat>
         <p>Longest Response Time</p>
-        <StyledLink href="https://www.sixdegreesofwikipedia.com/?source=Penis&target=Adolf%20Hitler">
-          Penis → Adolf Hitler
-        </StyledLink>
+        <StyledTextLink
+          text="Penis → Adolf Hitler"
+          href="https://www.sixdegreesofwikipedia.com/?source=Penis&target=Adolf%20Hitler"
+        />
         <p>38.96 s</p>
       </Stat>
     </StatsWrapper>
@@ -270,16 +275,17 @@ const SearchResultsAnalysisPost = () => (
     <P>
       For those fellow developers out there who are interested in the SQL queries used to generate
       these stats, you can find them all on{' '}
-      <StyledLink href="https://github.com/jwngr/sdow/tree/master/website/src/components/blog/posts/SearchResultsAnalysisPost/queries.txt">
-        this project's GitHub
-      </StyledLink>
+      <StyledTextLink
+        text="this project's GitHub"
+        href="https://github.com/jwngr/sdow/tree/master/website/src/components/blog/posts/SearchResultsAnalysisPost/queries.txt"
+      />
       . I will likely go into more detail on my server and database setup in a future post.
     </P>
 
     <SectionTitle>Wrapping Up</SectionTitle>
 
     <P>
-      <StyledLink href="/">Six Degrees of Wikipedia</StyledLink> captured the attention and
+      <StyledTextLink text="Six Degrees of Wikipedia" href="/" /> captured the attention and
       excitement of so many people for the same reasons I decided to build it in the first place: it
       is entertaining to explore the concept and see the unexpected connections between seemingly
       random topics. It is also intriguing to dive into the stats behind the project like we just
@@ -289,8 +295,8 @@ const SearchResultsAnalysisPost = () => (
     <P>
       Are there other stats you would like to know? Or are there other topics related to the project
       you want to read about? If so, please reach out to me on{' '}
-      <StyledLink href="https://twitter.com/_jwngr">Twitter</StyledLink> or{' '}
-      <StyledLink href="https://github.com/jwngr/sdow">GitHub</StyledLink>.
+      <StyledTextLink text="Twitter" href="https://twitter.com/_jwngr" /> or{' '}
+      <StyledTextLink text="GitHub" href="https://github.com/jwngr/sdow" />.
     </P>
 
     <Divider />

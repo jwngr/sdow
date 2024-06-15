@@ -141,7 +141,7 @@ export const PageInput: React.FC<{
     }).toString();
 
     try {
-      const response = await fetch(url.toString(), {
+      const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Api-User-Agent': SDOW_USER_AGENT,

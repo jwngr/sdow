@@ -1,4 +1,4 @@
-export type WikipediaPageId = string;
+export type WikipediaPageId = number;
 
 export interface WikipediaPage {
   readonly title: string;
@@ -8,7 +8,7 @@ export interface WikipediaPage {
 }
 
 export interface ShortestPathsApiResponse {
-  readonly paths: readonly string[][];
+  readonly paths: readonly number[][];
   readonly pages: Record<string, WikipediaPage>;
   readonly sourcePageTitle: string;
   readonly targetPageTitle: string;
