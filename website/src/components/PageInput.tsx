@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import {SDOW_USER_AGENT, WIKIPEDIA_API_URL} from '../resources/constants';
 import {WikipediaPage} from '../types';
 import {getRandomPageTitle} from '../utils';
-import PageInputSuggestion from './PageInputSuggestion';
+import {PageInputSuggestion} from './PageInputSuggestion';
 
 type PageSuggestion = Required<Omit<WikipediaPage, 'url'>>;
 

@@ -6,7 +6,7 @@ import {BarChartSvg, BarChartWrapper} from './index.styles';
 
 const DEFAULT_CHART_HEIGHT = 300;
 
-class BarChart extends Component {
+export class BarChart extends Component {
   constructor() {
     super();
 
@@ -126,5 +126,3 @@ class BarChart extends Component {
     );
   }
 }
-
-export default BarChart;

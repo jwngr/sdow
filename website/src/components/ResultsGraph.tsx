@@ -2,13 +2,12 @@ import * as d3 from 'd3';
 import debounce from 'lodash/debounce';
 import map from 'lodash/map';
 import range from 'lodash/range';
-import some from 'lodash/some';
 import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import styled from 'styled-components';
 
 import {WikipediaPage, WikipediaPageId} from '../types';
 import {getWikipediaPageUrl} from '../utils';
-import Button from './common/Button.tsx';
+import {Button} from './common/Button.tsx';
 
 const DEFAULT_CHART_HEIGHT = 600;
 
@@ -130,7 +129,7 @@ interface GraphLink {
   readonly target: number;
 }
 
-const Graph: React.FC<{
+export const ResultsGraph: React.FC<{
   readonly paths: readonly WikipediaPageId[][];
   readonly pagesById: Record<WikipediaPageId, WikipediaPage>;
 }> = ({paths, pagesById}) => {
@@ -271,5 +270,3 @@ const Graph: React.FC<{
     </GraphWrapper>
   );
 };
-
-export default Graph;

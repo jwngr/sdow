@@ -3,9 +3,9 @@ import styled from 'styled-components';
 
 import {WikipediaPage, WikipediaPageId} from '../types';
 import {getNumberWithCommas, getWikipediaPageUrl} from '../utils';
-import Button from './common/Button.tsx';
+import {Button} from './common/Button.tsx';
 import {StyledTextLink} from './common/StyledTextLink.tsx';
-import ResultsGraph from './ResultsGraph.tsx';
+import {ResultsGraph} from './ResultsGraph.tsx';
 import {ResultsList} from './ResultsList.tsx';
 
 const ResultsMessage = styled.div`

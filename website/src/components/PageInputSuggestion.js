@@ -3,7 +3,7 @@ import React from 'react';
 import defaultPageThumbnail from '../images/defaultPageThumbnail.png';
 import {Description, Image, InnerWrapper, Title, Wrapper} from './PageInputSuggestion.styles';
 
-const PageInputSuggestion = ({title, description, thumbnailUrl}) => {
+export const PageInputSuggestion = ({title, description, thumbnailUrl}) => {
   const descriptionContent = description ? <Description>{description}</Description> : null;
 
   return (
@@ -16,5 +16,3 @@ const PageInputSuggestion = ({title, description, thumbnailUrl}) => {
     </Wrapper>
   );
 };
-
-export default PageInputSuggestion;

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export default styled.button`
+export const Button = styled.button`
   position: relative;
   display: block;
   color: ${({theme}) => theme.colors.creme};

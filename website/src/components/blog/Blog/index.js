@@ -1,7 +1,7 @@
 import React from 'react';
 import {Helmet} from 'react-helmet';
 
-import Logo from '../../common/Logo';
+import {Logo} from '../../common/Logo';
 import {StyledTextLink} from '../../common/StyledTextLink.tsx';
 import NewsletterSignupForm from '../NewsletterSignupForm';
 import posts from '../posts/index.json';

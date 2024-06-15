@@ -2,8 +2,8 @@ import React from 'react';
 import {Helmet} from 'react-helmet';
 
 import {getNumberWithCommas} from '../../../../utils';
-import BarChart from '../../../charts/BarChart';
-import Table from '../../../charts/Table';
+import {BarChart} from '../../../charts/BarChart';
+import {Table} from '../../../charts/Table';
 import {StyledTextLink} from '../../../common/StyledTextLink.tsx';
 import {
   Divider,

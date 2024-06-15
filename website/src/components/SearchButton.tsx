@@ -2,7 +2,7 @@ import React from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
 import styled from 'styled-components';
 
-import Button from './common/Button.tsx';
+import {Button} from './common/Button.tsx';
 
 const SearchButtonWrapper = styled(Button)`
   width: 240px;

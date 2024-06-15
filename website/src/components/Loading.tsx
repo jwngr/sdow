@@ -99,7 +99,7 @@ const LoadingIndicator = styled.div`
   }
 `;
 
-const Loading: React.FC = () => {
+export const Loading: React.FC = () => {
   const [currentFact, setCurrentFact] = useState(getRandomWikipediaFact());
 
   useEffect(() => {
@@ -144,5 +144,3 @@ const Loading: React.FC = () => {
     </Wrapper>
   );
 };
-
-export default Loading;

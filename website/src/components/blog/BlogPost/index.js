@@ -2,7 +2,7 @@ import React from 'react';
 import Loadable from 'react-loadable';
 import {Redirect, useParams} from 'react-router-dom';
 
-import Logo from '../../common/Logo';
+import {Logo} from '../../common/Logo';
 
 const AsyncSearchResultsAnalysisPost = Loadable({
   loader: () => import('../posts/SearchResultsAnalysisPost'),
