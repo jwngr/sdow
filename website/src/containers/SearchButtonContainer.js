@@ -1,4 +1,5 @@
 import {connect} from 'react-redux';
+
 import {fetchShortestPaths} from '../actions';
 import SearchButton from '../components/SearchButton';
 

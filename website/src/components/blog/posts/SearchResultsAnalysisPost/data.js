@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {getNumberWithCommas, getWikipediaPageUrl} from '../../../../utils';
 import StyledLink from '../../../common/StyledLink';
 

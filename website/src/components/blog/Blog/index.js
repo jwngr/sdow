@@ -1,5 +1,6 @@
 import React from 'react';
 import {Helmet} from 'react-helmet';
+
 import Logo from '../../common/Logo';
 import StyledLink from '../../common/StyledLink';
 import NewsletterSignupForm from '../NewsletterSignupForm';

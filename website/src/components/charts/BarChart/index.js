@@ -1,6 +1,7 @@
 import * as d3 from 'd3';
 import debounce from 'lodash/debounce';
 import React, {Component} from 'react';
+
 import {BarChartSvg, BarChartWrapper} from './index.styles';
 
 const DEFAULT_CHART_HEIGHT = 300;

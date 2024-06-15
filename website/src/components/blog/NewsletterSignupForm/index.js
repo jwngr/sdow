@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+
 import {Form, FormInput, HiddenBotInput, Intro, SubscribeButton, Wrapper} from './index.styles';
 
 class NewsletterSignupForm extends Component {

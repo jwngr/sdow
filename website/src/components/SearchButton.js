@@ -2,6 +2,7 @@ import React from 'react';
 import {useSelector} from 'react-redux';
 import {useHistory, useLocation} from 'react-router-dom';
 import styled from 'styled-components';
+
 import Button from './common/Button';
 
 const SearchButtonWrapper = styled(Button)`

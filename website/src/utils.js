@@ -1,4 +1,5 @@
 import clone from 'lodash/clone';
+
 import pageTitles from './resources/pageTitles.json';
 import wikipediaFacts from './resources/wikipediaFacts.json';
 

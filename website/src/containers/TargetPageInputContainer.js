@@ -1,4 +1,5 @@
 import {connect} from 'react-redux';
+
 import {setTargetPagePlaceholderText, setTargetPageTitle} from '../actions';
 import PageInput from '../components/PageInput';
 

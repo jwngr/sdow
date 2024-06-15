@@ -1,4 +1,5 @@
 import React from 'react';
+
 import defaultPageThumbnail from '../images/defaultPageThumbnail.png';
 import {Description, Image, InnerWrapper, Title, Wrapper} from './PageInputSuggestion.styles';
 

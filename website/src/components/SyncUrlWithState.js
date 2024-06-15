@@ -1,6 +1,7 @@
 import {useEffect, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useHistory, useLocation} from 'react-router-dom';
+
 import {setSourcePageTitle, setTargetPageTitle} from '../actions';
 
 export const SyncUrlWithState = () => {

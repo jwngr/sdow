@@ -1,4 +1,5 @@
 import {connect} from 'react-redux';
+
 import {setSourcePageTitle, setTargetPageTitle} from '../actions';
 import SwapInputValuesButton from '../components/SwapInputValuesButton';
 

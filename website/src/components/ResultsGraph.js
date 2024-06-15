@@ -6,6 +6,7 @@ import range from 'lodash/range';
 import some from 'lodash/some';
 // import {findDOMNode} from 'react-dom';
 import React, {Component} from 'react';
+
 import {getWikipediaPageUrl} from '../utils';
 import {
   GraphSvg,

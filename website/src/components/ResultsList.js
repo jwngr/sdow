@@ -1,6 +1,7 @@
 import * as d3 from 'd3';
 import React from 'react';
 import LazyLoad from 'react-lazyload';
+
 import defaultPageThumbnail from '../images/defaultPageThumbnail.png';
 import {
   PageDescription,
