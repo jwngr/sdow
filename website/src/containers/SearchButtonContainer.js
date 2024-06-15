@@ -1,8 +1,6 @@
 import {connect} from 'react-redux';
-
-import SearchButton from '../components/SearchButton';
-
 import {fetchShortestPaths} from '../actions';
+import SearchButton from '../components/SearchButton';
 
 const mapStateToProps = ({isFetchingResults}) => ({isFetchingResults});
 

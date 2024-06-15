@@ -1,7 +1,6 @@
 import React from 'react';
-import StyledLink from '../../../common/StyledLink';
-
 import {getNumberWithCommas, getWikipediaPageUrl} from '../../../../utils';
+import StyledLink from '../../../common/StyledLink';
 
 export const totalSearches = 503498;
 export const uniqueSearches = 377135;
@@ -10,18 +9,7 @@ export const searchesWithNoPaths = 4018;
 export const percentNoPathsSearches = ((searchesWithNoPaths / uniqueSearches) * 100).toFixed(2);
 export const averageDegreesOfSeparation = 3.019;
 export const degreesOfSeparationHistogramData = [
-  524,
-  10216,
-  90068,
-  183172,
-  67754,
-  16317,
-  3738,
-  1228,
-  141,
-  27,
-  1,
-  1,
+  524, 10216, 90068, 183172, 67754, 16317, 3738, 1228, 141, 27, 1, 1,
 ];
 export const averageDuration = 0.76;
 export const medianDuration = 0.38;

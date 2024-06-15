@@ -1,6 +1,5 @@
 import React from 'react';
-
-import {Wrapper, TextLink, TextLinkInternal} from './NavLinks.styles';
+import {TextLink, TextLinkInternal, Wrapper} from './NavLinks.styles';
 
 const NavLinks = ({handleOpenModal}) => (
   <Wrapper>

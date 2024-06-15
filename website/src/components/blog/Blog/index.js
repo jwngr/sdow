@@ -1,20 +1,17 @@
 import React from 'react';
 import {Helmet} from 'react-helmet';
-
 import Logo from '../../common/Logo';
 import StyledLink from '../../common/StyledLink';
 import NewsletterSignupForm from '../NewsletterSignupForm';
-
+import posts from '../posts/index.json';
 import {
-  Title,
-  Wrapper,
-  Divider,
   BlogPostCardWrapper,
   BlogPostDate,
   BlogPostDescription,
+  Divider,
+  Title,
+  Wrapper,
 } from './index.styles';
-
-import posts from '../posts/index.json';
 
 const BlogPostCard = ({id, date, title, description}) => (
   <BlogPostCardWrapper>

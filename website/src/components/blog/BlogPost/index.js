@@ -1,7 +1,6 @@
 import React from 'react';
 import Loadable from 'react-loadable';
-import {useParams, Redirect} from 'react-router-dom';
-
+import {Redirect, useParams} from 'react-router-dom';
 import Logo from '../../common/Logo';
 
 const AsyncSearchResultsAnalysisPost = Loadable({

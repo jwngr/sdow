@@ -1,17 +1,14 @@
 import React, {Component} from 'react';
-
 import Logo from '../components/common/Logo';
 import NavLinks from '../components/NavLinks';
-
+import ErrorMessageContainer from '../containers/ErrorMessageContainer';
 import LoadingContainer from '../containers/LoadingContainer';
 import ResultsContainer from '../containers/ResultsContainer';
-import ErrorMessageContainer from '../containers/ErrorMessageContainer';
 import SearchButtonContainer from '../containers/SearchButtonContainer';
+import SourcePageInputContainer from '../containers/SourcePageInputContainer';
 import SwapInputValuesButton from '../containers/SwapInputValuesButton';
 import TargetPageInputContainer from '../containers/TargetPageInputContainer';
-import SourcePageInputContainer from '../containers/SourcePageInputContainer';
-
-import {P, Modal, InputFlexContainer} from './Home.styles';
+import {InputFlexContainer, Modal, P} from './Home.styles';
 
 class Home extends Component {
   constructor() {

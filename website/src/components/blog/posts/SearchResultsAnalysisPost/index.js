@@ -1,28 +1,23 @@
 import React from 'react';
 import {Helmet} from 'react-helmet';
-
-import Table from '../../../charts/Table';
+import {getNumberWithCommas} from '../../../../utils';
 import BarChart from '../../../charts/BarChart';
+import Table from '../../../charts/Table';
 import StyledLink from '../../../common/StyledLink';
-import NewsletterSignupForm from '../../NewsletterSignupForm';
-
 import {
-  P,
-  Image,
-  Title,
   Divider,
-  Subtitle,
+  Image,
+  P,
   SectionTitle,
   Stat,
   StatsWrapper,
+  Subtitle,
+  Title,
   Wrapper,
 } from '../../BlogPost/index.styles';
-
-import {getNumberWithCommas} from '../../../../utils';
-
-import elevenDegreesOfSeparationSearchImage from './elevenDegreesOfSeparationSearch.png';
-
+import NewsletterSignupForm from '../../NewsletterSignupForm';
 import * as data from './data';
+import elevenDegreesOfSeparationSearchImage from './elevenDegreesOfSeparationSearch.png';
 
 const title = 'Insights On Hitler And More From The First 500,000 Searches';
 

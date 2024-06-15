@@ -1,5 +1,4 @@
 import React from 'react';
-
 import {TableWrapper} from './index.styles';
 
 const Table = ({headers, rows}) => {

@@ -1,17 +1,14 @@
 import React, {Component} from 'react';
-
-import ResultsList from './ResultsList';
-import ResultsGraph from './ResultsGraph';
+import {getNumberWithCommas, getWikipediaPageUrl} from '../utils';
 import StyledLink from './common/StyledLink';
-
 import {
   ResultsMessage,
-  TwitterButtonWrapper,
-  TwitterButton,
   TwitterBirdSvg,
+  TwitterButton,
+  TwitterButtonWrapper,
 } from './Results.styles';
-
-import {getNumberWithCommas, getWikipediaPageUrl} from '../utils';
+import ResultsGraph from './ResultsGraph';
+import ResultsList from './ResultsList';
 
 class Results extends Component {
   /**
