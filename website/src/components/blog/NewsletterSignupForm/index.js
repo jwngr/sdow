@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-
-import {Wrapper, Intro, Form, FormInput, HiddenBotInput, SubscribeButton} from './index.styles';
+import {Form, FormInput, HiddenBotInput, Intro, SubscribeButton, Wrapper} from './index.styles';
 
 class NewsletterSignupForm extends Component {
   constructor(props) {

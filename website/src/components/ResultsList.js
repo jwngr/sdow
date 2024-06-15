@@ -1,20 +1,18 @@
 import * as d3 from 'd3';
 import React from 'react';
 import LazyLoad from 'react-lazyload';
-
+import defaultPageThumbnail from '../images/defaultPageThumbnail.png';
 import {
-  ResultsListHeader,
   PageDescription,
   PageImage,
+  PageInnerWrapper,
   PageTitle,
   PageWrapper,
-  PageInnerWrapper,
+  ResultsListHeader,
   ResultsListItemWrapper,
-  ResultsListWrapper,
   ResultsListOtherPathsText,
+  ResultsListWrapper,
 } from './ResultsList.styles';
-
-import defaultPageThumbnail from '../images/defaultPageThumbnail.png';
 
 const ResultListItem = ({pages}) => {
   const color = d3.scaleOrdinal(d3.schemeCategory10);

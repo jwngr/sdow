@@ -1,7 +1,5 @@
 import {connect} from 'react-redux';
-
-import {setSourcePageTitle, setSourcePagePlaceholderText} from '../actions';
-
+import {setSourcePagePlaceholderText, setSourcePageTitle} from '../actions';
 import PageInput from '../components/PageInput';
 
 const mapStateToProps = ({sourcePageTitle, sourcePagePlaceholderText}) => ({

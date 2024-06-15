@@ -1,7 +1,6 @@
-import get from 'lodash/get';
 import axios from 'axios';
 // import {replace} from 'connected-react-router';
-
+import get from 'lodash/get';
 import {SDOW_API_URL} from './resources/constants';
 
 // Router location changed action from react-router-dom.
