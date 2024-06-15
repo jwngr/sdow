@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import Button from './common/Button';
+import Button from './common/Button.tsx';
 
 export const GraphWrapper = styled.div`
   width: 800px;
@@ -8,8 +8,8 @@ export const GraphWrapper = styled.div`
   height: 600px;
   margin: 0 auto 40px auto;
   position: relative;
-  background-color: ${(props) => props.theme.colors.creme};
-  border: solid 3px ${(props) => props.theme.colors.darkGreen};
+  background-color: ${({theme}) => theme.colors.creme};
+  border: solid 3px ${({theme}) => theme.colors.darkGreen};
 
   @media (max-width: 1200px) {
     width: 90%;
@@ -47,8 +47,8 @@ export const Legend = styled.div`
   display: flex;
   flex-direction: column;
   padding: 6px;
-  border: solid 2px ${(props) => props.theme.colors.darkGreen};
-  background-color: ${(props) => props.theme.colors.yellow};
+  border: solid 2px ${({theme}) => theme.colors.darkGreen};
+  background-color: ${({theme}) => theme.colors.yellow};
 `;
 
 export const LegendItem = styled.div`
@@ -61,13 +61,18 @@ export const LegendItem = styled.div`
   }
 `;
 
-export const LegendCircle = styled.div`
+interface LegendCircleProps {
+  readonly fill: string;
+  readonly stroke: string;
+}
+
+export const LegendCircle = styled.div<LegendCircleProps>`
   width: 16px;
   height: 16px;
   border-radius: 8px;
   margin-right: 4px;
-  background-color: ${(props) => props.fill};
-  border: ${(props) => `solid 2px ${props.stroke}`};
+  background-color: ${({fill}) => fill};
+  border: ${({stroke}) => `solid 2px ${stroke}`};
 `;
 
 export const LegendLabel = styled.p`
@@ -80,8 +85,8 @@ export const Instructions = styled.div`
   bottom: 8px;
   left: 8px;
   padding: 6px;
-  border: solid 2px ${(props) => props.theme.colors.darkGreen};
-  background-color: ${(props) => props.theme.colors.yellow};
+  border: solid 2px ${({theme}) => theme.colors.darkGreen};
+  background-color: ${({theme}) => theme.colors.yellow};
 
   & > p {
     font-size: 12px;

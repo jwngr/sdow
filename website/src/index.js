@@ -1,17 +1,20 @@
 import Particles from '@tsparticles/react';
+import {createBrowserHistory} from 'history';
 // import {ConnectedRouter} from 'connected-react-router';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import {createRoot} from 'react-dom/client';
 import Loadable from 'react-loadable';
-import {Provider} from 'react-redux';
-import {Route, Switch} from 'react-router-dom';
+import {Route, Router, Switch} from 'react-router-dom';
 import {ThemeProvider} from 'styled-components';
+
 import {Home} from './components/Home.tsx';
-import configureStore, {history} from './configureStore';
 import registerServiceWorker from './registerServiceWorker';
 import particlesConfig from './resources/particles.config.json';
 import theme from './resources/theme.json';
+
 import './index.css';
+
+const history = createBrowserHistory();
 
 // Load fonts
 require('typeface-quicksand');
@@ -28,10 +31,8 @@ const AsyncBlogPost = Loadable({
   loading: () => null,
 });
 
-// Create the Redux store.
-const store = configureStore();
-
-ReactDOM.render(
+const root = createRoot(document.getElementById('root'));
+root.render(
   <ThemeProvider theme={theme}>
     <React.Fragment>
       <Particles
@@ -43,26 +44,23 @@ ReactDOM.render(
           zIndex: -1,
         }}
       />
-      <Provider store={store}>
-        <Router history={history}>
-          <>
-            <Switch>
-              <Route path="/blog/:postId">
-                <AsyncBlogPost />
-              </Route>
-              <Route path="/blog">
-                <AsyncBlog />
-              </Route>
-              <Route path="/">
-                <Home />
-              </Route>
-            </Switch>
-          </>
-        </Router>
-      </Provider>
+      <Router history={history}>
+        <>
+          <Switch>
+            <Route path="/blog/:postId">
+              <AsyncBlogPost />
+            </Route>
+            <Route path="/blog">
+              <AsyncBlog />
+            </Route>
+            <Route path="/">
+              <Home />
+            </Route>
+          </Switch>
+        </>
+      </Router>
     </React.Fragment>
-  </ThemeProvider>,
-  document.getElementById('root')
+  </ThemeProvider>
 );
 
 registerServiceWorker();

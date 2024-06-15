@@ -61,7 +61,7 @@ def fetch_wikipedia_pages_info(page_ids, database):
       raise ValueError('Empty MediaWiki API response')
 
     for page_id, page in pages_result.items():
-      page_id = int(page_id)
+      page_id = str(page_id)
 
       if 'missing' in page:
         # If the page has been deleted since the current Wikipedia database dump, fetch the page

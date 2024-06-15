@@ -4,11 +4,9 @@
   "private": true,
   "dependencies": {
     "@tsparticles/react": "^3.0.0",
-    "axios": "^0.28.0",
     "d3": "^5.1.0",
     "history": "^4.10.1",
     "lodash": "^4.17.21",
-    "query-string": "^7.0.0",
     "react": "^18.2.0",
     "react-autosuggest": "^10.0.2",
     "react-dom": "^18.2.0",
@@ -16,12 +14,8 @@
     "react-lazyload": "^3.0.0",
     "react-loadable": "^5.3.1",
     "react-modal": "^3.3.1",
-    "react-redux": "^7.0.3",
     "react-router-dom": "^5.1.2",
     "react-scripts": "5.0.1",
-    "redux": "^4.2.1",
-    "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.2.0",
     "styled-components": "^6.1.11",
     "typeface-crimson-text": "1.1.13",
     "typeface-quicksand": "1.1.13"
@@ -29,7 +23,6 @@
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.2.1",
     "prettier": "^3.3.2",
-    "redux-logger": "^3.0.6",
     "source-map-explorer": "^2.1.0"
   },
   "scripts": {

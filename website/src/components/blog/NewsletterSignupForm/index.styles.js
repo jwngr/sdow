@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import Button from '../../common/Button';
+import Button from '../../common/Button.tsx';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -21,7 +21,7 @@ export const Intro = styled.div`
   text-align: center;
 
   p:first-of-type {
-    color: ${(props) => props.theme.colors.red};
+    color: ${({theme}) => theme.colors.red};
     font-size: 32px;
     font-weight: bold;
     margin-bottom: 10px;
@@ -33,7 +33,7 @@ export const Intro = styled.div`
 
   p:nth-of-type(2) {
     font-size: 20px;
-    color: ${(props) => props.theme.colors.darkGreen};
+    color: ${({theme}) => theme.colors.darkGreen};
   }
 `;
 
@@ -53,14 +53,14 @@ export const FormInput = styled.input`
   height: 60px;
   margin: 20px auto;
   padding: 10px;
-  color: ${(props) => props.theme.colors.darkGreen};
-  border: solid 3px ${(props) => props.theme.colors.darkGreen};
-  background-color: ${(props) => props.theme.colors.creme};
+  color: ${({theme}) => theme.colors.darkGreen};
+  border: solid 3px ${({theme}) => theme.colors.darkGreen};
+  background-color: ${({theme}) => theme.colors.creme};
   font-size: 24px;
   text-align: center;
 
   &::placeholder {
-    color: ${(props) => props.theme.colors.darkGreen};
+    color: ${({theme}) => theme.colors.darkGreen};
     opacity: 0.5;
     transition: opacity 0.35s ease-in-out;
   }

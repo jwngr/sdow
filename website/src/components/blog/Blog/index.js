@@ -2,7 +2,7 @@ import React from 'react';
 import {Helmet} from 'react-helmet';
 
 import Logo from '../../common/Logo';
-import StyledLink from '../../common/StyledLink';
+import {StyledLink} from '../../common/StyledLink.tsx';
 import NewsletterSignupForm from '../NewsletterSignupForm';
 import posts from '../posts/index.json';
 import {

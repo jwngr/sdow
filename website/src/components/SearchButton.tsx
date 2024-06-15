@@ -1,9 +1,8 @@
 import React from 'react';
-import {useSelector} from 'react-redux';
 import {useHistory, useLocation} from 'react-router-dom';
 import styled from 'styled-components';
 
-import Button from './common/Button';
+import Button from './common/Button.tsx';
 
 const SearchButtonWrapper = styled(Button)`
   width: 240px;
@@ -19,32 +18,32 @@ const SearchButtonWrapper = styled(Button)`
   }
 `;
 
-const SearchButton = ({isFetchingResults, fetchShortestPaths}) => {
+export const SearchButton: React.FC<{
+  readonly isFetchingResults: boolean;
+  readonly fetchShortestPaths: () => Promise<void>;
+  readonly sourcePageTitle: string;
+  readonly targetPageTitle: string;
+}> = ({isFetchingResults, fetchShortestPaths, sourcePageTitle, targetPageTitle}) => {
   const history = useHistory();
   const location = useLocation();
-  const sourcePageTitleFromState = useSelector((state) => state.sourcePageTitle);
-  const targetPageTitleFromState = useSelector((state) => state.targetPageTitle);
 
   if (isFetchingResults) {
     return null;
   }
 
   const handleSearchClicked = async () => {
-    // Fetch the actual results.
-    const {sourcePageTitle, targetPageTitle} = await fetchShortestPaths();
+    if (sourcePageTitle.trim().length === 0 || targetPageTitle.trim().length === 0) {
+      return;
+    }
+
+    await fetchShortestPaths();
 
     // Update the URL to reflect the new search.
     const searchParams = new URLSearchParams(location.search);
-    if (sourcePageTitleFromState) {
-      searchParams.set('source', sourcePageTitleFromState);
-    }
-    if (targetPageTitleFromState) {
-      searchParams.set('target', targetPageTitleFromState);
-    }
+    searchParams.set('source', sourcePageTitle);
+    searchParams.set('target', targetPageTitle);
     history.push({search: searchParams.toString()});
   };
 
   return <SearchButtonWrapper onClick={handleSearchClicked}>Go!</SearchButtonWrapper>;
 };
-
-export default SearchButton;

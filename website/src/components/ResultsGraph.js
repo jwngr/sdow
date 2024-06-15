@@ -17,7 +17,7 @@ import {
   LegendItem,
   LegendLabel,
   ResetButton,
-} from './ResultsGraph.styles';
+} from './ResultsGraph.styles.ts';
 
 const DEFAULT_CHART_HEIGHT = 600;
 
@@ -56,20 +56,27 @@ class Graph extends Component {
 
   /* Returns a list of nodes and a list of links which make up the graph. */
   getGraphData() {
-    const {paths} = this.props;
+    const {paths, pagesById} = this.props;
 
     const nodesData = [];
     const linksData = [];
 
+    console.log('---------------');
+    console.log('pagesById:', pagesById);
     paths.forEach((path) => {
-      path.forEach((node, i) => {
-        const currentNodeId = node.title;
+      console.log('path:', path);
+      path.forEach((pageId, i) => {
+        const page = pagesById[pageId] ?? pagesById[String(pageId)];
+        console.log('pageId:', pageId, typeof pageId);
+        console.log('page:', page);
+        if (!page) return;
+        const currentNodeId = page.title;
 
         // Add node if it has not yet been added by some other path.
         if (!some(nodesData, ['id', currentNodeId])) {
           nodesData.push({
             id: currentNodeId,
-            title: node.title,
+            title: page.title,
             degree: i,
           });
         }
@@ -163,9 +170,17 @@ class Graph extends Component {
   }
 
   componentDidMount() {
-    const {paths} = this.props;
+    const {paths, pagesById} = this.props;
     const pathsLength = paths[0].length;
-    const targetPageTitle = paths[0][pathsLength - 1].title;
+    const targetPageId = paths[0][pathsLength - 1];
+    console.log('---------------');
+    console.log('paths:', paths);
+    console.log('pagesById:', pagesById);
+    const targetPage = pagesById[targetPageId] ?? pagesById[String(targetPageId)];
+    console.log('targetPageId:', targetPageId, typeof targetPageId);
+    console.log('targetPage:', targetPage);
+    if (!targetPage) return;
+    const targetPageTitle = targetPage.title;
 
     const {nodesData, linksData} = this.getGraphData();
 

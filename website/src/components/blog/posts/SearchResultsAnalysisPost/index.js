@@ -4,7 +4,7 @@ import {Helmet} from 'react-helmet';
 import {getNumberWithCommas} from '../../../../utils';
 import BarChart from '../../../charts/BarChart';
 import Table from '../../../charts/Table';
-import StyledLink from '../../../common/StyledLink';
+import {StyledLink} from '../../../common/StyledLink.tsx';
 import {
   Divider,
   Image,

@@ -1,14 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const StyledLinkWrapper = styled.a`
+interface StyledLinkWrapperProps {
+  readonly wordBreak: string;
+}
+
+const StyledLinkWrapper = styled.a<StyledLinkWrapperProps>`
   position: relative;
   display: inline-block;
   outline: none;
-  color: ${(props) => props.theme.colors.darkGreen};
+  color: ${({theme}) => theme.colors.darkGreen};
   vertical-align: bottom;
   text-decoration: none;
-  word-break: ${(props) => props.wordBreak || 'normal'};
+  word-break: ${({wordBreak}) => wordBreak || 'normal'};
   cursor: pointer;
   margin: 0 4px;
   padding: 0;
@@ -19,7 +23,7 @@ const StyledLinkWrapper = styled.a`
 
   &:hover,
   &:focus {
-    color: ${(props) => props.theme.colors.red};
+    color: ${({theme}) => theme.colors.red};
   }
 
   &::before,
@@ -36,7 +40,7 @@ const StyledLinkWrapper = styled.a`
   }
 
   &::before {
-    background-color: ${(props) => props.theme.colors.yellow};
+    background-color: ${({theme}) => theme.colors.yellow};
     transition: transform 0.3s;
     transition-timing-function: cubic-bezier(0.7, 0, 0.3, 1);
     transform: rotateX(90deg);
@@ -49,14 +53,14 @@ const StyledLinkWrapper = styled.a`
   }
 
   &::after {
-    border-bottom: 2px solid ${(props) => props.theme.colors.yellow};
+    border-bottom: 2px solid ${({theme}) => theme.colors.yellow};
   }
 `;
 
-const StyledLink = ({children, ...props}) => {
+export const StyledLink: React.FC = ({children, ...props}) => {
   // Change the word break behavior for long article names with no space (to avoid them trailing
   // off the page).
-  let wordBreak;
+  let wordBreak: string | undefined;
   if (children.indexOf(' ') === -1 && children.length >= 50) {
     wordBreak = 'break-all';
   }
@@ -67,5 +71,3 @@ const StyledLink = ({children, ...props}) => {
     </StyledLinkWrapper>
   );
 };
-
-export default StyledLink;

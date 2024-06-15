@@ -7,7 +7,7 @@ const ErrorMessageWrapper = styled.p`
   font-size: 28px;
   text-align: center;
   line-height: 1.5;
-  color: ${(props) => props.theme.colors.red};
+  color: ${({theme}) => theme.colors.red};
   text-shadow: black 1px 1px;
 
   @media (max-width: 1200px) {
@@ -17,11 +17,9 @@ const ErrorMessageWrapper = styled.p`
 `;
 
 export const ErrorMessage: React.FC<{
-  readonly errorMessage: string;
-}> = ({errorMessage}) => {
-  if (!errorMessage) return null;
-
-  const tokens = errorMessage.split('"');
+  readonly text: string;
+}> = ({text}) => {
+  const tokens = text.split('"');
 
   return (
     <ErrorMessageWrapper>

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {getNumberWithCommas, getWikipediaPageUrl} from '../../../../utils';
-import StyledLink from '../../../common/StyledLink';
+import {StyledLink} from '../../../common/StyledLink.tsx';
 
 export const totalSearches = 503498;
 export const uniqueSearches = 377135;

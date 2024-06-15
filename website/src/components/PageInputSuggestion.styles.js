@@ -5,7 +5,7 @@ export const Wrapper = styled.div`
   display: flex;
   align-items: center;
   flex-direction: row;
-  color: ${(props) => props.theme.colors.darkGreen};
+  color: ${({theme}) => theme.colors.darkGreen};
 `;
 
 export const InnerWrapper = styled.div`
@@ -25,7 +25,7 @@ export const Image = styled.img`
   height: 60px;
   margin-right: 12px;
   border-radius: 8px;
-  border: solid 1px ${(props) => props.theme.colors.darkGreen};
+  border: solid 1px ${({theme}) => theme.colors.darkGreen};
 
   @media (max-width: 600px) {
     width: 40px;
