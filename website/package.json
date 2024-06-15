@@ -23,7 +23,7 @@
     "redux": "^4.2.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
-    "styled-components": "^5.0.1",
+    "styled-components": "^6.1.11",
     "typeface-crimson-text": "1.1.13",
     "typeface-quicksand": "1.1.13"
   },
@@ -35,8 +35,8 @@
   },
   "scripts": {
     "analyze": "source-map-explorer build/static/js/*",
-    "lint": "prettier --check 'src/**/*.{js,css}'",
-    "format": "prettier --write 'src/**/*.{js,css}'",
+    "lint": "prettier --check 'src/**/*.{js,jsx,ts,tsx,json,css}'",
+    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css}'",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
