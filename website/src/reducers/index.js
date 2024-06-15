@@ -1,8 +1,7 @@
+import {connectRouter} from 'connected-react-router';
 import get from 'lodash/get';
 import queryString from 'query-string';
 import {combineReducers} from 'redux';
-import {connectRouter} from 'connected-react-router';
-
 import * as actions from '../actions';
 
 const defaultResults = {paths: null};

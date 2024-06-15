@@ -1,20 +1,16 @@
+import {ConnectedRouter} from 'connected-react-router';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Provider} from 'react-redux';
 import Loadable from 'react-loadable';
 import Particles from 'react-particles-js';
-import {ThemeProvider} from 'styled-components';
+import {Provider} from 'react-redux';
 import {Route, Switch} from 'react-router-dom';
-import {ConnectedRouter} from 'connected-react-router';
-import configureStore, {history} from './configureStore.js';
-
-import registerServiceWorker from './registerServiceWorker';
-
+import {ThemeProvider} from 'styled-components';
 import Home from './components/Home';
-
-import theme from './resources/theme.json';
+import configureStore, {history} from './configureStore.js';
+import registerServiceWorker from './registerServiceWorker';
 import particlesConfig from './resources/particles.config.json';
-
+import theme from './resources/theme.json';
 import './index.css';
 
 // Load fonts

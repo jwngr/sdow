@@ -1,5 +1,4 @@
 import React from 'react';
-
 import styled from 'styled-components';
 
 const P = styled.p`
@@ -34,6 +33,7 @@ const boldPageTitles = (errorMessage) => {
   return errorMessageContent;
 };
 
-const ErrorMessage =  ({errorMessage}) => (errorMessage ? <P>{boldPageTitles(errorMessage)}</P> : null);
+const ErrorMessage = ({errorMessage}) =>
+  errorMessage ? <P>{boldPageTitles(errorMessage)}</P> : null;
 
 export default ErrorMessage;

@@ -27,7 +27,9 @@ export default styled.button`
     z-index: -1;
     transform: rotate3d(0, 0, 1, -45deg) translate3d(0, -3em, 0);
     transform-origin: 0% 100%;
-    transition: transform 0.4s, background-color 0.4s;
+    transition:
+      transform 0.4s,
+      background-color 0.4s;
   }
 
   &:hover {

@@ -1,7 +1,6 @@
-import get from 'lodash/get';
 import axios from 'axios';
 import {replace} from 'connected-react-router';
-
+import get from 'lodash/get';
 import {SDOW_API_URL} from './resources/constants';
 
 // Router location changed action from react-router-dom.
@@ -65,12 +64,8 @@ export function setTargetPageTitle(targetPageTitle) {
 
 export function fetchShortestPaths() {
   return (dispatch, getState) => {
-    let {
-      sourcePageTitle,
-      targetPageTitle,
-      sourcePagePlaceholderText,
-      targetPagePlaceholderText,
-    } = getState();
+    let {sourcePageTitle, targetPageTitle, sourcePagePlaceholderText, targetPagePlaceholderText} =
+      getState();
 
     // Use the placeholder text if the inputs are empty.
     sourcePageTitle = sourcePageTitle || sourcePagePlaceholderText;

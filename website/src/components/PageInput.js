@@ -1,18 +1,14 @@
-import get from 'lodash/get';
+import axios from 'axios';
+import debounce from 'lodash/debounce';
 import filter from 'lodash/filter';
 import forEach from 'lodash/forEach';
-import debounce from 'lodash/debounce';
-import axios from 'axios';
+import get from 'lodash/get';
 import React from 'react';
 import Autosuggest from 'react-autosuggest';
-
-import {getRandomPageTitle} from '../utils';
-
-import PageInputSuggestion from './PageInputSuggestion';
-
-import {AutosuggestWrapper} from './PageInput.styles';
-
 import {WIKIPEDIA_API_URL} from '../resources/constants';
+import {getRandomPageTitle} from '../utils';
+import {AutosuggestWrapper} from './PageInput.styles';
+import PageInputSuggestion from './PageInputSuggestion';
 
 // Autosuggest component helpers.
 const getSuggestionValue = (suggestion) => suggestion.title;

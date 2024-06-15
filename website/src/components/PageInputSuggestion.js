@@ -1,8 +1,6 @@
 import React from 'react';
-
-import {Description, InnerWrapper, Image, Title, Wrapper} from './PageInputSuggestion.styles';
-
 import defaultPageThumbnail from '../images/defaultPageThumbnail.png';
+import {Description, Image, InnerWrapper, Title, Wrapper} from './PageInputSuggestion.styles';
 
 const PageInputSuggestion = ({title, description, thumbnailUrl}) => {
   const descriptionContent = description ? <Description>{description}</Description> : null;

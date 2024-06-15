@@ -1,10 +1,7 @@
 import React, {Component} from 'react';
-
-import {Fact, Wrapper, LoadingIndicator} from './Loading.styles.js';
-
+import {getRandomWikipediaFact, getWikipediaPageUrl} from '../utils';
 import StyledLink from './common/StyledLink';
-
-import {getWikipediaPageUrl, getRandomWikipediaFact} from '../utils';
+import {Fact, LoadingIndicator, Wrapper} from './Loading.styles.js';
 
 class Loading extends Component {
   constructor() {

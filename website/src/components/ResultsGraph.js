@@ -1,14 +1,12 @@
-import map from 'lodash/map';
-import some from 'lodash/some';
-import range from 'lodash/range';
-import forEach from 'lodash/forEach';
-import debounce from 'lodash/debounce';
 import * as d3 from 'd3';
+import debounce from 'lodash/debounce';
+import forEach from 'lodash/forEach';
+import map from 'lodash/map';
+import range from 'lodash/range';
+import some from 'lodash/some';
 // import {findDOMNode} from 'react-dom';
 import React, {Component} from 'react';
-
 import {getWikipediaPageUrl} from '../utils';
-
 import {
   GraphSvg,
   GraphWrapper,
@@ -361,8 +359,5 @@ class Graph extends Component {
     );
   }
 }
-
-// TODO: add prop types
-Graph.propTypes = {};
 
 export default Graph;
