@@ -8,7 +8,6 @@
     "d3": "^5.1.0",
     "history": "^4.10.1",
     "lodash": "^4.17.21",
-    "prop-types": "^15.6.0",
     "query-string": "^7.0.0",
     "react": "^18.2.0",
     "react-autosuggest": "^10.0.2",
