@@ -1,7 +1,7 @@
-import get from 'lodash/get';
-import queryString from 'query-string';
+// import get from 'lodash/get';
+// import queryString from 'query-string';
 import {combineReducers} from 'redux';
-import {connectRouter} from 'connected-react-router';
+// import {connectRouter} from 'connected-react-router';
 
 import * as actions from '../actions';
 
@@ -52,9 +52,12 @@ const rootReducers = {
 
   sourcePageTitle: (state = '', action) => {
     switch (action.type) {
-      case actions.ROUTER_LOCATION_CHANGED:
-        const {source} = queryString.parse(get(action, 'payload.location.search', {}));
-        return source || '';
+      case actions.FETCHING_RESULTS:
+        console.log('FETCHING_RESULTS', action.sourcePageTitle);
+        return action.sourcePageTitle;
+      // case actions.ROUTER_LOCATION_CHANGED:
+      //   const {source} = queryString.parse(get(action, 'payload.location.search', {}));
+      //   return source || '';
       case actions.SET_SOURCE_PAGE_TITLE:
         return action.sourcePageTitle;
       default:
@@ -64,9 +67,12 @@ const rootReducers = {
 
   targetPageTitle: (state = '', action) => {
     switch (action.type) {
-      case actions.ROUTER_LOCATION_CHANGED:
-        const {target} = queryString.parse(get(action, 'payload.location.search', {}));
-        return target || '';
+      case actions.FETCHING_RESULTS:
+        console.log('FETCHING_RESULTS', action.targetPageTitle);
+        return action.targetPageTitle;
+      // case actions.ROUTER_LOCATION_CHANGED:
+      //   const {target} = queryString.parse(get(action, 'payload.location.search', {}));
+      //   return target || '';
       case actions.SET_TARGET_PAGE_TITLE:
         return action.targetPageTitle;
       default:
@@ -89,7 +95,8 @@ const rootReducers = {
 
 const createRootReducer = (history) =>
   combineReducers({
-    router: connectRouter(history),
+    // TODO: Fix this.
+    // router: connectRouter(history),
     ...rootReducers,
   });
 

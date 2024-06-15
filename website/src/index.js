@@ -4,8 +4,8 @@ import {Provider} from 'react-redux';
 import Loadable from 'react-loadable';
 import Particles from '@tsparticles/react';
 import {ThemeProvider} from 'styled-components';
-import {Route, Switch} from 'react-router-dom';
-import {ConnectedRouter} from 'connected-react-router';
+import {Router, Route, Switch} from 'react-router-dom';
+// import {ConnectedRouter} from 'connected-react-router';
 import configureStore, {history} from './configureStore.js';
 
 import registerServiceWorker from './registerServiceWorker';
@@ -48,7 +48,7 @@ ReactDOM.render(
         }}
       />
       <Provider store={store}>
-        <ConnectedRouter history={history}>
+        <Router history={history}>
           <>
             <Switch>
               <Route path="/blog/:postId">
@@ -62,7 +62,7 @@ ReactDOM.render(
               </Route>
             </Switch>
           </>
-        </ConnectedRouter>
+        </Router>
       </Provider>
     </React.Fragment>
   </ThemeProvider>,

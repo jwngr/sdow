@@ -1,11 +1,20 @@
 import get from 'lodash/get';
 import axios from 'axios';
-import {replace} from 'connected-react-router';
+// import {replace} from 'connected-react-router';
 
 import {SDOW_API_URL} from './resources/constants';
 
 // Router location changed action from react-router-dom.
-export const ROUTER_LOCATION_CHANGED = '@@router/LOCATION_CHANGE';
+// export const ROUTER_LOCATION_CHANGED = '@@router/LOCATION_CHANGE';
+
+export const SET_SOURCE_AND_TARGET_PAGES = 'SET_SOURCE_AND_TARGET_PAGES';
+export function setSourceAndTargetPages(sourcePageTitle, targetPageTitle) {
+  return {
+    type: SET_SOURCE_AND_TARGET_PAGES,
+    sourcePageTitle,
+    targetPageTitle,
+  };
+}
 
 export const SET_ERROR_MESSAGE = 'SET_ERROR_MESSAGE';
 export function setErrorMessage(errorMessage) {
@@ -16,10 +25,11 @@ export function setErrorMessage(errorMessage) {
 }
 
 export const FETCHING_RESULTS = 'FETCHING_RESULTS';
-export function setFetchingResults(isFetchingResults) {
+export function setFetchingResults(sourcePageTitle, targetPageTitle) {
   return {
     type: FETCHING_RESULTS,
-    isFetchingResults,
+    sourcePageTitle,
+    targetPageTitle,
   };
 }
 
@@ -73,14 +83,9 @@ export function fetchShortestPaths() {
     targetPageTitle = targetPageTitle || targetPagePlaceholderText;
 
     // Update the page URL, which will update the soure and target page inputs if needed.
-    dispatch(
-      replace({
-        pathname: '/',
-        search: `?source=${sourcePageTitle}&target=${targetPageTitle}`,
-      })
-    );
+    dispatch(setSourceAndTargetPages({sourcePageTitle, targetPageTitle}));
 
-    dispatch(setFetchingResults());
+    dispatch(setFetchingResults(sourcePageTitle, targetPageTitle));
 
     const startTimeInMilliseconds = Date.now();
 
