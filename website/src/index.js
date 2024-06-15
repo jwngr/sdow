@@ -1,8 +1,8 @@
+import Particles from '@tsparticles/react';
 import {ConnectedRouter} from 'connected-react-router';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Loadable from 'react-loadable';
-import Particles from '@tsparticles/react';
 import {Provider} from 'react-redux';
 import {Route, Switch} from 'react-router-dom';
 import {ThemeProvider} from 'styled-components';
