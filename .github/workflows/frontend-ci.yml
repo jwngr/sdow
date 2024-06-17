@@ -16,3 +16,6 @@ jobs:
       - name: Lint
         run: npm run lint
         working-directory: website
+      - name: Build
+        run: npm run build
+        working-directory: website

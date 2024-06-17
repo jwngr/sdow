@@ -43,7 +43,7 @@
   },
   "scripts": {
     "analyze": "source-map-explorer build/static/js/*",
-    "lint": "prettier --check 'src/**/*.{js,jsx,ts,tsx,json,css}' && eslint src --ext js,jsx,ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "prettier --check 'src/**/*.{js,jsx,ts,tsx,json,css}' && echo 'Running ESLint...' && eslint src --ext js,jsx,ts,tsx --report-unused-disable-directives --max-warnings 0 && echo 'All files pass linting!'",
     "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css}'",
     "start": "vite",
     "build": "tsc && vite build",
