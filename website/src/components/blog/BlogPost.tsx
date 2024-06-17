@@ -4,7 +4,7 @@ import {Redirect, useParams} from 'react-router-dom';
 import {Logo} from '../common/Logo.tsx';
 
 const AsyncSearchResultsAnalysisPost = lazy(() =>
-  import('./posts/SearchResultsAnalysisPost/index.js').then((module) => ({
+  import('./posts/searchResultsAnalysis/SearchResultsAnalysisPost.tsx').then((module) => ({
     default: module.SearchResultsAnalysisPost,
   }))
 );

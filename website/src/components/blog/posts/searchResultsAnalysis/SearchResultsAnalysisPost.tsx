@@ -4,10 +4,10 @@ import styled from 'styled-components';
 
 import {getNumberWithCommas} from '../../../../utils.ts';
 import {BarChart} from '../../../charts/BarChart';
-import {Table} from '../../../charts/Table';
+import {Table} from '../../../charts/Table.tsx';
 import {StyledTextLink} from '../../../common/StyledTextLink.tsx';
 import {NewsletterSignupForm} from '../../NewsletterSignupForm.tsx';
-import * as data from './data';
+import * as data from './data.js';
 import elevenDegreesOfSeparationSearchImage from './elevenDegreesOfSeparationSearch.png';
 
 const TITLE = 'Insights On Hitler And More From The First 500,000 Searches';
@@ -381,7 +381,7 @@ export const SearchResultsAnalysisPost = () => (
       these stats, you can find them all on{' '}
       <StyledTextLink
         text="this project's GitHub"
-        href="https://github.com/jwngr/sdow/tree/master/website/src/components/blog/posts/SearchResultsAnalysisPost/queries.txt"
+        href="https://github.com/jwngr/sdow/tree/master/website/src/components/blog/posts/searchResultsAnalysis/queries.txt"
       />
       . I will likely go into more detail on my server and database setup in a future post.
     </P>
