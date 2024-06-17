@@ -1,4 +1,5 @@
 import React, {useCallback, useState} from 'react';
+import ReactModal from 'react-modal';
 import {useHistory, useLocation} from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -7,7 +8,6 @@ import {WikipediaPage, WikipediaPageId} from '../types.ts';
 import {getRandomPageTitle} from '../utils.ts';
 import {Button} from './common/Button.tsx';
 import {Logo} from './common/Logo.tsx';
-import {InputFlexContainer, Modal, P} from './Home.styles.ts';
 import {Loading} from './Loading.tsx';
 import {NavLinks} from './NavLinks.tsx';
 import {PageInput} from './PageInput.tsx';
@@ -23,6 +23,71 @@ interface ShortestPathsState {
   readonly isTargetRedirected: boolean;
   readonly durationInSeconds: string;
 }
+
+ReactModal.setAppElement('#root');
+
+const Modal = styled(ReactModal)`
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  width: 300px;
+  padding: 12px;
+  z-index: 10;
+  text-align: justify;
+  border: solid 3px ${({theme}) => theme.colors.darkGreen};
+  background: ${({theme}) => theme.colors.creme};
+
+  p {
+    font-size: 16px;
+    font-family: 'Quicksand';
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+
+  p:last-of-type {
+    margin-bottom: 0;
+  }
+
+  a,
+  a:visited {
+    color: ${({theme}) => theme.colors.darkGreen};
+    transition: color 0.5s;
+  }
+
+  a:hover {
+    color: ${({theme}) => theme.colors.red};
+  }
+
+  @media (max-width: 600px) {
+    width: 80%;
+    top: 104px;
+    left: 10%;
+  }
+`;
+
+const P = styled.p`
+  margin: 16px;
+  font-size: 32px;
+  text-align: center;
+  color: ${({theme}) => theme.colors.darkGreen};
+
+  @media (max-width: 600px) {
+    margin: 12px;
+    font-size: 24px;
+  }
+`;
+
+const InputFlexContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 28px;
+
+  @media (max-width: 1200px) {
+    flex-direction: column;
+  }
+`;
 
 const SearchButtonWrapper = styled(Button)`
   width: 240px;
