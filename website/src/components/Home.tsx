@@ -1,17 +1,17 @@
 import React, {useCallback, useState} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
+import styled from 'styled-components';
 
 import {fetchShortestPaths} from '../api.ts';
 import {WikipediaPage, WikipediaPageId} from '../types.ts';
 import {getRandomPageTitle} from '../utils.ts';
+import {Button} from './common/Button.tsx';
 import {Logo} from './common/Logo.tsx';
-import {ErrorMessage} from './ErrorMessage.tsx';
 import {InputFlexContainer, Modal, P} from './Home.styles.ts';
 import {Loading} from './Loading.tsx';
 import {NavLinks} from './NavLinks.tsx';
 import {PageInput} from './PageInput.tsx';
 import {Results} from './Results.tsx';
-import {SearchButton} from './SearchButton.tsx';
 import {SwapInputValuesButton} from './SwapInputValuesButton.tsx';
 
 interface ShortestPathsState {
@@ -23,6 +23,50 @@ interface ShortestPathsState {
   readonly isTargetRedirected: boolean;
   readonly durationInSeconds: string;
 }
+
+const SearchButtonWrapper = styled(Button)`
+  width: 240px;
+  height: 72px;
+  margin: 0 auto 40px;
+  font-size: 32px;
+  border-radius: 8px;
+
+  @media (max-width: 600px) {
+    width: 200px;
+    height: 60px;
+    font-size: 28px;
+  }
+`;
+
+const ErrorMessageWrapper = styled.p`
+  width: 700px;
+  margin: 40px auto;
+  font-size: 28px;
+  text-align: center;
+  line-height: 1.5;
+  color: ${({theme}) => theme.colors.red};
+  text-shadow: black 1px 1px;
+
+  @media (max-width: 1200px) {
+    width: 70%;
+    font-size: 24px;
+  }
+`;
+
+const ErrorMessage: React.FC<{
+  readonly text: string;
+}> = ({text}) => {
+  const tokens = text.split('"');
+
+  return (
+    <ErrorMessageWrapper>
+      {tokens.map((token, i) =>
+        // Bold page titles in the provided error message.
+        i % 2 === 0 ? <span key={i}>{token}</span> : <b key={i}>"{token}"</b>
+      )}
+    </ErrorMessageWrapper>
+  );
+};
 
 export const Home: React.FC = () => {
   const history = useHistory();
@@ -39,7 +83,7 @@ export const Home: React.FC = () => {
   const [targetPagePlaceholderText, setTargetPagePlaceholderText] = useState(getRandomPageTitle());
 
   const [shortestPathsState, setShortestPathsState] = useState<ShortestPathsState | null>(null);
-  const [isFetchingShortestPaths, setIsFetchingShortestPaths] = useState(false);
+  const [isFetchingResults, setIsFetchingResults] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleOpenModal = () => setShowModal(true);
@@ -49,7 +93,7 @@ export const Home: React.FC = () => {
     const startTimeInMilliseconds = Date.now();
 
     setShortestPathsState(null);
-    setIsFetchingShortestPaths(true);
+    setIsFetchingResults(true);
     setErrorMessage(null);
 
     const actualSourcePageTitle = sourcePageTitle || sourcePagePlaceholderText;
@@ -96,7 +140,7 @@ export const Home: React.FC = () => {
       }
     }
 
-    setIsFetchingShortestPaths(false);
+    setIsFetchingResults(false);
   }, [
     history,
     sourcePagePlaceholderText,
@@ -115,7 +159,7 @@ export const Home: React.FC = () => {
 
           // Reset shortest paths reponse data.
           setShortestPathsState(null);
-          setIsFetchingShortestPaths(false);
+          setIsFetchingResults(false);
           setErrorMessage(null);
         }}
       />
@@ -168,25 +212,26 @@ export const Home: React.FC = () => {
         />
       </InputFlexContainer>
 
-      <SearchButton
-        sourcePageTitle={sourcePageTitle}
-        targetPageTitle={targetPageTitle}
-        isFetchingResults={isFetchingShortestPaths}
-        onClick={async () => {
-          if (sourcePageTitle.trim().length === 0) {
-            setSourcePageTitle(sourcePagePlaceholderText);
-          }
-          if (targetPageTitle.trim().length === 0) {
-            setTargetPageTitle(targetPagePlaceholderText);
-          }
+      {isFetchingResults ? (
+        <SearchButtonWrapper
+          onClick={async () => {
+            if (sourcePageTitle.trim().length === 0) {
+              setSourcePageTitle(sourcePagePlaceholderText);
+            }
+            if (targetPageTitle.trim().length === 0) {
+              setTargetPageTitle(targetPagePlaceholderText);
+            }
 
-          await handleFetchShortestPaths();
-        }}
-      />
+            await handleFetchShortestPaths();
+          }}
+        >
+          Go!
+        </SearchButtonWrapper>
+      ) : null}
 
       {errorMessage !== null ? (
         <ErrorMessage text={errorMessage} />
-      ) : isFetchingShortestPaths ? (
+      ) : isFetchingResults ? (
         <Loading />
       ) : shortestPathsState ? (
         <Results
