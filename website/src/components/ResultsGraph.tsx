@@ -379,11 +379,11 @@ export const ResultsGraph: React.FC<{
 
     // Recenter on window resize.
     const handleResizeDebounced = debounce(resetGraph, 350);
-    window.addEventListener('resize', handleResizeDebounced as EventListener);
+    window.addEventListener('resize', handleResizeDebounced);
 
     return () => {
       graphSvgRef.current?.selectAll('*').remove();
-      window.removeEventListener('resize', handleResizeDebounced as EventListener);
+      window.removeEventListener('resize', handleResizeDebounced);
     };
   }, [simulation, paths, pagesById, color, getGraphData, getGraphWidth, resetGraph, zoom]);
 
