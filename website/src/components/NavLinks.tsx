@@ -71,7 +71,7 @@ const TextLinkInternal = styled(Link)`
 `;
 
 export const NavLinks: React.FC<{
-  readonly handleOpenModal: () => void;
+  readonly handleOpenModal: () => string;
 }> = ({handleOpenModal}) => {
   return (
     <Wrapper>
