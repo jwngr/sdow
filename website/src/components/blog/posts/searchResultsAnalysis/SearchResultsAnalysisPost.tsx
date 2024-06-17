@@ -3,7 +3,7 @@ import {Helmet} from 'react-helmet';
 import styled from 'styled-components';
 
 import {getNumberWithCommas, getWikipediaPageUrl} from '../../../../utils.ts';
-import {BarChart} from '../../../charts/BarChart';
+import {BarChart} from '../../../charts/BarChart.tsx';
 import {Table} from '../../../charts/Table.tsx';
 import {StyledTextLink} from '../../../common/StyledTextLink.tsx';
 import {NewsletterSignupForm} from '../../NewsletterSignupForm.tsx';

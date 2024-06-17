@@ -27,7 +27,7 @@
   },
   "scripts": {
     "analyze": "source-map-explorer build/static/js/*",
-    "lint": "prettier --check 'src/**/*.{js,jsx,ts,tsx,json,css}'",
+    "lint": "prettier --check 'src/**/*.{js,jsx,ts,tsx,json,css}' && eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css}'",
     "start": "react-scripts start",
     "build": "react-scripts build",
