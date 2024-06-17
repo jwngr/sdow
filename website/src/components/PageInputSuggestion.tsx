@@ -25,10 +25,9 @@ const InnerWrapper = styled.div`
 
 const Image = styled.img`
   width: 60px;
-  height: 60px;
+  max-height: 60px;
   margin-right: 12px;
-  border-radius: 8px;
-  border: solid 1px ${({theme}) => theme.colors.darkGreen};
+  object-fit: contain;
 
   @media (max-width: 600px) {
     width: 40px;

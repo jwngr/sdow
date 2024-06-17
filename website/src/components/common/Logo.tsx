@@ -22,7 +22,7 @@ const LogoImg = styled.img`
 `;
 
 export const Logo: React.FC<{
-  readonly onClick: () => void;
+  readonly onClick?: () => void;
 }> = ({onClick}) => (
   <Link to="/" onClick={onClick}>
     <LogoImg

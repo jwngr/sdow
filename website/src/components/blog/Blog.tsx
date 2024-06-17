@@ -2,10 +2,10 @@ import React from 'react';
 import {Helmet} from 'react-helmet';
 import styled from 'styled-components';
 
-import {Logo} from '../common/Logo.tsx';
-import {StyledTextLink} from '../common/StyledTextLink.tsx';
-import {NewsletterSignupForm} from './NewsletterSignupForm.tsx';
-import posts from './posts/index.json';
+import {Logo} from '../common/Logo';
+import {StyledTextLink} from '../common/StyledTextLink';
+import {NewsletterSignupForm} from './NewsletterSignupForm';
+import {BLOG_POSTS} from './posts/data';
 
 const Wrapper = styled.div`
   max-width: 740px;
@@ -65,7 +65,12 @@ const BlogPostDescription = styled.p`
   color: ${({theme}) => theme.colors.darkGreen};
 `;
 
-const BlogPostCard = ({id, date, title, description}) => (
+const BlogPostCard: React.FC<{
+  readonly id: string;
+  readonly date: string;
+  readonly title: string;
+  readonly description: string;
+}> = ({id, date, title, description}) => (
   <BlogPostCardWrapper>
     <StyledTextLink text={title} href={`/blog/${id}`} />
     <BlogPostDate>{date}</BlogPostDate>
@@ -73,7 +78,7 @@ const BlogPostCard = ({id, date, title, description}) => (
   </BlogPostCardWrapper>
 );
 
-export const Blog = () => (
+export const Blog: React.FC = () => (
   <>
     <Helmet>
       <title>Blog | Six Degrees of Wikipedia</title>
@@ -85,9 +90,14 @@ export const Blog = () => (
       <Title>A blog about building, maintaining, and promoting Six Degrees of Wikipedia</Title>
 
       <Divider />
-      {posts.map((postInfo) => (
+      {BLOG_POSTS.map((postInfo) => (
         <React.Fragment key={postInfo.id}>
-          <BlogPostCard {...postInfo} />
+          <BlogPostCard
+            id={postInfo.id}
+            date={postInfo.date}
+            title={postInfo.title}
+            description={postInfo.description}
+          />
           <Divider />
         </React.Fragment>
       ))}

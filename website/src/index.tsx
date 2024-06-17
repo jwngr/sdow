@@ -1,62 +1,17 @@
-import Particles from '@tsparticles/react';
-import {createBrowserHistory} from 'history';
-import React, {lazy, Suspense} from 'react';
-import {createRoot} from 'react-dom/client';
-import {Route, Router, Switch} from 'react-router-dom';
-import {ThemeProvider} from 'styled-components';
+// Load fonts.
+import 'typeface-quicksand';
+import 'typeface-crimson-text';
 
-import {Home} from './components/Home.tsx';
-import registerServiceWorker from './registerServiceWorker.js';
-import particlesConfig from './resources/particles.config.json';
-import theme from './resources/theme.json';
+import {createRoot} from 'react-dom/client';
 
 import './index.css';
 
-const history = createBrowserHistory();
+import {App} from './components/App';
 
-// Load fonts
-require('typeface-quicksand');
-require('typeface-crimson-text');
+const rootDiv = document.getElementById('root');
+if (!rootDiv) {
+  throw new Error('Root element not found');
+}
 
-const AsyncBlog = lazy(() =>
-  import('./components/blog/Blog.tsx').then((module) => ({default: module.Blog}))
-);
-const AsyncBlogPost = lazy(() =>
-  import('./components/blog/BlogPost.tsx').then((module) => ({default: module.BlogPost}))
-);
-
-const root = createRoot(document.getElementById('root'));
-root.render(
-  <ThemeProvider theme={theme}>
-    <>
-      <Particles
-        options={particlesConfig}
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          zIndex: -1,
-        }}
-      />
-      <Router history={history}>
-        <Switch>
-          <Route path="/blog/:postId">
-            <Suspense fallback={null}>
-              <AsyncBlogPost />
-            </Suspense>
-          </Route>
-          <Route path="/blog">
-            <Suspense fallback={null}>
-              <AsyncBlog />
-            </Suspense>
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
-        </Switch>
-      </Router>
-    </>
-  </ThemeProvider>
-);
-
-registerServiceWorker();
+const root = createRoot(rootDiv);
+root.render(<App />);

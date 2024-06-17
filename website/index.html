@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <title>Six Degrees of Wikipedia</title>
@@ -18,30 +18,15 @@
 
     <meta name="theme-color" content="#68ceff" />
 
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="manifest" href="/manifest.json" />
 
     <!-- Favicons -->
-    <link
-      rel="shortcut icon"
-      type="image/png"
-      href="%PUBLIC_URL%/favicon-16x16.png"
-      sizes="16x16"
-    />
-    <link
-      rel="shortcut icon"
-      type="image/png"
-      href="%PUBLIC_URL%/favicon-32x32.png"
-      sizes="32x32"
-    />
-    <link
-      rel="shortcut icon"
-      type="image/png"
-      href="%PUBLIC_URL%/favicon-96x96.png"
-      sizes="96x96"
-    />
+    <link rel="shortcut icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" />
+    <link rel="shortcut icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" />
+    <link rel="shortcut icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
 
     <!-- iOS home screen icon -->
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/apple-touch-icon-180x180.png" sizes="180x180" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png" sizes="180x180" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -51,10 +36,8 @@
       content="Find the shortest hyperlinked paths between any two pages on Wikipedia."
     />
     <meta property="og:url" content="https://www.sixdegreesofwikipedia.com/" />
-    <meta
-      property="og:image"
-      content="https://sixdegreesofwikipedia.com/%PUBLIC_URL%/sdowSquareLogo.png"
-    />
+    <!-- TODO: Confirm this works in prod. -->
+    <meta property="og:image" content="https://sixdegreesofwikipedia.com/sdowSquareLogo.png" />
     <meta property="og:image:width" content="700" />
     <meta property="og:image:height" content="700" />
     <meta property="og:image:alt" content="Six Degrees of Wikipedia Logo" />
@@ -67,10 +50,7 @@
       name="twitter:description"
       content="Find the shortest hyperlinked paths between any two pages on Wikipedia."
     />
-    <meta
-      name="twitter:image:src"
-      content="https://sixdegreesofwikipedia.com/%PUBLIC_URL%/sdowSquareLogo.png"
-    />
+    <meta name="twitter:image:src" content="https://sixdegreesofwikipedia.com/sdowSquareLogo.png" />
     <meta name="twitter:image:alt" content="Six Degrees of Wikipedia Logo" />
 
     <!-- Google Analytics -->
@@ -100,5 +80,6 @@
     </noscript>
 
     <div id="root"></div>
+    <script type="module" src="/src/index.tsx"></script>
   </body>
 </html>

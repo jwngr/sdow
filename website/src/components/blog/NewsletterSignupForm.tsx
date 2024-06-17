@@ -2,7 +2,7 @@ import noop from 'lodash/noop';
 import React, {useState} from 'react';
 import styled from 'styled-components';
 
-import {Button} from '../common/Button.tsx';
+import {Button} from '../common/Button';
 
 const Wrapper = styled.div`
   display: flex;

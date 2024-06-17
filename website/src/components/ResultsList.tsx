@@ -4,7 +4,7 @@ import LazyLoad from 'react-lazyload';
 import styled from 'styled-components';
 
 import defaultPageThumbnail from '../images/defaultPageThumbnail.png';
-import {WikipediaPage, WikipediaPageId} from '../types.ts';
+import {WikipediaPage, WikipediaPageId} from '../types';
 
 const ResultsListWrapper = styled.div`
   margin: 0 auto;
@@ -92,12 +92,9 @@ const PageInnerWrapper = styled.div`
 
 const PageImage = styled.img`
   width: 60px;
-  height: 60px;
+  max-height: 60px;
   margin-right: 12px;
-  border-radius: 8px;
-  border: solid 1px ${({theme}) => theme.colors.darkGreen};
-  background-color: ${({theme}) => theme.colors.gray};
-  object-fit: cover;
+  object-fit: contain;
 `;
 
 const PageTitle = styled.p`
