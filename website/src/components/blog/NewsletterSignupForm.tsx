@@ -1,3 +1,4 @@
+import noop from 'lodash/noop';
 import React, {useState} from 'react';
 import styled from 'styled-components';
 
@@ -127,6 +128,7 @@ export const NewsletterSignupForm: React.FC = () => {
           name="b_d19fa80c86cc4e9017baf4f4b_46d31d866a"
           tabIndex={-1}
           value=""
+          onChange={noop}
         />
 
         <SubscribeButton>Subscribe</SubscribeButton>
