@@ -212,7 +212,7 @@ export const Home: React.FC = () => {
         />
       </InputFlexContainer>
 
-      {isFetchingResults ? (
+      {isFetchingResults ? null : (
         <SearchButtonWrapper
           onClick={async () => {
             if (sourcePageTitle.trim().length === 0) {
@@ -227,7 +227,7 @@ export const Home: React.FC = () => {
         >
           Go!
         </SearchButtonWrapper>
-      ) : null}
+      )}
 
       {errorMessage !== null ? (
         <ErrorMessage text={errorMessage} />
