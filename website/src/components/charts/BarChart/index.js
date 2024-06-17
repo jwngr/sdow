@@ -49,7 +49,7 @@ export class BarChart extends Component {
       .enter()
       .append('g')
       .attr('class', 'bar')
-      .attr('transform', (d) => `translate(${margins.left}, ${margins.top})`);
+      .attr('transform', () => `translate(${margins.left}, ${margins.top})`);
 
     // append the rectangles for the bar chart
     bars

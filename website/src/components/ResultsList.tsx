@@ -125,7 +125,7 @@ const ResultListItem: React.FC<{
       <PageDescription>{description}</PageDescription>
     ) : null;
 
-    let highlightColor = d3.rgb(color(i.toString()));
+    const highlightColor = d3.rgb(color(i.toString()));
     highlightColor.opacity = 0.9;
 
     return (
