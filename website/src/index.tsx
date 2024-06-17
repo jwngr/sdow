@@ -18,8 +18,12 @@ const history = createBrowserHistory();
 require('typeface-quicksand');
 require('typeface-crimson-text');
 
-const AsyncBlog = lazy(() => import('./components/blog/Blog/index.js'));
-const AsyncBlogPost = lazy(() => import('./components/blog/BlogPost/index.js'));
+const AsyncBlog = lazy(() =>
+  import('./components/blog/Blog.tsx').then((module) => ({default: module.Blog}))
+);
+const AsyncBlogPost = lazy(() =>
+  import('./components/blog/BlogPost.tsx').then((module) => ({default: module.BlogPost}))
+);
 
 const root = createRoot(document.getElementById('root'));
 root.render(
