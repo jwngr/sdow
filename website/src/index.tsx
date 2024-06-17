@@ -1,14 +1,13 @@
 import Particles from '@tsparticles/react';
 import {createBrowserHistory} from 'history';
-// import {ConnectedRouter} from 'connected-react-router';
 import React from 'react';
 import {createRoot} from 'react-dom/client';
-import Loadable from 'react-loadable';
+// import Loadable from 'react-loadable';
 import {Route, Router, Switch} from 'react-router-dom';
 import {ThemeProvider} from 'styled-components';
 
 import {Home} from './components/Home.tsx';
-import registerServiceWorker from './registerServiceWorker';
+import registerServiceWorker from './registerServiceWorker.js';
 import particlesConfig from './resources/particles.config.json';
 import theme from './resources/theme.json';
 
@@ -21,22 +20,22 @@ require('typeface-quicksand');
 require('typeface-crimson-text');
 
 // Async components
-const AsyncBlog = Loadable({
-  loader: () => import('./components/blog/Blog'),
-  loading: () => null,
-});
+// const AsyncBlog = Loadable({
+//   loader: () => import('./components/blog/Blog/index.js'),
+//   loading: () => null,
+// });
 
-const AsyncBlogPost = Loadable({
-  loader: () => import('./components/blog/BlogPost'),
-  loading: () => null,
-});
+// const AsyncBlogPost = Loadable({
+//   loader: () => import('./components/blog/BlogPost/index.js'),
+//   loading: () => null,
+// });
 
 const root = createRoot(document.getElementById('root'));
 root.render(
   <ThemeProvider theme={theme}>
     <React.Fragment>
       <Particles
-        params={particlesConfig}
+        options={particlesConfig}
         style={{
           position: 'fixed',
           top: 0,
@@ -45,19 +44,18 @@ root.render(
         }}
       />
       <Router history={history}>
-        <>
-          <Switch>
-            <Route path="/blog/:postId">
-              <AsyncBlogPost />
-            </Route>
-            <Route path="/blog">
-              <AsyncBlog />
-            </Route>
-            <Route path="/">
-              <Home />
-            </Route>
-          </Switch>
-        </>
+        <Switch>
+          {/* TODO: Uncomment these. */}
+          {/* <Route path="/blog/:postId">
+            <AsyncBlogPost />
+          </Route>
+          <Route path="/blog">
+            <AsyncBlog />
+          </Route> */}
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
       </Router>
     </React.Fragment>
   </ThemeProvider>

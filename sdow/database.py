@@ -106,7 +106,7 @@ class Database(object):
       raise ValueError(
           'Invalid page ID "{0}" provided. Page ID does not exist.'.format(page_id))
 
-    return page_title[0].encode('utf-8').replace('_', ' ')
+    return page_title[0].replace('_', ' ')
 
   def compute_shortest_paths(self, source_page_id, target_page_id):
     """Returns a list of page IDs indicating the shortest path between the source and target pages.

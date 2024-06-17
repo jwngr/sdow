@@ -90,12 +90,12 @@ else:
     elif 'redirect' in page:
       redirect_response = query_wikipedia_api('pageids', [page_id], True)
       (redirected_page_id, redirected_page) = redirect_response.items()[0]
-      redirects.append((page['title'].encode('utf-8'),
+      redirects.append((page['title'],
                         page_id,
-                        redirected_page['title'].encode('utf-8'),
+                        redirected_page['title'],
                         redirected_page_id))
     else:
-      print('"{0}" ({1})'.format(page['title'].encode('utf-8'), page_id))
+      print('"{0}" ({1})'.format(page['title'], page_id))
 
 if len(redirects) != 0:
   print()

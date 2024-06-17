@@ -1,5 +1,10 @@
 import {SDOW_API_URL} from './resources/constants.ts';
-import {ShortestPathsApiResponse, WikipediaPage, WikipediaPageId} from './types.ts';
+import {
+  ShortestPathsApiResponse,
+  ShortestPathsErrorResponse,
+  WikipediaPage,
+  WikipediaPageId,
+} from './types.ts';
 
 interface FetchShortestPathsResponse {
   readonly paths: readonly WikipediaPageId[][];
@@ -27,6 +32,11 @@ export async function fetchShortestPaths({
       target: targetPageTitle,
     }),
   });
+
+  if (!response.ok) {
+    const data = (await response.json()) as ShortestPathsErrorResponse;
+    throw new Error(`Failed to find shortest path: ${data.error}`);
+  }
 
   const data = (await response.json()) as ShortestPathsApiResponse;
 

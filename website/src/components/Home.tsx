@@ -1,5 +1,5 @@
-import get from 'lodash/get';
 import React, {useCallback, useState} from 'react';
+import {useHistory, useLocation} from 'react-router-dom';
 
 import {fetchShortestPaths} from '../api.ts';
 import {WikipediaPage, WikipediaPageId} from '../types.ts';
@@ -25,10 +25,15 @@ interface ShortestPathsState {
 }
 
 export const Home: React.FC = () => {
+  const history = useHistory();
+  const location = useLocation();
+
   const [showModal, setShowModal] = useState(false);
 
-  const [sourcePageTitle, setSourcePageTitle] = useState('');
-  const [targetPageTitle, setTargetPageTitle] = useState('');
+  // Initialize the source and target page titles from the URL.
+  const searchParamsFromUrl = new URLSearchParams(location.search);
+  const [sourcePageTitle, setSourcePageTitle] = useState(searchParamsFromUrl.get('source') ?? '');
+  const [targetPageTitle, setTargetPageTitle] = useState(searchParamsFromUrl.get('target') ?? '');
 
   const [sourcePagePlaceholderText, setSourcePagePlaceholderText] = useState(getRandomPageTitle());
   const [targetPagePlaceholderText, setTargetPagePlaceholderText] = useState(getRandomPageTitle());
@@ -43,7 +48,10 @@ export const Home: React.FC = () => {
   const handleFetchShortestPaths = useCallback(async () => {
     const startTimeInMilliseconds = Date.now();
 
+    setErrorMessage(null);
+    setErrorMessage(null);
     setIsFetchingShortestPaths(true);
+
     if (!sourcePageTitle) {
       setSourcePageTitle(sourcePagePlaceholderText);
     }
@@ -67,9 +75,13 @@ export const Home: React.FC = () => {
         durationInSeconds: ((Date.now() - startTimeInMilliseconds) / 1000).toFixed(2),
       });
 
-      // TODO: Update the page URL, which will update the soure and target page inputs as needed.
-    } catch (error) {
-      if (error.message === 'Network Error') {
+      // Update the page URL.
+      const searchParams = new URLSearchParams();
+      searchParams.set('source', response.sourcePageTitle);
+      searchParams.set('target', response.targetPageTitle);
+      history.push({search: searchParams.toString()});
+    } catch (error: unknown) {
+      if ((error as Error).message === 'Network Error') {
         // This can happen when the server is down, the Flask app is not running, or when the
         // FLASK_DEBUG environment variable is set to 1 and there is a 5xx server error (see
         // https://github.com/corydolphin/flask-cors/issues/67 for details).
@@ -81,12 +93,19 @@ export const Home: React.FC = () => {
         // comment above).
         const defaultErrorMessage =
           'Whoops... something is broken and has been reported. In the mean time, please try a different search.';
-        setErrorMessage(get(error, 'response.data.error', defaultErrorMessage));
+
+        setErrorMessage((error as Error).message ?? defaultErrorMessage);
       }
     }
 
     setIsFetchingShortestPaths(false);
-  }, [sourcePageTitle, targetPageTitle, sourcePagePlaceholderText, targetPagePlaceholderText]);
+  }, [
+    sourcePageTitle,
+    targetPageTitle,
+    sourcePagePlaceholderText,
+    targetPagePlaceholderText,
+    history,
+  ]);
 
   return (
     <div>

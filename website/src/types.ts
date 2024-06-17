@@ -16,3 +16,7 @@ export interface ShortestPathsApiResponse {
   readonly isSourceRedirected: boolean;
   readonly isTargetRedirected: boolean;
 }
+
+export interface ShortestPathsErrorResponse {
+  readonly error: string;
+}

@@ -55,14 +55,14 @@
   "interactivity": {
     "detect_on": "window",
     "events": {
-      "onhover": {
+      "onHover": {
         "enable": true,
         "mode": "bubble"
       },
-      "onclick": {
+      "onClick": {
         "enable": false
       },
-      "onresize": {
+      "onResize": {
         "enable": true,
         "density_auto": true,
         "density_area": 40000000
