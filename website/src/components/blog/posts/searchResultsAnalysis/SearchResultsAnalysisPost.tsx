@@ -1,34 +1,138 @@
 import React from 'react';
 import {Helmet} from 'react-helmet';
+import styled from 'styled-components';
 
 import {getNumberWithCommas} from '../../../../utils.ts';
 import {BarChart} from '../../../charts/BarChart';
-import {Table} from '../../../charts/Table';
+import {Table} from '../../../charts/Table.tsx';
 import {StyledTextLink} from '../../../common/StyledTextLink.tsx';
-import {
-  Divider,
-  Image,
-  P,
-  SectionTitle,
-  Stat,
-  StatsWrapper,
-  Subtitle,
-  Title,
-  Wrapper,
-} from '../../BlogPost/index.styles';
-import NewsletterSignupForm from '../../NewsletterSignupForm';
-import * as data from './data';
+import {NewsletterSignupForm} from '../../NewsletterSignupForm.tsx';
+import * as data from './data.js';
 import elevenDegreesOfSeparationSearchImage from './elevenDegreesOfSeparationSearch.png';
 
-const title = 'Insights On Hitler And More From The First 500,000 Searches';
+const TITLE = 'Insights On Hitler And More From The First 500,000 Searches';
 
-const SearchResultsAnalysisPost = () => (
+const Wrapper = styled.div`
+  max-width: 740px;
+  padding: 4px 20px;
+  margin: 20px auto;
+  background-color: ${({theme}) => theme.colors.creme};
+  border: solid 3px ${({theme}) => theme.colors.darkGreen};
+
+  @media (max-width: 600px) {
+    padding: 2px 16px;
+    margin-bottom: 0;
+    border: none;
+    border-top: solid 3px ${({theme}) => theme.colors.darkGreen};
+  }
+`;
+
+const Title = styled.h1`
+  margin: 20px auto;
+  text-align: center;
+  font-size: 36px;
+  font-weight: bold;
+  font-family: 'Quicksand', serif;
+  color: ${({theme}) => theme.colors.red};
+`;
+
+const Subtitle = styled.p`
+  text-align: center;
+  margin: 20px auto;
+  font-size: 20px;
+  font-family: 'Quicksand', serif;
+  color: ${({theme}) => theme.colors.darkGreen};
+`;
+
+const SectionTitle = styled.h2`
+  margin: 20px auto;
+  font-size: 28px;
+  font-weight: bold;
+  font-family: 'Quicksand', serif;
+  color: ${({theme}) => theme.colors.red};
+`;
+
+const P = styled.p`
+  margin: 20px auto;
+  font-size: 20px;
+  line-height: 1.5;
+  font-family: 'Quicksand', serif;
+  text-align: justify;
+  color: ${({theme}) => theme.colors.darkGreen};
+`;
+
+const Image = styled.img`
+  display: block;
+  width: 100%;
+`;
+
+const StatsWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin: -10px 0;
+
+  @media (max-width: 600px) {
+    justify-content: center;
+  }
+`;
+
+const Stat = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: calc(50% - 12px);
+  margin: 10px 0;
+  text-align: center;
+  background-color: ${({theme}) => theme.colors.creme};
+  border: solid 3px ${({theme}) => theme.colors.darkGreen};
+
+  p:first-of-type {
+    background-color: ${({theme}) => theme.colors.darkGreen};
+    padding: 12px;
+    font-size: 20px;
+    font-weight: bold;
+    color: ${({theme}) => theme.colors.creme};
+  }
+
+  p:last-of-type {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    font-size: 32px;
+    font-weight: bold;
+    color: ${({theme}) => theme.colors.darkGreen};
+  }
+
+  a {
+    max-width: 90%;
+    font-size: 28px;
+    margin: 12px auto 4px auto;
+  }
+
+  @media (max-width: 600px) {
+    width: 100%;
+  }
+`;
+
+const Divider = styled.div`
+  border-top: solid 1px ${({theme}) => theme.colors.darkGreen};
+  margin: 20px auto;
+
+  &::after {
+    content: '';
+  }
+`;
+
+export const SearchResultsAnalysisPost = () => (
   <Wrapper>
     <Helmet>
-      <title>{`${title} | Blog | Six Degrees of Wikipedia`}</title>
+      <title>{`${TITLE} | Blog | Six Degrees of Wikipedia`}</title>
     </Helmet>
 
-    <Title>{title}</Title>
+    <Title>{TITLE}</Title>
     <Subtitle>
       <StyledTextLink text="Jacob Wenger" href="https://jwn.gr" /> | March 14, 2018
     </Subtitle>
@@ -277,7 +381,7 @@ const SearchResultsAnalysisPost = () => (
       these stats, you can find them all on{' '}
       <StyledTextLink
         text="this project's GitHub"
-        href="https://github.com/jwngr/sdow/tree/master/website/src/components/blog/posts/SearchResultsAnalysisPost/queries.txt"
+        href="https://github.com/jwngr/sdow/tree/master/website/src/components/blog/posts/searchResultsAnalysis/queries.txt"
       />
       . I will likely go into more detail on my server and database setup in a future post.
     </P>
@@ -304,5 +408,3 @@ const SearchResultsAnalysisPost = () => (
     <NewsletterSignupForm />
   </Wrapper>
 );
-
-export default SearchResultsAnalysisPost;

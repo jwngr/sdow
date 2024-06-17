@@ -1,10 +1,51 @@
 import * as d3 from 'd3';
 import debounce from 'lodash/debounce';
 import React, {Component} from 'react';
-
-import {BarChartSvg, BarChartWrapper} from './index.styles';
+import styled from 'styled-components';
 
 const DEFAULT_CHART_HEIGHT = 300;
+
+const BarChartWrapper = styled.div`
+  margin: 20px auto;
+  overflow: hidden;
+  background-color: ${({theme}) => theme.colors.creme};
+  border: solid 3px ${({theme}) => theme.colors.darkGreen};
+`;
+
+const BarChartSvg = styled.svg`
+  .bar rect {
+    fill: ${({theme}) => theme.colors.darkGreen};
+  }
+  text {
+    fill: ${({theme}) => theme.colors.darkGreen};
+  }
+  .bar text {
+    font-size: 14px;
+    text-anchor: middle;
+    @media (max-width: 600px) {
+      font-size: 8px;
+    }
+  }
+  .x-axis,
+  .y-axis {
+    font-size: 14px;
+    path,
+    line {
+      stroke: ${({theme}) => theme.colors.darkGreen};
+    }
+    @media (max-width: 600px) {
+      font-size: 10px;
+    }
+  }
+  .x-axis-label,
+  .y-axis-label {
+    font-size: 20px;
+    text-anchor: middle;
+    @media (max-width: 600px) {
+      font-size: 14px;
+    }
+  }
+`;
 
 export class BarChart extends Component {
   constructor() {

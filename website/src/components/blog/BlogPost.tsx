@@ -1,9 +1,13 @@
 import React, {lazy, Suspense} from 'react';
 import {Redirect, useParams} from 'react-router-dom';
 
-import {Logo} from '../../common/Logo.tsx';
+import {Logo} from '../common/Logo.tsx';
 
-const AsyncSearchResultsAnalysisPost = lazy(() => import('../posts/SearchResultsAnalysisPost'));
+const AsyncSearchResultsAnalysisPost = lazy(() =>
+  import('./posts/searchResultsAnalysis/SearchResultsAnalysisPost.tsx').then((module) => ({
+    default: module.SearchResultsAnalysisPost,
+  }))
+);
 
 const getBlogPostContent = (postId) => {
   switch (postId) {
@@ -18,8 +22,8 @@ const getBlogPostContent = (postId) => {
   }
 };
 
-const BlogPost = () => {
-  let {postId} = useParams();
+export const BlogPost = () => {
+  const {postId} = useParams();
 
   return (
     <>
@@ -28,5 +32,3 @@ const BlogPost = () => {
     </>
   );
 };
-
-export default BlogPost;
