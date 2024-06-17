@@ -2,12 +2,12 @@ import React from 'react';
 import {Helmet} from 'react-helmet';
 import styled from 'styled-components';
 
-import {getNumberWithCommas} from '../../../../utils.ts';
+import {getNumberWithCommas, getWikipediaPageUrl} from '../../../../utils.ts';
 import {BarChart} from '../../../charts/BarChart';
 import {Table} from '../../../charts/Table.tsx';
 import {StyledTextLink} from '../../../common/StyledTextLink.tsx';
 import {NewsletterSignupForm} from '../../NewsletterSignupForm.tsx';
-import * as data from './data.js';
+import * as data from './data.ts';
 import elevenDegreesOfSeparationSearchImage from './elevenDegreesOfSeparationSearch.png';
 
 const TITLE = 'Insights On Hitler And More From The First 500,000 Searches';
@@ -172,7 +172,31 @@ export const SearchResultsAnalysisPost = () => (
       are the top ten by search count, including the source where each was shared:
     </P>
 
-    <Table headers={data.mostPopularSearchesHeaders} rows={data.mostPopularSearchesRows} />
+    <Table
+      headers={data.mostPopularSearchesHeaders}
+      rows={data.mostPopularSearches.map((searchInfo) => {
+        const searchUrl = `/?source=${encodeURIComponent(
+          searchInfo.sourcePageTitle
+        )}&target=${encodeURIComponent(searchInfo.targetPageTitle)}`;
+        const searchLink = (
+          <StyledTextLink
+            text={`${searchInfo.sourcePageTitle} → ${searchInfo.targetPageTitle}`}
+            href={searchUrl}
+          />
+        );
+        const referenceLink = (
+          <StyledTextLink text={searchInfo.referenceText} href={searchInfo.referenceUrl} />
+        );
+        return [
+          searchLink,
+          searchInfo.degreesOfSeparation === null
+            ? 'No path'
+            : searchInfo.degreesOfSeparation.toString(),
+          getNumberWithCommas(searchInfo.numberOfSearches),
+          referenceLink,
+        ];
+      })}
+    />
 
     <P>
       The ability to share searches via URLs was a last-minute feature added the day before
@@ -186,7 +210,18 @@ export const SearchResultsAnalysisPost = () => (
       either the start or end of the search, the following pages were most popular:
     </P>
 
-    <Table headers={data.mostPopularPagesHeaders} rows={data.mostPopularPagesRows} />
+    <Table
+      headers={data.mostPopularPagesHeaders}
+      rows={data.mostPopularPages.map((pageInfo) => {
+        const link = (
+          <StyledTextLink
+            text={pageInfo.pageTitle}
+            href={getWikipediaPageUrl(pageInfo.pageTitle)}
+          />
+        );
+        return [link, getNumberWithCommas(pageInfo.numberOfSearches)];
+      })}
+    />
 
     <P>
       Quite a lineup right there! Hitler runs away with the top spot, which is not too surprising
@@ -292,7 +327,25 @@ export const SearchResultsAnalysisPost = () => (
       paths for each degree of separation:
     </P>
 
-    <Table headers={data.mostPathSearchesHeaders} rows={data.mostPathSearchesRow} />
+    <Table
+      headers={data.mostPathSearchesHeaders}
+      rows={data.mostPathSearches.map((searchInfo) => {
+        const searchUrl = `/?source=${encodeURIComponent(
+          searchInfo.sourcePageTitle
+        )}&target=${encodeURIComponent(searchInfo.targetPageTitle)}`;
+        const link = (
+          <StyledTextLink
+            text={`${searchInfo.sourcePageTitle} → ${searchInfo.targetPageTitle}`}
+            href={searchUrl}
+          />
+        );
+        return [
+          link,
+          searchInfo.degreesOfSeparation,
+          getNumberWithCommas(searchInfo.numberOfPaths),
+        ];
+      })}
+    />
 
     <SectionTitle>Searches With No Paths</SectionTitle>
 
