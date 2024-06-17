@@ -3,16 +3,16 @@ import ReactModal from 'react-modal';
 import {useHistory, useLocation} from 'react-router-dom';
 import styled from 'styled-components';
 
-import {fetchShortestPaths} from '../api.ts';
-import {WikipediaPage, WikipediaPageId} from '../types.ts';
-import {getRandomPageTitle} from '../utils.ts';
-import {Button} from './common/Button.tsx';
-import {Logo} from './common/Logo.tsx';
-import {Loading} from './Loading.tsx';
-import {NavLinks} from './NavLinks.tsx';
-import {PageInput} from './PageInput.tsx';
-import {Results} from './Results.tsx';
-import {SwapInputValuesButton} from './SwapInputValuesButton.tsx';
+import {fetchShortestPaths} from '../api';
+import {WikipediaPage, WikipediaPageId} from '../types';
+import {getRandomPageTitle} from '../utils';
+import {Button} from './common/Button';
+import {Logo} from './common/Logo';
+import {Loading} from './Loading';
+import {NavLinks} from './NavLinks';
+import {PageInput} from './PageInput';
+import {Results} from './Results';
+import {SwapInputValuesButton} from './SwapInputValuesButton';
 
 interface ShortestPathsState {
   readonly paths: readonly WikipediaPageId[][];

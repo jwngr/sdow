@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 
-import {getRandomWikipediaFact, getWikipediaPageUrl} from '../utils.ts';
-import {StyledTextLink} from './common/StyledTextLink.tsx';
+import {getRandomWikipediaFact, getWikipediaPageUrl} from '../utils';
+import {StyledTextLink} from './common/StyledTextLink';
 
 const Wrapper = styled.div`
   width: 700px;

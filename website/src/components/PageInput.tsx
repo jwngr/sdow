@@ -6,10 +6,10 @@ import React, {useCallback, useEffect, useState} from 'react';
 import Autosuggest from 'react-autosuggest';
 import styled from 'styled-components';
 
-import {SDOW_USER_AGENT, WIKIPEDIA_API_URL} from '../resources/constants.ts';
-import {WikipediaPage} from '../types.ts';
-import {getRandomPageTitle} from '../utils.ts';
-import {PageInputSuggestion} from './PageInputSuggestion.tsx';
+import {SDOW_USER_AGENT, WIKIPEDIA_API_URL} from '../resources/constants';
+import {WikipediaPage} from '../types';
+import {getRandomPageTitle} from '../utils';
+import {PageInputSuggestion} from './PageInputSuggestion';
 
 type PageSuggestion = Required<Omit<WikipediaPage, 'url'>>;
 
@@ -98,16 +98,6 @@ const AutosuggestWrapper = styled.div`
   }
 `;
 
-// Autosuggest component helpers.
-const getSuggestionValue = (suggestion) => suggestion.title;
-const renderSuggestion = (suggestion) => (
-  <PageInputSuggestion
-    title={suggestion.title}
-    description={suggestion.description}
-    thumbnailUrl={suggestion.thumbnailUrl}
-  />
-);
-
 export const PageInput: React.FC<{
   readonly title: string;
   readonly setTitle: (title: string) => void;
@@ -127,7 +117,7 @@ export const PageInput: React.FC<{
     return () => clearInterval(intervalId);
   }, [setPlaceholderText, title]);
 
-  const loadSuggestions = useCallback(async (query) => {
+  const loadSuggestions = useCallback(async (query: string) => {
     const url = new URL(WIKIPEDIA_API_URL);
     url.search = new URLSearchParams({
       action: 'query',
@@ -191,8 +181,14 @@ export const PageInput: React.FC<{
         suggestions={suggestions}
         onSuggestionsFetchRequested={({value}) => debouncedLoadSuggestions(value)}
         onSuggestionsClearRequested={() => setSuggestions([])}
-        getSuggestionValue={getSuggestionValue}
-        renderSuggestion={renderSuggestion}
+        getSuggestionValue={(suggestion) => suggestion.title}
+        renderSuggestion={(suggestion) => (
+          <PageInputSuggestion
+            title={suggestion.title}
+            description={suggestion.description}
+            thumbnailUrl={suggestion.thumbnailUrl}
+          />
+        )}
         inputProps={{
           placeholder: placeholderText,
           onChange: (_, {newValue}) => setTitle(newValue),

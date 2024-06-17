@@ -46,21 +46,13 @@ const TableWrapper = styled.div`
 
 export const Table: React.FC<{
   readonly headers: string[];
-  readonly rows: string[][];
+  readonly rows: React.ReactNode[][];
 }> = ({headers, rows}) => {
   const headerRow = (
     <tr key="table-header-row">
-      {headers.map((header, i) => {
-        if (typeof header === 'string') {
-          return <th key={`table-row-header-col${i}`}>{header}</th>;
-        } else {
-          return (
-            <th width={header.width} key={`table-row-header-col${i}`}>
-              {header.text}
-            </th>
-          );
-        }
-      })}
+      {headers.map((header, i) => (
+        <th key={`table-row-header-col${i}`}>{header}</th>
+      ))}
     </tr>
   );
 

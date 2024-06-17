@@ -5,9 +5,9 @@ import range from 'lodash/range';
 import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import styled from 'styled-components';
 
-import {WikipediaPage, WikipediaPageId} from '../types.ts';
-import {getWikipediaPageUrl} from '../utils.ts';
-import {Button} from './common/Button.tsx';
+import {WikipediaPage, WikipediaPageId} from '../types';
+import {getWikipediaPageUrl} from '../utils';
+import {Button} from './common/Button';
 
 const DEFAULT_CHART_HEIGHT = 600;
 

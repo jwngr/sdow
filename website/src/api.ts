@@ -1,10 +1,10 @@
-import {SDOW_API_URL} from './resources/constants.ts';
+import {SDOW_API_URL} from './resources/constants';
 import {
   ShortestPathsApiResponse,
   ShortestPathsErrorResponse,
   WikipediaPage,
   WikipediaPageId,
-} from './types.ts';
+} from './types';
 
 interface FetchShortestPathsResponse {
   readonly paths: readonly WikipediaPageId[][];
@@ -40,17 +40,9 @@ export async function fetchShortestPaths({
 
   const data = (await response.json()) as ShortestPathsApiResponse;
 
-  const newPagesByNumberId: Record<number, WikipediaPage> = Object.entries(data.pages).reduce(
-    (acc, [pageId, page]) => {
-      acc[Number(pageId)] = page;
-      return acc;
-    },
-    {}
-  );
-
   return {
-    paths: data.paths,
-    pagesById: newPagesByNumberId,
+    paths: data.paths.map((path) => path.map((pageId) => pageId.toString())),
+    pagesById: data.pages,
     sourcePageTitle: data.sourcePageTitle,
     targetPageTitle: data.targetPageTitle,
     isSourceRedirected: data.isSourceRedirected,

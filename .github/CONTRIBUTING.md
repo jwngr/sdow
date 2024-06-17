@@ -8,7 +8,7 @@ There are three main pieces you'll need to get set up running locally:
 
 1.  Mock SQLite database of Wikipedia links
 2.  Backend Python Flask web server
-3.  [Create React App](https://github.com/facebook/create-react-app)-based frontend website
+3.  React + TypeScript frontend website built using Vite
 
 There is some larger set up you'll need to run initially as well as some recurring set up every time
 you want to run the service.
@@ -101,7 +101,7 @@ Here are some highlights of the directory structure and notable source files
   - `helpers.py` - Miscellaneous helper functions and classes
 - `sketch/` - Sketch logo files
 - `sql/` - SQLite table schemas
-- `website/` - The frontend website, based on [Create React App](https://github.com/facebook/create-react-app)
+- `website/` - The frontend React + TypeScript website, built using Vite
 - `.pylintrc` - Default configuration for `pylint`
 - `requirements.txt` - Requirements specification for installing project dependencies via `pip`
 - `setup.cfg` - Python PEP 8 autoformatting rules

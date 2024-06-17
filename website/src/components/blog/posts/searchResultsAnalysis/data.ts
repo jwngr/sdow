@@ -12,11 +12,11 @@ export const medianDuration = 0.38;
 export const percentile95Duration = 2.66;
 export const percentile99Duration = 4.99;
 
-export const mostPopularSearchesHeaders = [
+export const mostPopularSearchesHeaders: string[] = [
   'Search',
   'Degrees of Separation',
   'Number of Searches',
-  {text: 'Source', width: 140},
+  'Source',
 ];
 
 interface PopularSearch {
@@ -113,7 +113,7 @@ export const mostPopularSearches: PopularSearch[] = [
   },
 ];
 
-export const mostPopularPagesHeaders = ['Page Title', 'Number of Searches'];
+export const mostPopularPagesHeaders: string[] = ['Page Title', 'Number of Searches'];
 
 interface MostPopularPage {
   readonly pageTitle: string;
@@ -133,7 +133,11 @@ export const mostPopularPages: readonly MostPopularPage[] = [
   {pageTitle: 'Death Grips', numberOfSearches: 1242},
 ];
 
-export const mostPathSearchesHeaders = ['Search', 'Degrees of Separation', 'Result Paths'];
+export const mostPathSearchesHeaders: string[] = [
+  'Search',
+  'Degrees of Separation',
+  'Result Paths',
+];
 
 interface SearchResult {
   readonly sourcePageTitle: string;

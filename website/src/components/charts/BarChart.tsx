@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import debounce from 'lodash/debounce';
-import React, {Component} from 'react';
+import React, {useCallback, useEffect, useRef} from 'react';
 import styled from 'styled-components';
 
 const DEFAULT_CHART_HEIGHT = 300;
@@ -47,82 +47,100 @@ const BarChartSvg = styled.svg`
   }
 `;
 
-export class BarChart extends Component {
-  constructor() {
-    super();
+export const BarChart: React.FC<{
+  readonly data: number[];
+}> = ({data}) => {
+  const barChartRef = useRef<SVGSVGElement>(null);
+  const barChartWrapperRef = useRef<HTMLDivElement>(null);
+  const barChartSvgRef = useRef<d3.Selection<SVGSVGElement, unknown, null, undefined> | null>(null);
 
-    this.barChart = null;
+  const getBarChartWidth = useCallback(() => {
+    if (!barChartWrapperRef.current) return 0;
+    // Return width of wrapper element, minus border.
+    return barChartWrapperRef.current.getBoundingClientRect().width - 6;
+  }, []);
 
-    this.debouncedResizeBarChart = debounce(this.resizeBarChart.bind(this), 350);
-  }
+  const resizeBarChart = useCallback(() => {
+    const width = getBarChartWidth();
+    barChartSvgRef.current?.attr('width', width);
+  }, [getBarChartWidth]);
 
-  componentDidMount() {
-    const {data} = this.props;
+  // Resize the bar chart on page resize.
+  const handleResizeDebounced = debounce(resizeBarChart, 350);
+  const debouncedResizeBarChart = useCallback(handleResizeDebounced, [handleResizeDebounced]);
+  window.addEventListener('resize', handleResizeDebounced);
+
+  useEffect(() => {
+    if (!barChartRef.current) return;
 
     const formatCount = d3.format(',.0f');
 
-    const width = this.getBarChartWidth();
+    // Use smaller margins on mobile.
+    const width = getBarChartWidth();
     let margins = {top: 40, right: 20, bottom: 60, left: 100};
     if (width < 600) {
       margins = {top: 20, right: 20, bottom: 50, left: 80};
     }
 
-    this.barChart = d3
-      .select(this.barChartRef)
+    barChartSvgRef.current = d3
+      .select(barChartRef.current)
       .attr('width', width)
       .attr('height', DEFAULT_CHART_HEIGHT + margins.top + margins.bottom);
 
-    // set the ranges
+    if (!barChartSvgRef.current) return;
+
+    // Compute the range of the graph.
     const xScale = d3
       .scaleBand()
-      .domain(d3.range(0, data.length))
+      .domain(d3.range(0, data.length).map(String))
       .range([0, width - margins.left - margins.right])
       .padding(0.1);
 
     const yScale = d3
       .scaleLinear()
-      .domain([0, d3.max(data)])
+      .domain([0, d3.max(data, (d) => d) ?? 0])
       .range([DEFAULT_CHART_HEIGHT, 0]);
 
-    const bars = this.barChart
-      .selectAll('.bar')
+    // Add bars representing data.
+    const bars = barChartSvgRef.current
+      ?.selectAll('.bar')
       .data(data)
       .enter()
       .append('g')
       .attr('class', 'bar')
       .attr('transform', () => `translate(${margins.left}, ${margins.top})`);
 
-    // append the rectangles for the bar chart
+    // Actual bars.
     bars
       .append('rect')
-      .attr('x', (d, i) => xScale(i))
+      .attr('x', (_, i) => xScale(i.toString()) ?? 0)
       .attr('width', xScale.bandwidth())
       .attr('y', (d) => yScale(d))
       .attr('height', (d) => DEFAULT_CHART_HEIGHT - yScale(d));
 
-    // add the x-axis
-    this.barChart
+    // Add counts above bars.
+    bars
+      .append('text')
+      .attr('x', (_, i) => (xScale(i.toString()) ?? 0) + xScale.bandwidth() / 2)
+      .attr('y', (d) => yScale(d) - 4)
+      .text((d) => formatCount(d));
+
+    // Add X axis.
+    barChartSvgRef.current
       .append('g')
       .attr('class', 'x-axis')
       .attr('transform', `translate(${margins.left}, ${DEFAULT_CHART_HEIGHT + margins.top})`)
       .call(d3.axisBottom(xScale).tickFormat((d) => d + '°'));
 
-    // add the y-axis
-    this.barChart
+    // Add Y axis.
+    barChartSvgRef.current
       .append('g')
       .attr('class', 'y-axis')
       .call(d3.axisLeft(yScale))
       .attr('transform', `translate(${margins.left}, ${margins.top})`);
 
-    // Search counts above bars
-    bars
-      .append('text')
-      .attr('x', (d, i) => xScale(i) + xScale.bandwidth() / 2)
-      .attr('y', (d) => yScale(d) - 4)
-      .text((d) => formatCount(d));
-
-    // X-axis label
-    this.barChart
+    // Add X axis label.
+    barChartSvgRef.current
       .append('text')
       .attr('class', 'x-axis-label')
       .attr(
@@ -133,8 +151,8 @@ export class BarChart extends Component {
       )
       .text('Degrees of Separation');
 
-    // Y-axis label
-    this.barChart
+    // Add Y axis label.
+    barChartSvgRef.current
       .append('text')
       .attr('class', 'y-axis-label')
       .attr('transform', 'rotate(-90)')
@@ -142,28 +160,15 @@ export class BarChart extends Component {
       .attr('y', 26)
       .text('Number of Searches');
 
-    // Resize the bar chart on page resize.
-    window.addEventListener('resize', this.debouncedResizeBarChart);
-  }
+    return () => {
+      barChartSvgRef.current?.selectAll('*').remove();
+      window.removeEventListener('resize', debouncedResizeBarChart);
+    };
+  }, [data, debouncedResizeBarChart, getBarChartWidth, resizeBarChart]);
 
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.debouncedResizeBarChart);
-  }
-
-  getBarChartWidth() {
-    // Return width of wrapper element, minus border.
-    return document.querySelector('.bar-chart-wrapper').getBoundingClientRect().width - 6;
-  }
-
-  resizeBarChart() {
-    this.barChart.attr('width', this.getBarChartWidth());
-  }
-
-  render() {
-    return (
-      <BarChartWrapper className="bar-chart-wrapper">
-        <BarChartSvg ref={(r) => (this.barChartRef = r)} />
-      </BarChartWrapper>
-    );
-  }
-}
+  return (
+    <BarChartWrapper ref={barChartWrapperRef}>
+      <BarChartSvg ref={barChartRef} />
+    </BarChartWrapper>
+  );
+};
