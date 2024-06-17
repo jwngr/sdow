@@ -1,7 +1,3 @@
-import React from 'react';
-
-import {WikipediaPageId} from '../../../../types.ts';
-
 export const totalSearches = 503498;
 export const uniqueSearches = 377135;
 export const percentUniqueSearches = ((uniqueSearches / totalSearches) * 100).toFixed(2);
