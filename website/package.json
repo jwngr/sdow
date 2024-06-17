@@ -2,6 +2,7 @@
   "name": "sdow",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@tsparticles/react": "^3.0.0",
     "d3": "^7.9.0",
