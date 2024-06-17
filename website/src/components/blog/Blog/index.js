@@ -1,7 +1,7 @@
 import React from 'react';
 import {Helmet} from 'react-helmet';
 
-import {Logo} from '../../common/Logo';
+import {Logo} from '../../common/Logo.tsx';
 import {StyledTextLink} from '../../common/StyledTextLink.tsx';
 import NewsletterSignupForm from '../NewsletterSignupForm';
 import posts from '../posts/index.json';
@@ -23,7 +23,7 @@ const BlogPostCard = ({id, date, title, description}) => (
 );
 
 const Blog = () => (
-  <React.Fragment>
+  <>
     <Helmet>
       <title>Blog | Six Degrees of Wikipedia</title>
     </Helmet>
@@ -43,7 +43,7 @@ const Blog = () => (
 
       <NewsletterSignupForm />
     </Wrapper>
-  </React.Fragment>
+  </>
 );
 
 export default Blog;

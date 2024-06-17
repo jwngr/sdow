@@ -4,7 +4,7 @@ import {useHistory, useLocation} from 'react-router-dom';
 import {fetchShortestPaths} from '../api.ts';
 import {WikipediaPage, WikipediaPageId} from '../types.ts';
 import {getRandomPageTitle} from '../utils.ts';
-import {Logo} from './common/Logo';
+import {Logo} from './common/Logo.tsx';
 import {ErrorMessage} from './ErrorMessage.tsx';
 import {InputFlexContainer, Modal, P} from './Home.styles.ts';
 import {Loading} from './Loading.tsx';
@@ -32,8 +32,8 @@ export const Home: React.FC = () => {
 
   // Initialize the source and target page titles from the URL.
   const searchParamsFromUrl = new URLSearchParams(location.search);
-  const [sourcePageTitle, setSourcePageTitle] = useState(searchParamsFromUrl.get('source') ?? '');
-  const [targetPageTitle, setTargetPageTitle] = useState(searchParamsFromUrl.get('target') ?? '');
+  const [sourcePageTitle, setSourcePageTitle] = useState(searchParamsFromUrl.get('source') || '');
+  const [targetPageTitle, setTargetPageTitle] = useState(searchParamsFromUrl.get('target') || '');
 
   const [sourcePagePlaceholderText, setSourcePagePlaceholderText] = useState(getRandomPageTitle());
   const [targetPagePlaceholderText, setTargetPagePlaceholderText] = useState(getRandomPageTitle());
@@ -48,21 +48,23 @@ export const Home: React.FC = () => {
   const handleFetchShortestPaths = useCallback(async () => {
     const startTimeInMilliseconds = Date.now();
 
-    setErrorMessage(null);
-    setErrorMessage(null);
+    setShortestPathsState(null);
     setIsFetchingShortestPaths(true);
+    setErrorMessage(null);
 
-    if (!sourcePageTitle) {
-      setSourcePageTitle(sourcePagePlaceholderText);
-    }
-    if (!targetPageTitle) {
-      setTargetPageTitle(targetPagePlaceholderText);
-    }
+    const actualSourcePageTitle = sourcePageTitle || sourcePagePlaceholderText;
+    const actualTargetPageTitle = targetPageTitle || targetPagePlaceholderText;
 
     try {
+      // Update the URL to reflect the new search.
+      const searchParams = new URLSearchParams();
+      searchParams.set('source', actualSourcePageTitle);
+      searchParams.set('target', actualTargetPageTitle);
+      history.push({search: searchParams.toString()});
+
       const response = await fetchShortestPaths({
-        sourcePageTitle: sourcePageTitle ?? sourcePagePlaceholderText,
-        targetPageTitle: targetPageTitle ?? targetPagePlaceholderText,
+        sourcePageTitle: actualSourcePageTitle,
+        targetPageTitle: actualTargetPageTitle,
       });
 
       setShortestPathsState({
@@ -75,10 +77,6 @@ export const Home: React.FC = () => {
         durationInSeconds: ((Date.now() - startTimeInMilliseconds) / 1000).toFixed(2),
       });
 
-      // Update the page URL.
-      const searchParams = new URLSearchParams();
-      searchParams.set('source', response.sourcePageTitle);
-      searchParams.set('target', response.targetPageTitle);
       history.push({search: searchParams.toString()});
     } catch (error: unknown) {
       if ((error as Error).message === 'Network Error') {
@@ -94,22 +92,33 @@ export const Home: React.FC = () => {
         const defaultErrorMessage =
           'Whoops... something is broken and has been reported. In the mean time, please try a different search.';
 
-        setErrorMessage((error as Error).message ?? defaultErrorMessage);
+        setErrorMessage((error as Error).message || defaultErrorMessage);
       }
     }
 
     setIsFetchingShortestPaths(false);
   }, [
-    sourcePageTitle,
-    targetPageTitle,
-    sourcePagePlaceholderText,
-    targetPagePlaceholderText,
     history,
+    sourcePagePlaceholderText,
+    sourcePageTitle,
+    targetPagePlaceholderText,
+    targetPageTitle,
   ]);
 
   return (
     <div>
-      <Logo />
+      <Logo
+        onClick={() => {
+          // Clear page inputs.
+          setSourcePageTitle('');
+          setTargetPageTitle('');
+
+          // Reset shortest paths reponse data.
+          setShortestPathsState(null);
+          setIsFetchingShortestPaths(false);
+          setErrorMessage(null);
+        }}
+      />
 
       <NavLinks handleOpenModal={handleOpenModal} />
 
@@ -163,7 +172,16 @@ export const Home: React.FC = () => {
         sourcePageTitle={sourcePageTitle}
         targetPageTitle={targetPageTitle}
         isFetchingResults={isFetchingShortestPaths}
-        fetchShortestPaths={handleFetchShortestPaths}
+        onClick={async () => {
+          if (sourcePageTitle.trim().length === 0) {
+            setSourcePageTitle(sourcePagePlaceholderText);
+          }
+          if (targetPageTitle.trim().length === 0) {
+            setTargetPageTitle(targetPagePlaceholderText);
+          }
+
+          await handleFetchShortestPaths();
+        }}
       />
 
       {errorMessage !== null ? (

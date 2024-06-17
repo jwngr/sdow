@@ -117,7 +117,7 @@ const ResultListItem: React.FC<{
   const color = d3.scaleOrdinal(d3.schemeCategory10);
 
   const pagesContent = path.map((pageId, i) => {
-    const page = pagesById[pageId] ?? pagesById[String(pageId)];
+    const page = pagesById[pageId];
     if (!page) return null;
     const {description, title, url, thumbnailUrl} = page;
 
@@ -157,7 +157,7 @@ export const ResultsList: React.FC<{
   ));
 
   return (
-    <React.Fragment>
+    <>
       <ResultsListHeader>Individual paths</ResultsListHeader>
       <ResultsListWrapper>{resultsListItems}</ResultsListWrapper>
       {numHiddenPaths > 0 && (
@@ -165,6 +165,6 @@ export const ResultsList: React.FC<{
           Not showing {numHiddenPaths} more path{numHiddenPaths !== 1 && 's'}
         </ResultsListOtherPathsText>
       )}
-    </React.Fragment>
+    </>
   );
 };

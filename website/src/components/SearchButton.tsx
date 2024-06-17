@@ -1,5 +1,4 @@
 import React from 'react';
-import {useHistory, useLocation} from 'react-router-dom';
 import styled from 'styled-components';
 
 import {Button} from './common/Button.tsx';
@@ -20,30 +19,11 @@ const SearchButtonWrapper = styled(Button)`
 
 export const SearchButton: React.FC<{
   readonly isFetchingResults: boolean;
-  readonly fetchShortestPaths: () => Promise<void>;
-  readonly sourcePageTitle: string;
-  readonly targetPageTitle: string;
-}> = ({isFetchingResults, fetchShortestPaths, sourcePageTitle, targetPageTitle}) => {
-  const history = useHistory();
-  const location = useLocation();
-
+  readonly onClick: () => void;
+}> = ({isFetchingResults, onClick}) => {
   if (isFetchingResults) {
     return null;
   }
 
-  const handleSearchClicked = async () => {
-    if (sourcePageTitle.trim().length === 0 || targetPageTitle.trim().length === 0) {
-      return;
-    }
-
-    await fetchShortestPaths();
-
-    // Update the URL to reflect the new search.
-    const searchParams = new URLSearchParams(location.search);
-    searchParams.set('source', sourcePageTitle);
-    searchParams.set('target', targetPageTitle);
-    history.push({search: searchParams.toString()});
-  };
-
-  return <SearchButtonWrapper onClick={handleSearchClicked}>Go!</SearchButtonWrapper>;
+  return <SearchButtonWrapper onClick={onClick}>Go!</SearchButtonWrapper>;
 };

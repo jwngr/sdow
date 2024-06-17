@@ -1,8 +1,7 @@
 import Particles from '@tsparticles/react';
 import {createBrowserHistory} from 'history';
-import React from 'react';
+import React, {lazy, Suspense} from 'react';
 import {createRoot} from 'react-dom/client';
-// import Loadable from 'react-loadable';
 import {Route, Router, Switch} from 'react-router-dom';
 import {ThemeProvider} from 'styled-components';
 
@@ -19,21 +18,13 @@ const history = createBrowserHistory();
 require('typeface-quicksand');
 require('typeface-crimson-text');
 
-// Async components
-// const AsyncBlog = Loadable({
-//   loader: () => import('./components/blog/Blog/index.js'),
-//   loading: () => null,
-// });
-
-// const AsyncBlogPost = Loadable({
-//   loader: () => import('./components/blog/BlogPost/index.js'),
-//   loading: () => null,
-// });
+const AsyncBlog = lazy(() => import('./components/blog/Blog/index.js'));
+const AsyncBlogPost = lazy(() => import('./components/blog/BlogPost/index.js'));
 
 const root = createRoot(document.getElementById('root'));
 root.render(
   <ThemeProvider theme={theme}>
-    <React.Fragment>
+    <>
       <Particles
         options={particlesConfig}
         style={{
@@ -45,19 +36,22 @@ root.render(
       />
       <Router history={history}>
         <Switch>
-          {/* TODO: Uncomment these. */}
-          {/* <Route path="/blog/:postId">
-            <AsyncBlogPost />
+          <Route path="/blog/:postId">
+            <Suspense fallback={null}>
+              <AsyncBlogPost />
+            </Suspense>
           </Route>
           <Route path="/blog">
-            <AsyncBlog />
-          </Route> */}
+            <Suspense fallback={null}>
+              <AsyncBlog />
+            </Suspense>
+          </Route>
           <Route path="/">
             <Home />
           </Route>
         </Switch>
       </Router>
-    </React.Fragment>
+    </>
   </ThemeProvider>
 );
 

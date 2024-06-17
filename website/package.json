@@ -12,7 +12,6 @@
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
     "react-lazyload": "^3.0.0",
-    "react-loadable": "^5.3.1",
     "react-modal": "^3.3.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "5.0.1",

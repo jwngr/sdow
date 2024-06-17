@@ -2,8 +2,8 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 
-import logo from '../../../images/logo.png';
-import logo2x from '../../../images/logo@2x.png';
+import logo from '../../images/logo.png';
+import logo2x from '../../images/logo@2x.png';
 
 const LogoImg = styled.img`
   width: 460px;
@@ -21,8 +21,10 @@ const LogoImg = styled.img`
   }
 `;
 
-export const Logo = () => (
-  <Link to="/">
+export const Logo: React.FC<{
+  readonly onClick: () => void;
+}> = ({onClick}) => (
+  <Link to="/" onClick={onClick}>
     <LogoImg
       srcSet={`${logo} 462w, ${logo2x} 924w`}
       sizes="(max-width: 600px) 280px, 800px"
