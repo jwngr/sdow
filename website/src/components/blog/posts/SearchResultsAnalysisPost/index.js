@@ -1,7 +1,7 @@
 import React from 'react';
 import {Helmet} from 'react-helmet';
 
-import {getNumberWithCommas} from '../../../../utils';
+import {getNumberWithCommas} from '../../../../utils.ts';
 import {BarChart} from '../../../charts/BarChart';
 import {Table} from '../../../charts/Table';
 import {StyledTextLink} from '../../../common/StyledTextLink.tsx';

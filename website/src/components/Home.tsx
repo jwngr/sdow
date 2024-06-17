@@ -3,7 +3,7 @@ import React, {useCallback, useState} from 'react';
 
 import {fetchShortestPaths} from '../api.ts';
 import {WikipediaPage, WikipediaPageId} from '../types.ts';
-import {getRandomPageTitle} from '../utils.js';
+import {getRandomPageTitle} from '../utils.ts';
 import {Logo} from './common/Logo';
 import {ErrorMessage} from './ErrorMessage.tsx';
 import {InputFlexContainer, Modal, P} from './Home.styles.ts';

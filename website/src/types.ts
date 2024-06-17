@@ -1,6 +1,7 @@
 export type WikipediaPageId = number;
 
 export interface WikipediaPage {
+  readonly id: WikipediaPageId;
   readonly title: string;
   readonly url: string;
   readonly description?: string;

@@ -4,7 +4,7 @@ import LazyLoad from 'react-lazyload';
 import styled from 'styled-components';
 
 import defaultPageThumbnail from '../images/defaultPageThumbnail.png';
-import {WikipediaPage, WikipediaPageId} from '../types';
+import {WikipediaPage, WikipediaPageId} from '../types.ts';
 
 const ResultsListWrapper = styled.div`
   margin: 0 auto;

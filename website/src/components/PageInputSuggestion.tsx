@@ -1,6 +1,9 @@
+import React from 'react';
 import styled from 'styled-components';
 
-export const Wrapper = styled.div`
+import defaultPageThumbnail from '../images/defaultPageThumbnail.png';
+
+const Wrapper = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
@@ -8,7 +11,7 @@ export const Wrapper = styled.div`
   color: ${({theme}) => theme.colors.darkGreen};
 `;
 
-export const InnerWrapper = styled.div`
+const InnerWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -20,7 +23,7 @@ export const InnerWrapper = styled.div`
   }
 `;
 
-export const Image = styled.img`
+const Image = styled.img`
   width: 60px;
   height: 60px;
   margin-right: 12px;
@@ -33,7 +36,7 @@ export const Image = styled.img`
   }
 `;
 
-export const Title = styled.p`
+const Title = styled.p`
   font-size: 20px;
 
   @media (max-width: 600px) {
@@ -41,7 +44,7 @@ export const Title = styled.p`
   }
 `;
 
-export const Description = styled.p`
+const Description = styled.p`
   font-size: 12px;
   max-height: 48px;
   overflow: hidden;
@@ -50,3 +53,21 @@ export const Description = styled.p`
     max-height: 32px;
   }
 `;
+
+export const PageInputSuggestion: React.FC<{
+  readonly title: string;
+  readonly description: string;
+  readonly thumbnailUrl?: string;
+}> = ({title, description, thumbnailUrl}) => {
+  const descriptionContent = description ? <Description>{description}</Description> : null;
+
+  return (
+    <Wrapper>
+      <Image src={thumbnailUrl || defaultPageThumbnail} />
+      <InnerWrapper>
+        <Title>{title}</Title>
+        {descriptionContent}
+      </InnerWrapper>
+    </Wrapper>
+  );
+};

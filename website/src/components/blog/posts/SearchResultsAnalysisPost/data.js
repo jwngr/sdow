@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {getNumberWithCommas, getWikipediaPageUrl} from '../../../../utils';
+import {getNumberWithCommas, getWikipediaPageUrl} from '../../../../utils.ts';
 import {StyledTextLink} from '../../../common/StyledTextLink.tsx';
 
 export const totalSearches = 503498;

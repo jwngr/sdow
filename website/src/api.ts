@@ -1,5 +1,5 @@
-import {SDOW_API_URL} from './resources/constants';
-import {ShortestPathsApiResponse, WikipediaPage, WikipediaPageId} from './types';
+import {SDOW_API_URL} from './resources/constants.ts';
+import {ShortestPathsApiResponse, WikipediaPage, WikipediaPageId} from './types.ts';
 
 interface FetchShortestPathsResponse {
   readonly paths: readonly WikipediaPageId[][];

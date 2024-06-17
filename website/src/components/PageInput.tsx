@@ -6,10 +6,10 @@ import React, {useCallback, useEffect, useState} from 'react';
 import Autosuggest from 'react-autosuggest';
 import styled from 'styled-components';
 
-import {SDOW_USER_AGENT, WIKIPEDIA_API_URL} from '../resources/constants';
-import {WikipediaPage} from '../types';
-import {getRandomPageTitle} from '../utils';
-import {PageInputSuggestion} from './PageInputSuggestion';
+import {SDOW_USER_AGENT, WIKIPEDIA_API_URL} from '../resources/constants.ts';
+import {WikipediaPage} from '../types.ts';
+import {getRandomPageTitle} from '../utils.ts';
+import {PageInputSuggestion} from './PageInputSuggestion.tsx';
 
 type PageSuggestion = Required<Omit<WikipediaPage, 'url'>>;
 
@@ -100,7 +100,13 @@ const AutosuggestWrapper = styled.div`
 
 // Autosuggest component helpers.
 const getSuggestionValue = (suggestion) => suggestion.title;
-const renderSuggestion = (suggestion) => <PageInputSuggestion {...suggestion} />;
+const renderSuggestion = (suggestion) => (
+  <PageInputSuggestion
+    title={suggestion.title}
+    description={suggestion.description}
+    thumbnailUrl={suggestion.thumbnailUrl}
+  />
+);
 
 export const PageInput: React.FC<{
   readonly title: string;
@@ -152,11 +158,14 @@ export const PageInput: React.FC<{
 
       const pageResults = get(data, 'query.pages', {});
       const newSuggestions: PageSuggestion[] = [];
-      forEach(pageResults, ({ns, title, terms, thumbnail}) => {
+      forEach(pageResults, (all) => {
+        const {ns, id, title, terms, thumbnail} = all;
+        console.log('ALL:', all);
         if (ns === 0) {
           let description = get(terms, 'description.0', '');
           description = description.charAt(0).toUpperCase() + description.slice(1);
           newSuggestions.push({
+            id,
             title,
             description,
             thumbnailUrl: get(thumbnail, 'source'),

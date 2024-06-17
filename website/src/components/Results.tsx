@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import {WikipediaPage, WikipediaPageId} from '../types';
-import {getNumberWithCommas, getWikipediaPageUrl} from '../utils';
+import {WikipediaPage, WikipediaPageId} from '../types.ts';
+import {getNumberWithCommas, getWikipediaPageUrl} from '../utils.ts';
 import {Button} from './common/Button.tsx';
 import {StyledTextLink} from './common/StyledTextLink.tsx';
 import {ResultsGraph} from './ResultsGraph.tsx';
