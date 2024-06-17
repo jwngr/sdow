@@ -1,11 +1,12 @@
 import * as d3 from 'd3';
 import debounce from 'lodash/debounce';
 import React, {Component} from 'react';
+
 import {BarChartSvg, BarChartWrapper} from './index.styles';
 
 const DEFAULT_CHART_HEIGHT = 300;
 
-class BarChart extends Component {
+export class BarChart extends Component {
   constructor() {
     super();
 
@@ -48,7 +49,7 @@ class BarChart extends Component {
       .enter()
       .append('g')
       .attr('class', 'bar')
-      .attr('transform', (d) => `translate(${margins.left}, ${margins.top})`);
+      .attr('transform', () => `translate(${margins.left}, ${margins.top})`);
 
     // append the rectangles for the bar chart
     bars
@@ -125,5 +126,3 @@ class BarChart extends Component {
     );
   }
 }
-
-export default BarChart;

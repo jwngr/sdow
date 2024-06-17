@@ -1,6 +1,7 @@
 import React from 'react';
-import {getNumberWithCommas, getWikipediaPageUrl} from '../../../../utils';
-import StyledLink from '../../../common/StyledLink';
+
+import {getNumberWithCommas, getWikipediaPageUrl} from '../../../../utils.ts';
+import {StyledTextLink} from '../../../common/StyledTextLink.tsx';
 
 export const totalSearches = 503498;
 export const uniqueSearches = 377135;
@@ -29,76 +30,79 @@ const mostPopularSearches = [
     'Obesity',
     3,
     2813,
-    <StyledLink href="https://news.ycombinator.com/item?id=16468749">Hacker News</StyledLink>,
+    <StyledTextLink text="Hacker News" href="https://news.ycombinator.com/item?id=16468749" />,
   ],
   [
     'Age of Enlightenment',
     'Consumption of Tide Pods',
     2,
     2611,
-    <StyledLink href="https://news.ycombinator.com/item?id=16468523">Hacker News</StyledLink>,
+    <StyledTextLink text="Hacker News" href="https://news.ycombinator.com/item?id=16468523" />,
   ],
   [
     'Anime',
     'Alt-right',
     2,
     1557,
-    <StyledLink href="https://news.ycombinator.com/item?id=16469486">Hacker News</StyledLink>,
+    <StyledTextLink text="Hacker News" href="https://news.ycombinator.com/item?id=16469486" />,
   ],
   [
     'Lion Express',
     'Phinney',
     7,
     1380,
-    <StyledLink href="https://news.ycombinator.com/item?id=16469620">Hacker News</StyledLink>,
+    <StyledTextLink text="Hacker News" href="https://news.ycombinator.com/item?id=16469620" />,
   ],
   [
     'Spud gun',
     'Sputnik-1 EMC/EMI lab model',
     'No path',
     1274,
-    <StyledLink href="https://news.ycombinator.com/item?id=16468643">Hacker News</StyledLink>,
+    <StyledTextLink text="Hacker News" href="https://news.ycombinator.com/item?id=16468643" />,
   ],
   [
     'Consumption of Tide Pods',
     'Age of Enlightenment',
     3,
     1160,
-    <StyledLink href="https://news.ycombinator.com/item?id=16468945">Hacker News</StyledLink>,
+    <StyledTextLink text="Hacker News" href="https://news.ycombinator.com/item?id=16468945" />,
   ],
   [
     'Hargrave Military Academy',
     'Illiosentidae',
     6,
     763,
-    <StyledLink href="https://github.com/jwngr/sdow/blob/master/docs/miscellaneous.md#noteworthy-searches">
-      GitHub
-    </StyledLink>,
+    <StyledTextLink
+      text="GitHub"
+      href="https://github.com/jwngr/sdow/blob/master/docs/miscellaneous.md#noteworthy-searches"
+    />,
   ],
   [
     'Six Degrees of Kevin Bacon',
     'Phinney',
     6,
     692,
-    <StyledLink href="https://github.com/jwngr/sdow/blob/master/docs/miscellaneous.md#noteworthy-searches">
-      GitHub
-    </StyledLink>,
+    <StyledTextLink
+      text="GitHub"
+      href="https://github.com/jwngr/sdow/blob/master/docs/miscellaneous.md#noteworthy-searches"
+    />,
   ],
   [
     'John F. Kennedy',
     'Mikko Hyppönen',
     3,
     642,
-    <StyledLink href="https://twitter.com/mikko/status/968407596347641856">Twitter</StyledLink>,
+    <StyledTextLink text="Twitter" href="https://twitter.com/mikko/status/968407596347641856" />,
   ],
   [
     'CT scan',
     'MetaFilter',
     3,
     548,
-    <StyledLink href="https://www.metafilter.com/172674/CT-Scan-Laser-Public-Domain-Metafilter">
-      MetaFilter
-    </StyledLink>,
+    <StyledTextLink
+      text="MetaFilter"
+      href="https://www.metafilter.com/172674/CT-Scan-Laser-Public-Domain-Metafilter"
+    />,
   ],
 ];
 
@@ -106,7 +110,7 @@ export const mostPopularSearchesRows = mostPopularSearches.map((searchInfo) => {
   const searchUrl = `/?source=${encodeURIComponent(searchInfo[0])}&target=${encodeURIComponent(
     searchInfo[1]
   )}`;
-  const link = <StyledLink href={searchUrl}>{`${searchInfo[0]} → ${searchInfo[1]}`}</StyledLink>;
+  const link = <StyledTextLink text={`${searchInfo[0]} → ${searchInfo[1]}`} href={searchUrl} />;
   return [link, searchInfo[2], getNumberWithCommas(searchInfo[3]), searchInfo[4]];
 });
 
@@ -126,7 +130,7 @@ const mostPopularPages = [
 ];
 
 export const mostPopularPagesRows = mostPopularPages.map((pageInfo) => {
-  const link = <StyledLink href={getWikipediaPageUrl(pageInfo[0])}>{pageInfo[0]}</StyledLink>;
+  const link = <StyledTextLink text={pageInfo[0]} href={getWikipediaPageUrl(pageInfo[0])} />;
   return [link, getNumberWithCommas(pageInfo[1])];
 });
 

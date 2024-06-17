@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+
 import {Form, FormInput, HiddenBotInput, Intro, SubscribeButton, Wrapper} from './index.styles';
 
 class NewsletterSignupForm extends Component {
@@ -61,7 +62,6 @@ class NewsletterSignupForm extends Component {
             name="b_d19fa80c86cc4e9017baf4f4b_46d31d866a"
             tabIndex="-1"
             value=""
-            onChange={() => {}}
           />
 
           <SubscribeButton>Subscribe</SubscribeButton>

@@ -1,15 +1,16 @@
 import clone from 'lodash/clone';
+
 import pageTitles from './resources/pageTitles.json';
 import wikipediaFacts from './resources/wikipediaFacts.json';
 
-export const getWikipediaPageUrl = (pageTitle) => {
+export const getWikipediaPageUrl = (pageTitle: string): string => {
   const baseUrl = 'https://en.wikipedia.org/wiki/';
   const sanitizedPageTitle = pageTitle.replace(/ /g, '_');
   return `${baseUrl}${encodeURIComponent(sanitizedPageTitle)}`;
 };
 
-let unusedPageTitles = [];
-export const getRandomPageTitle = () => {
+let unusedPageTitles: string[] = [];
+export const getRandomPageTitle = (): string => {
   if (unusedPageTitles.length === 0) {
     unusedPageTitles = clone(pageTitles);
   }
@@ -18,8 +19,8 @@ export const getRandomPageTitle = () => {
   return unusedPageTitles.splice(indexToRemove, 1)[0];
 };
 
-let unusedWikipediaFacts = [];
-export const getRandomWikipediaFact = () => {
+let unusedWikipediaFacts: string[] = [];
+export const getRandomWikipediaFact = (): string => {
   if (unusedWikipediaFacts.length === 0) {
     unusedWikipediaFacts = clone(wikipediaFacts);
   }
@@ -28,6 +29,6 @@ export const getRandomWikipediaFact = () => {
   return unusedWikipediaFacts.splice(indexToRemove, 1)[0];
 };
 
-export const getNumberWithCommas = (val) => {
+export const getNumberWithCommas = (val: number): string => {
   return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };

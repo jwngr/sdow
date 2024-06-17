@@ -102,14 +102,14 @@ def shortest_paths_route():
      is_source_redirected) = database.fetch_page(request.json['source'])
   except ValueError:
     raise InvalidRequest(
-        'Start page "{0}" does not exist. Please try another search.'.format(request.json['source'].encode('utf-8')))
+        'Start page "{0}" does not exist. Please try another search.'.format(request.json['source']))
 
   try:
     (target_page_id, target_page_title,
      is_target_redirected) = database.fetch_page(request.json['target'])
   except ValueError:
     raise InvalidRequest(
-        'End page "{0}" does not exist. Please try another search.'.format(request.json['target'].encode('utf-8')))
+        'End page "{0}" does not exist. Please try another search.'.format(request.json['target']))
 
   # Compute the shortest paths.
   paths = database.compute_shortest_paths(source_page_id, target_page_id)

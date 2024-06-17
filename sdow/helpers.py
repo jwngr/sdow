@@ -68,6 +68,7 @@ def fetch_wikipedia_pages_info(page_ids, database):
         # title from the SDOW database and create the (albeit broken) URL.
         page_title = database.fetch_page_title(page_id)
         pages_info[page_id] = {
+            'id': page_id,
             'title': page_title,
             'url': 'https://en.wikipedia.org/wiki/{0}'.format(page_title)
         }

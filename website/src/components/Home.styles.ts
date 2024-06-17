@@ -11,8 +11,8 @@ export const Modal = styled(ReactModal)`
   padding: 12px;
   z-index: 10;
   text-align: justify;
-  border: solid 3px ${(props) => props.theme.colors.darkGreen};
-  background: ${(props) => props.theme.colors.creme};
+  border: solid 3px ${({theme}) => theme.colors.darkGreen};
+  background: ${({theme}) => theme.colors.creme};
 
   p {
     font-size: 16px;
@@ -27,12 +27,12 @@ export const Modal = styled(ReactModal)`
 
   a,
   a:visited {
-    color: ${(props) => props.theme.colors.darkGreen};
+    color: ${({theme}) => theme.colors.darkGreen};
     transition: color 0.5s;
   }
 
   a:hover {
-    color: ${(props) => props.theme.colors.red};
+    color: ${({theme}) => theme.colors.red};
   }
 
   @media (max-width: 600px) {
@@ -46,7 +46,7 @@ export const P = styled.p`
   margin: 16px;
   font-size: 32px;
   text-align: center;
-  color: ${(props) => props.theme.colors.darkGreen};
+  color: ${({theme}) => theme.colors.darkGreen};
 
   @media (max-width: 600px) {
     margin: 12px;

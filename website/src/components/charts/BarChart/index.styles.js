@@ -3,17 +3,17 @@ import styled from 'styled-components';
 export const BarChartWrapper = styled.div`
   margin: 20px auto;
   overflow: hidden;
-  background-color: ${(props) => props.theme.colors.creme};
-  border: solid 3px ${(props) => props.theme.colors.darkGreen};
+  background-color: ${({theme}) => theme.colors.creme};
+  border: solid 3px ${({theme}) => theme.colors.darkGreen};
 `;
 
 export const BarChartSvg = styled.svg`
   .bar rect {
-    fill: ${(props) => props.theme.colors.darkGreen};
+    fill: ${({theme}) => theme.colors.darkGreen};
   }
 
   text {
-    fill: ${(props) => props.theme.colors.darkGreen};
+    fill: ${({theme}) => theme.colors.darkGreen};
   }
 
   .bar text {
@@ -31,7 +31,7 @@ export const BarChartSvg = styled.svg`
 
     path,
     line {
-      stroke: ${(props) => props.theme.colors.darkGreen};
+      stroke: ${({theme}) => theme.colors.darkGreen};
     }
 
     @media (max-width: 600px) {
