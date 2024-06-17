@@ -50,19 +50,21 @@ const BarChartSvg = styled.svg`
 export const BarChart: React.FC<{
   readonly data: number[];
 }> = ({data}) => {
-  const barChartSizeRef = useRef<HTMLDivElement>(null);
   const barChartRef = useRef<SVGSVGElement>(null);
+  const barChartWrapperRef = useRef<HTMLDivElement>(null);
   const barChartSvgRef = useRef<d3.Selection<SVGGElement, unknown, null, undefined> | null>(null);
 
-  const getBarChartWidth = () => {
+  const getBarChartWidth = useCallback(() => {
+    if (!barChartWrapperRef.current) return 0;
     // Return width of wrapper element, minus border.
-    if (!barChartRef.current) return 0;
-    return barChartRef.current.getBoundingClientRect().width - 6;
-  };
+    return barChartWrapperRef.current.getBoundingClientRect().width - 6;
+  }, []);
 
   const resizeBarChart = useCallback(() => {
-    barChartSvgRef.current?.attr('width', getBarChartWidth());
-  }, []);
+    const width = getBarChartWidth();
+    console.log('width:', width);
+    barChartSvgRef.current.attr('width', width);
+  }, [getBarChartWidth]);
 
   // Resize the bar chart on page resize.
   const handleResizeDebounced = debounce(resizeBarChart, 350);
@@ -85,7 +87,7 @@ export const BarChart: React.FC<{
       .attr('width', width)
       .attr('height', DEFAULT_CHART_HEIGHT + margins.top + margins.bottom);
 
-    if (!barChartRef.current) return;
+    if (!barChartSvgRef.current) return;
 
     // set the ranges
     const xScale = d3
@@ -161,10 +163,10 @@ export const BarChart: React.FC<{
       barChartSvgRef.current?.selectAll('*').remove();
       window.removeEventListener('resize', debouncedResizeBarChart);
     };
-  }, [data, debouncedResizeBarChart]);
+  }, [data, debouncedResizeBarChart, getBarChartWidth, resizeBarChart]);
 
   return (
-    <BarChartWrapper ref={barChartSizeRef}>
+    <BarChartWrapper ref={barChartWrapperRef}>
       <BarChartSvg ref={barChartRef} />
     </BarChartWrapper>
   );
