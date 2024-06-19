@@ -4,6 +4,7 @@ Wrapper for reading from and writing to the SDOW database.
 
 import os.path
 import sqlite3
+
 import sdow.helpers as helpers
 from sdow.breadth_first_search import breadth_first_search
 

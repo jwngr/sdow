@@ -7,9 +7,10 @@ import logging
 import google.cloud.logging
 
 from flask_cors import CORS
-from sdow.database import Database
 from flask_compress import Compress
 from flask import Flask, request, jsonify
+
+from sdow.database import Database
 from sdow.helpers import InvalidRequest, fetch_wikipedia_pages_info
 
 

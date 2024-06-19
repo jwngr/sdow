@@ -1,4 +1,4 @@
-# Web erver Setup | Six Degrees of Wikipedia
+# Web server Setup | Six Degrees of Wikipedia
 
 ## Table of contents
 
@@ -12,12 +12,14 @@
 1.  Create a new [Google Compute Engine instance](https://console.cloud.google.com/compute/instances?project=sdow-prod)
     from the `sdow-web-server` instance template, which is configured with the following specs:
 
-    1.  **Name:** `sdow-web-server-1`
+    1.  **Name:** `sdow-web-server-#`
     1.  **Zone:** `us-central1-c`
-    1.  **Machine Type:** f1-micro (1 vCPU, 0.6 GB RAM)
-    1.  **Boot disk**: 32 GB SSD, Debian GNU/Linux 10 (buster)
+    1.  **Machine Type:** e2-micro (2 vCPU, 1 core, 1 GB memory)
+    1.  **Boot disk**: 32 GB SSD, Debian GNU/Linux 12 (bookworm)
     1.  **Notes**: Click "Set access for each API" and use default values for all APIs except set
-        Storage to "Read Write".
+        Storage to "Read Write"
+    1.  **Firewall**: Allow HTTP and HTTPS traffic
+    1.  **Monitoring:** Install Ops Agent for Monitoring and Logging
 
 1.  [Install, initialize, and authenticate to the `gcloud` CLI](https://cloud.google.com/sdk/docs/#install_the_latest_cloud_tools_version_cloudsdk_current_version).
 
@@ -38,12 +40,8 @@
 
     ```bash
     $ sudo apt-get -q update
-    $ sudo apt-get -yq install git pigz sqlite3 python-pip
-    $ sudo pip install --upgrade pip setuptools virtualenv
-    # OR for Python 3
-    #$ sudo apt-get -q update
-    #$ sudo apt-get -yq install git pigz sqlite3 python3-pip
-    #$ sudo pip3 install --upgrade pip setuptools virtualenv
+    $ sudo apt-get -yq install git pigz sqlite3
+    $ sudo apt install python3-virtualenv
     ```
 
 1.  Clone this directory via HTTPS and navigate into the repo:
@@ -56,7 +54,7 @@
 1.  Create and activate a new `virtualenv` environment:
 
     ```bash
-    $ virtualenv -p python2 env  # OR virtualenv -p python3 env
+    $ virtualenv -p python3 env
     $ source env/bin/activate
     ```
 
@@ -75,6 +73,7 @@
 1.  Decompress the SQLite file:
 
     ```bash
+    # Warning: This may take ~10 minutes.
     $ pigz -d sdow/sdow.sqlite.gz
     ```
 
@@ -100,7 +99,9 @@
 
     ```bash
     $ sudo apt-get -q update
-    $ sudo apt-get -yq install nginx certbot python-certbot-nginx
+    $ sudo apt install nginx snapd
+    $ sudo snap install --classic certbot
+    $ sudo ln -s /snap/bin/certbot /usr/bin/certbot
     ```
 
 1.  Add this `location` block inside the `server` block in `/etc/nginx/sites-available/default`:
@@ -134,15 +135,18 @@
     $ sudo certbot renew --dry-run
     ```
 
-1.  Run `crontab -e` and add the following cron jobs to that file to auto-renew the SSL certificate,
-    regularly restart the web server (to ensure it stays responsive), and backup the searches
-    database weekly:
+1.  Configure the following cron jobs:
+
+    ```bash
+    $ crontab -e
+    # Add the stuff below and save.
+    ```
 
     ```
-    # Renew the cert daily.
+    # Auto-renew the SSL certificate daily.
     0 4 * * * sudo /usr/bin/certbot renew --noninteractive --renew-hook "sudo /bin/systemctl reload nginx"
 
-    # Restart the server every ten minutes.
+    # Restart the web server every ten minutes (to defend against hangs).
     */10 * * * * /home/jwngr/sdow/env/bin/supervisorctl -c /home/jwngr/sdow/config/supervisord.conf restart gunicorn
 
     # Backup the searches database weekly.
@@ -153,21 +157,6 @@
 
     **Note:** Supervisor debug logs can be found at `/tmp/supervisord.log`.
 
-1.  Replace the `ExecStart` line in `/lib/systemd/system/certbot.service` with the following to
-    ensure NGINX restarts every time a new certificate is generated:
-
-    ```
-    ExecStart=/usr/bin/certbot -q renew --noninteractive --renew-hook "sudo /bin/systemctl reload nginx"
-    ```
-
-1.  Run the following commands to restart `certbot` and ensure the new timer is enabled:
-
-    ```
-    $ sudo systemctl daemon-reload
-    $ sudo systemctl restart certbot.service
-    $ sudo systemctl restart certbot.timer
-    ```
-
 1.  Install a mail service in order to read logs from cron jobs:
 
     ```bash
@@ -177,8 +166,7 @@
 
     **Note:** Cron job logs will be written to `/var/mail/jwngr`.
 
-1.  Generate a strong Diffie-Hellman group to further increase security (note that this can take a
-    couple minutes):
+1.  Generate a strong Diffie-Hellman group to further increase security:
 
     ```bash
     $ sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
@@ -188,24 +176,13 @@
 
     ```bash
     $ sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.backup
-    $ sudo cp ./config/nginx.conf /etc/nginx/nginx.conf
+    $ sudo cp config/nginx.conf /etc/nginx/nginx.conf
     ```
 
 1.  Restart `nginx`:
 
     ```bash
     $ sudo systemctl restart nginx
-    ```
-
-1.  Install the [Stackdriver monitoring agent](https://cloud.google.com/monitoring/agent/install-agent):
-
-    ```bash
-    $ curl -sSO https://dl.google.com/cloudagents/add-monitoring-agent-repo.sh
-    $ sudo bash add-monitoring-agent-repo.sh
-    $ sudo apt-get update
-    $ rm add-monitoring-agent-repo.sh
-    $ sudo apt-get -yq install stackdriver-agent
-    $ sudo service stackdriver-agent start
     ```
 
 ## Recurring setup
@@ -252,7 +229,7 @@ following commands after SSHing into the web server:
 $ cd sdow/
 $ source env/bin/activate
 $ gsutil -u sdow-prod cp gs://sdow-prod/dumps/YYYYMMDD/sdow.sqlite.gz sdow/sdow_new.sqlite.gz
-$ pigz -d sdow/sdow_new.sqlite.gz  # This takes ~5 minutes and causes search to be non-responsive.
+$ pigz -d sdow/sdow_new.sqlite.gz  # This takes ~10 minutes and causes search to be non-responsive.
 $ mv sdow/sdow_new.sqlite sdow/sdow.sqlite
 $ cd config/
 $ supervisorctl restart gunicorn
