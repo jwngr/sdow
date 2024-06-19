@@ -1,4 +1,4 @@
-name: Frontend CI
+name: Run Frontend CI on PR
 on: [push]
 jobs:
   frontend-ci:
