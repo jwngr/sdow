@@ -2,7 +2,6 @@
 Helper classes and methods.
 """
 
-import logging
 import requests
 
 

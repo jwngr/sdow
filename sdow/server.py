@@ -10,8 +10,8 @@ from flask_cors import CORS
 from flask_compress import Compress
 from flask import Flask, request, jsonify
 
-from database import Database
-from helpers import InvalidRequest, fetch_wikipedia_pages_info
+from sdow.database import Database
+from sdow.helpers import InvalidRequest, fetch_wikipedia_pages_info
 
 
 # Connect to the SDOW database.
