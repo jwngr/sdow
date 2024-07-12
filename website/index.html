@@ -53,18 +53,16 @@
     <meta name="twitter:image:src" content="https://sixdegreesofwikipedia.com/sdowSquareLogo.png" />
     <meta name="twitter:image:alt" content="Six Degrees of Wikipedia Logo" />
 
-    <!-- Google Analytics -->
+    <!-- Firebase / Google Analytics. -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GB2H4X9YPX"></script>
     <script>
-      window.ga =
-        window.ga ||
-        function () {
-          (ga.q = ga.q || []).push(arguments);
-        };
-      ga.l = +new Date();
-      ga('create', 'UA-114715999-1', 'auto');
-      ga('send', 'pageview');
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-GB2H4X9YPX');
     </script>
-    <script async src="https://www.google-analytics.com/analytics.js"></script>
   </head>
 
   <body>
