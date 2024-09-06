@@ -4,7 +4,7 @@ flask-cors == 4.0.1
 litecli == 1.11.0
 google-cloud-logging == 3.10.0
 google-compute-engine == 2.8.13
-gunicorn == 22.0.0
+gunicorn == 23.0.0
 protobuf == 4.25.3
 requests == 2.32.3
 supervisor == 4.2.5
