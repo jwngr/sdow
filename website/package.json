@@ -39,7 +39,7 @@
     "eslint-plugin-react-refresh": "^0.4.7",
     "prettier": "^3.3.2",
     "source-map-explorer": "^2.1.0",
-    "typescript": "^5.4.5",
+    "typescript": "^5.5.4",
     "vite": "^5.3.1"
   },
   "scripts": {
