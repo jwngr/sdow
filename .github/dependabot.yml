@@ -3,7 +3,10 @@
 version: 2
 updates:
   - package-ecosystem: 'npm'
-    directories:
-      - '/website'
+    directory: '/website'
     schedule:
       interval: 'monthly'
+  - package-ecosystem: "pip"
+      directory: "/"
+      schedule:
+        interval: "monthly"
