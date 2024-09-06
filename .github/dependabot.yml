@@ -6,7 +6,7 @@ updates:
     directory: '/website'
     schedule:
       interval: 'monthly'
-  - package-ecosystem: "pip"
-      directory: "/"
+  - package-ecosystem: 'pip'
+      directory: '/'
       schedule:
-        interval: "monthly"
+        interval: 'monthly'
