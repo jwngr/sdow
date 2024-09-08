@@ -14,7 +14,7 @@
     "react-helmet": "^6.1.0",
     "react-lazyload": "^3.2.1",
     "react-modal": "^3.16.1",
-    "react-router-dom": "^5.3.4",
+    "react-router-dom": "^6.26.1",
     "styled-components": "^6.1.13",
     "typeface-crimson-text": "1.1.13",
     "typeface-quicksand": "1.1.13"
