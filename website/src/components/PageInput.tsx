@@ -172,7 +172,6 @@ export const PageInput: React.FC<{
     }
   }, []);
 
-  /* eslint-disable-next-line react-hooks/exhaustive-deps */
   const debouncedLoadSuggestions = useCallback(debounce(loadSuggestions, 300), [loadSuggestions]);
 
   return (
