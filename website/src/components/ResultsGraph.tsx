@@ -188,6 +188,7 @@ export const ResultsGraph: React.FC<{
       path.forEach((currentPageId, i) => {
         const currentPage = pagesById[currentPageId];
         if (!currentPage) {
+          // eslint-disable-next-line no-console
           console.error(`Failed to find page with ID ${currentPageId} in pages dictionary`);
           return;
         }
@@ -205,6 +206,7 @@ export const ResultsGraph: React.FC<{
           const sourceNode = nodesData.find((n) => n.id === previousPageId);
           const targetNode = nodesData.find((n) => n.id === currentPageId);
           if (!sourceNode || !targetNode) {
+            // eslint-disable-next-line no-console
             console.error('Failed to find source or target node');
             return;
           }
