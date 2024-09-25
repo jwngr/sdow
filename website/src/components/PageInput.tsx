@@ -2,7 +2,7 @@ import debounce from 'lodash/debounce';
 import filter from 'lodash/filter';
 import forEach from 'lodash/forEach';
 import get from 'lodash/get';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import Autosuggest from 'react-autosuggest';
 import styled from 'styled-components';
 
@@ -172,7 +172,7 @@ export const PageInput: React.FC<{
     }
   }, []);
 
-  const debouncedLoadSuggestions = useCallback(debounce(loadSuggestions, 300), [loadSuggestions]);
+  const debouncedLoadSuggestions = useMemo(() => debounce(loadSuggestions, 300), [loadSuggestions]);
 
   return (
     <AutosuggestWrapper>
