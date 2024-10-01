@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    // Target latest ECMAScript.
+    "target": "ESNext",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+
+    // Configuration required for Vite.
+    "moduleResolution": "bundler",
+    "isolatedModules": true,
+
+    // Miscellaneous configuration.
+    "jsx": "react-jsx", // Use React JSX.
+    "strict": true, // Enable strict type checking.
+    "noEmit": true, // Don't emit JS files - let vite create dist/.
+    "resolveJsonModule": true // Allow importing JSON files.
+  },
+  "include": ["src"]
+}
