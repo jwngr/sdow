@@ -1,14 +1,11 @@
 import Particles from '@tsparticles/react';
-import {createBrowserHistory} from 'history';
 import React, {lazy, Suspense} from 'react';
-import {Route, Router, Switch} from 'react-router-dom';
+import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
 import {ThemeProvider} from 'styled-components';
 
 import particlesConfig from '../resources/particles.config.json';
 import theme from '../resources/theme.json';
 import {Home} from './Home';
-
-const history = createBrowserHistory();
 
 const AsyncBlog = lazy(() => import('./blog/Blog').then((module) => ({default: module.Blog})));
 const AsyncBlogPost = lazy(() =>
@@ -28,23 +25,29 @@ export const App: React.FC = () => {
             zIndex: -1,
           }}
         />
-        <Router history={history}>
-          <Switch>
-            <Route path="/blog/:postId">
-              <Suspense fallback={null}>
-                <AsyncBlogPost />
-              </Suspense>
-            </Route>
-            <Route path="/blog">
-              <Suspense fallback={null}>
-                <AsyncBlog />
-              </Suspense>
-            </Route>
-            <Route path="/">
-              <Home />
-            </Route>
-          </Switch>
-        </Router>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route
+              path="/blog"
+              element={
+                <Suspense fallback={null}>
+                  <AsyncBlog />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/blog/:postId"
+              element={
+                <Suspense fallback={null}>
+                  <AsyncBlogPost />
+                </Suspense>
+              }
+            />
+            {/* Redirect unmatched routes to home page, replacing history stack. */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </BrowserRouter>
       </>
     </ThemeProvider>
   );
