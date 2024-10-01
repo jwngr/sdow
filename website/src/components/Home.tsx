@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import ReactModal from 'react-modal';
-import {useHistory, useLocation} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
 
 import {fetchShortestPaths} from '../api';
@@ -134,7 +134,7 @@ const ErrorMessage: React.FC<{
 };
 
 export const Home: React.FC = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
 
   const [showModal, setShowModal] = useState(false);
@@ -169,7 +169,7 @@ export const Home: React.FC = () => {
       const searchParams = new URLSearchParams();
       searchParams.set('source', actualSourcePageTitle);
       searchParams.set('target', actualTargetPageTitle);
-      history.push({search: searchParams.toString()});
+      navigate({search: searchParams.toString()});
 
       const response = await fetchShortestPaths({
         sourcePageTitle: actualSourcePageTitle,
@@ -186,7 +186,7 @@ export const Home: React.FC = () => {
         durationInSeconds: ((Date.now() - startTimeInMilliseconds) / 1000).toFixed(2),
       });
 
-      history.push({search: searchParams.toString()});
+      navigate({search: searchParams.toString()});
     } catch (error: unknown) {
       if ((error as Error).message === 'Network Error') {
         // This can happen when the server is down, the Flask app is not running, or when the
@@ -207,7 +207,7 @@ export const Home: React.FC = () => {
 
     setIsFetchingResults(false);
   }, [
-    history,
+    navigate,
     sourcePagePlaceholderText,
     sourcePageTitle,
     targetPagePlaceholderText,

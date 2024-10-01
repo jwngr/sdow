@@ -1,5 +1,5 @@
 import {lazy, Suspense} from 'react';
-import {Redirect, useParams} from 'react-router-dom';
+import {Navigate, Params, useParams} from 'react-router-dom';
 
 import {assertNever} from '../../utils';
 import {Logo} from '../common/Logo';
@@ -10,17 +10,17 @@ const AsyncSearchResultsAnalysisPost = lazy(() =>
   }))
 );
 
-type BlogPostId = 'search-results-analysis';
-
-interface Params {
-  readonly postId: BlogPostId;
+interface BlogPostRouteParams extends Params {
+  readonly postId: string;
 }
 
 export const BlogPost: React.FC = () => {
-  const {postId} = useParams<Params>();
+  const params = useParams<BlogPostRouteParams>();
+  const {postId} = params;
 
   if (!postId) {
-    return <Redirect to="/blog" />;
+    // This is technically already handled by the router, but needed to ensure type safety.
+    return <Navigate to="/blog" replace />;
   }
 
   let blogPostContent: React.ReactNode;
@@ -33,7 +33,10 @@ export const BlogPost: React.FC = () => {
       );
       break;
     default:
-      assertNever(postId);
+      // Since the post ID comes from an arbitrary URL, it may not match a valid blog post ID. If
+      // this happens, redirect to the home page, replacing the current history stack.
+      // TODO: Make `postId` an typesafe enum of all blog post IDs.
+      return <Navigate to="/blog" replace />;
   }
 
   return (
