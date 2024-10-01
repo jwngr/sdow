@@ -1,7 +1,6 @@
 import {lazy, Suspense} from 'react';
 import {Navigate, Params, useParams} from 'react-router-dom';
 
-import {assertNever} from '../../utils';
 import {Logo} from '../common/Logo';
 
 const AsyncSearchResultsAnalysisPost = lazy(() =>
