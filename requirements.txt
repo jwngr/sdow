@@ -1,5 +1,5 @@
 flask == 3.0.3
-flask-compress == 1.15.0
+flask-compress == 1.17
 flask-cors == 5.0.0
 litecli == 1.12.3
 google-cloud-logging == 3.11.2
