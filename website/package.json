@@ -19,25 +19,25 @@
     "typeface-quicksand": "1.1.13"
   },
   "devDependencies": {
-    "@ianvs/prettier-plugin-sort-imports": "^4.3.1",
+    "@ianvs/prettier-plugin-sort-imports": "^4.4.0",
     "@types/d3": "^7.4.3",
     "@types/lodash": "^4.17.13",
-    "@types/node": "^22.8.6",
+    "@types/node": "^22.10.1",
     "@types/react": "^18.3.12",
     "@types/react-autosuggest": "^10.1.11",
     "@types/react-dom": "^18.3.1",
     "@types/react-helmet": "^6.1.11",
     "@types/react-lazyload": "^3.2.3",
     "@types/react-modal": "^3.16.3",
-    "@vitejs/plugin-react": "^4.3.3",
-    "eslint": "^9.14.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.16.0",
     "eslint-plugin-react-hooks": "^5.0.0",
-    "globals": "^15.11.0",
-    "prettier": "^3.3.3",
+    "globals": "^15.13.0",
+    "prettier": "^3.4.1",
     "source-map-explorer": "^2.5.3",
-    "typescript": "^5.6.3",
-    "typescript-eslint": "^8.12.2",
-    "vite": "^5.4.10"
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.17.0",
+    "vite": "^6.0.2"
   },
   "scripts": {
     "analyze": "source-map-explorer build/static/js/*",
@@ -45,7 +45,8 @@
     "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css}'",
     "start": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "update-deps": "npx npm-check-updates -u && npm install"
   },
   "browserslist": [
     ">0.2%",
