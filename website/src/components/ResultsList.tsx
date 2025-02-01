@@ -139,8 +139,6 @@ const ResultListItem: React.FC<{
   return <ResultsListItemWrapper>{pagesContent}</ResultsListItemWrapper>;
 };
 
-const LazyResultListItem = React.lazy(() => Promise.resolve({default: ResultListItem}));
-
 export const ResultsList: React.FC<{
   readonly paths: readonly WikipediaPageId[][];
   readonly pagesById: Record<WikipediaPageId, WikipediaPage>;
@@ -150,7 +148,7 @@ export const ResultsList: React.FC<{
 
   const resultsListItems = paths
     .slice(0, maxResultsToDisplay)
-    .map((path, i) => <LazyResultListItem key={i} path={path} pagesById={pagesById} />);
+    .map((path, i) => <ResultListItem key={i} path={path} pagesById={pagesById} />);
 
   return (
     <>
