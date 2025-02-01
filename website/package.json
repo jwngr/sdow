@@ -11,7 +11,7 @@
     "react-dom": "^19.0.0",
     "react-helmet": "^6.1.0",
     "react-modal": "^3.16.3",
-    "react-router-dom": "^6.27.0",
+    "react-router-dom": "^7.1.5",
     "styled-components": "^6.1.14",
     "typeface-crimson-text": "1.1.13",
     "typeface-quicksand": "1.1.13"
