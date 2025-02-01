@@ -1,7 +1,7 @@
 flask == 3.1.0
 flask-compress == 1.17
 flask-cors == 5.0.0
-litecli == 1.13.2
+litecli == 1.14.4
 google-cloud-logging == 3.11.3
 google-compute-engine == 2.8.13
 gunicorn == 23.0.0
