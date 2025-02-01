@@ -84,7 +84,7 @@ export const mostPopularSearches: PopularSearch[] = [
     numberOfSearches: 763,
     referenceText: 'GitHub',
     referenceUrl:
-      'https://github.com/jwngr/sdow/blob/master/docs/miscellaneous.md#noteworthy-searches',
+      'https://github.com/jwngr/sdow/blob/main/docs/miscellaneous.md#noteworthy-searches',
   },
   {
     sourcePageTitle: 'Six Degrees of Kevin Bacon',
@@ -93,7 +93,7 @@ export const mostPopularSearches: PopularSearch[] = [
     numberOfSearches: 692,
     referenceText: 'GitHub',
     referenceUrl:
-      'https://github.com/jwngr/sdow/blob/master/docs/miscellaneous.md#noteworthy-searches',
+      'https://github.com/jwngr/sdow/blob/main/docs/miscellaneous.md#noteworthy-searches',
   },
   {
     sourcePageTitle: 'John F. Kennedy',
