@@ -5,6 +5,6 @@ litecli == 1.13.2
 google-cloud-logging == 3.11.3
 google-compute-engine == 2.8.13
 gunicorn == 23.0.0
-protobuf == 5.29.2
+protobuf == 5.29.3
 requests == 2.32.3
 supervisor == 4.2.5
