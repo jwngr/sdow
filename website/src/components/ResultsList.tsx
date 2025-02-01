@@ -1,10 +1,10 @@
 import * as d3 from 'd3';
-import React from 'react';
-import LazyLoad from 'react-lazyload';
+import React, {Suspense} from 'react';
 import styled from 'styled-components';
 
 import defaultPageThumbnail from '../images/defaultPageThumbnail.png';
 import {WikipediaPage, WikipediaPageId} from '../types';
+import {LazyLoadWrapper} from './common/LazyLoadWrapper';
 
 const ResultsListWrapper = styled.div`
   margin: 0 auto;
@@ -139,6 +139,8 @@ const ResultListItem: React.FC<{
   return <ResultsListItemWrapper>{pagesContent}</ResultsListItemWrapper>;
 };
 
+const LazyResultListItem = React.lazy(() => Promise.resolve({default: ResultListItem}));
+
 export const ResultsList: React.FC<{
   readonly paths: readonly WikipediaPageId[][];
   readonly pagesById: Record<WikipediaPageId, WikipediaPage>;
@@ -146,11 +148,12 @@ export const ResultsList: React.FC<{
   const maxResultsToDisplay = 50;
   const numHiddenPaths = paths.length - maxResultsToDisplay;
 
-  // Only display a limited number of results, lazily loading all of them.
   const resultsListItems = paths.slice(0, maxResultsToDisplay).map((path, i) => (
-    <LazyLoad once={true} offset={200} key={i}>
-      <ResultListItem path={path} pagesById={pagesById} />
-    </LazyLoad>
+    <LazyLoadWrapper key={i} fallback={null}>
+      <Suspense fallback={null}>
+        <LazyResultListItem path={path} pagesById={pagesById} />
+      </Suspense>
+    </LazyLoadWrapper>
   ));
 
   return (
