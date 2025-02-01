@@ -9,6 +9,9 @@
     "moduleResolution": "bundler",
     "isolatedModules": true,
 
+    // TODO: Remove this once migrating off styled-components.
+    "skipLibCheck": true,
+
     // Miscellaneous configuration.
     "jsx": "react-jsx", // Use React JSX.
     "strict": true, // Enable strict type checking.
