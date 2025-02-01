@@ -2,7 +2,7 @@ name: Deploy prod frontend on merge
 on:
   push:
     branches:
-      - master
+      - main
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
