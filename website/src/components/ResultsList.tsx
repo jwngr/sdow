@@ -155,9 +155,9 @@ export const ResultsList: React.FC<{
   return (
     <>
       <ResultsListHeader>Individual paths</ResultsListHeader>
-      <ResultsListWrapper>
-        <LazyLoadWrapper fallback={null}>{resultsListItems}</LazyLoadWrapper>
-      </ResultsListWrapper>
+      <LazyLoadWrapper fallback={null}>
+        <ResultsListWrapper>{resultsListItems}</ResultsListWrapper>
+      </LazyLoadWrapper>
       {numHiddenPaths > 0 && (
         <ResultsListOtherPathsText>
           Not showing {numHiddenPaths} more path{numHiddenPaths !== 1 && 's'}
