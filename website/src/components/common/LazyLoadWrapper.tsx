@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {Suspense, useEffect, useRef, useState} from 'react';
 
 export const LazyLoadWrapper: React.FC<{
   readonly children: React.ReactNode;
@@ -28,5 +28,9 @@ export const LazyLoadWrapper: React.FC<{
     return () => observer.disconnect();
   }, [rootMargin]);
 
-  return <div ref={ref}>{isVisible ? children : fallback}</div>;
+  return (
+    <div ref={ref}>
+      {isVisible ? <Suspense fallback={fallback}>{children}</Suspense> : fallback}
+    </div>
+  );
 };

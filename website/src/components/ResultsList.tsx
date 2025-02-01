@@ -150,9 +150,7 @@ export const ResultsList: React.FC<{
 
   const resultsListItems = paths.slice(0, maxResultsToDisplay).map((path, i) => (
     <LazyLoadWrapper key={i} fallback={null}>
-      <Suspense fallback={null}>
-        <LazyResultListItem path={path} pagesById={pagesById} />
-      </Suspense>
+      <LazyResultListItem path={path} pagesById={pagesById} />
     </LazyLoadWrapper>
   ));
 
