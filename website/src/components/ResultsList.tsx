@@ -148,16 +148,16 @@ export const ResultsList: React.FC<{
   const maxResultsToDisplay = 50;
   const numHiddenPaths = paths.length - maxResultsToDisplay;
 
-  const resultsListItems = paths.slice(0, maxResultsToDisplay).map((path, i) => (
-    <LazyLoadWrapper key={i} fallback={null}>
-      <LazyResultListItem path={path} pagesById={pagesById} />
-    </LazyLoadWrapper>
-  ));
+  const resultsListItems = paths
+    .slice(0, maxResultsToDisplay)
+    .map((path, i) => <LazyResultListItem key={i} path={path} pagesById={pagesById} />);
 
   return (
     <>
       <ResultsListHeader>Individual paths</ResultsListHeader>
-      <ResultsListWrapper>{resultsListItems}</ResultsListWrapper>
+      <ResultsListWrapper>
+        <LazyLoadWrapper fallback={null}>{resultsListItems}</LazyLoadWrapper>
+      </ResultsListWrapper>
       {numHiddenPaths > 0 && (
         <ResultsListOtherPathsText>
           Not showing {numHiddenPaths} more path{numHiddenPaths !== 1 && 's'}
