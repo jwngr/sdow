@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import React, {Suspense} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import defaultPageThumbnail from '../images/defaultPageThumbnail.png';
