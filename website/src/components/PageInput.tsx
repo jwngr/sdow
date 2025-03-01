@@ -139,9 +139,7 @@ export const PageInput: React.FC<{
     try {
       const response = await fetch(url, {
         method: 'GET',
-        headers: {
-          'Api-User-Agent': SDOW_USER_AGENT,
-        },
+        headers: {'Api-User-Agent': SDOW_USER_AGENT},
       });
 
       const data = await response.json();
@@ -153,12 +151,7 @@ export const PageInput: React.FC<{
         if (ns === 0) {
           let description = get(terms, 'description.0', '');
           description = description.charAt(0).toUpperCase() + description.slice(1);
-          newSuggestions.push({
-            id,
-            title,
-            description,
-            thumbnailUrl: get(thumbnail, 'source'),
-          });
+          newSuggestions.push({id, title, description, thumbnailUrl: get(thumbnail, 'source')});
         }
       });
       setSuggestions(filter(newSuggestions));

@@ -24,13 +24,8 @@ export async function fetchShortestPaths({
 }): Promise<FetchShortestPathsResponse> {
   const response = await fetch(`${SDOW_API_URL}/paths`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      source: sourcePageTitle,
-      target: targetPageTitle,
-    }),
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({source: sourcePageTitle, target: targetPageTitle}),
   });
 
   if (!response.ok) {

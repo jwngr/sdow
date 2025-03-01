@@ -44,10 +44,10 @@ const TableWrapper = styled.div`
   }
 `;
 
-export const Table: React.FC<{
-  readonly headers: string[];
-  readonly rows: React.ReactNode[][];
-}> = ({headers, rows}) => {
+export const Table: React.FC<{readonly headers: string[]; readonly rows: React.ReactNode[][]}> = ({
+  headers,
+  rows,
+}) => {
   const headerRow = (
     <tr key="table-header-row">
       {headers.map((header, i) => (
