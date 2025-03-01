@@ -55,9 +55,7 @@ const TwitterBirdSvg = styled.svg`
  * Adds some character to the results by rendering a snarky comment for certain degress of
  * separation.
  */
-const SnarkyContent: React.FC<{
-  readonly degreesOfSeparation: number;
-}> = ({degreesOfSeparation}) => {
+const SnarkyContent: React.FC<{readonly degreesOfSeparation: number}> = ({degreesOfSeparation}) => {
   if (degreesOfSeparation >= 2 && degreesOfSeparation <= 4) {
     return null;
   }
@@ -101,10 +99,10 @@ const SnarkyContent: React.FC<{
 /**
  *  Adds a warning if the source and/or target page(s) were redirects.
  */
-const RedirectWarning: React.FC<{
-  isSourceRedirected: boolean;
-  isTargetRedirected: boolean;
-}> = ({isSourceRedirected, isTargetRedirected}) => {
+const RedirectWarning: React.FC<{isSourceRedirected: boolean; isTargetRedirected: boolean}> = ({
+  isSourceRedirected,
+  isTargetRedirected,
+}) => {
   let redirectContent;
   if (isSourceRedirected && isTargetRedirected) {
     redirectContent = (

@@ -47,9 +47,7 @@ const BarChartSvg = styled.svg`
   }
 `;
 
-export const BarChart: React.FC<{
-  readonly data: number[];
-}> = ({data}) => {
+export const BarChart: React.FC<{readonly data: number[]}> = ({data}) => {
   const barChartRef = useRef<SVGSVGElement>(null);
   const barChartWrapperRef = useRef<HTMLDivElement>(null);
   const barChartSvgRef = useRef<d3.Selection<SVGSVGElement, unknown, null, undefined> | null>(null);

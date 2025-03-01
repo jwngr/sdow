@@ -70,9 +70,7 @@ const TextLinkInternal = styled(Link)`
   ${linkStyles}
 `;
 
-export const NavLinks: React.FC<{
-  readonly handleOpenModal: () => void;
-}> = ({handleOpenModal}) => {
+export const NavLinks: React.FC<{readonly handleOpenModal: () => void}> = ({handleOpenModal}) => {
   return (
     <Wrapper>
       <TextLink href="#" onClick={() => handleOpenModal()}>

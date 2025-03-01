@@ -194,11 +194,7 @@ export const ResultsGraph: React.FC<{
         }
 
         if (!seenNodes.has(currentPageId)) {
-          nodesData.push({
-            id: currentPageId,
-            title: currentPage.title,
-            degree: i,
-          });
+          nodesData.push({id: currentPageId, title: currentPage.title, degree: i});
           seenNodes.add(currentPageId);
         }
 
@@ -210,10 +206,7 @@ export const ResultsGraph: React.FC<{
             console.error('Failed to find source or target node');
             return;
           }
-          linksData.push({
-            source: sourceNode,
-            target: targetNode,
-          });
+          linksData.push({source: sourceNode, target: targetNode});
         }
 
         previousPageId = currentPageId;

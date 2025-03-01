@@ -3,6 +3,7 @@
   "bracketSpacing": false,
   "printWidth": 100,
   "singleQuote": true,
+  "objectWrap": "collapse",
   "trailingComma": "es5",
   "plugins": ["@ianvs/prettier-plugin-sort-imports"],
   "importOrder": ["<BUILT_IN_MODULES>", "", "<THIRD_PARTY_MODULES>", "", "^[.]"]

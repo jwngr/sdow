@@ -21,9 +21,7 @@ const LogoImg = styled.img`
   }
 `;
 
-export const Logo: React.FC<{
-  readonly onClick?: () => void;
-}> = ({onClick}) => (
+export const Logo: React.FC<{readonly onClick?: () => void}> = ({onClick}) => (
   <Link to="/" onClick={onClick}>
     <LogoImg
       srcSet={`${logo} 462w, ${logo2x} 924w`}

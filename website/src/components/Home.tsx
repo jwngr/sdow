@@ -118,9 +118,7 @@ const ErrorMessageWrapper = styled.p`
   }
 `;
 
-const ErrorMessage: React.FC<{
-  readonly text: string;
-}> = ({text}) => {
+const ErrorMessage: React.FC<{readonly text: string}> = ({text}) => {
   const tokens = text.split('"');
 
   return (
