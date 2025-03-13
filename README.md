@@ -39,7 +39,7 @@ encyclopedia.
 
 - [Wikipedia API](https://www.mediawiki.org/wiki/API:Main_page)
 - [Wikipedia database layout](https://www.mediawiki.org/wiki/Manual:Database_layout)
-- [English Wikipedia database dumps](https://dumps.wikimedia.your.org/enwiki)
+- [English Wikipedia database dumps](https://dumps.wikimedia.org/enwiki)
 
 ## Contributing
 
