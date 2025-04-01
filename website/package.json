@@ -6,7 +6,7 @@
   "dependencies": {
     "d3": "^7.9.0",
     "lodash": "^4.17.21",
-    "react": "^19.0.0",
+    "react": "^19.1.0",
     "react-autosuggest": "^10.1.0",
     "react-dom": "^19.0.0",
     "react-helmet": "^6.1.0",
@@ -21,7 +21,7 @@
     "@types/d3": "^7.4.3",
     "@types/lodash": "^4.17.16",
     "@types/node": "^22.13.8",
-    "@types/react": "^19.0.10",
+    "@types/react": "^19.0.12",
     "@types/react-autosuggest": "^10.1.11",
     "@types/react-dom": "^19.0.4",
     "@types/react-helmet": "^6.1.11",
