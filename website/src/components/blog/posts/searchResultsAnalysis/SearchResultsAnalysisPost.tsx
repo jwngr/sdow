@@ -1,4 +1,3 @@
-import {Helmet} from 'react-helmet';
 import styled from 'styled-components';
 
 import {getNumberWithCommas, getWikipediaPageUrl} from '../../../../utils';
@@ -127,9 +126,7 @@ const Divider = styled.div`
 
 export const SearchResultsAnalysisPost = () => (
   <Wrapper>
-    <Helmet>
-      <title>{`${TITLE} | Blog | Six Degrees of Wikipedia`}</title>
-    </Helmet>
+    <Title>{`${TITLE} | Blog | Six Degrees of Wikipedia`}</Title>
 
     <Title>{TITLE}</Title>
     <Subtitle>
