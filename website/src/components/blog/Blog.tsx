@@ -1,5 +1,4 @@
 import React from 'react';
-import {Helmet} from 'react-helmet';
 import styled from 'styled-components';
 
 import {Logo} from '../common/Logo';
@@ -80,9 +79,7 @@ const BlogPostCard: React.FC<{
 
 export const Blog: React.FC = () => (
   <>
-    <Helmet>
-      <title>Blog | Six Degrees of Wikipedia</title>
-    </Helmet>
+    <title>Blog | Six Degrees of Wikipedia</title>
 
     <Logo />
 
