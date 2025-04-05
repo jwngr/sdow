@@ -1,10 +1,10 @@
 flask == 3.1.0
 flask-compress == 1.17
 flask-cors == 5.0.1
-litecli == 1.14.4
+litecli == 1.15.0
 google-cloud-logging == 3.11.4
 google-compute-engine == 2.8.13
 gunicorn == 23.0.0
-protobuf == 5.29.3
+protobuf == 6.30.2
 requests == 2.32.3
 supervisor == 4.2.5
