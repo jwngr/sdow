@@ -126,7 +126,7 @@ const Divider = styled.div`
 
 export const SearchResultsAnalysisPost = () => (
   <Wrapper>
-    <Title>{`${TITLE} | Blog | Six Degrees of Wikipedia`}</Title>
+    <title>{`${TITLE} | Blog | Six Degrees of Wikipedia`}</title>
 
     <Title>{TITLE}</Title>
     <Subtitle>

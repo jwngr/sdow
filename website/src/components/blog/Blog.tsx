@@ -79,7 +79,7 @@ const BlogPostCard: React.FC<{
 
 export const Blog: React.FC = () => (
   <>
-    <Title>Blog | Six Degrees of Wikipedia</Title>
+    <title>Blog | Six Degrees of Wikipedia</title>
 
     <Logo />
 
