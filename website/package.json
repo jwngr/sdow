@@ -19,7 +19,7 @@
     "@ianvs/prettier-plugin-sort-imports": "^4.4.1",
     "@types/d3": "^7.4.3",
     "@types/lodash": "^4.17.16",
-    "@types/node": "^22.14.0",
+    "@types/node": "^22.15.3",
     "@types/react": "^19.1.0",
     "@types/react-autosuggest": "^10.1.11",
     "@types/react-dom": "^19.1.1",
