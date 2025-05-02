@@ -10,7 +10,7 @@
     "react-autosuggest": "^10.1.0",
     "react-dom": "^19.1.0",
     "react-modal": "^3.16.3",
-    "react-router-dom": "^6.30.0",
+    "react-router-dom": "^7.5.3",
     "styled-components": "^6.1.17",
     "typeface-crimson-text": "1.1.13",
     "typeface-quicksand": "1.1.13"
