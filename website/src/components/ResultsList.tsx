@@ -184,9 +184,9 @@ export const ResultsList: React.FC<{
 
   return (
     <>
-      <ResultsListHeader>Individual paths ({paths.length})</ResultsListHeader>
+      <ResultsListHeader>Individual paths</ResultsListHeader>
       <ResultsListSubHeader>
-        Showing {maxResultsToDisplay} of {paths.length} result{paths.length !== 1 ? 's' : ''}.
+        Showing {maxResultsToDisplay} of {paths.length} result{paths.length !== 1 ? 's' : ''}
       </ResultsListSubHeader>
       <LazyLoadWrapper fallback={null}>
         <ResultsListWrapper>
