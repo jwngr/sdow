@@ -6,5 +6,5 @@ google-cloud-logging == 3.12.1
 google-compute-engine == 2.8.13
 gunicorn == 23.0.0
 protobuf == 6.31.1
-requests == 2.32.3
+requests == 2.32.5
 supervisor == 4.2.5
