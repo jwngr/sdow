@@ -7,4 +7,4 @@ google-compute-engine == 2.8.13
 gunicorn == 23.0.0
 protobuf == 6.32.0
 requests == 2.32.5
-supervisor == 4.2.5
+supervisor == 4.3.0
