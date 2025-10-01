@@ -31,7 +31,7 @@
     "prettier": "^3.6.2",
     "source-map-explorer": "^2.5.3",
     "typescript": "^5.9.2",
-    "typescript-eslint": "^8.44.1",
+    "typescript-eslint": "^8.45.0",
     "vite": "^7.1.7"
   },
   "scripts": {
