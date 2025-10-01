@@ -30,7 +30,7 @@
     "globals": "^16.4.0",
     "prettier": "^3.6.2",
     "source-map-explorer": "^2.5.3",
-    "typescript": "^5.9.2",
+    "typescript": "^5.9.3",
     "typescript-eslint": "^8.44.1",
     "vite": "^7.1.7"
   },
