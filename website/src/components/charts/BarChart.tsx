@@ -58,17 +58,15 @@ export const BarChart: React.FC<{readonly data: number[]}> = ({data}) => {
     return barChartWrapperRef.current.getBoundingClientRect().width - 6;
   }, []);
 
-  const resizeBarChart = useCallback(() => {
-    const width = getBarChartWidth();
-    barChartSvgRef.current?.attr('width', width);
-  }, [getBarChartWidth]);
-
-  // Resize the bar chart on page resize.
-  const handleResizeDebounced = debounce(resizeBarChart, 350);
-  const debouncedResizeBarChart = useCallback(handleResizeDebounced, [handleResizeDebounced]);
-  window.addEventListener('resize', handleResizeDebounced);
-
   useEffect(() => {
+    const resizeBarChart = () => {
+      const width = getBarChartWidth();
+      barChartSvgRef.current?.attr('width', width);
+    };
+
+    // Resize the bar chart on page resize.
+    const handleResizeDebounced = debounce(resizeBarChart, 350);
+
     if (!barChartRef.current) return;
 
     const formatCount = d3.format(',.0f');
@@ -158,11 +156,13 @@ export const BarChart: React.FC<{readonly data: number[]}> = ({data}) => {
       .attr('y', 26)
       .text('Number of Searches');
 
+    window.addEventListener('resize', handleResizeDebounced);
+
     return () => {
       barChartSvgRef.current?.selectAll('*').remove();
-      window.removeEventListener('resize', debouncedResizeBarChart);
+      window.removeEventListener('resize', handleResizeDebounced);
     };
-  }, [data, debouncedResizeBarChart, getBarChartWidth, resizeBarChart]);
+  }, [data, getBarChartWidth]);
 
   return (
     <BarChartWrapper ref={barChartWrapperRef}>

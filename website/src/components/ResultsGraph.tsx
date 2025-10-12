@@ -170,6 +170,7 @@ export const ResultsGraph: React.FC<{
   const graphSvgRef = useRef<d3.Selection<SVGGElement, unknown, null, undefined> | null>(null);
   const zoomableRef = useRef<d3.Selection<Element, unknown, null, undefined> | null>(null);
   const graphWrapperSizeRef = useRef<HTMLDivElement | null>(null);
+  const zoomRef = useRef<d3.ZoomBehavior<Element, unknown> | null>(null);
 
   const color = d3.scaleOrdinal(d3.schemeCategory10);
 
@@ -216,16 +217,6 @@ export const ResultsGraph: React.FC<{
     return {nodesData, linksData};
   }, [pagesById, paths]);
 
-  const zoom = useMemo(() => {
-    return d3.zoom().on('zoom', (event) => {
-      if (!graphSvgRef.current) return;
-      graphSvgRef.current.attr(
-        `transform`,
-        `translate(${event.transform.x}, ${event.transform.y}) scale(${event.transform.k})`
-      );
-    });
-  }, []);
-
   const resetGraph = useCallback(() => {
     const graphWidth = getGraphWidth();
 
@@ -237,8 +228,13 @@ export const ResultsGraph: React.FC<{
     simulationRef.current?.alpha(0.3).restart();
 
     // Reset any zoom and pan.
-    zoomableRef.current?.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
-  }, [getGraphWidth, zoom]);
+    if (zoomRef.current) {
+      zoomableRef.current
+        ?.transition()
+        .duration(750)
+        .call(zoomRef.current.transform, d3.zoomIdentity);
+    }
+  }, [getGraphWidth]);
 
   const simulation = useMemo(() => {
     const {nodesData} = getGraphData();
@@ -248,11 +244,20 @@ export const ResultsGraph: React.FC<{
   useEffect(() => {
     if (!graphRef.current) return;
 
+    // Define zoom behavior
+    zoomRef.current = d3.zoom().on('zoom', (event) => {
+      if (!graphSvgRef.current) return;
+      graphSvgRef.current.attr(
+        `transform`,
+        `translate(${event.transform.x}, ${event.transform.y}) scale(${event.transform.k})`
+      );
+    });
+
     zoomableRef.current = d3
       .select(graphRef.current as Element)
       .attr('width', '100%')
       .attr('height', '100%')
-      .call(zoom);
+      .call(zoomRef.current);
     if (!zoomableRef.current) return;
 
     graphSvgRef.current = zoomableRef.current.append('g');
@@ -380,7 +385,7 @@ export const ResultsGraph: React.FC<{
       graphSvgRef.current?.selectAll('*').remove();
       window.removeEventListener('resize', handleResizeDebounced);
     };
-  }, [simulation, paths, pagesById, color, getGraphData, getGraphWidth, resetGraph, zoom]);
+  }, [simulation, paths, pagesById, color, getGraphData, getGraphWidth, resetGraph]);
 
   return (
     <GraphWrapper ref={graphWrapperSizeRef}>
