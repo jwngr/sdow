@@ -1,5 +1,10 @@
 name: Run Frontend CI on push
+
 on: [push]
+
+permissions:
+  contents: read
+
 jobs:
   frontend-ci:
     runs-on: ubuntu-latest
