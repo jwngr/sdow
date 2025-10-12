@@ -1,4 +1,4 @@
-# Docs: https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+# Docs: https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference
 
 version: 2
 updates:
@@ -6,7 +6,18 @@ updates:
     directory: '/website'
     schedule:
       interval: 'monthly'
+    groups:
+      major:
+        update-types: ['major']
+      minor-and-patch:
+        update-types: ['minor', 'patch']
+
   - package-ecosystem: 'pip'
     directory: '/'
     schedule:
       interval: 'monthly'
+    groups:
+      major:
+        update-types: ['major']
+      minor-and-patch:
+        update-types: ['minor', 'patch']
