@@ -6,6 +6,9 @@ updates:
     directory: '/website'
     schedule:
       interval: 'monthly'
+    ignore:
+      # Ignore packages which are very outdated and need to be updated manually.
+      - dependency-name: "react-router-dom"
     groups:
       major:
         update-types: ['major']
