@@ -57,8 +57,10 @@ const StyledTextLinkWrapper = styled.a<StyledTextLinkWrapperProps>`
   }
 `;
 
-interface StyledTextLinkProps
-  extends Pick<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href' | 'target'> {
+interface StyledTextLinkProps extends Pick<
+  React.AnchorHTMLAttributes<HTMLAnchorElement>,
+  'href' | 'target'
+> {
   readonly text: string;
 }
 
