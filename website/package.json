@@ -5,7 +5,7 @@
   "type": "module",
   "dependencies": {
     "d3": "^7.9.0",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "react": "^19.2.3",
     "react-autosuggest": "^10.1.0",
     "react-dom": "^19.2.3",
