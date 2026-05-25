@@ -14,7 +14,7 @@
     "react-dom": "19.2.4",
     "react-modal": "3.16.3",
     "react-router-dom": "6.30.3",
-    "styled-components": "6.3.11",
+    "styled-components": "6.4.2",
     "typeface-crimson-text": "1.1.13",
     "typeface-quicksand": "1.1.13"
   },
