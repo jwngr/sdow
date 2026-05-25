@@ -5,22 +5,24 @@ updates:
   - package-ecosystem: 'npm'
     directory: '/website'
     schedule:
-      interval: 'monthly'
+      interval: 'quarterly'
+    cooldown:
+      default-days: 2
     ignore:
       # Ignore packages which are very outdated and need to be updated manually.
       - dependency-name: "react-router-dom"
     groups:
-      major:
-        update-types: ['major']
       minor-and-patch:
+        patterns: ['*']
         update-types: ['minor', 'patch']
 
   - package-ecosystem: 'pip'
     directory: '/'
     schedule:
-      interval: 'monthly'
+      interval: 'quarterly'
+    cooldown:
+      default-days: 2
     groups:
-      major:
-        update-types: ['major']
       minor-and-patch:
+        patterns: ['*']
         update-types: ['minor', 'patch']

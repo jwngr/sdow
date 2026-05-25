@@ -14,9 +14,11 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version-file: website/.nvmrc
+          cache: npm
+          cache-dependency-path: website/package-lock.json
       - name: Install dependencies
-        run: npm install
+        run: npm ci
         working-directory: website
       - name: Lint
         run: npm run lint
