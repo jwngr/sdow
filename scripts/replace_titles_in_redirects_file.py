@@ -28,16 +28,16 @@ if not REDIRECTS_FILE.endswith('.gz'):
 # Create a set of all page IDs and a dictionary of page titles to their corresponding IDs.
 ALL_PAGE_IDS = set()
 PAGE_TITLES_TO_IDS = {}
-for line in io.BufferedReader(gzip.open(PAGES_FILE, 'r')):
-  [page_id, page_title, _] = line.rstrip('\n').split('\t')
+for line in io.BufferedReader(gzip.open(PAGES_FILE, 'rb')):
+  [page_id, page_title,_] = line.rstrip(b'\n').split(b'\t')
   ALL_PAGE_IDS.add(page_id)
   PAGE_TITLES_TO_IDS[page_title] = page_id
 
 # Create a dictionary of redirects, replace page titles in the redirects file with their
 # corresponding IDs and ignoring pages which do not exist.
 REDIRECTS = {}
-for line in io.BufferedReader(gzip.open(REDIRECTS_FILE, 'r')):
-  [source_page_id, target_page_title] = line.rstrip('\n').split('\t')
+for line in io.BufferedReader(gzip.open(REDIRECTS_FILE, 'rb')):
+  [source_page_id, target_page_title] = line.rstrip(b'\n').split(b'\t')
 
   source_page_exists = source_page_id in ALL_PAGE_IDS
   target_page_id = PAGE_TITLES_TO_IDS.get(target_page_title)
@@ -47,7 +47,7 @@ for line in io.BufferedReader(gzip.open(REDIRECTS_FILE, 'r')):
 
 # Loop through the redirects dictionary and remove redirects which redirect to another redirect,
 # writing the remaining redirects to stdout.
-for source_page_id, target_page_id in REDIRECTS.iteritems():
+for source_page_id, target_page_id in REDIRECTS.items():
   start_target_page_id = target_page_id
 
   redirected_count = 0
@@ -62,4 +62,4 @@ for source_page_id, target_page_id in REDIRECTS.iteritems():
       target_page_id = None
 
   if target_page_id is not None:
-    print('\t'.join([source_page_id, target_page_id]))
+    print(b'\t'.join([source_page_id, target_page_id]).decode())
