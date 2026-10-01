@@ -34,7 +34,7 @@
     "globals": "17.8.0",
     "prettier": "3.9.6",
     "source-map-explorer": "2.5.3",
-    "typescript": "6.0.3",
+    "typescript": "7.0.2",
     "typescript-eslint": "8.59.4",
     "vite": "8.2.0"
   },
