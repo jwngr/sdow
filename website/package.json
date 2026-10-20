@@ -36,7 +36,7 @@
     "source-map-explorer": "2.5.3",
     "typescript": "6.0.3",
     "typescript-eslint": "8.59.4",
-    "vite": "8.2.0"
+    "vite": "8.3.4"
   },
   "scripts": {
     "analyze": "source-map-explorer build/static/js/*",
